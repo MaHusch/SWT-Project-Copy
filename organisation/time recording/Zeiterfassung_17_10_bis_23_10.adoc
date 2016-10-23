@@ -1,0 +1,7 @@
+= Zeiterfassung Gruppe 16
+
+[options = "headers"]
+|===
+|Von|Bis|Florentin|Jannik|Joris|Martin|Mel|Treffen
+|17.10|23.10|210|150|180|150|210|120
+|===
