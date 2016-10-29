@@ -148,5 +148,30 @@ Dieser Abschnitt stellt eine Vereinigung von Glossar und der Beschreibung von Kl
 Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwartungen und Anforderungen im Gebrauch erfüllt. Diese sollen und können aus den Anwendungsfallbeschreibungen und den UML-Sequenzdiagrammen abgeleitet werden. D.h., pro (komplexen) Anwendungsfall gibt es typischerweise mindestens ein Sequenzdiagramm (welches ein Szenarium beschreibt). Für jedes Szenarium sollte es einen Akzeptanztestfall geben. Listen Sie alle Akzeptanztestfälle in tabellarischer Form auf.
 Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumenten (z.B. im Test-Plan) referenzieren zu können.
 
+|=======================
+|id|Beschreibung      
+|1    | Der Kunde kann aus Waren auswählen und sie dem Warenkorb hinzufügen 		
+|2    | Der Mitarbeiter(Admin/Boss,Verkäufer,Bäcker,Lieferant) können sich einloggen und ausloggen      
+|3    | Der Verkäufer kann Warenkorb bearbeiten (hinzufügen/entfernen von Waren) und 
+		diesen dann in Auftrag geben
+|5    | Der Verkäufer ist in der Lage Kunden hinzuzufügen und die TAN von vorhandenen Kunden zu überprüfen
+|5    | Der Verkäufer kann Essgarnituren entgegen nehmen und dem Kunden die 15 € aushändigen
+|6    | Der Bäcker sieht die Öfen und ihre Timer(max. 5 Minuten), sowie die aktuell benötigten Pizzen und kann Öfen befüllen
+|7    | Der Lieferant kann sich ein- und auschecken
+|8    | Der Lieferant kann beim einchecken Essgarnituren zurückgeben
+|9    | Der Admin sieht die aktuellen Bestellungen (in Form einer Tabelle)
+|10    | Der Admin kann den Warenkatalog verändern (Waren ergänzen, löschen sowie von vorhanden den Preis ändern)
+|11   | Der Admin hat Zugriff auf die Liste der Mitarbeiter diese verändern (erweitern sowie kürzen)
+|12   | Der Admin besitzt die Möglichkeit die Informationen der einzelnen Mitarbeiter zu ändern
+|13   | Der Admin hat Einsicht auf die Liste der Kunden und darf einzelne Nutzer bearbeiten sowie entfernen
+|14   | Der Admin kann sieht anhand einer Tabelle die Abrechnung der letzten Wochen
+|15   | Nach einer Bestellung wird dem Kunden eine neue TAN zugewiesen 
+|16   | Wenn der Kunde seine Bestellung vor Ort abholt, erhält er 10% Rabatt auf den Gesamtpreis
+|17   | Ab einem Warenwert von 30€ gibt es die Option eines Freigetränkes
+|18   | Bei dem Bestellen einer Essgarnitur wird 15 € Pfand verlangt
+|19   | Bei Rückgabe der Essgarnitur wird dieser dem Kunden wieder ausgehändigt
+|20   | Nach 4 Wochen verfällt der Pfand und die Garnitur zählt als gekauft
+|=======================
+
 == Offene Punkte
 Offene Punkte werden entweder direkt in der Spezifikation notiert. Wenn das Pflichtenheft  zum finalen Review vorgelegt wird, sollte es keine offenen Punkte mehr geben.
