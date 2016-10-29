@@ -60,7 +60,7 @@ Einleitung für fachfremde Personen
 === Kontextdiagramm
 Das Kontextdiagramm zeigt das geplante Software-System in seiner Umgebung. Zur Umgebung gehören alle Nutzergruppen des Systems und Nachbarsysteme. Die Grafik kann auch informell gehalten sein. Überlegen Sie sich dann geeignete Symbole. Die Grafik kann beispielsweise mit Visio erstellt werden. Wenn nötig, erläutern Sie diese Grafik.
 
-link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/artefacts/component__Kontextdiagramm.jpg[]
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/artefacts/component__Kontextdiagramm.jpgKontextdiagramm]
 
 === Top-level architecture
 Dokumentieren Sie ihre Top-Level-Architektur mit Hilfe eines Komponentendiagramm.
