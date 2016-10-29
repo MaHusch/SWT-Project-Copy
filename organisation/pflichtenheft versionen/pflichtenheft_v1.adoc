@@ -69,6 +69,9 @@ link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/artefacts/c
 
 === Überblick Anwendungsfalldiagramm
 Anwendungsfall-Diagramm, das alle Anwendungsfälle und alle Akteure darstellt
+
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/artefacts/Use_Case_Diagram_Master.jpg[Use-Case-Diagramm]
+
 === Akteure
 
 Akteure sind die Benutzer des Software-Systems oder Nachbarsysteme, welche darauf zugreifen. Dokumentieren Sie die Akteure in einer Tabelle. Diese Tabelle gibt einen Überblick über die Akteure und beschreibt sie kurz. Die Tabelle hat also mindestens zwei Spalten (Akteur Name und Kommentar).
@@ -76,8 +79,8 @@ Akteure sind die Benutzer des Software-Systems oder Nachbarsysteme, welche darau
 // See http://asciidoctor.org/docs/user-manual/#tables
 [options="header"]
 |===
-|Name |Beschreibung |
-|…    |…            |
+|Name |Beschreibung 
+|...   |...       
 |===
 
 === Anwendungsfallbeschreibungen
@@ -89,10 +92,27 @@ Die typischen Anwendungsfälle (Anlegen, Ändern, Löschen) können zu einem ein
 == Anforderungen
 
 === Muss-Kriterien
+
 Was das zu erstellende Programm auf alle Fälle leisten muss.
 
+* Bestellung registrieren
+* Kundenverwaltung
+* TAN-Verwaltung
+* Rabattaktionen
+* Pizzen selbst zusammenstellen
+* Angebotsverwaltung
+* Berechnung der Lieferzeit
+* Pizza-Essgarnitur Verwaltung
+* Veränderliches Sortiment
+* Wöchentliche Abrechnung der Filiale
+
 === Kann-Kriterien
+
 Anforderungen die das Programm leisten können soll, aber für den korrekten Betrieb entbehrlich sind.
+
+* Katalog kann Bilder enthalten
+* Standortberücksichtigung
+* Online-Bestellung per Kundenaccount
 
 == GUI Prototyp
 
@@ -111,6 +131,8 @@ Für jeden Dialog:
 
 === Überblick: Klassendiagramm
 UML-Analyseklassendiagramm
+
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/artefacts/Klassendiagramm.jpg[Analyseklassendiagramm]
 
 === Klassen und Enumerationen
 Dieser Abschnitt stellt eine Vereinigung von Glossar und der Beschreibung von Klassen/Enumerationen dar. Jede Klasse und Enumeration wird in Form eines Glossars textuell beschrieben. Zusätzlich werden eventuellen Konsistenz- und Formatierungsregeln aufgeführt.
