@@ -6,7 +6,7 @@ __Version:__    *1.0*
 
 __Status:__     *In Arbeit*
 
-__Stand:__      *29.10.2016*
+__Stand:__      *30.10.2016*
 
 == Zusammenfassung
 Das Pflichtenheft enthält die Aufgabe und Wünsche des Kunden an die zu entwickelnde Software. 
@@ -80,7 +80,11 @@ Akteure sind die Benutzer des Software-Systems oder Nachbarsysteme, welche darau
 [options="header"]
 |===
 |Name |Beschreibung 
-|...   |...       
+|Admin   |greift auf die im Store gespeicherten Daten zu und kann diese verändern   
+|Kunde(Customer)   |ruft in der Filiale an, authentifiziert sich mit seiner TAN und gibt seine Bestellung beim Verkäufer auf 
+|Baker(Bäker)   |bestückt die Öfen mit Pizzen und achtet auf ihre Timer  
+|Seller(Verkäufer)   |nimmt Bestellungen sowie Essgarnituren entgegen, registriert neue Nutzer und überprüft am Anfang der Bestellung die TAN des Kunden   
+|Deliverer(Lieferbote)   |fährt die Bestellungen aus und nimmt ggf. Essgarnitur wieder zurück         
 |===
 
 === Anwendungsfallbeschreibungen
@@ -228,13 +232,33 @@ UML-Analyseklassendiagramm
 link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/artefacts/Klassendiagramm.jpg[Analyseklassendiagramm]
 
 === Klassen und Enumerationen
-Dieser Abschnitt stellt eine Vereinigung von Glossar und der Beschreibung von Klassen/Enumerationen dar. Jede Klasse und Enumeration wird in Form eines Glossars textuell beschrieben. Zusätzlich werden eventuellen Konsistenz- und Formatierungsregeln aufgeführt.
 
 // See http://asciidoctor.org/docs/user-manual/#tables
 [options="header"]
 |===
 |Klasse/Enumeration |Beschreibung |
-|…                  |…            |
+|Store                  |repräsentiert die Filiale, welche zur Speicherung der Mitarbeiter, Kunden, Waren, Pizzaschlange für die Öfen dient. Desweiteren kann sie eine wöchentliche Abrechnung erstellen und speichern            |
+|Person                  | dient als Elternklasse für die einzelnen Personen der Filiale(Kunden, Mitarbeiter).            |
+|StaffMember                  | dient als Elternklasse für die einzelnen Mitarbeiter            |
+|Accounting             |mithilfe von ihr werden die Finanzen zusammengefasst gespeichert            |
+|Order                  |symbolisiert die Bestellungen von den Kunden            |
+|Adress                  |Datentyp für die Anschrift von Personen            |
+|Admin                  |ist ein Mitarbeiter der Filiale und hat Zugriff- und Bearbeitungsrechte auf die in dem Store gespeicherten Daten            |
+|Seller                  |ist ein Mitarbeiter und nimmt Bestellungen auf, wenn die TAN des Kunden stimmt           |
+|Baker                  | ist ein Mitarbeiter der für die Bestückung des Ofens mit Pizza zuständig ist und somit Zugriff auf die Pizzaschlange und die Timer der Öfen hat            |
+|Deliverer                  |ist ein Mitarbeiter der die Bestellungen ausliefert und  Essgarnituren annehmen kann             |
+|Customer                  |ist eine Person, die den Kunden darstellt und ggf. eine Essgarnitur zugeordnet hat           |
+|OrderStatus                  | ist eine Enumeration, die den Status einer Bestellung angibt           |
+|Item                  |symbolisiert die Elternklasse der Waren             |
+|Oven                  |repräsentiert einen Ofen der Filiale und hat einen Timer, der angibt wann die ihm zugewiesene Pizza fertig ist            |
+|TAN-Managment                  |ist die Verwaltung von den TANs und den zugehörigen Kunden            |
+|TAN                  |ist eine 5 stellige Zahl, die einem Kunden mithilfe des TAN-Managment zugeordnet wird            |
+|Cultry                  |stellt eine Essgarnitur dar, die an Kunden verliehen werden kann            |
+|Salad                  |symbolisiert die Ware "Salat"            |
+|Pizza                  |repräsentiert die Ware "Pizza" , welche aus mehreren Zutaten bestehen kann            |
+|Drink                  |ist eine Ware "Getränk"            |
+|Ingredient                  |stellt eine Zutat für eine Pizza dar            |
+|Time                  |dient als Datentyp für den Timer eines Ofen und beinhaltet die verbleibenden Minuten und Sekunden            |
 |===
 
 == Aktzeptanztestfälle
