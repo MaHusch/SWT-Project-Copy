@@ -3,5 +3,6 @@
 [options = "headers"]
 |===
 |Von|Bis|Florentin|Jannik|Joris|Martin|Mel|Treffen
+|10.10|16.10|240|180|180|240|240|90
 |17.10|23.10|210|150|180|150|210|120
 |===

@@ -1,0 +1,15 @@
+= Repository Gruppe 16 Softwareprojekt Wintersemester 2016
+
+== Gruppenmitglieder:  
+* Martin Huschenbett 
+* Florentin Dörre
+* Joris Kotheimer
+* Mel-Frederic Fidorra
+* Jannik Presberger
+
+== Aufgabe/Ziel des Projekts
+
+Eine Software entwickeln für einen Pizzaservice.
+
+		    
+                  
