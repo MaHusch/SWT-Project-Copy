@@ -116,16 +116,68 @@ Anforderungen die das Programm leisten können soll, aber für den korrekten Bet
 
 == GUI Prototyp
 
+== GUI Prototyp
+
 === Überblick: Dialoglandkarte
-Erstellen Sie ein Übersichtsdiagramm, das das Zusammenspiel Ihrer Masken zur Laufzeit darstellt. Also mit welchen Aktionen zwischen den Masken navigiert wird. Die nachfolgende Abbildung zeigt eine an die Pinnwand gezeichnete Dialoglandkarte. Ihre Karte sollte zusätzlich die Buttons/Funktionen darstellen, mit deren Hilfe Sie zwischen den Masken navigieren.
+Das Diagram beschreibt den Navigationsfluss der Schlüsselkomponenten der Website und des damit verbunden backends.Seiten die von ähnlicher und trivialer Natur wurden bewusst ausgelassen. 
+*Legende*
+
+* Knotenpunkte: Repräsentieren einzelne Schlüsselstellen im GUI welche den Dialog beschreiben. Die Dialogbeschreibung wird hauptsächlich durch die Konzeptbilder zusammen mit den Notizen in dem Flowchart ausgedrückt. Diese Konzeptentwürfe der Schlüsselstellen liegen als .jpg bei. (Siehe Dialogbeschreibung)
+ 
+ * Pfeile: Beschreiben Flussrichtung, bzw wie der Benutzer durch die einzelnen Oberflächen navigiert
+ 
+ * Pfeilannotation: Machen deutlich was ge-clickt werden muss um von einem Bereich in den nächsten zu gelangen.
+ 
+ * Notizen: Gehen auf die Nutzung und den Zweck der einzelnen Komponenten ein.
+ 
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/GUI_Flowchart.jpg[Kontextdiagramm]
 
 === Dialogbeschreibung
-Für jeden Dialog:
+index: 
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/index.jpg[Kontextdiagramm]
 
-1. Kurze textuelle Dialogbeschreibung eingefügt: Was soll der jeweilige Dialog? Was kann man damit tun? Überblick?
-2. Maskenentwürfe (Screenshot, Mockup)
-3. Maskenelemente (Ein/Ausgabefelder, Aktionen wie Buttons, Listen, …)
-4. Evtl. Maskendetails, spezielle Widgets
+
+=== Kunde
+pizza_auswahl:
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Kunde/pizza_auswahl.jpg[Pizza Auswahl]
+
+pizza_konfigurator:
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Kunde/pizza_konfigurator.jpg[Pizza Konfirgurator]
+
+=== Administrator
+admin_dashboard:
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Administrator/admin_dashboard.jpg[Admin Dashboard]
+
+admin_finanzen:
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Administrator/admin_finanzen.jpg[Admin Finanzen]
+
+admin_mitarbeiterübersicht:
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Administrator/admin_mitarbeiterübersicht.jpg[Mitarbeiterübersicht]
+
+=== Verkäufer
+
+verkäufer_dashboard:
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Verkäufer/verkäufer_dashboard.jpg[Verkäufer Dashboard]
+
+verkäufer_kunden_registrierung:
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Verkäufer/verkäufer_kunden_registrierung.jpg[Verkäufer Kundenregistrierung]
+
+verkäufer_produkt_auswahl:
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Verkäufer/verkäufer_produkt_auswahl.jpg[Verkäufer Produktauswahl]
+
+=== Adminstrator/Verkäufer/Bäcker/Lieferant
+
+bestellungs_übersicht:
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Shared/bestellungs_übersicht.jpg[Bestellungs Übersicht]
+
+kunden_übersicht:
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Shared/kunden_übersicht.jpg[Kunden Übersicht]
+
+mitarbeiter_login:
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Shared/mitarbeiter_login.jpg[Mitarbeiter Login]
+
+ofen_übersicht:
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Shared/ofen_übersicht.jpg[Ofen Übersicht]
 
 == Datenmodell
 
