@@ -84,49 +84,50 @@ Akteure sind die Benutzer des Software-Systems oder Nachbarsysteme, welche darau
 |===
 
 === Anwendungsfallbeschreibungen
-Name des Anwendungsfalls: Zusammenstellung des Warenkorbs auf der Pizzaserviceswebsite
-beteiligte Akteure:  Kunde(Customer)
-Beschreibung: 
-Jeder Kunde(Customer) kann ohne sich anzumelden das Angebot des Pizzaservices auf der Website ansehen (browse items/menus). Der Kunde hat die Möglichkeit sich die einzelnen Waren sortiert anzeigen zu lassen und seinem Warenkorb hinzuzufügen (select item/menu). Ebenfalls besteht dem Kunden die Möglichkeit sich seine Pizza komplett selbst zu konfigurieren (configure pizza). Alle vom Kunden ausgewählten Waren werden ihm in seinem Warenkorb angezeigt.
+Name des Anwendungsfalls: Zusammenstellung des Warenkorbs auf der Pizzaserviceswebsite +
+beteiligte Akteure:  Kunde(Customer) +
+Beschreibung: +
+Jeder Kunde(Customer) kann ohne sich anzumelden das Angebot des Pizzaservices auf der Website ansehen (browse items/menus). Der Kunde hat die Möglichkeit sich die einzelnen Waren sortiert anzeigen zu lassen und seinem Warenkorb hinzuzufügen (select item/menu).
+Ebenfalls besteht dem Kunden die Möglichkeit sich seine Pizza komplett selbst zu konfigurieren (configure pizza). Alle vom Kunden  ausgewählten Waren werden ihm in seinem Warenkorb angezeigt.
 
 
-Name des Anwendungsfalls: Bestellung eines Kunden entgegennehmen
-beteiligte Akteure:  Verkäufer(Seller), Kunde(Customer)
-Beschreibung: 
+Name des Anwendungsfalls: Bestellung eines Kunden entgegennehmen +
+beteiligte Akteure:  Verkäufer(Seller), Kunde(Customer) +
+Beschreibung: +
 Der Kunde gibt telefonisch eine Bestellung auf und muss sich mit seiner Telefonnummer und aktuellen TAN ausweisen. Der Verkäufer trägt die Informationen in das System ein, woraufhin diese mit den Informationen in der Datenbank abgeglichen werden. Sollten diese nicht übereinstimmen, wird der Bestellvorgang abgebrochen. Wenn die Daten übereinstimmen überträgt der Verkäufer die geforderten Waren des Kunden in ein Formular und durch bestätigen wird diese dann in Auftrag gegeben. Die Gesamtkosten der Waren werden ermittelt und für die Abrechnung als Kosten hinzugefügt. (add to expenditure) Ebenfalls wird einen neue TAN für den Kunden generiert, welche in der Kundendatenbank gespeichert wird.
 
-Varianten:
+Varianten: +
 - Kunde ist noch nicht registriert und möchte sich registrieren
-Der Verkäufer startet den Prozess der Registrierung eines neuen Kunden dafür trägt er die Daten des Kunden in ein bereitgestelltes Formular ein und registriert diesen somit im System. Danach nimmt der Verkäufer die Bestellung des Kunden auf.
+Der Verkäufer startet den Prozess der Registrierung eines neuen Kunden dafür trägt er die Daten des Kunden in ein bereitgestelltes Formular ein und registriert diesen somit im System. Danach nimmt der Verkäufer die Bestellung des Kunden auf. +
 - Kunde ist nicht registriert und möchte nur eine einmalige Bestellung ohne Registrierung aufgeben
 Der Verkäufer nimmt die Bestellung des Kunden normal entgegen ohne das sich dieser dafür mit seiner TAN ausweisen muss. Nach Abschluss der Bestellung erhält der Kunde dementsprechend auch keine neue TAN.
 
 
-Name des Anwendungsfalls: Bestellungen bearbeiten
-beteiligte Akteure:  Pizzabäcker(Baker)
-Beschreibung: 
+Name des Anwendungsfalls: Bestellungen bearbeiten +
+beteiligte Akteure:  Pizzabäcker(Baker) +
+Beschreibung: +
 Der Pizzabäcker kann sich im System eine Liste der noch zu backenden Pizzen anzeigen lassen. Diese Pizzen kann er dann einem noch nicht belegten Ofen zuweisen, woraufhin ein 5-Minuten-Timer gestartet wird. Nach Ablauf dieses Timers wird der Pizzabäcker benachrichtigt und die Pizza im System als gebacken markiert.
 
-Name des Anwendungsfalls: Bestellungen ausliefern
-beteiligte Akteure:  Auslieferer(Delivery), Verkäufer(Seller)
-Beschreibung: 
-Der Verkäufer hat eine Übersicht über alle fertiggestellten Bestellungen und kann diese dann einem Auslieferer zuweisen, sollten dessen Kapazitäten ausreichen. Wenn einem Auslieferer genügend Bestellungen zugewiesen wurden kann dieser auf den Weg machen und sich dabei vom System abmelden. Ihm können dadurch keine weiteren Bestellungen zugewiesen werden. Wenn er von der Auslieferung zurückgekehrt ist, kann er sich wieder im System anmelden und den vom Kunden erhaltenen Geldbetrag abliefern, welcher dann für die Abrechnung als Einnahmen gespeichert wird
+Name des Anwendungsfalls: Bestellungen ausliefern +
+beteiligte Akteure:  Auslieferer(Delivery), Verkäufer(Seller) +
+Beschreibung: +
+Der Verkäufer hat eine Übersicht über alle fertiggestellten Bestellungen und kann diese dann einem Auslieferer zuweisen, sollten dessen Kapazitäten ausreichen. Wenn einem Auslieferer genügend Bestellungen zugewiesen wurden kann dieser auf den Weg machen und sich dabei vom System abmelden. Ihm können dadurch keine weiteren Bestellungen zugewiesen werden. Wenn er von der Auslieferung zurückgekehrt ist, kann er sich wieder im System anmelden und den vom Kunden erhaltenen Geldbetrag abliefern, welcher dann für die Abrechnung als Einnahmen gespeichert wird.
 
 
-Name des Anwendungsfalls: Abrechnung erstellen
-beteiligte Akteure:  Administrator 
-Beschreibung: 
+Name des Anwendungsfalls: Abrechnung erstellen +
+beteiligte Akteure:  Administrator +
+Beschreibung: +
 Der Administrator kann die wöchentliche Abrechnung in Auftrag geben. Dabei werden alle gespeicherten Ausgaben und Einnahmen gegenübergestellt und eine Gesamtbilanz berechnet, die dann an die Zentrale geschickt werden kann
 
-Name des Anwendungsfalls: Datensätze editieren
-beteiligte Akteure:  Administrator 
-Beschreibung: 
+Name des Anwendungsfalls: Datensätze editieren +
+beteiligte Akteure:  Administrator +
+Beschreibung: +
 Der Administrator kann die einzelnen Einträge editieren, sowie neue Einträge hinzufügen, oder bereits bestehende Einträge wieder entfernen
 
-Varianten:
-- Bearbeiten der Kundendatenbank (Customer Database)
-- Bearbeiten der Mitarbeiterdatenbank (Employee Database)
-- Bearbeiten der Warendatenbank (Item Manager)
+Varianten: +
+- Bearbeiten der Kundendatenbank (Customer Database) +
+- Bearbeiten der Mitarbeiterdatenbank (Employee Database) +
+- Bearbeiten der Warendatenbank (Item Manager) +
 
 == Anforderungen
 
