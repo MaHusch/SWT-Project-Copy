@@ -119,7 +119,7 @@ Anforderungen die das Programm leisten können soll, aber für den korrekten Bet
 == GUI Prototyp
 
 === Überblick: Dialoglandkarte
-Das Diagram beschreibt den Navigationsfluss der Schlüsselkomponenten der Website und des damit verbunden backends.Seiten die von ähnlicher und trivialer Natur wurden bewusst ausgelassen. 
+Das Diagram beschreibt den Navigationsfluss der Schlüsselkomponenten der Website und des damit verbunden backends.Seiten von ähnlicher und/oder trivialer Natur wurden bewusst ausgelassen.
 
 *Legende*
 
