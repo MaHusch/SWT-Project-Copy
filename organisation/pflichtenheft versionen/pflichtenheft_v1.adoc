@@ -120,21 +120,22 @@ Anforderungen die das Programm leisten können soll, aber für den korrekten Bet
 
 === Überblick: Dialoglandkarte
 Das Diagram beschreibt den Navigationsfluss der Schlüsselkomponenten der Website und des damit verbunden backends.Seiten die von ähnlicher und trivialer Natur wurden bewusst ausgelassen. 
+
 *Legende*
 
 * Knotenpunkte: Repräsentieren einzelne Schlüsselstellen im GUI welche den Dialog beschreiben. Die Dialogbeschreibung wird hauptsächlich durch die Konzeptbilder zusammen mit den Notizen in dem Flowchart ausgedrückt. Diese Konzeptentwürfe der Schlüsselstellen liegen als .jpg bei. (Siehe Dialogbeschreibung)
  
- * Pfeile: Beschreiben Flussrichtung, bzw wie der Benutzer durch die einzelnen Oberflächen navigiert
+ * Pfeile: Beschreiben Flussrichtung, bzw. wie der Benutzer durch die einzelnen Oberflächen navigiert.
  
  * Pfeilannotation: Machen deutlich was ge-clickt werden muss um von einem Bereich in den nächsten zu gelangen.
  
  * Notizen: Gehen auf die Nutzung und den Zweck der einzelnen Komponenten ein.
  
-link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/GUI_Flowchart.jpg[Kontextdiagramm]
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/GUI_Flowchart.jpg[GUI Flowchart]
 
 === Dialogbeschreibung
 index: 
-link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/index.jpg[Kontextdiagramm]
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/index.jpg[Index]
 
 
 === Kunde
