@@ -1,5 +1,6 @@
 = Pflichtenheft
 :toc: macro
+:toc-title: 
 
 == Projektname
 
