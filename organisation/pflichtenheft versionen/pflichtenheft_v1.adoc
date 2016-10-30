@@ -174,8 +174,8 @@ link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/
 
 
 === Dialogbeschreibung
-index: 
-link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/index.jpg[Index]
+
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/index.jpg[index]
 
 
 *Kunde* +
