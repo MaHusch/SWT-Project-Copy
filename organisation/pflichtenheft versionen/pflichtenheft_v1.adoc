@@ -67,13 +67,13 @@ link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/artefacts/c
 
 === Top-Level Architektur
 
-link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/artefacts/component__Top_Level_Architektur.jpg[Top-Level architecture]
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/artefacts/component__Top_Level_Architektur.jpg[Top-Level Architektur]
 
 == Anwendungsfälle
 
-=== Überblick Anwendungsfalldiagramm
+=== Überblick: Anwendungsfalldiagramm
 
-link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/artefacts/Use_Case_Diagram_Master.jpg[Use-Case-Diagramm]
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/artefacts/Use_Case_Diagram_Master.jpg[Anwendungsfalldiagramm]
 
 === Akteure
 
@@ -178,45 +178,30 @@ index:
 link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/index.jpg[Index]
 
 
-*Kunde*+
-pizza_auswahl:
-link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Kunde/pizza_auswahl.jpg[Pizza Auswahl]
+*Kunde* +
 
-pizza_konfigurator:
-link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Kunde/pizza_konfigurator.jpg[Pizza Konfirgurator]
+
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Kunde/pizza_auswahl.jpg[pizza_auswahl] +
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Kunde/pizza_konfigurator.jpg[pizza_konfigurator]
 
 *Aministrator* +
-admin_dashboard:
-link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Administrator/admin_dashboard.jpg[Admin Dashboard]
 
-admin_finanzen:
-link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Administrator/admin_finanzen.jpg[Admin Finanzen]
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Administrator/admin_dashboard.jpg[admin_dashboard] +
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Administrator/admin_finanzen.jpg[admin_finanzen] +
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Administrator/admin_mitarbeiterübersicht.jpg[admin_mitarbeiterübersicht]
 
-admin_mitarbeiterübersicht:
-link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Administrator/admin_mitarbeiterübersicht.jpg[Mitarbeiterübersicht]
+*Verkäufer* +
 
-*Verkäufer*+
-verkäufer_dashboard:
-link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Verkäufer/verkäufer_dashboard.jpg[Verkäufer Dashboard]
-
-verkäufer_kunden_registrierung:
-link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Verkäufer/verkäufer_kunden_registrierung.jpg[Verkäufer Kundenregistrierung]
-
-verkäufer_produkt_auswahl:
-link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Verkäufer/verkäufer_produkt_auswahl.jpg[Verkäufer Produktauswahl]
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Verkäufer/verkäufer_dashboard.jpg[verkäufer_dashboard] +
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Verkäufer/verkäufer_kunden_registrierung.jpg[verkäufer_kunden_registrierung] +
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Verkäufer/verkäufer_produkt_auswahl.jpg[verkäufer_produkt_auswahl]
 
 *Adminstrator/Verkäufer/Bäcker/Lieferant* +
-bestellungs_übersicht:
-link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Shared/bestellungs_übersicht.jpg[Bestellungs Übersicht]
 
-kunden_übersicht:
-link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Shared/kunden_übersicht.jpg[Kunden Übersicht]
-
-mitarbeiter_login:
-link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Shared/mitarbeiter_login.jpg[Mitarbeiter Login]
-
-ofen_übersicht:
-link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Shared/ofen_übersicht.jpg[Ofen Übersicht]
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Shared/bestellungs_übersicht.jpg[bestellungs_übersicht] +
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Shared/kunden_übersicht.jpg[kunden_übersicht] +
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Shared/mitarbeiter_login.jpg[mitarbeiter_login] +
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Shared/ofen_übersicht.jpg[ofen_übersicht]
 
 == Datenmodell
 
