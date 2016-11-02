@@ -1,4 +1,5 @@
 = Pflichtenheft
+:toc: macro 
 
 == Projektname
 
@@ -6,12 +7,14 @@ __Version:__    *1.0*
 
 __Status:__     *In Arbeit*
 
-__Stand:__      *29.10.2016*
+__Stand:__      *30.10.2016*
 
 == Zusammenfassung
 Das Pflichtenheft enthält die Aufgabe und Wünsche des Kunden an die zu entwickelnde Software. 
 
 == Inhaltsverzeichnis
+
+toc::[]
 
 == Aufgabenstellung und Zielsetzung
 
@@ -61,39 +64,78 @@ Einleitung für fachfremde Personen
 
 link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/artefacts/component__Kontextdiagramm.jpg[Kontextdiagramm]
 
-=== Top-level architecture
+=== Top-Level Architektur
 
-link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/artefacts/component__Top_Level_Architektur.jpg[Top-Level architecture]
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/artefacts/component__Top_Level_Architektur.jpg[Top-Level Architektur]
 
 == Anwendungsfälle
 
-=== Überblick Anwendungsfalldiagramm
-Anwendungsfall-Diagramm, das alle Anwendungsfälle und alle Akteure darstellt
+=== Überblick: Anwendungsfalldiagramm
 
-link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/artefacts/Use_Case_Diagram_Master.jpg[Use-Case-Diagramm]
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/artefacts/Use_Case_Diagram_Master.jpg[Anwendungsfalldiagramm]
 
 === Akteure
-
-Akteure sind die Benutzer des Software-Systems oder Nachbarsysteme, welche darauf zugreifen. Dokumentieren Sie die Akteure in einer Tabelle. Diese Tabelle gibt einen Überblick über die Akteure und beschreibt sie kurz. Die Tabelle hat also mindestens zwei Spalten (Akteur Name und Kommentar).
 
 // See http://asciidoctor.org/docs/user-manual/#tables
 [options="header"]
 |===
 |Name |Beschreibung 
-|...   |...       
+|Administrator   |greift auf die im Store gespeicherten Daten zu und kann diese verändern   
+|Customer   |ruft in der Filiale an, authentifiziert sich mit seiner TAN und gibt seine Bestellung beim Verkäufer auf 
+|Employee(Production)   |bestückt die Öfen mit Pizzen und achtet auf ihre Timer  
+|Employee(Sales)   |nimmt Bestellungen sowie Essgarnituren entgegen, registriert neue Nutzer und überprüft am Anfang der Bestellung die TAN des Kunden   
+|Employee(Delivery)   |fährt die Bestellungen aus und nimmt ggf. Essgarnitur wieder zurück         
 |===
 
 === Anwendungsfallbeschreibungen
-Dieser Unterabschnitt beschreibt die Anwendungsfälle. In dieser Beschreibung müssen noch nicht alle Sonderfälle und Varianten berücksichtigt werden. Schwerpunkt ist es, die wichtigsten Anwendungsfälle des Systems zu finden. Wichtig sind solche Anwendungsfälle, die für den Auftraggeber, den Nutzer den größten Nutzen bringen.
-Für komplexere Anwendungsfälle ein UML-Sequenzdiagramm ergänzen.
-Einfache Anwendungsfälle mit einem Absatz beschreiben.
-Die typischen Anwendungsfälle (Anlegen, Ändern, Löschen) können zu einem einzigen zusammengefasst werden.
+*Name des Anwendungsfalls:* Zusammenstellung des Warenkorbs auf der Pizzaserviceswebsite +
+*Beteiligte Akteure:*  Customer +
+*Beschreibung:* +
+Jeder Kunde(Customer) kann ohne sich anzumelden das Angebot des Pizzaservices auf der Website ansehen (browse items/menus). Der Kunde hat die Möglichkeit sich die einzelnen Waren sortiert anzeigen zu lassen und seinem Warenkorb hinzuzufügen (select item/menu).
+Ebenfalls besteht dem Kunden die Möglichkeit sich seine Pizza komplett selbst zu konfigurieren (configure pizza). Alle vom Kunden  ausgewählten Waren werden ihm in seinem Warenkorb angezeigt.
+
+
+*Name des Anwendungsfalls:* Bestellung eines Kunden entgegennehmen +
+*Beteiligte Akteure:*  Employee(Sales), Customer +
+*Beschreibung:* +
+Der Kunde gibt telefonisch eine Bestellung auf und muss sich mit seiner Telefonnummer und aktuellen TAN ausweisen. Der Verkäufer trägt die Informationen in das System ein, woraufhin diese mit den Informationen in der Datenbank abgeglichen werden. Sollten diese nicht übereinstimmen, wird der Bestellvorgang abgebrochen. Wenn die Daten übereinstimmen überträgt der Verkäufer die geforderten Waren des Kunden in ein Formular und durch bestätigen wird diese dann in Auftrag gegeben. Die Gesamtkosten der Waren werden ermittelt und für die Abrechnung als Kosten hinzugefügt. (add to expenditure) Ebenfalls wird einen neue TAN für den Kunden generiert, welche in der Kundendatenbank gespeichert wird.
+
+*Varianten:* +
+- Kunde ist noch nicht registriert und möchte sich registrieren
+Der Verkäufer startet den Prozess der Registrierung eines neuen Kunden dafür trägt er die Daten des Kunden in ein bereitgestelltes Formular ein und registriert diesen somit im System. Danach nimmt der Verkäufer die Bestellung des Kunden auf. +
+- Kunde ist nicht registriert und möchte nur eine einmalige Bestellung ohne Registrierung aufgeben
+Der Verkäufer nimmt die Bestellung des Kunden normal entgegen ohne das sich dieser dafür mit seiner TAN ausweisen muss. Nach Abschluss der Bestellung erhält der Kunde dementsprechend auch keine neue TAN.
+
+
+*Name des Anwendungsfalls:* Bestellungen bearbeiten +
+*Beteiligte Akteure:*  Employee(Production) +
+*Beschreibung:* +
+Der Pizzabäcker kann sich im System eine Liste der noch zu backenden Pizzen anzeigen lassen. Diese Pizzen kann er dann einem noch nicht belegten Ofen zuweisen, woraufhin ein 5-Minuten-Timer gestartet wird. Nach Ablauf dieses Timers wird der Pizzabäcker benachrichtigt und die Pizza im System als gebacken markiert.
+
+*Name des Anwendungsfalls:* Bestellungen ausliefern +
+*Beteiligte Akteure:*  Employee(Delivery), Employee(Sales) +
+*Beschreibung:* +
+Der Verkäufer hat eine Übersicht über alle fertiggestellten Bestellungen und kann diese dann einem Auslieferer zuweisen, sollten dessen Kapazitäten ausreichen. Wenn einem Auslieferer genügend Bestellungen zugewiesen wurden kann dieser auf den Weg machen und sich dabei vom System abmelden. Ihm können dadurch keine weiteren Bestellungen zugewiesen werden. Wenn er von der Auslieferung zurückgekehrt ist, kann er sich wieder im System anmelden und den vom Kunden erhaltenen Geldbetrag abliefern, welcher dann für die Abrechnung als Einnahmen gespeichert wird.
+
+
+*Name des Anwendungsfalls:* Abrechnung erstellen +
+*Beteiligte Akteure:*  Administrator +
+*Beschreibung:* +
+Der Administrator kann die wöchentliche Abrechnung in Auftrag geben. Dabei werden alle gespeicherten Ausgaben und Einnahmen gegenübergestellt und eine Gesamtbilanz berechnet, die dann an die Zentrale geschickt werden kann
+
+*Name des Anwendungsfalls:* Datensätze editieren +
+*Beteiligte Akteure:*  Administrator +
+*Beschreibung:* +
+Der Administrator kann die einzelnen Einträge editieren, sowie neue Einträge hinzufügen, oder bereits bestehende Einträge wieder entfernen
+
+*Varianten:* +
+- Bearbeiten der Kundendatenbank (Customer Database) +
+- Bearbeiten der Mitarbeiterdatenbank (Employee Database) +
+- Bearbeiten der Warendatenbank (Item Manager) +
 
 == Anforderungen
 
 === Muss-Kriterien
-
-Was das zu erstellende Programm auf alle Fälle leisten muss.
 
 * Bestellung registrieren
 * Kundenverwaltung
@@ -108,8 +150,6 @@ Was das zu erstellende Programm auf alle Fälle leisten muss.
 
 === Kann-Kriterien
 
-Anforderungen die das Programm leisten können soll, aber für den korrekten Betrieb entbehrlich sind.
-
 * Katalog kann Bilder enthalten
 * Standortberücksichtigung
 * Online-Bestellung per Kundenaccount
@@ -117,36 +157,88 @@ Anforderungen die das Programm leisten können soll, aber für den korrekten Bet
 == GUI Prototyp
 
 === Überblick: Dialoglandkarte
-Erstellen Sie ein Übersichtsdiagramm, das das Zusammenspiel Ihrer Masken zur Laufzeit darstellt. Also mit welchen Aktionen zwischen den Masken navigiert wird. Die nachfolgende Abbildung zeigt eine an die Pinnwand gezeichnete Dialoglandkarte. Ihre Karte sollte zusätzlich die Buttons/Funktionen darstellen, mit deren Hilfe Sie zwischen den Masken navigieren.
+
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/GUI_Flowchart.jpg[GUI Flowchart]
+
+*Legende*
+
+* Knotenpunkte: Repräsentieren einzelne Schlüsselstellen im GUI welche den Dialog beschreiben. Die Dialogbeschreibung wird hauptsächlich durch die Konzeptbilder zusammen mit den Notizen in dem Flowchart ausgedrückt. Diese Konzeptentwürfe der Schlüsselstellen liegen als .jpg bei. (Siehe Dialogbeschreibung)
+ 
+ * Pfeile: Beschreiben Flussrichtung, bzw. wie der Benutzer durch die einzelnen Oberflächen navigiert.
+ 
+ * Pfeilannotation: Machen deutlich was ge-clickt werden muss um von einem Bereich in den nächsten zu gelangen.
+ 
+ * Notizen: Gehen auf die Nutzung und den Zweck der einzelnen Komponenten ein.
+ 
+
 
 === Dialogbeschreibung
-Für jeden Dialog:
 
-1. Kurze textuelle Dialogbeschreibung eingefügt: Was soll der jeweilige Dialog? Was kann man damit tun? Überblick?
-2. Maskenentwürfe (Screenshot, Mockup)
-3. Maskenelemente (Ein/Ausgabefelder, Aktionen wie Buttons, Listen, …)
-4. Evtl. Maskendetails, spezielle Widgets
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/index.jpg[index]
+
+
+*Kunde* +
+
+
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Kunde/pizza_auswahl.jpg[pizza_auswahl] +
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Kunde/pizza_konfigurator.jpg[pizza_konfigurator]
+
+*Aministrator* +
+
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Administrator/admin_dashboard.jpg[admin_dashboard] +
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Administrator/admin_finanzen.jpg[admin_finanzen] +
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Administrator/admin_mitarbeiterübersicht.jpg[admin_mitarbeiterübersicht]
+
+*Verkäufer* +
+
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Verkäufer/verkäufer_dashboard.jpg[verkäufer_dashboard] +
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Verkäufer/verkäufer_kunden_registrierung.jpg[verkäufer_kunden_registrierung] +
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Verkäufer/verkäufer_produkt_auswahl.jpg[verkäufer_produkt_auswahl]
+
+*Adminstrator/Verkäufer/Bäcker/Lieferant* +
+
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Shared/bestellungs_übersicht.jpg[bestellungs_übersicht] +
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Shared/kunden_übersicht.jpg[kunden_übersicht] +
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Shared/mitarbeiter_login.jpg[mitarbeiter_login] +
+link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/prototypes/GUI/index/Shared/ofen_übersicht.jpg[ofen_übersicht]
 
 == Datenmodell
 
 === Überblick: Klassendiagramm
-UML-Analyseklassendiagramm
 
 link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/artefacts/Klassendiagramm.jpg[Analyseklassendiagramm]
 
 === Klassen und Enumerationen
-Dieser Abschnitt stellt eine Vereinigung von Glossar und der Beschreibung von Klassen/Enumerationen dar. Jede Klasse und Enumeration wird in Form eines Glossars textuell beschrieben. Zusätzlich werden eventuellen Konsistenz- und Formatierungsregeln aufgeführt.
 
 // See http://asciidoctor.org/docs/user-manual/#tables
 [options="header"]
 |===
 |Klasse/Enumeration |Beschreibung |
-|…                  |…            |
+|Store                  |repräsentiert die Filiale, welche zur Speicherung der Mitarbeiter, Kunden, Waren, Pizzaschlange für die Öfen dient. Desweiteren kann sie eine wöchentliche Abrechnung erstellen und speichern            |
+|Person                  | dient als Elternklasse für die einzelnen Personen der Filiale(Kunden, Mitarbeiter).            |
+|StaffMember                  | dient als Elternklasse für die einzelnen Mitarbeiter            |
+|Accounting             |mithilfe von ihr werden die Finanzen zusammengefasst gespeichert            |
+|Order                  |symbolisiert die Bestellungen von den Kunden            |
+|Adress                  |Datentyp für die Anschrift von Personen            |
+|Admin                  |ist ein Mitarbeiter der Filiale und hat Zugriff- und Bearbeitungsrechte auf die in dem Store gespeicherten Daten            |
+|Seller                  |ist ein Mitarbeiter und nimmt Bestellungen auf, wenn die TAN des Kunden stimmt           |
+|Baker                  | ist ein Mitarbeiter der für die Bestückung des Ofens mit Pizza zuständig ist und somit Zugriff auf die Pizzaschlange und die Timer der Öfen hat            |
+|Deliverer                  |ist ein Mitarbeiter der die Bestellungen ausliefert und  Essgarnituren annehmen kann             |
+|Customer                  |ist eine Person, die den Kunden darstellt und ggf. eine Essgarnitur zugeordnet hat           |
+|OrderStatus                  | ist eine Enumeration, die den Status einer Bestellung angibt           |
+|Item                  |symbolisiert die Elternklasse der Waren             |
+|Oven                  |repräsentiert einen Ofen der Filiale und hat einen Timer, der angibt wann die ihm zugewiesene Pizza fertig ist            |
+|TAN-Managment                  |ist die Verwaltung von den TANs und den zugehörigen Kunden            |
+|TAN                  |ist eine 5 stellige Zahl, die einem Kunden mithilfe des TAN-Managment zugeordnet wird            |
+|Cultry                  |stellt eine Essgarnitur dar, die an Kunden verliehen werden kann            |
+|Salad                  |symbolisiert die Ware "Salat"            |
+|Pizza                  |repräsentiert die Ware "Pizza" , welche aus mehreren Zutaten bestehen kann            |
+|Drink                  |ist eine Ware "Getränk"            |
+|Ingredient                  |stellt eine Zutat für eine Pizza dar            |
+|Time                  |dient als Datentyp für den Timer eines Ofen und beinhaltet die verbleibenden Minuten und Sekunden            |
 |===
 
 == Aktzeptanztestfälle
-Mithilfe von Akzeptanztests wird geprüft, ob die Software die funktionalen Erwartungen und Anforderungen im Gebrauch erfüllt. Diese sollen und können aus den Anwendungsfallbeschreibungen und den UML-Sequenzdiagrammen abgeleitet werden. D.h., pro (komplexen) Anwendungsfall gibt es typischerweise mindestens ein Sequenzdiagramm (welches ein Szenarium beschreibt). Für jedes Szenarium sollte es einen Akzeptanztestfall geben. Listen Sie alle Akzeptanztestfälle in tabellarischer Form auf.
-Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumenten (z.B. im Test-Plan) referenzieren zu können.
 
 |=======================
 |id|Beschreibung      
@@ -174,4 +266,4 @@ Jeder Testfall soll mit einer ID versehen werde, um später zwischen den Dokumen
 |=======================
 
 == Offene Punkte
-Offene Punkte werden entweder direkt in der Spezifikation notiert. Wenn das Pflichtenheft  zum finalen Review vorgelegt wird, sollte es keine offenen Punkte mehr geben.
+- Fachlicher Überblick
