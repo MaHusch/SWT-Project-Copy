@@ -1,0 +1,49 @@
+Protokoll
+
+Martin ist da trotz Arbeit(kann aber zur Verwarnung führen) 
+
+Entwurfsdiagramm aufteilen: controller auf einer ebende, Model in eine Gruppe. Diagramm selber strukturieren mit Farben etc. 
+
+Salespoint spezifische funktionen müssenn nicht direkt genutzt werden -> ist eigenes Design 
+
+Musskriterien:
+Mitarbeiterverwaltung fehlt
+Warenkorb auslösen als kann kriterium 
+Rückemeldung des Lieferanten
+Katalog: suchen filtern
+
+Berichtserstellung in html(Grapisch ist optional)
+Bestellübersicht filtern können
+
+selbe funktionsnamen wie im entwurfsdiagram
+
+Lieferant checked sich selber ein
+
+von Salespoint gegebene eigenschaften für Befugnisse müssen nicht expliziet angegeben werden. Muss in Entwurfsdiagramm spezifiziert werden 
+
+Issues zur Kommunikation benutzen 
+
+Tags benutzen um issues zu markiernen
+
+Im Protokoll issues referenzieren 
+
+in Adoc link zu Pflichtenheft setzen
+
+grosser Prototyp: von null ein Teil des Systems implentieren. zb Login System, Order System etc. 
+
+Nächste woche: entwurfsklassen diagram, GUI verfeinern, 
+
+Sprint: Entwurfsdiagramm fertig, Testfälle für Klassen, GUI Verfeinerung.
+
+Nächstes meeting Dienstag 6. DS: Entwurfsdiagramm, Testfälle 
+
+
+
+
+
+
+
+
+
+
+
