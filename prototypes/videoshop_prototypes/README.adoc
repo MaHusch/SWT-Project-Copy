@@ -1,0 +1,19 @@
+= Aufgaben
+
+== Mel Frederic
+
+Ich habe für den kleinen Protypen die Zahlungsmethode verändert. Ursprünglich wurde laut quellcode mit "Cash" bezahlt. 
+Dies macht aber für einen Online Shop keinen Sinn. Deswegen wurde die Funktion "buy" in der Datei "CartController" so verändert 
+dass nun mit Credit Karte bezahlt wird(Zusätzliche Modifikationen mussten auch in cart.html gemacht werden).
+
+== Florentin
+
+Ich habe die Funktion hinzugefügt, dass vom Admin einzelne Disc aus den Catalogen entfernen kann.
+
+== Joris
+
+Ich habe den Kommentar modifiziert (Benutzer gespeichert) und bei der Anzeige des Kommentars wird das Rating sowie Bentuzername angezeigt.
+
+== Martin
+
+== Jannik
