@@ -7,7 +7,7 @@ __Version:__    *1.0*
 
 __Status:__     *In Arbeit*
 
-__Stand:__      *30.10.2016*
+__Stand:__      *05.11.2016*
 
 == Zusammenfassung
 Das Pflichtenheft enthält die Aufgabe und Wünsche des Kunden an die zu entwickelnde Software. 
