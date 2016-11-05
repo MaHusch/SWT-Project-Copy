@@ -1,11 +1,11 @@
 = Repository Gruppe 16 Softwareprojekt Wintersemester 2016
 
 == Gruppenmitglieder:  
-* Martin Huschenbett 
-* Florentin Dörre
-* Joris Kotheimer
-* Mel-Frederic Fidorra
-* Jannik Presberger
+* Martin Huschenbett (https://github.com/MaHusch[@MaHusch])
+* Florentin Dörre (https://github.com/FlorentinD[@FlorentinD])
+* Joris Kotheimer (https://github.com/joris-s-k[@joris-s-k])
+* Mel-Frederic Fidorra (https://github.com/MelFredericFidorra[@MelFredericFidorra])
+* Jannik Presberger (https://github.com/JannikPresberger[@JannikPresberger])
 
 == Aufgabe/Ziel des Projekts
 
