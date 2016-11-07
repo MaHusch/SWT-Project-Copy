@@ -3,23 +3,25 @@
 Dieser Testplan stellt eine vereinfachte Version der IEEE 829-1998 Vorlage dar.
 
 == Einführung
-Wozu dient das Dokument? Zielgruppe?
+Das Dokument dient zur Sicherstellung, dass die Software für den PapaPizza Shop einwandfrei funktioniert.
+Es dient den Entwickler für ihre Erstellung der Tests.
 
 == Aufbau der Testbezeichner
-Nach welchem Schema sind die Tests benannt?
 
-*Bsp.*
+U - Unit Test, 
+I-User-Case - Integrationstest-Akteur/Akteur2/..-Fall
 
-*U - Unit Test, I - Integrationstest*
 
-*U-1, U-2, I-1*
 
 == Test Gegenstände
 
 == Zu testende Funktionalitäten
 
+* Die aus dem Pflichtenheft hervorgehenden Funktionalitäten
+
 == Nicht zu testende Funktionalitäten
-z.B. Bibliotheken von Drittanbietern (eigene Tests beschränken sich auf Schnittstelle, bzw. Zusammenspiel).
+
+Bibliotheken von Drittanbietern: SalespointFramework, Spring, java.util
 
 == Herangehensweise
 *Bsp.:*
@@ -29,46 +31,51 @@ z.B. Bibliotheken von Drittanbietern (eigene Tests beschränken sich auf Schnitt
 *Integrationstest nach Bottom-Up Prinzip*
 
 == Umgebungsvoraussetzungen
-* Wird spezielle Hardware benötigt?
-* Welche Daten müssen bereitgestellt werden? Wie werden die Daten bereitgestellt?
-* Wird zusätzliche Software für das Testen benötigt?
-* Wie kommuniziert die Software während des Testens? Internet? Netzwerk?
+* Testdaten werden per DataInitialiser bereitgestellt
+//* Wird spezielle Hardware benötigt?
+//* Welche Daten müssen bereitgestellt werden? Wie werden die Daten bereitgestellt?
+//* Wird zusätzliche Software für das Testen benötigt?
+//* Wie kommuniziert die Software während des Testens? Internet? Netzwerk?
 
 == Testfälle und Verantwortlichkeit
 Jede testbezogene Aufgabe muss einem Ansprechpartner zugeordnet werden.
 
+= Integrationstests
 // See http://asciidoctor.org/docs/user-manual/#tables
 [options="headers"]
 |===
 |ID |Anwendungsfall |Vorbedingungen |Eingabe |Ausgabe
-|I-1  |Kunde oder Verkäufter fügt einzelne Waren zum Warenkorb hinzu              |Warenkorb(Cart) vorhanden |Item, Anzahl     |CartItem für System & GUI:Kunde wird auf Warenkatalogseite weitergeleitet
-|I-2  |Mitarbeiter versucht sich einzuloggen              | Mitarbeiter schon vom Admin hinzugefügt und folgende Eingabe richtig              |Nutzername,Passwort       |GUI:Mitarbeiter wird auf seine Startseite weitergeleitet
-|I-3  |Mitarbeiter versucht sich einzuloggen              | Mitarbeiter noch nicht vom Admin hinzugefügt bzw. folgende Eingaben fehlerhaft              |Nutzername,Passwort       | GUI:Fehlermeldung wird angezeigt
-|I-4  |Mitarbeiter versucht sich auszuloggen              | Mitarbeiter ist eingeloggt              | Buttonclick auf "Ausloggen"       | GUI:Weiterleitung auf die allgemeine Startseite
-|I-5  |Verkäufer entfernt Ware aus dem Warenkorb               |Ware befindet sich im Warenkorb             |Buttonclick auf "Entfernen"      |System: veränderter Warenkorb ; GUI:aktualisierter Warenkorb wird angezeigt
-|I-6  |Verkäufer gibt Bestellung(Warenkorb) in Auftrag              |TAN des Kunden stimmt, Warenkorb ist nicht leer              |Warenkorb,Kunde, Verkäufer      |System: Order mitsamt Orderlines wird erstellt und dem Store übergeben ;GUI:Meldung "Bestellung wurde abgeschickt"
-|I-7  |Verkäufer registriert neuen Kunden              |Kunden gibt dem Verkäufer seine Daten              |Daten des Kunden        |System: neuer Customer wird erzeugt und der Customerlist hinzugefügt; GUI: Weiterleitung zur Warenkatalogseite
-|I-8     | Verkäufer oder Lieferant nimmt Essgarnitur zurück | Kunde hat Essgarnitur ausgeliehen , Mitarbeiter ist eingeloggt| Kunde(Essgarnitur zurückgeben)| System: Essgarnitur wird vom Kunden entfernt ; 15 € werden vom Verkäufer ausgehändigt ; GUI: Meldung "Rückgabe erfolgreich"
-|I-9     | Bäcker sieht die Öfen und dessen Timer  sowie benötigte Pizzen| Bäcker ist eingeloggt, ist auch seiner Startseite , min. 1 Ofen vorhanden, min. 1 Pizza in Warteschlange| --| GUI: Ofen + Timer bis Pizza fertig(wenn Pizza drinn), Pizzawarteschlange 
-|I-10     | Bäcker befüllt Ofen | min. 1 Ofen muss frei sein| Ofen, Pizza aus Warteschlange| GUI: veränderter Ofen + neu gestarteter Timer; System: Ofen wird befüllt mit Pizza--> nicht mehr frei , Timer wird resetet
-|I-11     | Lieferant checkt ein | Lieferant ist angemeldet , Lieferant war weg| ggf. Essgarnitur| ggf. I-8 ; System: Lieferant wieder verfügbar ; GUI: Startseite Lieferant
-|I-12     | Lieferant checkt aus | Lieferant ist angemeldet und war eingecheckt | --| Mitarbeiter ist nicht verfügbar
-|I-13     | Admin sieht die Bestellungen(aktuell/alle)  | Admin eingeloggt| --| GUI: Anzeige der Orderliste ggf. sortiert nach offen und abgeschlossen
-|I-14     | Admin fügt einzelne Waren dem Warenkatalog hinzu | Katalog vorhanden, Admin eingeloggt| Item(Ware) --> Name,Preis, Art(wenn Pizza noch Zutaten)| System: Item wird dem Catalog hinzugefügt ; GUI: Ware im Katalog zu sehen
-|I-15     | Admin entfernt einzelne Waren aus dem Warenkatalog | Admin eingeloggt, Ware im Katalog vorhanden| Item| System: Katalog ohne dieser Ware ; GUI: Katalog ohne der Ware zu sehen
-|I-16    | Admin ändert den Preis einer Ware | Admin eingeloggt; Ware im Warenkatalog| neuer Preis der Ware| System: Item bekommt neuen Preis hinzugewiesen GUI: Ware mit neuem Preis angezeit
-|I-17  |Admin registriert neuen Mitarbeiter              |Admin eingeloggt              |Daten des Mitarbeiters        |System: neuer StaffMember (Unterklasse je nach Rolle) wird erzeugt und der StaffMemberlist hinzugefügt; GUI: Weiterleitung Mitarbeiterübersicht
-|I-18 |Admin entfernt vorhandenen Mitarbeiter | Admin eingeloggt, min. 1 Mitarbeiter vorhanden | Buttonclick auf "Löschen" |System: der entsprechende StaffMember (Unterklasse je nach Rolle) wird aus der StaffMemberlist entfernt; GUI: Mitarbeiter verschwindet aus Mitarbeiterübersicht
-|I-19 |Admin bearbeitet Daten eines Mitarbeiters | Admin eingeloggt, min. 1 Mitarbeiter vorhanden | Neue Daten des Mitarbeiters | System: Attribute des StaffMember werden verändert, GUI: Veränderte Daten werden in Mitarbeiterübersicht angezeigt
-|I-20|Admin bearbeitet Daten eines Kunden|Admin eingeloggt, min. 1 Kunde vorhanden|Neue Daten des Kunden|System: Attribute des Customer werden verändert GUI: Veränderte Daten werden in Kundenübersicht angezeigt
-|I-21|Admin entfernt vorhandenen Kunden| Admin eingeloggt, min. 1 Kunde vorhanden|Buttonclick auf "Löschen"|System: der entsprechende Customer wird aus der Customerlist entfernt; GUI: Kunde verschwindet aus Kundenübersicht
-|I-22|Admin sieht Übersicht aller Kunden|Admin eingeloggt|Buttonclick auf "Kunden"|GUI: Anzeige der Kundenliste
-|I-23|Admin sieht die Abrechnung der letzen Wochen|Admin eingeloggt|Buttonclick auf "Finanzen"|GUI: Anzeige der Aus- und Eingaben in einer Tabelle
-|I-24|Kunden eine neue TAN zugewiesen|Bestellung erfolgreich aufgegeben|ID des Kunden|System: Neue TAN wird in der tanHashMap dem Customer zugeordnet (alte TAN wird überschrieben)
-|I-25|Kunde erhält vor Ort Rabatt|Bestellung erfolgreich aufgegeben, Kunde ist in der Filiale|ID der Order|System: Gesamtpreis der Order wird auf 90% des Originalwertes gesetzt
-|I-26|Option eines Freigetränks wird möglich|Zusammenstellung des Warenkorbs im Gange, Gesamtpreis >= 30€|Gesamtpreis|GUI: Button für Freigetränk erscheint
-|I-27|Freigetränk wird in Anspruch genommen|Freigetränk möglich, Mitarbeiter eingeloggt|Aktivierung durch Mitarbeiter|System: CartItem mit 1x Getränk und Preis = 0€ wird dem Cart hinzugefügt, GUI: Auswahl an Getränken erscheint nach dem Klick, Anzeige des gewählten Getränks
-|I-28|Essgarnitur wird bestellt|Bestellung erfolgreich aufgegeben|ID des Kunden|System: myCutlery des Customer wird mit entsprechenden returnTill (aktuelles Datum + 4 Wochen) initialisiert
-|I-29|Pfand für Essgarnitur verfällt|Kunde behält Essgarnitur für 4 Wochen|ID des Kunden|System: myCutlery des Customer wird auf NULL gesetzt 
+|I-Customer/Seller-addCartItem  |Kunde oder Verkäufer fügt einzelne Waren zum Warenkorb hinzu              |Warenkorb(Cart) vorhanden |Item, Anzahl     |**System:** CartItem  **GUI:** Kunde wird auf Warenkatalogseite weitergeleitet
+|I-StaffMember-logInTrue  |Mitarbeiter versucht sich einzuloggen              | Mitarbeiter schon vom Admin hinzugefügt und folgende Eingabe richtig              |Nutzername,Passwort       |**GUI:**Mitarbeiter wird auf seine Startseite weitergeleitet
+|I-StaffMember-logInFalse  |Mitarbeiter versucht sich einzuloggen              | Mitarbeiter noch nicht vom Admin hinzugefügt bzw. folgende Eingaben fehlerhaft              |Nutzername,Passwort       |**GUI:**Fehlermeldung wird angezeigt
+|I-StaffMember-logOut  |Mitarbeiter versucht sich auszuloggen              | Mitarbeiter ist eingeloggt              | --      | **GUI:**Weiterleitung auf die allgemeine Startseite
+|I-Seller-removeCartItem  |Verkäufer entfernt Ware aus dem Warenkorb               |Ware befindet sich im Warenkorb             |--      |**System:**veränderter Warenkorb  **GUI:**aktualisierter Warenkorb wird angezeigt
+|I-Seller-createOrder  |Verkäufer gibt Bestellung(Warenkorb) in Auftrag              |TAN des Kunden stimmt, Warenkorb ist nicht leer              |Warenkorb,Kunde, Verkäufer      |**System:**Order mitsamt Orderlines wird erstellt und dem Store übergeben **GUI:**Meldung "Bestellung wurde abgeschickt"
+|I-Seller-registerCustomer  |Verkäufer registriert neuen Kunden              |Kunden gibt dem Verkäufer seine Daten              |Daten des Kunden        |**System:**neuer Customer wird erzeugt und der Customerlist hinzugefügt **GUI:**Weiterleitung zur Warenkatalogseite
+|I-Seller/Deliverer-acceptCutlery     | Verkäufer oder Lieferant nimmt Essgarnitur zurück | Kunde hat Essgarnitur ausgeliehen , Mitarbeiter ist eingeloggt| Kunde(Essgarnitur zurückgeben)|**System:**Essgarnitur wird vom Kunden entfernt(Pfand zurück) GUI: Meldung "Rückgabe erfolgreich"
+|I-ShopController-ShowBakerpage     | Bäcker sieht die Öfen und dessen Timer  sowie benötigte Pizzen| Bäcker ist eingeloggt, ist auch seiner Startseite , min. 1 Ofen vorhanden, min. 1 Pizza in Warteschlange| --|**GUI:** Ofen + Timer bis Pizza fertig(wenn Pizza drinn), Pizzawarteschlange 
+|I-Baker-putPizzaIntoOven     | Bäcker befüllt Ofen | min. 1 Ofen muss frei sein| Ofen, Pizza aus Warteschlange|**GUI:** veränderter Ofen + neu gestarteter Timer **System:**Ofen wird befüllt mit Pizza--> nicht mehr frei , Timer wird resetet
+|I-Deliverer-CheckIn     | Lieferant checkt ein | Lieferant ist angemeldet , Lieferant war ausgecheckt| ggf. Essgarnitur| ggf. I-8 ; **System:**Lieferant wieder verfügbar(available) **GUI:**Startseite Lieferant
+|I-Deliverer-CheckOut     | Lieferant checkt aus | Lieferant ist angemeldet und war eingecheckt | --|Mitarbeiter ist nicht verfügbar
+|I-ShopController-showOrder     | Admin sieht die Bestellungen(aktuell/alle)  | Admin eingeloggt| --|**GUI:**Anzeige der Orderliste ggf. sortiert nach offen und abgeschlossen
+|I-Admin-addItem     | Admin fügt einzelne Waren dem Warenkatalog hinzu | Katalog vorhanden, Admin eingeloggt| Item(Ware) --> Name,Preis, Art(wenn Pizza noch Zutaten)|**System:** Item wird dem Catalog hinzugefügt  **GUI:** Ware im Katalog zu sehen
+|I-Admin-removeItem     | Admin entfernt einzelne Waren aus dem Warenkatalog | Admin eingeloggt, Ware im Katalog vorhanden| Item| **System:**Katalog ohne dieser Ware  **GUI:**Katalog ohne der Ware zu sehen
+|I-Admin-editItem    | Admin ändert den Preis einer Ware | Admin eingeloggt; Ware im Warenkatalog| neuer Preis der Ware|**System:**Item bekommt neuen Preis hinzugewiesen **GUI:**Ware mit neuem Preis angezeit
+|I-Admin-registerStaffMember  |Admin registriert neuen Mitarbeiter              |Admin eingeloggt              |Daten des Mitarbeiters        |**System:**neuer StaffMember (Unterklasse je nach Rolle) wird erzeugt und der StaffMemberlist hinzugefügt **GUI:**Weiterleitung Mitarbeiterübersicht
+|I-Admin-removeStaffMember |Admin entfernt vorhandenen Mitarbeiter | Admin eingeloggt, min. 1 Mitarbeiter vorhanden | --|**System:**der entsprechende StaffMember (Unterklasse je nach Rolle) wird aus der StaffMemberlist entfernt **GUI:**Mitarbeiter verschwindet aus Mitarbeiterübersicht
+|I-Admin-editStaffMember |Admin bearbeitet Daten eines Mitarbeiters | Admin eingeloggt, min. 1 Mitarbeiter vorhanden | Neue Daten des Mitarbeiters | **System:**Attribute des StaffMember werden verändert **GUI:**Veränderte Daten werden in Mitarbeiterübersicht angezeigt
+|I-Admin-editCustomer|Admin bearbeitet Daten eines Kunden|Admin eingeloggt, min. 1 Kunde vorhanden|Neue Daten des Kunden|**System:**Attribute des Customer werden verändert **GUI:**Veränderte Daten werden in Kundenübersicht angezeigt
+|I-Admin-removeCustomer|Admin entfernt vorhandenen Kunden| Admin eingeloggt, min. 1 Kunde vorhanden|--|**System:**der entsprechende Customer wird aus der Customerlist entfernt **GUI:**Kunde verschwindet aus Kundenübersicht
+|I-ShopController-showCustomer|Admin sieht Übersicht aller Kunden|Admin eingeloggt|--|**GUI:**Anzeige der Kundenliste
+|I-ShopController-showAccounting|Admin sieht die Abrechnung der letzen Wochen|Admin eingeloggt|--|**GUI:**Anzeige der Aus- und Eingaben in einer Tabelle
+|I-Order-getNewTAN|Kunden eine neue TAN zugewiesen|Bestellung erfolgreich aufgegeben|ID des Kunden|**System:**Neue TAN wird in der tanHashMap dem Customer zugeordnet (alte TAN wird überschrieben)
+|I-Order-getTotalPrice|Kunde erhält vor Ort Rabatt|Bestellung erfolgreich aufgegeben, Kunde ist in der Filiale|ID der Order|**System:**Gesamtpreis der Order wird auf 90% des Originalwertes gesetzt
+|I-Order-getFreeDrink|Option eines Freigetränks wird möglich|Zusammenstellung des Warenkorbs im Gange, Gesamtpreis >= 30€|Gesamtpreis|**GUI:**Button für Freigetränk erscheint
+|I-Order-FreeDrinkPartofOrder|Freigetränk wird in Anspruch genommen|Freigetränk möglich, Mitarbeiter eingeloggt|Aktivierung durch Mitarbeiter|System: CartItem mit 1x Getränk und Preis = 0€ wird dem Cart hinzugefügt, GUI: Auswahl an Getränken erscheint nach dem Klick, Anzeige des gewählten Getränks
+|I-Customer/Cutlery-getReturnTill|Essgarnitur wird bestellt|Bestellung erfolgreich aufgegeben|ID des Kunden|**System:**myCutlery des Customer wird mit entsprechenden returnTill (aktuelles Datum + 4 Wochen) initialisiert
+|I-Customer-getCutlery|Pfand für Essgarnitur verfällt|Kunde behält Essgarnitur für 4 Wochen|ID des Kunden|**System:**myCutlery des Customer wird auf NULL gesetzt 
 |===
-* richtige Bezeichnung der Test noch nötig
+
+== Offene Punkte
+*Bottum-Up-Prinzig?
+*Heransgehensweise
