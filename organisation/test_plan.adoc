@@ -43,7 +43,7 @@ Jede testbezogene Aufgabe muss einem Ansprechpartner zugeordnet werden.
 |ID |Anwendungsfall |Vorbedingungen |Eingabe |Ausgabe
 |I-1  |Kunde oder Verkäufter fügt einzelne Waren zum Warenkorb hinzu              |Warenkorb(Cart) vorhanden |Item, Anzahl     |CartItem für System & GUI:Kunde wird auf Warenkatalogseite weitergeleitet
 |I-2  |Mitarbeiter versucht sich einzuloggen              | Mitarbeiter schon vom Admin hinzugefügt und folgende Eingabe richtig              |Nutzername,Passwort       |GUI:Mitarbeiter wird auf seine Startseite weitergeleitet
-|I-3  |Mitarbeiter versucht sich einzuloggen              | Mitarbeiter noch nicht vom Adminhinzugefügt bzw. folgende Eingaben fehlerhaft              |Nutzername,Passwort       | GUI:Fehlermeldung wird angezeigt
+|I-3  |Mitarbeiter versucht sich einzuloggen              | Mitarbeiter noch nicht vom Admin hinzugefügt bzw. folgende Eingaben fehlerhaft              |Nutzername,Passwort       | GUI:Fehlermeldung wird angezeigt
 |I-4  |Mitarbeiter versucht sich auszuloggen              | Mitarbeiter ist eingeloggt              | Buttonclick auf "Ausloggen"       | GUI:Weiterleitung auf die allgemeine Startseite
 |I-5  |Verkäufer entfernt Ware aus dem Warenkorb               |Ware befindet sich im Warenkorb             |Buttonclick auf "Entfernen"      |System: veränderter Warenkorb ; GUI:aktualisierter Warenkorb wird angezeigt
 |I-6  |Verkäufer gibt Bestellung(Warenkorb) in Auftrag              |TAN des Kunden stimmt, Warenkorb ist nicht leer              |Warenkorb,Kunde, Verkäufer      |System: Order mitsamt Orderlines wird erstellt und dem Store übergeben ;GUI:Meldung "Bestellung wurde abgeschickt"
@@ -57,5 +57,18 @@ Jede testbezogene Aufgabe muss einem Ansprechpartner zugeordnet werden.
 |I-14     | Admin fügt einzelne Waren dem Warenkatalog hinzu | Katalog vorhanden, Admin eingeloggt| Item(Ware) --> Name,Preis, Art(wenn Pizza noch Zutaten)| System: Item wird dem Catalog hinzugefügt ; GUI: Ware im Katalog zu sehen
 |I-15     | Admin entfernt einzelne Waren aus dem Warenkatalog | Admin eingeloggt, Ware im Katalog vorhanden| Item| System: Katalog ohne dieser Ware ; GUI: Katalog ohne der Ware zu sehen
 |I-16    | Admin ändert den Preis einer Ware | Admin eingeloggt; Ware im Warenkatalog| neuer Preis der Ware| System: Item bekommt neuen Preis hinzugewiesen GUI: Ware mit neuem Preis angezeit
+|I-17  |Admin registriert neuen Mitarbeiter              |Admin eingeloggt              |Daten des Mitarbeiters        |System: neuer StaffMember (Unterklasse je nach Rolle) wird erzeugt und der StaffMemberlist hinzugefügt; GUI: Weiterleitung Mitarbeiterübersicht
+|I-18 |Admin entfernt vorhandenen Mitarbeiter | Admin eingeloggt, min. 1 Mitarbeiter vorhanden | Buttonclick auf "Löschen" |System: der entsprechende StaffMember (Unterklasse je nach Rolle) wird aus der StaffMemberlist entfernt; GUI: Mitarbeiter verschwindet aus Mitarbeiterübersicht
+|I-19 |Admin bearbeitet Daten eines Mitarbeiters | Admin eingeloggt, min. 1 Mitarbeiter vorhanden | Neue Daten des Mitarbeiters | System: Attribute des StaffMember werden verändert, GUI: Veränderte Daten werden in Mitarbeiterübersicht angezeigt
+|I-20|Admin bearbeitet Daten eines Kunden|Admin eingeloggt, min. 1 Kunde vorhanden|Neue Daten des Kunden|System: Attribute des Customer werden verändert GUI: Veränderte Daten werden in Kundenübersicht angezeigt
+|I-21|Admin entfernt vorhandenen Kunden| Admin eingeloggt, min. 1 Kunde vorhanden|Buttonclick auf "Löschen"|System: der entsprechende Customer wird aus der Customerlist entfernt; GUI: Kunde verschwindet aus Kundenübersicht
+|I-22|Admin sieht Übersicht aller Kunden|Admin eingeloggt|Buttonclick auf "Kunden"|GUI: Anzeige der Kundenliste
+|I-23|Admin sieht die Abrechnung der letzen Wochen|Admin eingeloggt|Buttonclick auf "Finanzen"|GUI: Anzeige der Aus- und Eingaben in einer Tabelle
+|I-24|Kunden eine neue TAN zugewiesen|Bestellung erfolgreich aufgegeben|ID des Kunden|System: Neue TAN wird in der tanHashMap dem Customer zugeordnet (alte TAN wird überschrieben)
+|I-25|Kunde erhält vor Ort Rabatt|Bestellung erfolgreich aufgegeben, Kunde ist in der Filiale|ID der Order|System: Gesamtpreis der Order wird auf 90% des Originalwertes gesetzt
+|I-26|Option eines Freigetränks wird möglich|Zusammenstellung des Warenkorbs im Gange, Gesamtpreis >= 30€|Gesamtpreis|GUI: Button für Freigetränk erscheint
+|I-27|Freigetränk wird in Anspruch genommen|Freigetränk möglich, Mitarbeiter eingeloggt|Aktivierung durch Mitarbeiter|System: CartItem mit 1x Getränk und Preis = 0€ wird dem Cart hinzugefügt, GUI: Auswahl an Getränken erscheint nach dem Klick, Anzeige des gewählten Getränks
+|I-28|Essgarnitur wird bestellt|Bestellung erfolgreich aufgegeben|ID des Kunden|System: myCutlery des Customer wird mit entsprechenden returnTill (aktuelles Datum + 4 Wochen) initialisiert
+|I-29|Pfand für Essgarnitur verfällt|Kunde behält Essgarnitur für 4 Wochen|ID des Kunden|System: myCutlery des Customer wird auf NULL gesetzt 
 |===
 * richtige Bezeichnung der Test noch nötig
