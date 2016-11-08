@@ -10,8 +10,6 @@ __Teilnehmer: Mel, Joris, Jannik, Florentin, Daniel__
 
 == Bemerkungen
 
-* Martin ist da trotz Arbeit(kann aber zur Verwarnung führen) 
-
 * Entwurfsdiagramm aufteilen: controller auf einer ebende, Model in eine Gruppe. Diagramm selber strukturieren mit Farben etc. 
 
 * Salespoint spezifische funktionen müssenn nicht direkt genutzt werden -> ist eigenes Design 
