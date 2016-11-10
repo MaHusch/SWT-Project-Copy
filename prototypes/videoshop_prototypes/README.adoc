@@ -1,0 +1,23 @@
+= Aufgaben
+
+== Mel Frederic
+
+Ich habe für den kleinen Protypen die Zahlungsmethode verändert. Ursprünglich wurde laut quellcode mit "Cash" bezahlt. 
+Dies macht aber für einen Online Shop keinen Sinn. Deswegen wurde die Funktion "buy" in der Datei "CartController" so verändert 
+dass nun mit Credit Karte bezahlt wird(Zusätzliche Modifikationen mussten auch in cart.html gemacht werden).
+
+== Florentin
+
+Ich habe die Funktion hinzugefügt, dass vom Admin einzelne Disc aus den Catalogen entfernen kann.
+
+== Joris
+
+Ich habe den Kommentar modifiziert (Benutzer gespeichert) und bei der Anzeige des Kommentars wird das Rating sowie Bentuzername angezeigt.
+
+== Martin
+
+Ich hab den "Bugfix" gemacht. Das heßt, die OrderCompletionException wird gefangen, welche geworfen wird wenn man mehr DVDs in den Warenkorb legt als im Lager vorhanden sind. Man bleibt nun auf der Seite und es wird eine Nachricht angezeigt.
+
+== Jannik
+
+Ich hab dem Boss ermöglicht im Lager mithilfe eines Buttons den Bestand der Discs eines Films neu aufzufüllen.
