@@ -1,0 +1,55 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}" />
+		<title>Welcome</title>
+	</head>
+	
+	<body>
+	
+	<h1>PapaPizza</h1>
+	
+	 <form th:action="login" method="post">
+	 <input type="submit" value="Login" />
+	 </form>
+	
+	<div sec:authorize="hasRole('ROLE_ADMIN')">
+			<li><a href="registeremployee.html">Neuen MitarbeiterRegistrieren</a></li>
+			<li><a href="finance.html">Finanz Übersicht</a></li>
+			
+			
+			<form th:action="logout" method="post">
+	 		<input type="submit" value="logout" />
+	 </form>
+			
+	</div>
+	
+	<div sec:authorize="hasRole('ROLE_Verkäufer')">
+		<h1>Verkäufer Dashboard</h1>
+		
+		<form th:action="logout" method="post">
+	 	<input type="submit" value="logout" />
+	 	</form>
+	</div>
+	
+	<div sec:authorize="hasRole('ROLE_Bäcker')">
+		<h1>Bäcker Dashboard</h1>
+		
+		<form th:action="logout" method="post">
+	 	<input type="submit" value="logout" />
+		</form>
+	</div>
+	
+	<div sec:authorize="hasRole('ROLE_Lieferant')">
+		<h1>Lieferant Dashboard</h1>
+		
+		<form th:action="logout" method="post">
+	 	<input type="submit" value="logout" />
+		</form>
+	</div>
+	
+	</body>
+
+</html>
