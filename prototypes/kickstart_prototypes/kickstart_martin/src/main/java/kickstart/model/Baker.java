@@ -17,7 +17,6 @@ public class Baker {
 	public boolean addOven(Oven oven){
 		myOvens.add(oven);
 		oven.registerObserver(this);
-		System.out.println("added oven");
 		return true;
 	}
 	
@@ -45,8 +44,8 @@ public class Baker {
 	
 	public void update(Oven observable, boolean isFinished){
 		for(int i = 0; i < myOvens.size(); i++){
-			if(myOvens.get(i).getId() == observable.getId()){
-				myOvens.get(i).clear();
+			if(myOvens.get(i).getId() == observable.getId() && isFinished == true){
+				//myOvens.get(i).clear();
 			}
 		}
 	}
@@ -54,6 +53,14 @@ public class Baker {
 	
 	public String getName(){
 		return name;
+	}
+	
+	public Baker getSelf(){
+		return this;
+	}
+	
+	public ArrayList<Oven> getOvens(){
+		return myOvens;
 	}
 	
 

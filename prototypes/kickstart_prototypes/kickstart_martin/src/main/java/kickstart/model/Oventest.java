@@ -1,8 +1,11 @@
 package kickstart.model;
 
 
+import java.util.*;
+
 public class Oventest {
 
+	//Testklasse für die einzelnen funktionen
 	public static void main(String[] args) {
 		
 		Pizza p1 = new Pizza("p1");
@@ -13,6 +16,8 @@ public class Oventest {
 		Pizzaqueue.getInstance().add(p2);
 		Pizzaqueue.getInstance().add(p3);
 		
+		ListIterator<Pizza> it = Pizzaqueue.getInstance().listIterator();
+		
 		Baker b1 = new Baker("Manfred");
 		
 		Oven o1 = new Oven(1);
@@ -22,8 +27,13 @@ public class Oventest {
 		b1.addOven(o2);
 		
 		
-		b1.getNextPizza();
-		b1.putPizzaIntoOven(o1);
+		//b1.getNextPizza();
+		//b1.putPizzaIntoOven(o1);
+		
+		while(it.hasNext()){
+			System.out.println(1);
+			System.out.println(it.next().getName());
+		}
 		
 		
 	}

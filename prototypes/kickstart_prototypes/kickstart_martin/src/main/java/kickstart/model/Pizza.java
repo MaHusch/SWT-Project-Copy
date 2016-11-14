@@ -11,6 +11,9 @@ public class Pizza {
 		this.name=name;
 	}
 	
+	public String getName(){
+		return name;
+	}
 	public void setStatus(boolean status){
 		
 		isFinished = status;

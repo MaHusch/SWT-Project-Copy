@@ -4,6 +4,8 @@ package kickstart.model;
 import java.util.*;
 
 public class MyTimerTask extends TimerTask {
+	
+	//simuliert den Backvorgang
 
 	private Timer myTimer;
 	private Pizza myPizza;
@@ -16,7 +18,7 @@ public class MyTimerTask extends TimerTask {
 	
 	@Override
 	public void run() {
-		System.out.println("baking....");
+		//System.out.println("baking....");
 		try {
 			Thread.sleep(3000);
 		} catch (InterruptedException e) {
@@ -25,15 +27,10 @@ public class MyTimerTask extends TimerTask {
 		
 		myPizza.setStatus(true);
 		
-		returnPizza(myPizza);
 		myTimer.cancel();
 		
 	}
 	
-	private Pizza returnPizza(Pizza pizza){
-		return pizza;
-	}
-
 	
 	
 }

@@ -9,26 +9,27 @@
 		<h1>Welcome Baker!</h1>
 		
 		<form>
-			<h2> Bakers name: </h2>
+			<h2  th:text="${'Bakers name: ' + baker.getName()}"> Bakers name: </h2>
 		</form>
 		
 		
 		<table border="1">
-			<tr>
-				<th></th>
-				<th>Oven ID: </th>
-				<th>Oven ID: </th>
+			<tr th:each=" oven : ${baker.getOvens()}">
+
+				<td th:text="${'Oven ID: ' + oven.getId()}">Oven ID: </td>
+				<td th:text="${'Oven content: ' + oven.getPizzaName()}">Content: </td>
+				<td>Time left: xx:yy </td>
 			</tr>
-			<tr>
-				<td>Content: </td>
-				<td> xy </td>
-				<td> yx </td>
+		</table>
+		
+		<h2>Pizzaqueue</h2>
+		<table>
+		<tbody th:remove="all-but-first">
+			<tr th:each="pizza : ${queue}">
+				<td th:text = "${pizza.getName()}">Pizzas name </td>
 			</tr>
-			<tr>
-				<td>Time left: </td>
-				<td> ab </td>
-				<td> ba </td>
-			</tr>
+		
+		</tbody>
 		</table>
 		
 		

@@ -37,7 +37,7 @@ public class Oven {
 	}
 	
 	public boolean notifyObservers(){
-		System.out.println("informing bakers");
+		//System.out.println("informing bakers");
 		for(Baker baker : Observers){
 			baker.update(this, isEmpty());
 		}
@@ -62,18 +62,15 @@ public class Oven {
 		myTimer.schedule(new MyTimerTask(myTimer, pizza), 0);
 		
 		/*
-		Der Timer an dieser Stelle ist eigentlich noch unnötig, da in diesem Prototyp
-		nur ein Thread existiert, daher wird die Funktion hier zwar implementiert, 
-		aber durch den Thread.sleep(6000) simuliert.
 		
-		*/
 		System.out.println(currentPizza.toString());
 		try {
 			Thread.sleep(6000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		System.out.println(currentPizza.toString());
+		*/
+		//System.out.println(currentPizza.toString());
 		notifyObservers();
 		return true;
 		 
@@ -96,6 +93,16 @@ public class Oven {
 		catch (Exception e){
 			return null;
 		}
+	}
+	
+	public String getPizzaName(){
+		if(!this.isEmpty()){
+			return currentPizza.getName();
+		}
+		else{ 
+			return null;
+		}
+		
 	}
 	
 	

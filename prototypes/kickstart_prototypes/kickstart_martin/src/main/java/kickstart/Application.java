@@ -27,7 +27,7 @@ import kickstart.model.Baker;
 public class Application {
 
 	public static void main(String[] args) {
-		Baker b1 = new Baker("Fred");
+		
 		SpringApplication.run(Application.class, args);
 	}
 
