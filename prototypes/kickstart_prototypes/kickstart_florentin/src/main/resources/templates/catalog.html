@@ -1,0 +1,27 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}" />
+		<title>Items</title>
+	</head>
+	<body>
+		<h1>Itemcatalog</h1>
+		
+		<table>
+			<tr>
+				<th> Name </th>
+				<th> Price </th>
+				<th> Art </th>
+			</tr>
+			
+			<tr th:each="item : ${items} ">
+							<td th:text="${item.getName()}">Last Action Hero</td>
+							<td th:text="${item.getPrice()}">10</td>
+							<td th:text="${item.getClass().toString()}">10 Euro</td>
+						</tr>
+						
+			
+		</table>
+	</body>
+</html>
