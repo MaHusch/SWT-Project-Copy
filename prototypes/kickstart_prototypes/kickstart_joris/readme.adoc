@@ -15,3 +15,11 @@ It contains the following features:
 == How to package the application?
 
 * Run `mvn clean package`. The packaged application (a JAR in `target/`) can be run with `java -jar $jarName`.
+
+== Functions of Prototype:
+
+* create and pay mock order -> shown in finances
+* create mock finance entry
+* monthly payment of salaries (mocked as 300€ payment)
+** forwarding by # of days is supported
+* display AccountancyEntries as table

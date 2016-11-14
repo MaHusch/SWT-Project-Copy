@@ -7,5 +7,19 @@
 	</head>
 	<body>
 		<h1>Orders</h1>
-	</body>
+		
+				<li><a href="orders.html">Bestellungen</a></li>
+				<li><a href="finances.html">Finanzen</a></li>
+
+
+	<div class="salespoint">
+		<form method="post" action="/createOrder">
+			<fieldset>
+				<legend>Neue Bestellung eintragen</legend>
+				<label for="value">Wert</label> <input id="value" type="number"
+					name="value" /> <br /> <input type="submit" value="Senden" />
+			</fieldset>
+		</form>
+	</div>
+</body>
 </html>

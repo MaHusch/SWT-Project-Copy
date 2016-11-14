@@ -17,3 +17,15 @@ h1 {
 	line-height: 3.2em;
 	text-align:center;
 }
+
+table {
+    width:100%;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+    text-align: left;
+}
