@@ -23,3 +23,4 @@ It contains the following features:
 * monthly payment of salaries (mocked as 300€ payment)
 ** forwarding by # of days is supported
 * display AccountancyEntries as table
+* display total balance
