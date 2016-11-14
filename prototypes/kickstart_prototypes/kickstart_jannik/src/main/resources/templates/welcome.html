@@ -9,8 +9,15 @@
 		<h1>Welcome!</h1>
 
 		
-		<table>
+		<table border="1">
+		
+					<tr>
+						<td>TelephoneNumber</td>
+						<td>TanNumber</td>
+						<td>Status</td>
+					</tr>	
 				<tbody th:remove="all-but-first">
+
 					<tr th:each=" entry : ${welcome}">
 						<td th:text="${entry.getValue()}">TelephoneNumber</td>
 						<td th:text="${entry.getKey().getTanNumber()}">TanNumber</td>

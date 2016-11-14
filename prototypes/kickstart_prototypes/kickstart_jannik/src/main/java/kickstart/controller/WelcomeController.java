@@ -16,7 +16,6 @@
 package kickstart.controller;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,28 +29,19 @@ public class WelcomeController {
 	@RequestMapping("/")
 	public String index(Model model) {
 		
-		ArrayList<String> test = new ArrayList();
+		ArrayList<String> testlist = new ArrayList<String>();
 		
-		test.add("123456");
-		test.add("567890");
-		test.add("454667");
-		test.add("349578");
+		testlist.add("123456"); 
+		testlist.add("567890");
+		testlist.add("444555");
+		testlist.add("222333");
 		
-		TanManagment tanMan = new TanManagment(test);
+		TanManagment tanMan = new TanManagment(testlist);
 		
-		Tan testtan = tanMan.getTan("123456");
+		tanMan.generateNewTan("777888");
 		
-		String telenum = tanMan.getTelephoneNumber(testtan);
-		//System.out.println(telenum);
+		tanMan.generateNewTan("123456");
 		
-		//System.out.println(testtan.getStatus());
-		
-		tanMan.invalidateTan(testtan);
-		
-		//System.out.println(testtan.getStatus());
-		
-		telenum = tanMan.getTelephoneNumber(testtan);
-		//System.out.println(telenum);
 		
 		model.addAttribute("welcome", tanMan.getAllTans());
 		

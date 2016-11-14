@@ -76,11 +76,6 @@ public class TanManagment {
 	public Tan generateNewTan(String telephoneNumber)
 	{
 		
-		if(tanHashMap.containsValue(telephoneNumber))
-		{
-			return this.getTan(telephoneNumber);
-		}
-		
 		Set<Tan> existingTans = tanHashMap.keySet();
 		
 		Iterator<Tan> existingTansIterator = existingTans.iterator();
@@ -159,7 +154,7 @@ public class TanManagment {
 		
 		Iterator<Map.Entry<Tan, String>> tanHashIterator = tanHashMap.entrySet().iterator();
 		
-		ArrayList<Map.Entry<Tan, String>> allEntrys = new ArrayList();
+		ArrayList<Map.Entry<Tan, String>> allEntrys = new ArrayList<Map.Entry<Tan, String>>();
 		
 		while(tanHashIterator.hasNext())
 		{
