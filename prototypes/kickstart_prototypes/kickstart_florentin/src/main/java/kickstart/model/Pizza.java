@@ -1,4 +1,4 @@
-package model;
+package kickstart.model;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -16,11 +16,14 @@ public class Pizza extends Item {
 	private static final long serialVersionUID = 4746830994439574139L;
 	@OneToMany private List<Ingredient> ingredients; 
 	
-	public Pizza(String name, javax.money.MonetaryAmount price, Ingredient Startitem)
+	@SuppressWarnings("unused")
+	private Pizza(){}
+	
+	public Pizza(String name, javax.money.MonetaryAmount price, Ingredient startitem)
 	{
-		super(name,price);
+		super(name,price.add(startitem.getPrice()));
 		this.ingredients = new LinkedList<Ingredient>();
-		ingredients.add(Startitem);
+		ingredients.add(startitem);
 	}
 	
 	public boolean addIngredient(Ingredient i)
@@ -48,5 +51,19 @@ public class Pizza extends Item {
 	{
 		return ingredients;
 	}
-
+	
+	public String toString()  //TODO: nicerer String
+	{
+		String result = "Pizza";
+		
+		if(ingredients.size() != 0) result += " besteht aus "; 
+		for(Ingredient i : ingredients)
+		{
+			
+			result += ", " + i.getName();
+		}
+		
+		
+		return result + ".";
+	}
 }

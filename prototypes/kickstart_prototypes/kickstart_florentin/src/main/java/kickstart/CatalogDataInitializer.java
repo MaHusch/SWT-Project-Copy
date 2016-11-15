@@ -5,9 +5,10 @@ import org.salespointframework.core.DataInitializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
-import static org.salespointframework.core.Currencies.*;
 
-import model.*;
+import kickstart.model.*;
+
+import static org.salespointframework.core.Currencies.*;
 
 @Component
 public class CatalogDataInitializer implements DataInitializer {
@@ -39,6 +40,7 @@ public class CatalogDataInitializer implements DataInitializer {
 		Drink beer = new Drink("Beer",Money.of(1.60, EURO));
 		FreeDrink freebeer = new FreeDrink("Beer");
 		Salad salat = new Salad("Salad",Money.of(2.0, EURO));
+		pizza1.addIngredient(mushroom);
 		
 		itemCatalog.save(cheese);
 		itemCatalog.save(mushroom);
