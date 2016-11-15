@@ -7,12 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import static org.salespointframework.core.Currencies.*;
 
-import model.Drink;
-import model.FreeDrink;
-import model.Ingredient;
-import model.ItemCatalog;
-import model.Pizza;
-import model.Salad;
+import model.*;
 
 @Component
 public class CatalogDataInitializer implements DataInitializer {
@@ -22,7 +17,7 @@ public class CatalogDataInitializer implements DataInitializer {
 	@Autowired
 	public CatalogDataInitializer(ItemCatalog itemCatalog)
 	{
-		Assert.notNull(itemCatalog, "VideoCatalog must not be null!");
+		Assert.notNull(itemCatalog, "ItemCatalog must not be null!");
 		this.itemCatalog = itemCatalog;
 	}
 
