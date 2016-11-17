@@ -1,0 +1,12 @@
+= Große Prototypen Gruppe 16
+
+== Martin
+
+Ich habe die Interaktion zwischen Oven, Bäcker und Pizzaqueue implementiert. Der Bäcker holt sich aus der Pizzaqueue die nächste Pizza
+und "schiebt" sie in den Oven die in seiner Ovenliste sind. Der Oven benachrichtigt alle Bäcker, die ihn beobachten, wenn die Pizza 
+fertig ist (Observer-Pattern).
+
+== Florentin
+
+Ich habe den Itemcatalog sowie die vers. Items implementiert. Dies beinhaltet unter anderem das Composite-Pattern mit der Pizza
+und ihren Zutaten. Dem Itemcatalog können vers. Items hinzugefügt sowie entfernt werden, wobei der Preis der Pizza die Preise ihrer Zuataten beinhaltet.
