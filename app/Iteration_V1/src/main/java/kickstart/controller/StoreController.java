@@ -22,4 +22,10 @@ public class StoreController {
 	//@Autowired 
 	public StoreController() {
 	}	
+	
+	
+	@RequestMapping("/")
+	public String index() {
+		return "index";
+	}
 }

@@ -15,9 +15,9 @@ public class AdminController {
 	
 	public AdminController(){}
 	
-	@RequestMapping("/registeremployee")
+	@RequestMapping("/register_staffmember")
 	public String registrationIndex(Model model){
-		return "registeremployee";
+		return "register_staffmember";
 	}
 	
 	

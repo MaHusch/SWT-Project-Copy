@@ -3,9 +3,20 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 		<link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}" />
-		<title>Welcome</title>
+		<title>Papa Pizza</title>
 	</head>
 	<body>
-		<h1>Welcome!</h1>
+		<h1>Papa Pizza</h1>
 	</body>
+	
+	
+
+	<div  sec:authorize="hasRole('ROLE_ADMIN')">
+	
+		<a href="register_staffmember.html">Neuen Mitarbeiter registrieren</a>
+		
+		<form th:action="logout" method="post">
+		<input type="submit" value="registrieren">
+	
+	</div>	
 </html>
