@@ -3,19 +3,33 @@ package kickstart.model.actor;
 
 import java.util.*;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+import org.salespointframework.useraccount.Role;
+
 import kickstart.model.catalog_item.Pizza;
 import kickstart.model.store.Oven;
 import kickstart.model.store.Pizzaqueue;
 
-public class Baker {
+@Entity
+public class Baker extends StaffMember {
 	
 	private ArrayList<Oven> myOvens = new ArrayList<Oven>();
 	private Pizzaqueue Queue = Pizzaqueue.getInstance();
-	private String name;
 	private Pizza nextPizza;
 	
-	public Baker(String name){
-		this.name = name;
+	
+@Id @GeneratedValue private long employeeID;
+	
+	public Baker(String surname, String forename,String telephoneNumber, String username, String password, Role role){
+		super(surname,forename,telephoneNumber);
+		this.updateUserAccount(username, password, role);
+	} 
+	
+	public Baker(String surname, String forename,String telephoneNumber){
+		super(surname,forename,telephoneNumber);
 	}
 	
 	public boolean addOven(Oven oven){
@@ -54,10 +68,6 @@ public class Baker {
 		}
 	}
 	
-	
-	public String getName(){
-		return name;
-	}
 	
 	public Baker getSelf(){
 		return this;

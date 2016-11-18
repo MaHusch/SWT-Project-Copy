@@ -13,8 +13,11 @@
 			</form>
 		
 		<div sec:authorize="hasRole('ROLE_ADMIN')" >
+		
+			<h1>Admin Dashboard</h1>
 	
 			<a href="register_staffmember.html">Neuen Mitarbeiter registrieren</a>
+			<a href="finances.html">Finances</a>
 			
 			<form th:action="logout" method="post">
 				<input type="submit" value="logout" />
@@ -26,6 +29,9 @@
 		
 		<div sec:authorize="hasRole('ROLE_SELLER')" >
 			
+			<h1>Seller Dashboard</h1>
+			
+			<a href="catalog.html">Catalog</a>
 			
 			<form th:action="logout" method="post">
 				<input type="submit" value="logout" />
@@ -35,13 +41,24 @@
 		
 		
 		<div sec:authorize="hasRole('ROLE_DELIVERY')" >
-	
-			<a href="register_staffmember.html">Neuen Mitarbeiter registrieren</a>
+		
+			<h1>Delivery Dashboard</h1>
 			
 			<form th:action="logout" method="post">
 				<input type="submit" value="logout" />
 			</form>
-		</div>			
+		</div>		
+		
+		<div sec:authorize="hasRole('ROLE_BAKER')" >
+		
+			<h1>Baker Dashboard</h1>
+			
+			<a href="ovens.html">Ovens</a>
+			
+			<form th:action="logout" method="post">
+				<input type="submit" value="logout" />
+			</form>
+		</div>	
 		
 	</body>
 	

@@ -13,6 +13,8 @@ public class Store {
 	private static Store store = null;  
 	
 	public static UserAccountManager employeeAccountManager;
+	public static ItemCatalog itemCatalog;
+	
 	public static Admin admin;
 	
 	
@@ -20,11 +22,15 @@ public class Store {
 	}
 	
 	@Autowired
-	public Store(UserAccountManager employeeAccountManager){
-		this.employeeAccountManager = employeeAccountManager;
+	public Store(UserAccountManager employeeAccountManager, ItemCatalog itemCatalog){
 		
+		this.employeeAccountManager = employeeAccountManager;
+		this.itemCatalog = itemCatalog;
+				
 		this.admin = new Admin("Mustermann","Max","123456789");
 		this.admin.updateUserAccount("admin", "123", Role.of("ROLE_ADMIN"));
+		
+		
 		
 		store = this;
 	}

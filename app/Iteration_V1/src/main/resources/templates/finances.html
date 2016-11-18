@@ -1,10 +1,74 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html 
+
+SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/style.css}" />
+<title>Finances</title>
 </head>
 <body>
+	<h1>Finances</h1>
+	<div class="content">
+		<table>
+			<caption>Finanzen</caption>
 
+			<!-- <li><a href="orders.html">Bestellungen</a></li>  -->
+			<li><a href="finances.html">Finanzen</a></li>
+			<li><a href="index.html">Zurück</a></li>
+
+			<thead>
+				<tr>
+					<th>Datum</th>
+					<th>Wert</th>
+					<th>Beschreibung</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="AccountancyEntry : ${entries} ">
+					<td
+						th:text="${#temporals.format(AccountancyEntry.date.get(), 'dd.MM.yyyy HH:mm')}"></td>
+					<td th:text="${AccountancyEntry.getValue()}"></td>
+					<td th:text="${AccountancyEntry.getDescription()}"></td>
+				</tr>
+				<tr>
+					<th>Bilanz:</th>
+					<td th:text="${totalGain}">EUR 9001</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="salespoint">
+		<form method="post" action="/createAccountancyEntry">
+			<fieldset>
+				<legend>Neuen Finanzeintrag hinzufügen</legend>
+				<label for="value">Wert</label> <input id="value" type="number"
+					name="value" /> <br />
+				<textarea name="description" cols="30" rows="2"></textarea>
+				<br /> <input type="submit" value="Senden" />
+			</fieldset>
+		</form>
+		
+		<form method="post" action="/createOrder">
+			<fieldset>
+				<legend>Neue Bestellung eintragen</legend>
+				<label for="value">Wert</label> <input id="value" type="number"
+					name="value" /> <br /> <input type="submit" value="Senden" />
+			</fieldset>
+		</form>
+
+		<form method="post" action="/forward">
+			<label for="days">Anzahl an Tagen</label> <input id="days"
+				type="number" name="days" /> <input type="submit" value="Forward" />
+		</form>
+
+
+		
+
+	</div>
 </body>
+
+
 </html>

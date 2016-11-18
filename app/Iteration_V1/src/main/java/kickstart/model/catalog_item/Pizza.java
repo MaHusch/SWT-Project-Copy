@@ -16,6 +16,8 @@ public class Pizza extends Item {
 	private static final long serialVersionUID = 4746830994439574139L;
 	@OneToMany private List<Ingredient> ingredients; 
 	
+	private boolean isFinished = false;
+	
 	@SuppressWarnings("unused")
 	private Pizza(){}
 	
@@ -24,6 +26,12 @@ public class Pizza extends Item {
 		super(name,price.add(startitem.getPrice()));
 		this.ingredients = new LinkedList<Ingredient>();
 		ingredients.add(startitem);
+	}
+	
+	public void setStatus(boolean status){
+		
+		isFinished = status;
+		
 	}
 	
 	public boolean addIngredient(Ingredient i)

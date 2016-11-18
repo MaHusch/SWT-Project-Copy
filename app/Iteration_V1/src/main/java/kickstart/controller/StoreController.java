@@ -24,8 +24,10 @@ public class StoreController {
 	}	
 	
 	
-	@RequestMapping("/")
+	@RequestMapping({"/", "/index"})
 	public String index() {
 		return "index";
 	}
+	
+
 }

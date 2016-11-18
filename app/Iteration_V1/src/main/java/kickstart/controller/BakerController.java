@@ -19,10 +19,10 @@ public class BakerController {
 		
 	}
 	
-	@RequestMapping("/baker")
-	public String foo(Model model){
+	@RequestMapping("/ovens")
+	public String ovenView(Model model){
 
-		return "baker";
+		return "ovens";
 	}
 	
 
