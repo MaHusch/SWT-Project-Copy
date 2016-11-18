@@ -14,7 +14,10 @@ import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import kickstart.model.actor.Admin;
+import kickstart.model.actor.Seller;
 import kickstart.model.store.SalaryThread;
+import kickstart.model.store.Store;
 
 @Component
 public class ApplicationDataInitializer implements DataInitializer {
@@ -33,7 +36,8 @@ public class ApplicationDataInitializer implements DataInitializer {
 
 	@Override
 	public void initialize() {
-
+		
+		
 		AccountancyEntry ace1 = new AccountancyEntry(Money.of(50, "EUR"), "Einkauf");
 		AccountancyEntry ace2 = new AccountancyEntry(Money.of(-200, "EUR"), "Diebstahl");
 		AccountancyEntry ace3 = new AccountancyEntry(Money.of(536, "EUR"), "Großbestellung");
@@ -41,8 +45,10 @@ public class ApplicationDataInitializer implements DataInitializer {
 		accountancy.add(ace2);
 		accountancy.add(ace3);
 
-		UserAccount ua = userAccountManager.create("Hans", "123", Role.of("ROLE_SELLER"));
-
+		UserAccount ua = Store.employeeAccountManager.create("Hans", "123", Role.of("ROLE_SELLER"));
+		
+		Seller Hans_Bergstein_Seller = new Seller("Bergstein","Hans","492161268","hans123", "qwe", Role.of("ROLE_SELLER"));
+		
 		(new Thread(new SalaryThread(accountancy, businessTime))).start();
 
 		// TODO Auto-generated method stub

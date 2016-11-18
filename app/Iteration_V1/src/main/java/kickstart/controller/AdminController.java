@@ -30,17 +30,28 @@ public class AdminController {
 								 @RequestParam  ("role") 	  String  role            ){
 		
 		
-		System.out.println("Role" + role);
 		
 		if ( surname == "" || forename == ""  || 
 			 telephonenumber == ""|| username == ""|| password == "" || role == "" ) {			
 			return "registeremployee";
 		}
+		
+		switch (role) {
+			case "Verkäufer":
+				role = "SELLER";
+				break;
+			case "Bäcker":
+				role = "BAKER";
+				break;
+			case "Lieferant":
+				role = "DELIVERY";
+				break;
+		}	
 
 		StaffMember staffMember = new StaffMember(surname,forename,telephonenumber);
 		staffMember.updateUserAccount(username, password, Role.of("ROLE_" + role));
 		
-		return "welcome";
+		return "index";
 	}
 	
 }

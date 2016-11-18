@@ -7,16 +7,45 @@
 	</head>
 	<body>
 		<h1>Papa Pizza</h1>
+		
+		<form th:action="login" method="post">
+				<input type="submit" value="login" />
+			</form>
+		
+		<div sec:authorize="hasRole('ROLE_ADMIN')" >
+	
+			<a href="register_staffmember.html">Neuen Mitarbeiter registrieren</a>
+			
+			<form th:action="logout" method="post">
+				<input type="submit" value="logout" />
+			</form>
+		</div>
+		
+		
+		
+		
+		<div sec:authorize="hasRole('ROLE_SELLER')" >
+			
+			
+			<form th:action="logout" method="post">
+				<input type="submit" value="logout" />
+			</form>
+		</div>
+		
+		
+		
+		<div sec:authorize="hasRole('ROLE_DELIVERY')" >
+	
+			<a href="register_staffmember.html">Neuen Mitarbeiter registrieren</a>
+			
+			<form th:action="logout" method="post">
+				<input type="submit" value="logout" />
+			</form>
+		</div>			
+		
 	</body>
 	
 	
 
-	<div  sec:authorize="hasRole('ROLE_ADMIN')">
-	
-		<a href="register_staffmember.html">Neuen Mitarbeiter registrieren</a>
-		
-		<form th:action="logout" method="post">
-		<input type="submit" value="registrieren">
-	
-	</div>	
+
 </html>
