@@ -24,6 +24,13 @@ public class StaffMember extends Person{
 		
 		super(surname, forename, telephoneNumber);
 		
+		Store.staffMemberList.add(this);
+		
+	}
+	
+	public String getUsername(){
+		
+		return this.username;
 	}
 	
 	

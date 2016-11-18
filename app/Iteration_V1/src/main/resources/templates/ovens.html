@@ -1,10 +1,37 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html 
+
+SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/style.css}" />
+<title>Finances</title>
 </head>
 <body>
+
+		<li><a href="index.html">Zurück</a></li>
+
+		<table border="1">
+			<tr th:each=" oven : ${baker}">
+
+				<td th:text="${'Oven ID: ' + oven.getId()}">Oven ID: </td>
+				<td th:text="${'Oven content: ' + oven.getPizzaName()}">Content: </td>
+				<td>Time left: xx:yy </td>
+			</tr>
+		</table>
+		
+		
+		<h2>Pizzaqueue</h2>
+		<table>
+		<tbody th:remove="all-but-first">
+			<tr th:each="pizza : ${queue}">
+				<td th:text = "${pizza.getName()}">Pizzas name </td>
+			</tr>
+		
+		</tbody>
+		</table>
 
 </body>
 </html>

@@ -3,20 +3,26 @@ package kickstart.model.store;
 
 import java.util.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import kickstart.model.actor.Baker;
 import kickstart.model.catalog_item.Pizza;
 
 public class Oven {
 
-	private int id;
+	private static int ID = 1;
+	private int ovenID;
 	private ArrayList<Baker> Observers = new ArrayList<Baker>();
 	private Pizza currentPizza = null;
 	private Timer myTimer;
 	private boolean empty = true;
 	
 	//Konstruktor
-	public Oven(int id){
-		this.id = id;
+	public Oven(Store store){
+		this.ovenID = this.ID++;	
+		ArrayList<Oven> ovenList = store.getOvens();
+		
+		ovenList.add(this);
 	}
 	
 	
@@ -27,16 +33,11 @@ public class Oven {
 	
 	// Überprüfen ob Ofen leer ist
 	public boolean isEmpty(){
-		if(empty){
-			return true;
-		}
-		else{
-			return false;
-		}
+		return empty;
 	}
 	
 	public int getId(){
-		return id;
+		return this.ovenID;
 	}
 	
 	public boolean notifyObservers(){

@@ -1,6 +1,7 @@
 package kickstart;
 
 import java.time.Duration;
+import java.util.ArrayList;
 
 import org.javamoney.moneta.Money;
 import org.salespointframework.accountancy.Accountancy;
@@ -17,13 +18,17 @@ import org.springframework.stereotype.Component;
 import static org.salespointframework.core.Currencies.*;
 
 import kickstart.model.actor.Admin;
+import kickstart.model.actor.Baker;
 import kickstart.model.actor.Seller;
 import kickstart.model.catalog_item.Drink;
 import kickstart.model.catalog_item.FreeDrink;
 import kickstart.model.catalog_item.Ingredient;
 import kickstart.model.catalog_item.Pizza;
 import kickstart.model.catalog_item.Salad;
+import kickstart.model.store.Oven;
+import kickstart.model.store.Pizzaqueue;
 import kickstart.model.store.SalaryThread;
+import kickstart.model.store.StaffMemberRepository;
 import kickstart.model.store.Store;
 
 @Component
@@ -44,7 +49,19 @@ public class ApplicationDataInitializer implements DataInitializer {
 	@Override
 	public void initialize() {
 		
-		Seller Hans_Bergstein_Seller = new Seller("Bergstein","Hans","492161268","hans123", "qwe", Role.of("ROLE_SELLER"));
+		
+		Seller Seller_Hans_Bergstein = new Seller("Bergstein","Hans","492161268","hans123", "qwe", Role.of("ROLE_SELLER"));
+		
+		/*************************************BAKER************************************/
+		Baker Baker_Eduardo_Pienso = new Baker("Pienso","Eduardo","2341241212","eddy","pass",Role.of("ROLE_BAKER"));
+		
+		
+		ArrayList<Oven> ovenList = Store.getInstance().getOvens();
+		for(Oven oven : ovenList){			
+			Baker_Eduardo_Pienso.addOven(oven);
+		}
+		/*****************************************************************************/
+		
 		
 		/*********************************ACCOUNTANY************************************/
 		AccountancyEntry ace1 = new AccountancyEntry(Money.of(50, "EUR"), "Einkauf");
@@ -70,6 +87,10 @@ public class ApplicationDataInitializer implements DataInitializer {
 		FreeDrink freebeer = new FreeDrink("Beer");
 		Salad salat = new Salad("Salad",Money.of(2.0, EURO));
 		pizza1.addIngredient(mushroom);
+		
+		Pizzaqueue pizzaQueue = Store.getInstance().getPizzaQueue();
+		
+		pizzaQueue.add(pizza1);
 		
 		Store.itemCatalog.save(cheese);
 		Store.itemCatalog.save(mushroom);
