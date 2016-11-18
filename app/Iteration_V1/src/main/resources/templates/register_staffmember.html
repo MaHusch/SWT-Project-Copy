@@ -1,10 +1,51 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}" />
+		<title>Welcome</title>
+	</head>
+	
+	<body>
+	
+	<div sec:authorize="hasRole('ROLE_ADMIN')">
+	
+			<h2>Required Fields (*) must not be empty!</h2>
+			
+	        <form th:action="registerEmployee" method="post">
+	            
+	            <label for="surname">Name*</label>:
+	            <input type="text" id="surname" name="surname"/> <br />
+	            
+	            <label for="forename">Vorname*</label>:
+	            <input type="text" id="forename" name="forename"/> <br />
+	            
+	             <label for="telnumber">Tel*</label>:
+	            <input type="text" id="telnumber" name="telnumber"/> <br />
+	            
+	            <label for="username">Benutzername*</label>:
+	            <input type="text" id="username" name="username"/> <br />
+	            
+	            <label for="password">Passwort*</label>:
+	            <input type="password" id="password" name="password" /> <br />
+	            
+	            <label for="role">Rolle*</label>:
+				<select name="role" id = "role" size="1">
+			      <option selected="selected" >Verkäufer</option>
+			      <option>Bäcker</option>
+			      <option>Lieferant</option>
+			    </select><br />
+			 
+			 
+	            <input type="submit" value="Registeren" />
+	            
+	        </form>
+	</div>
+	
+	
+	
+	
+	</body>
 
-</body>
 </html>
