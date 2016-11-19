@@ -17,7 +17,8 @@ public class Item extends Product {
 	
 	private static final long serialVersionUID = -8534543519430874036L;
 
-	@SuppressWarnings("unused")	
+	
+	@SuppressWarnings("deprecation")
 	public Item(){}
 	
 	public Item(String name, javax.money.MonetaryAmount price,ItemType type)
@@ -27,6 +28,8 @@ public class Item extends Product {
 		
 		if (type == ItemType.FREEDRINK) this.setPrice(Money.of(0.0, EURO));
 	}
+	
+	// TODO: construktor for freedrink? (no price needed)
 	
 	public void setType(ItemType type)
 	{
