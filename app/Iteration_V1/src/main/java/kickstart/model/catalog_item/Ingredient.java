@@ -16,11 +16,8 @@ public class Ingredient extends Item {
 	
 	public Ingredient(String name, javax.money.MonetaryAmount price)
 	{
-		super(name,price);
+		super(name,price,ItemType.INGREDIENT);
 	}
 	
-	public String toString()
-	{
-		return "Zutat";
-	}
+	
 }

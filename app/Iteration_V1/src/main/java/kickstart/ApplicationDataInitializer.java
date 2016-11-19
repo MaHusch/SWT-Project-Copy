@@ -20,11 +20,10 @@ import static org.salespointframework.core.Currencies.*;
 import kickstart.model.actor.Admin;
 import kickstart.model.actor.Baker;
 import kickstart.model.actor.Seller;
-import kickstart.model.catalog_item.Drink;
-import kickstart.model.catalog_item.FreeDrink;
 import kickstart.model.catalog_item.Ingredient;
+import kickstart.model.catalog_item.Item;
+import kickstart.model.catalog_item.ItemType;
 import kickstart.model.catalog_item.Pizza;
-import kickstart.model.catalog_item.Salad;
 import kickstart.model.store.Oven;
 import kickstart.model.store.Pizzaqueue;
 import kickstart.model.store.SalaryThread;
@@ -83,9 +82,9 @@ public class ApplicationDataInitializer implements DataInitializer {
 		Ingredient cheese = new Ingredient("Cheese",Money.of(0.50, EURO));
 		Ingredient mushroom = new Ingredient("mushrooms",Money.of(1.00, EURO));
 		Pizza pizza1 = new Pizza("pizza1",Money.of(2.50, EURO),cheese);
-		Drink beer = new Drink("Beer",Money.of(1.60, EURO));
-		FreeDrink freebeer = new FreeDrink("Beer");
-		Salad salat = new Salad("Salad",Money.of(2.0, EURO));
+		Item beer = new Item("Beer",Money.of(1.60, EURO),ItemType.DRINK);
+		Item freebeer = new Item("Beer",Money.of(0.0, EURO),ItemType.FREEDRINK); //extra FreeDrink class?
+		Item salat = new Item("Salad",Money.of(2.0, EURO),ItemType.SALAD);
 		pizza1.addIngredient(mushroom);
 		
 		Pizzaqueue pizzaQueue = Store.getInstance().getPizzaQueue();
@@ -104,5 +103,7 @@ public class ApplicationDataInitializer implements DataInitializer {
 		// TODO Auto-generated method stub
 
 	}
+	
+	
 
 }

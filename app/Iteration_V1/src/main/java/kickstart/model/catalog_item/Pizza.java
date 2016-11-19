@@ -16,16 +16,17 @@ public class Pizza extends Item {
 	private static final long serialVersionUID = 4746830994439574139L;
 	@OneToMany private List<Ingredient> ingredients; 
 	
-	private boolean isFinished = false;
+	private boolean isFinished;
 	
 	@SuppressWarnings("unused")
 	private Pizza(){}
 	
 	public Pizza(String name, javax.money.MonetaryAmount price, Ingredient startitem)
 	{
-		super(name,price.add(startitem.getPrice()));
+		super(name,price.add(startitem.getPrice()),ItemType.PIZZA);
 		this.ingredients = new LinkedList<Ingredient>();
-		ingredients.add(startitem);
+		this.ingredients.add(startitem);
+		this.setStatus(false);
 	}
 	
 	public void setStatus(boolean status){
@@ -34,7 +35,7 @@ public class Pizza extends Item {
 		
 	}
 	
-	public boolean addIngredient(Ingredient i)
+	public boolean addIngredient(Ingredient i) //change name ?
 	{
 		if(ingredients.contains(i)) return false;
 		
@@ -59,8 +60,12 @@ public class Pizza extends Item {
 	{
 		return ingredients;
 	}
+
+	public boolean getStatus() {
+		return isFinished;
+	}
 	
-	public String toString()  //TODO: nicerer String
+	/*public String toString()  //TODO: nicerer String
 	{
 		String result = "Pizza";
 		
@@ -73,5 +78,5 @@ public class Pizza extends Item {
 		
 		
 		return result + ".";
-	}
+	}*/
 }
