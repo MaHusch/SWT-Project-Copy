@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import kickstart.model.store.AccountingMethods;
 
 @Controller
-public class AccountancyController {
+public class AccountingController {
 
 	private final Accountancy accountancy;
 	private final AccountingMethods accountingMethods;
@@ -34,7 +34,7 @@ public class AccountancyController {
 	private final BusinessTime businessTime;
 
 	@Autowired
-	public AccountancyController(Accountancy accountancy, AccountingMethods accountingMethods,
+	public AccountingController(Accountancy accountancy, AccountingMethods accountingMethods,
 			UserAccountManager userAccountManager, BusinessTime businessTime) {
 		this.accountancy = accountancy;
 		this.accountingMethods = accountingMethods;
@@ -57,10 +57,6 @@ public class AccountancyController {
 		return "redirect:finances";
 	}
 
-	@RequestMapping("/orders")
-	public String orders() {
-		return "orders";
-	}
 
 	@RequestMapping(value = "/createOrder", method = RequestMethod.POST)
 	public String payOrder(@RequestParam("value") Integer value, @LoggedIn Optional<UserAccount> userAccount) {
