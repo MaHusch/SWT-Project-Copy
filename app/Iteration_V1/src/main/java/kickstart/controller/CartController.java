@@ -61,19 +61,13 @@ public class CartController {
 
 	@RequestMapping(value = "/checkout", method = RequestMethod.POST)
 	public String buy(@ModelAttribute Cart cart, @LoggedIn Optional<UserAccount> userAccount) {
-
 		if (!userAccount.isPresent()) {
-			return "redirect:orders";
+			return "redirect:login";
 		}
-
 		Order order = new Order(userAccount.get(), Cash.CASH);
-
 		cart.addItemsTo(order);
-
 		orderManager.save(order);
-
 		cart.clear();
-
 		return "redirect:orders";
 
 	}

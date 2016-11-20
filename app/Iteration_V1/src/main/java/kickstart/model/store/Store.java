@@ -43,7 +43,6 @@ public class Store {
 		Oven oven2 = new Oven(this); 
 		Oven oven3 = new Oven(this); 
 		
-		
 		this.store = this;
 	}
 	

@@ -10,8 +10,8 @@
 <body>
 	<h1>Cart</h1>
 	<li><a href="index.html">Zurück</a></li>
-	
-	
+
+
 
 	<table>
 		<thead>
@@ -27,50 +27,49 @@
 				<td th:text="${Item.getPrice()}">arg</td>
 				<td>
 					<form method="post" action="/add">
-						<input type="hidden" name="pid" value="0" th:value="${Item.id}" /> 
-						<input type="hidden" name="number" value="1"  /> 
-						<input type="submit" value="Add" />
+						<input type="hidden" name="pid" value="0" th:value="${Item.id}" />
+						<input type="hidden" name="number" value="1" /> <input
+							type="submit" value="Add" />
 					</form>
 
 				</td>
 			</tr>
-			
+
 		</tbody>
 	</table>
-	
+
 	<div class="content">
-			<div th:unless="${cart.empty}">
-				<table>
-					<caption>Warenkorb</caption>
-					<thead>
-						<tr>
-							<th>Name</th>
-							<th>Anzahl</th>
-							<th>Preis</th>
-						</tr>
-					</thead>
-					<tbody th:remove="all-but-first">
 
-						<tr th:each="item : ${cart} ">
-							<td th:text="${item.productName}">Last Action Hero</td>
-							<td th:text="${item.quantity}">10</td>
-							<td th:text="${item.price}">10 Euro</td>
-						</tr>
-
-					</tbody>
-				</table>
-				<p th:text="'Gesamt: ' + ${cart.price}">Summe: 100 Euro</p>
-				
-					<form method="post" action="/checkout">
-						<input type="submit" value="Kaufen" />
-					</form>
-				
-			</div>
-
-			<p th:if="${cart.empty}" th:text="Leer">Leer</p>
-		</div>
-		
 		<table>
+			<caption>Warenkorb</caption>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Anzahl</th>
+					<th>Preis</th>
+				</tr>
+			</thead>
+			<tbody th:remove="all-but-first">
+
+				<tr th:each="item : ${cart} ">
+					<td th:text="${item.productName}">Last Action Hero</td>
+					<td th:text="${item.quantity}">10</td>
+					<td th:text="${item.price}">10 Euro</td>
+				</tr>
+
+			</tbody>
+		</table>
+		<p th:text="'Gesamt: ' + ${cart.price}">Summe: 100 Euro</p>
+
+		<form method="post" action="/checkout">
+			<input type="submit" value="Kaufen" />
+		</form>
+
+
+
+	</div>
+
+	<table>
 		<thead>
 			<tr>
 				<th>ID</th>
@@ -83,7 +82,7 @@
 				<td th:text="${order.getId() }">arg</td>
 				<td th:text="${order.getTotalPrice() }">arg</td>
 			</tr>
-			
+
 		</tbody>
 	</table>
 </body>

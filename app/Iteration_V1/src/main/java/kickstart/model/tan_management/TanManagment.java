@@ -7,7 +7,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import org.springframework.stereotype.Component;
 
+@Component
 public class TanManagment {
 	
 	public static final String EMPTY_STRING = "";
@@ -15,16 +17,18 @@ public class TanManagment {
 	
 	private HashMap<Tan,String> tanHashMap = new HashMap<>();
 	
-	public TanManagment(ArrayList<String> telephoneNumberList)
+	public TanManagment()//ArrayList<String> telephoneNumberList)
 	{
-		Iterator<String> telephoneNumberListIterator = telephoneNumberList.iterator();
+		/*	
+	 	Iterator<String> telephoneNumberListIterator = telephoneNumberList.iterator();
+
 		
 		while(telephoneNumberListIterator.hasNext())
 		{
 			String newTelephoneNumber = telephoneNumberListIterator.next();
 			this.generateNewTan(newTelephoneNumber);
 		}
-		
+		*/
 	}
 	
 	public Tan getTan(String telephoneNumber)

@@ -27,15 +27,11 @@ public class SalaryThread implements Runnable {
 		long next = System.currentTimeMillis();
 		while (true) {
 			LocalDateTime newDate = businessTime.getTime();
-			if (newDate.isAfter(currentDate)
-					&& (newDate.getMonth() != currentDate.getMonth() | newDate.getYear() != currentDate.getYear())) {
-				int dateDiff = (newDate.getYear() - currentDate.getYear()) * 12 + newDate.getMonthValue()
-						- currentDate.getMonthValue();
+			if (newDate.isAfter(currentDate) && (newDate.getMonth() != currentDate.getMonth() | newDate.getYear() != currentDate.getYear())) {
+				int dateDiff = (newDate.getYear() - currentDate.getYear()) * 12 + newDate.getMonthValue() - currentDate.getMonthValue();
 
 				for (int i = 0; i < dateDiff; i++) {
-					accountancy.add(new AccountancyEntry(Money.of(-300, "EUR"),
-							"Gehalt für " + Month.of((currentDate.getMonthValue() + i - 1) % 12 + 1)
-									.getDisplayName(TextStyle.FULL, Locale.GERMAN)));
+					accountancy.add(new AccountancyEntry(Money.of(-300, "EUR"), "Gehalt für " + Month.of((currentDate.getMonthValue() + i - 1) % 12 + 1).getDisplayName(TextStyle.FULL, Locale.GERMAN)));
 				}
 				currentDate = newDate;
 			}
