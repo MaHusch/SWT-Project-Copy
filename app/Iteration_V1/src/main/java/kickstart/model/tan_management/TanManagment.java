@@ -17,7 +17,7 @@ public class TanManagment {
 	
 	private HashMap<Tan,String> tanHashMap = new HashMap<>();
 	
-	private HashMap<Tan,String> newlyGeneratedTans = new HashMap<>();
+	private HashMap<Tan,String> notAsignedTans = new HashMap<>();
 	
 	public TanManagment()//ArrayList<String> telephoneNumberList)
 	{
@@ -86,6 +86,10 @@ public class TanManagment {
 		
 		Iterator<Tan> existingTansIterator = existingTans.iterator();
 		
+		Set<Tan> existingNotAsignedTans = notAsignedTans.keySet();
+		
+		Iterator<Tan> existingNotAsignedTansIterator = existingNotAsignedTans.iterator();
+		
 		boolean foundNewTan = false;
 		
 		while(!foundNewTan)
@@ -112,12 +116,19 @@ public class TanManagment {
 				
 			}
 			
+			while(existingNotAsignedTansIterator.hasNext() && !tanAlreadyExists)
+			{
+					
+				if(newTanString.equals(((Tan) existingNotAsignedTansIterator.next()).getTanNumber())) tanAlreadyExists = true;
+				
+			}
+			
 			if(!tanAlreadyExists)
 			{
 				
 				Tan newlyCreatedTan = new Tan(newTanString, TanStatus.VALID);
 				
-				newlyGeneratedTans.put(newlyCreatedTan, telephoneNumber);
+				notAsignedTans.put(newlyCreatedTan, telephoneNumber);
 						
 				return newlyCreatedTan;
 			}
@@ -158,9 +169,9 @@ public class TanManagment {
 		return allEntrys;
 	}
 	
-	public void insertTanIntoHashMap(Tan tan)
+	public void asignTan(Tan tan)
 	{
-		String telephoneNumber = this.newlyGeneratedTans.get(tan);
+		String telephoneNumber = this.notAsignedTans.get(tan);
 		
 		Tan oldTan = this.getTan(telephoneNumber);
 		
@@ -178,6 +189,15 @@ public class TanManagment {
 		tanHashMap.put(tan, telephoneNumber);
 		
 	}
+	
+	public boolean deleteNotAsignedTan(Tan tan)
+	{
+		String telephoneNumber = this.notAsignedTans.get(tan);
+		
+		return notAsignedTans.remove(tan, telephoneNumber);
+		
+	}
+
 
 
 }
