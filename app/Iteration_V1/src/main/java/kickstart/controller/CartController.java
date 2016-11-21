@@ -34,8 +34,8 @@ public class CartController {
 	private final ItemCatalog itemCatalog;
 
 	@Autowired
-	public CartController(OrderManager<Order> orderManger, ItemCatalog itemCatalog) {
-		this.orderManager = orderManger;
+	public CartController(OrderManager<Order> orderManager, ItemCatalog itemCatalog) {
+		this.orderManager = orderManager;
 		this.itemCatalog = itemCatalog;
 	}
 
@@ -64,9 +64,9 @@ public class CartController {
 		if (!userAccount.isPresent()) {
 			return "redirect:login";
 		}
-		Order order = new Order(userAccount.get(), Cash.CASH);
-		cart.addItemsTo(order);
-		orderManager.save(order);
+		PizzaOrder order = new PizzaOrder(userAccount.get(), Cash.CASH);
+		cart.addItemsTo(order.getOrder());
+		orderManager.save(order.getOrder());
 		cart.clear();
 		return "redirect:orders";
 
