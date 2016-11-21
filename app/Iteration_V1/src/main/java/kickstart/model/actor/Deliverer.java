@@ -1,4 +1,4 @@
-/*package kickstart.model.actor;  TODO: Store should be tested before
+package kickstart.model.actor;  //TODO: Store should be tested before
 
 import java.util.*;
 
@@ -62,4 +62,4 @@ public class Deliverer extends StaffMember {
 	{
 		this.setAvailable(false);
 	}
-}*/
+}

@@ -30,15 +30,12 @@ public class AccountingController {
 
 	private final Accountancy accountancy;
 	private final AccountingMethods accountingMethods;
-	private final UserAccountManager userAccountManager;
 	private final BusinessTime businessTime;
 
 	@Autowired
-	public AccountingController(Accountancy accountancy, AccountingMethods accountingMethods,
-			UserAccountManager userAccountManager, BusinessTime businessTime) {
+	public AccountingController(Accountancy accountancy, AccountingMethods accountingMethods, BusinessTime businessTime) {
 		this.accountancy = accountancy;
 		this.accountingMethods = accountingMethods;
-		this.userAccountManager = userAccountManager;
 		this.businessTime = businessTime;
 	}
 
