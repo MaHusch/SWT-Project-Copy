@@ -17,6 +17,8 @@ public class TanManagment {
 	
 	private HashMap<Tan,String> tanHashMap = new HashMap<>();
 	
+	private HashMap<Tan,String> newlyGeneratedTans = new HashMap<>();
+	
 	public TanManagment()//ArrayList<String> telephoneNumberList)
 	{
 		/*	
@@ -115,20 +117,7 @@ public class TanManagment {
 				
 				Tan newlyCreatedTan = new Tan(newTanString, TanStatus.VALID);
 				
-				Tan oldTan = this.getTan(telephoneNumber);
-				
-				if(oldTan.getStatus() != TanStatus.NOT_FOUND)
-				{
-					
-					this.invalidateTan(oldTan);
-					
-					tanHashMap.replace(oldTan, telephoneNumber, EMPTY_STRING);
-							
-				}
-
-				//System.out.println("new tan added");
-				
-				tanHashMap.put(newlyCreatedTan, telephoneNumber);
+				newlyGeneratedTans.put(newlyCreatedTan, telephoneNumber);
 						
 				return newlyCreatedTan;
 			}
@@ -167,6 +156,27 @@ public class TanManagment {
 		}
 		
 		return allEntrys;
+	}
+	
+	public void insertTanIntoHashMap(Tan tan)
+	{
+		String telephoneNumber = this.newlyGeneratedTans.get(tan);
+		
+		Tan oldTan = this.getTan(telephoneNumber);
+		
+		if(oldTan.getStatus() != TanStatus.NOT_FOUND)
+		{
+			
+			this.invalidateTan(oldTan);
+			
+			tanHashMap.replace(oldTan, telephoneNumber, EMPTY_STRING);
+					
+		}
+
+		//System.out.println("new tan added");
+		
+		tanHashMap.put(tan, telephoneNumber);
+		
 	}
 
 
