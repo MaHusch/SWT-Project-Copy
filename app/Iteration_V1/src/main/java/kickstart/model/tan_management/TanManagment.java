@@ -21,14 +21,17 @@ public class TanManagment {
 	
 	public TanManagment()//ArrayList<String> telephoneNumberList)
 	{
-		/*	
+		/*
 	 	Iterator<String> telephoneNumberListIterator = telephoneNumberList.iterator();
 
 		
 		while(telephoneNumberListIterator.hasNext())
 		{
 			String newTelephoneNumber = telephoneNumberListIterator.next();
-			this.generateNewTan(newTelephoneNumber);
+			Tan newTan = this.generateNewTan(newTelephoneNumber);
+			//System.out.println(newTelephoneNumber);
+			//System.out.println(newTan.getTanNumber());
+			this.asignTan(newTan);
 		}
 		*/
 	}
@@ -169,6 +172,22 @@ public class TanManagment {
 		return allEntrys;
 	}
 	
+	public Iterable<Map.Entry<Tan, String>> getAllNotAsignedTans()
+	{
+		
+		Iterator<Map.Entry<Tan, String>> tanHashIterator = notAsignedTans.entrySet().iterator();
+		
+		ArrayList<Map.Entry<Tan, String>> allEntrys = new ArrayList<Map.Entry<Tan, String>>();
+		
+		while(tanHashIterator.hasNext())
+		{
+			allEntrys.add(tanHashIterator.next());
+			
+		}
+		
+		return allEntrys;
+	}
+	
 	public void asignTan(Tan tan)
 	{
 		String telephoneNumber = this.notAsignedTans.get(tan);
@@ -187,6 +206,8 @@ public class TanManagment {
 		//System.out.println("new tan added");
 		
 		tanHashMap.put(tan, telephoneNumber);
+		
+		deleteNotAsignedTan(tan);
 		
 	}
 	
