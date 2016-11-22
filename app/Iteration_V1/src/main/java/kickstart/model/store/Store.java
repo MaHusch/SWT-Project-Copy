@@ -21,7 +21,7 @@ public class Store {
 	public static ArrayList<StaffMember> staffMemberList;
 	public static Admin admin;
 	
-	private ArrayList<Oven> ovenList = new ArrayList<Oven>();
+	private ArrayList<Oven> ovenList;
 	
 	private Pizzaqueue pizzaQueue = Pizzaqueue.getInstance();
 	
@@ -35,7 +35,7 @@ public class Store {
 		this.employeeAccountManager = employeeAccountManager;
 		this.staffMemberList = new ArrayList<StaffMember>();
 		this.itemCatalog = itemCatalog;
-				
+		this.ovenList = new ArrayList<Oven>();		
 		this.admin = new Admin("Mustermann","Max","123456789");
 		this.admin.updateUserAccount("admin", "123", Role.of("ROLE_ADMIN"));
 		

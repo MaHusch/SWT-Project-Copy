@@ -67,7 +67,7 @@ public class CartController {
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public String addItem(@RequestParam("pid") ProductIdentifier id, @RequestParam("number") int number, @ModelAttribute Cart cart) {
 		cart.addOrUpdateItem(itemCatalog.findOne(id).get(), Quantity.of(number));
-		return "redirect:orders";
+		return "redirect:catalog";
 
 	}
 

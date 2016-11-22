@@ -8,9 +8,12 @@
 	<body>
 		<h1>Papa Pizza</h1>
 		
+		<a href="catalog.html">Catalog</a>
+		
 		<form th:action="login" method="post">
 				<input type="submit" value="login" />
 			</form>
+		
 		
 		<div sec:authorize="hasRole('ROLE_ADMIN')" >
 		

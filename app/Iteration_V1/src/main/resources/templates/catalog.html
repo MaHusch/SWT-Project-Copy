@@ -14,14 +14,54 @@
 				<th> Price </th>
 				<th> Art </th>
 			</tr>
-			
 			<tr th:each="item : ${items} ">
 							<td th:text="${item.getName()}">PizzaPizza</td>
 							<td th:text="${item.getPrice()}">10</td>
 							<td th:text="${item.getType()}">Obst</td>
-						</tr>
-						
-			
+							<td>
+								<form method="post" action="/add">
+									<input type="hidden" name="pid" value="0" th:value="${item.id}" />
+									<input type="hidden" name="number" value="1" /> 
+									<input type="submit" value="Add" />
+								</form>
+							</td>
+							<td sec:authorize="hasRole('ROLE_ADMIN')"> <!-- geht nicht bei Ingredients -->
+								<form method="post" action="/removeItem">
+									<input type="hidden" name="pid" value="0" th:value="${item.id}" />
+									<input type="hidden" name="number" value="1" /> 
+									<input type="submit" value="Remove" />
+								</form>
+							</td>
+							<td sec:authorize="hasRole('ROLE_ADMIN')">
+								<form method="post" action="/editItem">
+									<input type="hidden" name="pid" value="0" th:value="${item.id}" />
+									<input type="hidden" name="number" value="1" /> 
+									<input type="submit" value="Edit" />
+								</form>
+							</td>
+			</tr>			
 		</table>
+		
+  		<table>
+			<caption>Warenkorb</caption>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Anzahl</th>
+					<th>Preis</th>
+				</tr>
+			</thead>
+			<tbody th:remove="all-but-first">
+
+				<tr th:each="item : ${cart} ">
+					<td th:text="${item.productName}">Gemüse</td>
+					<td th:text="${item.quantity}">10</td>
+					<td th:text="${item.price}">10 Euro</td>
+				</tr>
+
+			</tbody>
+		</table>
+		<p th:text="'Gesamt: ' + ${cart.price}">Summe: 100 Euro</p>
+		
 	</body>
 </html>
