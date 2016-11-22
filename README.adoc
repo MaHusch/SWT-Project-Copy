@@ -11,6 +11,20 @@
 
 Eine Software entwickeln für einen Pizzaservice.
 
+== Definition der Basisfunktionalität
+
+* Bestellung registrieren
+* Kunde hinzufügen
+* TAN-Anzeige
+* keine Rabattaktionen
+* Pizza zusammenstellen
+* keine Lieferzeitberechnung
+* Deliverer CheckIn/Out
+* Mitarbeiter hinzufügen
+* keine Katalogfilterung
+* keine Bestellfilterung
+
+
 == Wichtige Links
 
 * link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/organisation/pflichtenheft%20versionen/pflichtenheft_v1.adoc[Pflichtenheft]
