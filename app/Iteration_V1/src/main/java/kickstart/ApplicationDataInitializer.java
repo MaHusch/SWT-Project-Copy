@@ -83,13 +83,14 @@ public class ApplicationDataInitializer implements DataInitializer {
 		
 		Ingredient cheese = new Ingredient("Cheese",Money.of(0.50, EURO));
 		Ingredient mushroom = new Ingredient("mushrooms",Money.of(1.00, EURO));
-		Pizza pizza1 = new Pizza("pizza1",Money.of(2.50, EURO),cheese);
-		Pizza pizza2 = new Pizza("pizza2",Money.of(2.50, EURO),cheese);
-		Pizza pizza3 = new Pizza("pizza3",Money.of(2.50, EURO),cheese);
+		Pizza pizza1 = new Pizza("pizza1",Money.of(2.50, EURO));
+		Pizza pizza2 = new Pizza("pizza2",Money.of(2.50, EURO));
+		Pizza pizza3 = new Pizza("pizza3",Money.of(2.50, EURO));
 		Item beer = new Item("Beer",Money.of(1.60, EURO),ItemType.DRINK);
 		Item freebeer = new Item("Beer",Money.of(0.0, EURO),ItemType.FREEDRINK); //extra FreeDrink class?
 		Item salat = new Item("Salad",Money.of(2.0, EURO),ItemType.SALAD);
 		pizza1.addIngredient(mushroom);
+		pizza1.addIngredient(cheese);
 		
 		Pizzaqueue pizzaQueue = Store.getInstance().getPizzaQueue();
 		

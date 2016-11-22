@@ -1,6 +1,8 @@
 package kickstart.controller;
 
 
+import static org.salespointframework.core.Currencies.EURO;
+import org.javamoney.moneta.Money;
 import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.order.Cart;
 import org.salespointframework.quantity.Quantity;
@@ -11,6 +13,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import kickstart.model.catalog_item.Ingredient;
+import kickstart.model.catalog_item.Item;
+import kickstart.model.catalog_item.ItemType;
+import kickstart.model.catalog_item.Pizza;
 import kickstart.model.store.ItemCatalog;
 
 
@@ -52,6 +58,43 @@ public class CatalogController {
 		
 		return "redirect:catalog";
 
+	}
+	
+	@RequestMapping("addItem")
+	public String addItem()
+	{
+		return "addItem";
+	}
+	
+	@RequestMapping("/createItem")
+	public String createItem(@RequestParam("itemname") String name, 
+							 @RequestParam("itemprice") Number price,
+							 @RequestParam("itemtype") String type)
+	{
+		Item neu;
+	
+		if(type.equals("PIZZA"))
+		{
+			neu = new Pizza(name,Money.of(price, EURO));
+			
+		}
+		else if(type.equals("INGREDIENT"))
+		{
+			neu = new Ingredient(name,Money.of(price, EURO));
+		}
+		else
+		{
+			ItemType t = ItemType.SALAD;
+			if(type.equals("DRINK")) t = ItemType.DRINK;
+			if(type.equals("FREEDRINK")) t = ItemType.FREEDRINK;
+			if(type.equals("SALAD")) t = ItemType.SALAD;
+			
+			neu = new Item(name,Money.of(price, EURO),t);
+		}
+		
+		itemCatalog.save(neu);
+		
+		return "redirect:catalog";
 	}
 
 }

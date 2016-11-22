@@ -21,11 +21,10 @@ public class Pizza extends Item {
 	@SuppressWarnings("unused")
 	private Pizza(){}
 	
-	public Pizza(String name, javax.money.MonetaryAmount price, Ingredient startitem)
+	public Pizza(String name, javax.money.MonetaryAmount price)
 	{
-		super(name,price.add(startitem.getPrice()),ItemType.PIZZA);
+		super(name,price,ItemType.PIZZA);
 		this.ingredients = new LinkedList<Ingredient>();
-		this.ingredients.add(startitem);
 		this.setStatus(false);
 	}
 	

@@ -22,17 +22,16 @@ public class PizzaTest {
 	
 		i1 = new Ingredient("Tomato",Money.of(0.50, EURO));
 		i2 = new Ingredient("Salami",Money.of(1.00, EURO));
-		p1 = new Pizza("test",Money.of(1.10, EURO), i2);
+		p1 = new Pizza("test",Money.of(1.10, EURO));
 	}
 
 	@Test
 	public void testConstrutor() {
-		p1 = new Pizza("Hawaii",Money.of(2.00, EURO),i1);
+		p1 = new Pizza("Hawaii",Money.of(2.00, EURO));
 		assertFalse(p1.getStatus());
-		assertNotNull(p1.getIngredients());
-		assertEquals(p1.getIngredients().size(),1);
+		assertEquals(p1.getIngredients().size(),0);
 		assertEquals(p1.getType(),ItemType.PIZZA);
-		assertEquals(p1.getPrice(),Money.of(2.50, EURO));
+		
 	}
 	
 	@Test
@@ -48,7 +47,7 @@ public class PizzaTest {
 	{
 		assertTrue(p1.addIngredient(i1));
 		assertTrue(p1.getIngredients().contains(i1));
-		assertFalse(p1.addIngredient(i2));
+		assertFalse(p1.addIngredient(i1));
 		
 	}
 	
@@ -56,6 +55,7 @@ public class PizzaTest {
 	public void testremoveIngredient()
 	{
 		p1.addIngredient(i1);
+		p1.addIngredient(i2);
 		assertEquals(p1.removeIngredient(i1), i1);
 		assertFalse(p1.getIngredients().contains(i1));
 		assertNull(p1.removeIngredient(i1));
