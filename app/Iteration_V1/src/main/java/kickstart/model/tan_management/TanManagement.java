@@ -17,7 +17,7 @@ public class TanManagement {
 	
 	private HashMap<Tan,String> tanHashMap = new HashMap<>();
 	
-	private HashMap<Tan,String> notAsignedTans = new HashMap<>();
+	private HashMap<Tan,String> notConfirmedTans = new HashMap<>();
 	
 	public TanManagement()//ArrayList<String> telephoneNumberList)
 	{
@@ -31,7 +31,7 @@ public class TanManagement {
 			Tan newTan = this.generateNewTan(newTelephoneNumber);
 			//System.out.println(newTelephoneNumber);
 			//System.out.println(newTan.getTanNumber());
-			this.asignTan(newTan);
+			this.confirmTan(newTan);
 		}
 		*/
 	}
@@ -84,9 +84,9 @@ public class TanManagement {
 		
 		Iterator<Tan> existingTansIterator = existingTans.iterator();
 		
-		Set<Tan> existingNotAsignedTans = notAsignedTans.keySet();
+		Set<Tan> existingNotConfirmedTans = notConfirmedTans.keySet();
 		
-		Iterator<Tan> existingNotAsignedTansIterator = existingNotAsignedTans.iterator();
+		Iterator<Tan> existingNotConfirmedTansIterator = existingNotConfirmedTans.iterator();
 		
 		boolean foundNewTan = false;
 		
@@ -114,10 +114,10 @@ public class TanManagement {
 				
 			}
 			
-			while(existingNotAsignedTansIterator.hasNext() && !tanAlreadyExists)
+			while(existingNotConfirmedTansIterator.hasNext() && !tanAlreadyExists)
 			{
 					
-				if(newTanString.equals(((Tan) existingNotAsignedTansIterator.next()).getTanNumber())) tanAlreadyExists = true;
+				if(newTanString.equals(((Tan) existingNotConfirmedTansIterator.next()).getTanNumber())) tanAlreadyExists = true;
 				
 			}
 			
@@ -126,7 +126,7 @@ public class TanManagement {
 				
 				Tan newlyCreatedTan = new Tan(newTanString, TanStatus.VALID);
 				
-				notAsignedTans.put(newlyCreatedTan, telephoneNumber);
+				notConfirmedTans.put(newlyCreatedTan, telephoneNumber);
 						
 				return newlyCreatedTan;
 			}
@@ -167,10 +167,10 @@ public class TanManagement {
 		return allEntrys;
 	}
 	
-	public Iterable<Map.Entry<Tan, String>> getAllNotAsignedTans()
+	public Iterable<Map.Entry<Tan, String>> getAllNotConfirmedTans()
 	{
 		
-		Iterator<Map.Entry<Tan, String>> tanHashIterator = notAsignedTans.entrySet().iterator();
+		Iterator<Map.Entry<Tan, String>> tanHashIterator = notConfirmedTans.entrySet().iterator();
 		
 		ArrayList<Map.Entry<Tan, String>> allEntrys = new ArrayList<Map.Entry<Tan, String>>();
 		
@@ -183,9 +183,9 @@ public class TanManagement {
 		return allEntrys;
 	}
 	
-	public void asignTan(Tan tan)
+	public void confirmTan(Tan tan)
 	{
-		String telephoneNumber = this.notAsignedTans.get(tan);
+		String telephoneNumber = this.notConfirmedTans.get(tan);
 		
 		Tan oldTan = this.getTan(telephoneNumber);
 		
@@ -202,15 +202,15 @@ public class TanManagement {
 		
 		tanHashMap.put(tan, telephoneNumber);
 		
-		deleteNotAsignedTan(tan);
+		deleteNotConfirmedTan(tan);
 		
 	}
 	
-	public boolean deleteNotAsignedTan(Tan tan)
+	public boolean deleteNotConfirmedTan(Tan tan)
 	{
-		String telephoneNumber = this.notAsignedTans.get(tan);
+		String telephoneNumber = this.notConfirmedTans.get(tan);
 		
-		return notAsignedTans.remove(tan, telephoneNumber);
+		return notConfirmedTans.remove(tan, telephoneNumber);
 		
 	}
 
