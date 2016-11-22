@@ -69,17 +69,12 @@ public class TanManagement {
 	public boolean checkTan(Tan tan, String telephoneNumber)
 	{
 		
-		Iterator<Map.Entry<Tan, String>> hashMapIterator = tanHashMap.entrySet().iterator();
+		String receivedTelephoneNumber = this.getTelephoneNumber(tan);
 		
-		while(hashMapIterator.hasNext())
-			{
-				Map.Entry<Tan, String> entry = (Map.Entry<Tan, String>)hashMapIterator.next();
-				
-				if(entry.getValue() == telephoneNumber && entry.getKey().getTanNumber().equals(tan.getTanNumber())) return true;
-			
-			}
+		if(telephoneNumber.equals(receivedTelephoneNumber)) return true;
 		
-		return false;
+		else return false;
+		
 	}
 	
 	public Tan generateNewTan(String telephoneNumber)
