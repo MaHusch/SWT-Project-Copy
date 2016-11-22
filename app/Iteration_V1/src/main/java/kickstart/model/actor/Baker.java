@@ -45,7 +45,7 @@ public class Baker extends StaffMember {
 	}
 	
 	public void getNextPizza(){
-		nextPizza = Queue.pollFirst();
+		nextPizza = Queue.poll();
 	}
 	
 	public boolean putPizzaIntoOven(Oven oven){
@@ -63,18 +63,25 @@ public class Baker extends StaffMember {
 	public void update(Oven observable, boolean isFinished){
 		for(int i = 0; i < myOvens.size(); i++){
 			if(myOvens.get(i).getId() == observable.getId() && isFinished == true){
-				//myOvens.get(i).clear();
+				myOvens.get(i).clear();
 			}
 		}
 	}
 	
 	
-	public Baker getSelf(){
-		return this;
-	}
 	
 	public ArrayList<Oven> getOvens(){
 		return myOvens;
+	}
+	
+	public Oven getOvenByID(int id){
+		
+		for(int i = 0; i < myOvens.size(); i++){
+			if(myOvens.get(i).getId() == id){
+				return myOvens.get(i);
+			}
+		}
+		return null;
 	}
 	
 

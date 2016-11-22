@@ -1,11 +1,11 @@
 package kickstart.model.store;
 
 
-import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import kickstart.model.catalog_item.Pizza;
 
-public class Pizzaqueue extends LinkedList<Pizza>{
+public class Pizzaqueue extends LinkedBlockingQueue<Pizza>{
 
 	/**
 	 * 
