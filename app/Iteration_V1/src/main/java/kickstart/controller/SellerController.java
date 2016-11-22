@@ -9,16 +9,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import kickstart.model.actor.Customer;
 import kickstart.model.store.CustomerRepository;
-import kickstart.model.tan_management.TanManagment;
+import kickstart.model.tan_management.TanManagement;
 
 @Controller
 public class SellerController {
 
-	private final TanManagment tanManagment;
+	private final TanManagement tanManagment;
 	private final CustomerRepository customerRepository;
 
 	@Autowired
-	public SellerController(TanManagment tanManagment, CustomerRepository customerRepository) {
+	public SellerController(TanManagement tanManagment, CustomerRepository customerRepository) {
 		this.tanManagment = tanManagment;
 		this.customerRepository = customerRepository;
 	}

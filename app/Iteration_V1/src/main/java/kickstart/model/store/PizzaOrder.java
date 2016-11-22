@@ -1,8 +1,15 @@
 package kickstart.model.store;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 
 import org.salespointframework.order.Order;
+import org.salespointframework.order.OrderIdentifier;
 import org.salespointframework.payment.PaymentMethod;
 import org.salespointframework.useraccount.UserAccount;
 
@@ -10,36 +17,32 @@ import kickstart.model.tan_management.Tan;
 
 @Entity
 public class PizzaOrder{
+
+	//@Id @GeneratedValue private long orderID;
 	
-	
-	/**
-	 * 
-	 */
+	@EmbeddedId private OrderIdentifier orderIdentifier;
 	private boolean freeDrink;
 	private boolean pickUp;
-	private Tan newTan;
-	private PizzaOrderStatus pizzaOrderStatus;
-	private Order order;
+	@Transient private Tan newTan;
+	//private PizzaOrderStatus pizzaOrderStatus;
+	private final Order order;
 	
 	
-	public PizzaOrder(UserAccount userAccount) {
-		setOrder(new Order(userAccount));
+	public PizzaOrder(UserAccount userAccount, Tan newTan) {
+		this.order = new Order(userAccount);
+		this.newTan = newTan;
+		orderIdentifier = order.getId();
 		// TODO Auto-generated constructor stub
 	}
 		
-	public PizzaOrder(UserAccount userAccount, PaymentMethod paymentMethod) {
-		setOrder(new Order(userAccount, paymentMethod));
+	public PizzaOrder(UserAccount userAccount, PaymentMethod paymentMethod, Tan newTan) {
+		this.order = new Order(userAccount, paymentMethod);
+		this.newTan = newTan;
+		orderIdentifier = order.getId();
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Tan setTan(Tan TAN){
-		newTan = TAN;
-		return TAN;
-	}
 	
-	public Tan getTan(){
-		return newTan;
-	}
 	
 	public Boolean getFreeDrink(){
 		return freeDrink;
@@ -47,10 +50,6 @@ public class PizzaOrder{
 
 	public Order getOrder() {
 		return order;
-	}
-
-	public void setOrder(Order order) {
-		this.order = order;
 	}
 	
 	

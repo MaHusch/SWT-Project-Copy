@@ -1,6 +1,7 @@
 package kickstart;
 
-import java.time.Duration;
+import static org.salespointframework.core.Currencies.EURO;
+
 import java.util.ArrayList;
 
 import org.javamoney.moneta.Money;
@@ -8,27 +9,24 @@ import org.salespointframework.accountancy.Accountancy;
 import org.salespointframework.accountancy.AccountancyEntry;
 import org.salespointframework.core.DataInitializer;
 import org.salespointframework.time.BusinessTime;
-import org.salespointframework.time.Interval;
 import org.salespointframework.useraccount.Role;
-import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static org.salespointframework.core.Currencies.*;
-
-import kickstart.model.actor.Admin;
 import kickstart.model.actor.Baker;
+import kickstart.model.actor.Customer;
 import kickstart.model.actor.Seller;
 import kickstart.model.catalog_item.Ingredient;
 import kickstart.model.catalog_item.Item;
 import kickstart.model.catalog_item.ItemType;
 import kickstart.model.catalog_item.Pizza;
+import kickstart.model.store.CustomerRepository;
 import kickstart.model.store.Oven;
 import kickstart.model.store.Pizzaqueue;
 import kickstart.model.store.SalaryThread;
-import kickstart.model.store.StaffMemberRepository;
 import kickstart.model.store.Store;
+import kickstart.model.tan_management.TanManagement;
 
 @Component
 public class ApplicationDataInitializer implements DataInitializer {
@@ -36,13 +34,17 @@ public class ApplicationDataInitializer implements DataInitializer {
 	private final Accountancy accountancy;
 	private final UserAccountManager userAccountManager;
 	private final BusinessTime businessTime;
+	private final CustomerRepository customerRepository;
+	private final TanManagement tanManagement;
 
 	@Autowired
 	public ApplicationDataInitializer(Accountancy accountancy, UserAccountManager userAccountManager,
-			BusinessTime businessTime) {
+			BusinessTime businessTime, CustomerRepository customerRepository, TanManagement tanManagement) {
 		this.accountancy = accountancy;
 		this.userAccountManager = userAccountManager;
 		this.businessTime = businessTime;
+		this.customerRepository = customerRepository;
+		this.tanManagement = tanManagement;
 	}
 
 	@Override
@@ -101,7 +103,10 @@ public class ApplicationDataInitializer implements DataInitializer {
 		
 		/*****************************************************************************/
 		// TODO Auto-generated method stub
-
+		Customer cu1 = new Customer("Jürgens", "Dieter", "12345");
+		
+		System.out.println(tanManagement.generateNewTan(cu1.getTelephoneNumber()).getTanNumber());//tanManagement.getTan(cu1.getTelephoneNumber()).getTanNumber());
+		customerRepository.save(cu1);
 	}
 	
 	

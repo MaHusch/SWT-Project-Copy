@@ -11,6 +11,17 @@
 	<h1>Cart</h1>
 	<li><a href="index.html">Zurück</a></li>
 
+	<div>
+		<h2>Kunden überprüpfen</h2>
+		<form method="post" action="/checkTan">
+			<label for="surname">Telefonnummer</label>:
+	        <input type="text" id="tnumber" name="tnumber"/> <br />
+	            
+	        <label for="forename">TAN</label>:
+	        <input type="text" id="tan" name="tan"/> <br />
+			<input type="submit" value="Check" />
+		</form>
+	</div>
 
 
 	<table>
@@ -28,8 +39,8 @@
 				<td>
 					<form method="post" action="/add">
 						<input type="hidden" name="pid" value="0" th:value="${Item.id}" />
-						<input type="hidden" name="number" value="1" /> <input
-							type="submit" value="Add" />
+						<input type="hidden" name="number" value="1" /> 
+						<input type="submit" value="Add" />
 					</form>
 
 				</td>

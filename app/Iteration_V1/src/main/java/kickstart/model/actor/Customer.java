@@ -10,6 +10,7 @@ public class Customer extends Person{
 	private boolean myCutlery = false; //temporärer Workaround weil Klasse Cutlery nicht existiert 
 	@Id @GeneratedValue private long customerID;
 	
+	
 	public Customer(String surname, String forename, String telephoneNumber) {
 		super(surname, forename, telephoneNumber);
 		// TODO Auto-generated constructor stub

@@ -10,7 +10,7 @@ import java.util.Set;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TanManagment {
+public class TanManagement {
 	
 	public static final String EMPTY_STRING = "";
 	public static final Tan NOT_FOUND_TAN = new Tan("00000", TanStatus.NOT_FOUND);
@@ -19,7 +19,7 @@ public class TanManagment {
 	
 	private HashMap<Tan,String> notAsignedTans = new HashMap<>();
 	
-	public TanManagment()//ArrayList<String> telephoneNumberList)
+	public TanManagement()//ArrayList<String> telephoneNumberList)
 	{
 		/*
 	 	Iterator<String> telephoneNumberListIterator = telephoneNumberList.iterator();
