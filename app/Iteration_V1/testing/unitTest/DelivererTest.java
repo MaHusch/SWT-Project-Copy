@@ -5,8 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import kickstart.model.actor.Deliverer;
-import kickstart.model.store.PizzaOrder;
+import pizzaShop.model.actor.Deliverer;
+import pizzaShop.model.store.PizzaOrder;
 
 public class DelivererTest {
 

@@ -7,9 +7,9 @@ import org.javamoney.moneta.Money;
 import org.junit.Before;
 import org.junit.Test;
 
-import kickstart.model.catalog_item.Ingredient;
-import kickstart.model.catalog_item.ItemType;
-import kickstart.model.catalog_item.Pizza;
+import pizzaShop.model.catalog_item.Ingredient;
+import pizzaShop.model.catalog_item.ItemType;
+import pizzaShop.model.catalog_item.Pizza;
 
 public class PizzaTest {
 
