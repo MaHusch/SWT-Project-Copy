@@ -49,6 +49,7 @@ public class AdminController {
 		}	
 
 		StaffMember staffMember = new StaffMember(surname,forename,telephonenumber);
+		Store.staffMemberList.add(staffMember);
 		staffMember.updateUserAccount(username, password, Role.of("ROLE_" + role));
 		
 		return "index";

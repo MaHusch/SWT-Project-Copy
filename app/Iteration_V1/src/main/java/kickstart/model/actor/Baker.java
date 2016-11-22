@@ -53,6 +53,7 @@ public class Baker extends StaffMember {
 		for(int i = 0; i < myOvens.size(); i++){
 			if(myOvens.get(i).getId() == oven.getId() && myOvens.get(i).isEmpty()){					
 				myOvens.get(i).fill(nextPizza);
+				System.out.println(myOvens.get(i).getPizza());
 				
 				return true;
 			}

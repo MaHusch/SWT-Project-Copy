@@ -11,18 +11,20 @@ public class MyTimerTask extends TimerTask {
 
 	private Timer myTimer;
 	private Pizza myPizza;
+	private Oven myOven;
 	
-	public MyTimerTask(Timer timer, Pizza pizza){
+	public MyTimerTask(Timer timer, Pizza pizza, Oven oven){
 		
 		myTimer =  timer;
 		myPizza = pizza;
+		myOven = oven;
 	}
 	
 	@Override
 	public void run() {
 		//System.out.println("baking....");
 		try {
-			Thread.sleep(3000);
+			Thread.sleep(30000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -30,6 +32,9 @@ public class MyTimerTask extends TimerTask {
 		//myPizza.setStatus(true);
 		
 		myTimer.cancel();
+		myPizza.setStatus(true);
+		myOven.notifyObservers();
+		
 		
 	}
 	

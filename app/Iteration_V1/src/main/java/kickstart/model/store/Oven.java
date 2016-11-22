@@ -17,7 +17,7 @@ public class Oven {
 	private Timer myTimer;
 	private boolean empty = true;
 	
-	//Konstruktor
+	
 	public Oven(Store store){
 		this.ovenID = this.ID++;	
 		ArrayList<Oven> ovenList = store.getOvens();
@@ -25,21 +25,24 @@ public class Oven {
 		ovenList.add(this);
 	}
 	
+	public Oven(){}		//braucht man anscheinend für Thymeleaf, aber warum?!
 	
-	public void resetTime(){
-		myTimer.cancel();
-	}
-	
-	
-	// Überprüfen ob Ofen leer ist
-	public boolean isEmpty(){
-		return empty;
-	}
+	/*public Oven(int ID){
+		ovenID = ID;
+	}*/
 	
 	public int getId(){
 		return this.ovenID;
 	}
 	
+	public void resetTime(){
+		myTimer.cancel();
+	}
+	
+	public boolean isEmpty(){
+		return empty;
+	}
+		
 	public boolean notifyObservers(){
 		//System.out.println("informing bakers");
 		for(Baker baker : Observers){
@@ -62,20 +65,13 @@ public class Oven {
 		currentPizza = pizza;
 		empty = false;
 		
-		myTimer = new Timer();
-		myTimer.schedule(new MyTimerTask(myTimer, pizza), 0);
-		
-		/*
-		
-		System.out.println(currentPizza.toString());
-		try {
-			Thread.sleep(6000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		*/
-		//System.out.println(currentPizza.toString());
 		notifyObservers();
+		
+		myTimer = new Timer();
+		myTimer.schedule(new MyTimerTask(myTimer, pizza, this), 0);
+
+		//notifyObservers();		ist im TimerTask drin, da nach ablauf des Timers erst der Bäker informiert werden soll
+		
 		return true;
 		 
 	}
@@ -106,7 +102,10 @@ public class Oven {
 		else{ 
 			return null;
 		}
-		
+	}
+	
+	public ArrayList<Baker> getObservers(){
+		return Observers;
 	}
 	
 	

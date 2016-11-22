@@ -47,6 +47,8 @@ public class BakerController {
 	@RequestMapping(value = "/getNextPizza", method = RequestMethod.POST)
 	public String getNextPizza(Model model, @ModelAttribute Oven oven){
 		
+		
+		
 		currentBaker.getNextPizza();
 		currentBaker.putPizzaIntoOven(oven);
 		
