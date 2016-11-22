@@ -1,4 +1,4 @@
-package unitTest;
+package unitTests;
 
 import static org.junit.Assert.*;
 import static org.salespointframework.core.Currencies.EURO;

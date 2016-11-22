@@ -1,4 +1,4 @@
-package unitTest;		// test Store befor
+package unitTests;		// test Store befor
 
 import static org.junit.Assert.*;
 

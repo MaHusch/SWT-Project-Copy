@@ -22,6 +22,7 @@ import pizzaShop.model.catalog_item.Item;
 import pizzaShop.model.catalog_item.ItemType;
 import pizzaShop.model.catalog_item.Pizza;
 import pizzaShop.model.store.CustomerRepository;
+import pizzaShop.model.store.ItemCatalog;
 import pizzaShop.model.store.Oven;
 import pizzaShop.model.store.Pizzaqueue;
 import pizzaShop.model.store.SalaryThread;
@@ -50,7 +51,8 @@ public class ApplicationDataInitializer implements DataInitializer {
 	@Override
 	public void initialize() {
 		
-		
+		initializeCatalog(Store.itemCatalog);
+		initializeAccountancy();
 		Seller Seller_Hans_Bergstein = new Seller("Bergstein","Hans","492161268","hans123", "qwe", Role.of("ROLE_SELLER"));
 		
 		/*************************************BAKER************************************/
@@ -64,19 +66,18 @@ public class ApplicationDataInitializer implements DataInitializer {
 		/*****************************************************************************/
 		
 		
-		/*********************************ACCOUNTANY************************************/
-		AccountancyEntry ace1 = new AccountancyEntry(Money.of(50, "EUR"), "Einkauf");
-		AccountancyEntry ace2 = new AccountancyEntry(Money.of(-200, "EUR"), "Diebstahl");
-		AccountancyEntry ace3 = new AccountancyEntry(Money.of(536, "EUR"), "Großbestellung");
-		accountancy.add(ace1);
-		accountancy.add(ace2);
-		accountancy.add(ace3);
-
-		(new Thread(new SalaryThread(accountancy, businessTime))).start();
-		/*****************************************************************************/
+				
 		
+		// TODO Auto-generated method stub
+		Customer cu1 = new Customer("Jürgens", "Dieter", "12345");
 		
-		/*********************************ITEM_CATALOG************************************/
+		System.out.println(tanManagement.generateNewTan(cu1.getTelephoneNumber()).getTanNumber());//tanManagement.getTan(cu1.getTelephoneNumber()).getTanNumber());
+		customerRepository.save(cu1);
+	}
+	
+	private void initializeCatalog(ItemCatalog itemCatalog)
+	{
+		
 		if (Store.itemCatalog.findAll().iterator().hasNext()) {
 			return;
 		}
@@ -106,14 +107,22 @@ public class ApplicationDataInitializer implements DataInitializer {
 		Store.itemCatalog.save(salat);
 		
 		
-		/*****************************************************************************/
-		// TODO Auto-generated method stub
-		Customer cu1 = new Customer("Jürgens", "Dieter", "12345");
 		
-		System.out.println(tanManagement.generateNewTan(cu1.getTelephoneNumber()).getTanNumber());//tanManagement.getTan(cu1.getTelephoneNumber()).getTanNumber());
-		customerRepository.save(cu1);
+		
 	}
 	
-	
+	public void initializeAccountancy()
+	{
+		/*********************************ACCOUNTANY************************************/
+		AccountancyEntry ace1 = new AccountancyEntry(Money.of(50, "EUR"), "Einkauf");
+		AccountancyEntry ace2 = new AccountancyEntry(Money.of(-200, "EUR"), "Diebstahl");
+		AccountancyEntry ace3 = new AccountancyEntry(Money.of(536, "EUR"), "Großbestellung");
+		accountancy.add(ace1);
+		accountancy.add(ace2);
+		accountancy.add(ace3);
 
+		(new Thread(new SalaryThread(accountancy, businessTime))).start();
+		/*****************************************************************************/
+
+	}
 }
