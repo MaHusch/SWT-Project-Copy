@@ -24,7 +24,7 @@ public class MyTimerTask extends TimerTask {
 	public void run() {
 		//System.out.println("baking....");
 		try {
-			Thread.sleep(30000);
+			Thread.sleep(3000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

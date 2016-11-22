@@ -42,6 +42,8 @@ public class Store {
 		Oven oven1 = new Oven(this); 
 		Oven oven2 = new Oven(this); 
 		Oven oven3 = new Oven(this); 
+		Oven oven4 = new Oven(this);
+		System.out.println(oven3.getId());
 		
 		this.store = this;
 	}

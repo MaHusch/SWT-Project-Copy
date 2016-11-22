@@ -6,6 +6,8 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
+import org.salespointframework.order.OrderIdentifier;
+
 
 @Entity
 public class Pizza extends Item {
@@ -17,6 +19,7 @@ public class Pizza extends Item {
 	@OneToMany private List<Ingredient> ingredients; 
 	
 	private boolean isFinished;
+	private OrderIdentifier OrderId;
 	
 	@SuppressWarnings("unused")
 	private Pizza(){}
@@ -62,6 +65,14 @@ public class Pizza extends Item {
 
 	public boolean getStatus() {
 		return isFinished;
+	}
+
+	public OrderIdentifier getOrderId() {
+		return OrderId;
+	}
+
+	public void setOrderId(OrderIdentifier orderId) {
+		OrderId = orderId;
 	}
 	
 	/*public String toString()  //TODO: nicerer String

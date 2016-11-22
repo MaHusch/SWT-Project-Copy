@@ -16,14 +16,14 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 		<li><a href="index.html">Zurück</a></li>
 
 		<table border="1">
-			<tr th:each=" oven : ${baker}">
+			<tr th:each=" oven : ${ovens}">
 
 				<td th:text="${'Oven ID: ' + oven.getId()}">Oven ID: </td>
 				<td th:text="${'Oven content: ' + oven.getPizzaName()}">Content: </td>
 				<td>Time left: xx:yy </td>
 				<td>
 					<form method="post" action="/getNextPizza">
-						<input type="hidden" th:action="${oven}" />
+						<input type="hidden" name="ovenID" value="0" th:value="${oven.getId()}" />
 						<input type="submit" value="Auswählen"  />
 					</form>
 				</td>

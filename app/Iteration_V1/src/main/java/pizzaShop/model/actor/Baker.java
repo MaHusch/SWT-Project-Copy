@@ -12,6 +12,7 @@ import org.salespointframework.useraccount.Role;
 import pizzaShop.model.catalog_item.Pizza;
 import pizzaShop.model.store.Oven;
 import pizzaShop.model.store.Pizzaqueue;
+import pizzaShop.model.store.Store;
 
 @Entity
 public class Baker extends StaffMember {
@@ -19,6 +20,7 @@ public class Baker extends StaffMember {
 	private ArrayList<Oven> myOvens = new ArrayList<Oven>();
 	private Pizzaqueue Queue = Pizzaqueue.getInstance();
 	private Pizza nextPizza;
+
 	
 	
 @Id @GeneratedValue private long employeeID;
@@ -71,9 +73,9 @@ public class Baker extends StaffMember {
 	
 	
 	
-	public ArrayList<Oven> getOvens(){
-		return myOvens;
-	}
+	/*public ArrayList<Oven> getOvens(){
+		return Store.getInstance().getOvens();		Sinnlos, da der Store die OvenList hat
+	}*/ 
 	
 	public Oven getOvenByID(int id){
 		

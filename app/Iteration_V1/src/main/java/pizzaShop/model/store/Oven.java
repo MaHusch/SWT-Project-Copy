@@ -3,8 +3,6 @@ package pizzaShop.model.store;
 
 import java.util.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import pizzaShop.model.actor.Baker;
 import pizzaShop.model.catalog_item.Pizza;
 
@@ -20,16 +18,13 @@ public class Oven {
 	
 	public Oven(Store store){
 		this.ovenID = this.ID++;	
-		ArrayList<Oven> ovenList = store.getOvens();
+		store.getOvens().add(this);
 		
-		ovenList.add(this);
 	}
 	
+	@SuppressWarnings("unused")
 	public Oven(){}		//braucht man anscheinend für Thymeleaf, aber warum?!
 	
-	/*public Oven(int ID){
-		ovenID = ID;
-	}*/
 	
 	public int getId(){
 		return this.ovenID;
