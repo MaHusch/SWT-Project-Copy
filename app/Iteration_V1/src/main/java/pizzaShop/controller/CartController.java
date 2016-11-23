@@ -14,6 +14,7 @@ import org.salespointframework.useraccount.web.LoggedIn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,8 +25,10 @@ import pizzaShop.model.actor.Customer;
 import pizzaShop.model.store.CustomerRepository;
 import pizzaShop.model.store.ItemCatalog;
 import pizzaShop.model.store.PizzaOrder;
+import pizzaShop.model.store.Store;
 import pizzaShop.model.tan_management.Tan;
 import pizzaShop.model.tan_management.TanManagement;
+import pizzaShop.model.tan_management.TanStatus;
 
 @Controller
 @SessionAttributes("cart")
@@ -69,7 +72,12 @@ public class CartController {
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public String addItem(@RequestParam("pid") ProductIdentifier id, @RequestParam("number") int number, @ModelAttribute Cart cart) {
-		cart.addOrUpdateItem(itemCatalog.findOne(id).get(), Quantity.of(number));
+		//Assert.notNull(id, "ID must not be null!");
+		//System.out.println(id + itemCatalog.findOne(id).toString());
+		
+		if(itemCatalog.findOne(id).isPresent()){
+			cart.addOrUpdateItem(itemCatalog.findOne(id).get(), Quantity.of(number));
+		}
 		return "redirect:catalog";
 
 	}
@@ -100,9 +108,10 @@ public class CartController {
 		/*else if(!customer.isPresent()){
 			return "redirect:orders";
 		}*/
-		PizzaOrder order = new PizzaOrder(userAccount.get(), Cash.CASH, tanManagement.getTan(customer.getTelephoneNumber()));
+		PizzaOrder order = new PizzaOrder(userAccount.get(), Cash.CASH, new Tan("11221", TanStatus.VALID));//tanManagement.getTan(customer.getTelephoneNumber()));
 		cart.addItemsTo(order.getOrder());
 		orderManager.save(order.getOrder());
+		Store.getInstance().analyzeOrder(order);
 		cart.clear();
 		return "redirect:orders";
 
