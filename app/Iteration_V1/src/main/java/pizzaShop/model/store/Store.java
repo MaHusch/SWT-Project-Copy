@@ -2,13 +2,17 @@ package pizzaShop.model.store;
 
 import java.util.ArrayList;
 
-import org.salespointframework.useraccount.*;
+import org.salespointframework.order.OrderLine;
+import org.salespointframework.useraccount.Role;
+import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.*;
 import org.springframework.stereotype.Component;
 
 import pizzaShop.model.actor.Admin;
 import pizzaShop.model.actor.StaffMember;
+import pizzaShop.model.catalog_item.Item;
+import pizzaShop.model.catalog_item.ItemType;
+import pizzaShop.model.catalog_item.Pizza;
 
 @Component
 public class Store {
@@ -76,5 +80,26 @@ public class Store {
 		}
 		
 		return null;
+	}
+	
+	public PizzaOrder analyzeOrder(PizzaOrder order){
+		for(OrderLine l : order.getOrder().getOrderLines()){
+			Item temp = itemCatalog.findOne(l.getProductIdentifier()).get();
+			if(temp.getType().equals(ItemType.PIZZA)){
+				((Pizza) temp).setOrderId(order.getId());
+				for(int i = 0; i < l.getQuantity().getAmount().intValue(); i++){
+					pizzaQueue.add(((Pizza) temp));
+				}
+				
+				System.out.println(pizzaQueue);
+			}
+		}
+		return order;
+		
+	}
+	
+	public void updatePizzaqueue(Pizza pizza){
+		
+		
 	}
 }

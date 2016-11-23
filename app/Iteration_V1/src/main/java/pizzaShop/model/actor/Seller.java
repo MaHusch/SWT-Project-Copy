@@ -14,9 +14,9 @@ public class Seller extends StaffMember{
 	
 	@Id @GeneratedValue private long employeeID;
 	
-	public Seller(String surname, String forename,String telephoneNumber, String username, String password, Role role){
+	public Seller(String surname, String forename,String telephoneNumber, String username, String password){
 		super(surname,forename,telephoneNumber);
-		this.updateUserAccount(username, password, role);
+		this.updateUserAccount(username, password, Role.of("ROLE_SELler"));
 	} 
 	
 	public Seller(String surname, String forename,String telephoneNumber){

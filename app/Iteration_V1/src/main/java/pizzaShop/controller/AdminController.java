@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import pizzaShop.model.actor.Baker;
+import pizzaShop.model.actor.Deliverer;
+import pizzaShop.model.actor.Seller;
 import pizzaShop.model.actor.StaffMember;
 import pizzaShop.model.store.Store;
 
@@ -36,19 +39,24 @@ public class AdminController {
 			return "registeremployee";
 		}
 		
+		StaffMember staffMember;
+		
 		switch (role) {
-			case "Verkäufer":
-				role = "SELLER";
-				break;
 			case "Bäcker":
 				role = "BAKER";
+				staffMember = new Baker(surname, forename, telephonenumber);
 				break;
 			case "Lieferant":
 				role = "DELIVERY";
+				staffMember = new Deliverer(surname, forename, telephonenumber);
+				break;
+				
+			default: //Seller ist bei HTML sowieso als default ausgewählt
+				staffMember = new Seller(surname, forename, telephonenumber);
 				break;
 		}	
+		
 
-		StaffMember staffMember = new StaffMember(surname,forename,telephonenumber);
 		Store.staffMemberList.add(staffMember);
 		staffMember.updateUserAccount(username, password, Role.of("ROLE_" + role));
 		

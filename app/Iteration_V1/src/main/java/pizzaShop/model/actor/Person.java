@@ -1,11 +1,13 @@
 package pizzaShop.model.actor;
 
-public class Person {
+public abstract class Person {
 	
 	private String surname;
 	private String forename; 
 	private String telephoneNumber; 
 	private String address;
+	
+	protected Person(){};
 	
 	public Person(String surname, String forename,String telephoneNumber){
 		this.surname = surname;

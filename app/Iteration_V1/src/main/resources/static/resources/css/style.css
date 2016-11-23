@@ -17,3 +17,27 @@ h1 {
 	line-height: 3.2em;
 	text-align:center;
 }
+
+.ovens table{
+	float:left;
+	width:75%;
+	background-color:tomato;
+	border: 1px solid;
+	border-color:"#E15A5A";
+	border-collapse: collapse;
+	text-align:center;
+	
+}
+
+.ovens td{
+	border:1px solid;
+	border-color:red;
+}
+
+.queue table{
+	text-align:center;
+	border-width:1px;
+	border-color:red;
+}
+
+

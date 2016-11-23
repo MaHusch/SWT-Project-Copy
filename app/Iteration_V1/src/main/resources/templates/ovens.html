@@ -14,8 +14,9 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 		<h1>Öfen</h1>
 
 		<li><a href="index.html">Zurück</a></li>
-
-		<table border="1">
+	
+		<div class="ovens">
+		<table >
 			<tr th:each=" oven : ${ovens}">
 
 				<td th:text="${'Oven ID: ' + oven.getId()}">Oven ID: </td>
@@ -29,9 +30,11 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 				</td>
 			</tr>
 		</table>
+		</div>
 		
 		
 		<h2>Pizzaqueue</h2>
+		<div class="queue">
 		<table>
 		<tbody th:remove="all-but-first">
 			<tr th:each="pizza : ${queue}">
@@ -39,6 +42,7 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 			</tr>		
 		</tbody>
 		</table>
+		</div>
 		
 
 </body>

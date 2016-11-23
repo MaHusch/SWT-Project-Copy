@@ -40,21 +40,23 @@ public class Oven {
 		
 	public boolean notifyObservers(){
 		//System.out.println("informing bakers");
-		for(Baker baker : Observers){
+		/*for(Baker baker : Observers){
 			baker.update(this, isEmpty());
-		}
+		}*/
 		return true;
 	}
 	
-	public boolean registerObserver(Baker Observer){
+	/*public boolean registerObserver(Baker Observer){
 		Observers.add(Observer);
 		return true;
-	}
+	}	
+	
+	Werden nicht mehr benötigt, da der Store nur noch der Observer ist
 	
 	public boolean unregisterObserver(Baker Observer) {
 		Observers.remove(Observer);
 		return true;
-	}
+	}*/
 	
 	public boolean fill(Pizza pizza){
 		currentPizza = pizza;
@@ -99,9 +101,9 @@ public class Oven {
 		}
 	}
 	
-	public ArrayList<Baker> getObservers(){
+	/*public ArrayList<Baker> getObservers(){
 		return Observers;
-	}
+	}*/
 	
 	
 	

@@ -52,6 +52,8 @@ public class PizzaOrder{
 		return order;
 	}
 	
-	
+	public OrderIdentifier getId(){
+		return orderIdentifier;
+	}
 
 }
