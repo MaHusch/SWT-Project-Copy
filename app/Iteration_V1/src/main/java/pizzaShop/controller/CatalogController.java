@@ -33,11 +33,7 @@ public class CatalogController {
 		this.itemCatalog = itemCatalog;
 	}
 	
-	@ModelAttribute("cart")			//nötig um auf catalog.html anzuzeigen?
-	public Cart initializeCart() {
-		return new Cart();
-	}
-	
+		
 	@RequestMapping("/catalog")
 	public String showCatalog(Model model)
 	{
@@ -47,7 +43,9 @@ public class CatalogController {
 	
 	@RequestMapping("/removeItem")
 	public String removeItem(@RequestParam("pid") ProductIdentifier id) {
-		itemCatalog.delete(id);
+		if(!itemCatalog.findOne(id).get().getType().equals(ItemType.INGREDIENT))
+				itemCatalog.delete(id);
+		// um Ingredients zu löschen muss noch durch Pizzen interiert werden.
 		// was wenn noch im cart?
 		return "redirect:catalog";
 
