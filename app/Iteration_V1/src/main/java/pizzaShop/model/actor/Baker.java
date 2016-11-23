@@ -34,23 +34,27 @@ public class Baker extends StaffMember {
 		super(surname,forename,telephoneNumber);
 	}
 	
-	public boolean addOven(Oven oven){
+	/*public boolean addOven(Oven oven){
 		myOvens.add(oven);
 		oven.registerObserver(this);
 		return true;
-	}
+	}  
+	
+	Store ist jetzt Observer
 	
 	public boolean removeOven(Oven oven){
 		myOvens.remove(oven);
 		oven.unregisterObserver(this);
 		return true;
-	}
+	}*/
 	
 	public void getNextPizza(){
 		nextPizza = Queue.poll();
 	}
 	
 	public boolean putPizzaIntoOven(Oven oven){
+		
+		myOvens = Store.getInstance().getOvens();
 		
 		for(int i = 0; i < myOvens.size(); i++){
 			if(myOvens.get(i).getId() == oven.getId() && myOvens.get(i).isEmpty()){					
@@ -63,13 +67,13 @@ public class Baker extends StaffMember {
 		return false;
 	}
 	
-	public void update(Oven observable, boolean isFinished){
+	/*public void update(Oven observable, boolean isFinished){
 		for(int i = 0; i < myOvens.size(); i++){
 			if(myOvens.get(i).getId() == observable.getId() && isFinished == true){
 				myOvens.get(i).clear();
 			}
 		}
-	}
+	}			Store ist nun Observer, nicht mehr Baker*/
 	
 	
 	
@@ -77,7 +81,7 @@ public class Baker extends StaffMember {
 		return Store.getInstance().getOvens();		Sinnlos, da der Store die OvenList hat
 	}*/ 
 	
-	public Oven getOvenByID(int id){
+	/*public Oven getOvenByID(int id){
 		
 		for(int i = 0; i < myOvens.size(); i++){
 			if(myOvens.get(i).getId() == id){
@@ -85,7 +89,7 @@ public class Baker extends StaffMember {
 			}
 		}
 		return null;
-	}
+	}*/
 	
 
 }

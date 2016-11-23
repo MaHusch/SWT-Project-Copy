@@ -46,9 +46,12 @@ public class BakerController {
 		
 		for(int i = 0; i < Store.getInstance().getOvens().size(); i++){
 			if(Store.getInstance().getOvens().get(i).getId() == ovenID){
+				if(Store.getInstance().getOvens().get(i).isEmpty()){
 				
-				currentBaker.getNextPizza();
-				currentBaker.putPizzaIntoOven(Store.getInstance().getOvens().get(i));
+
+					currentBaker.getNextPizza();
+					currentBaker.putPizzaIntoOven(Store.getInstance().getOvens().get(i));
+				}
 			}
 		}
 		

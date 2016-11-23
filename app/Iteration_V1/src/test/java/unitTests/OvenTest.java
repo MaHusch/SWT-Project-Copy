@@ -52,18 +52,7 @@ public class OvenTest {
 		
 	}
 	
-	@Test 	
-	public void testRegisterObserver(){
-		
-		o1.registerObserver(b1);
-		
-		assertTrue(o1.getObservers().isEmpty());
-		
-		assertEquals(b1, o1.getObservers().get(0));
-		
-		
-		
-	}
+
 	
 	
 	

@@ -61,10 +61,7 @@ public class ApplicationDataInitializer implements DataInitializer {
 		Baker Baker_Eduardo_Pienso = new Baker("Pienso", "Eduardo", "2341241212", "eddy", "pass",
 				Role.of("ROLE_BAKER"));
 
-		ArrayList<Oven> ovenList = Store.getInstance().getOvens();
-		for (Oven oven : ovenList) {
-			Baker_Eduardo_Pienso.addOven(oven);
-		}
+
 		/*****************************************************************************/
 
 		// TODO Auto-generated method stub
