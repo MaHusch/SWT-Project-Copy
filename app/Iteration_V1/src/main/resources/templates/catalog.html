@@ -22,26 +22,26 @@
 								<form method="post" action="/add">
 									<input type="hidden" name="pid" value="0" th:value="${item.id}" />
 									<input type="hidden" name="number" value="1" /> 
-									<input type="submit" value="Add" />
+									<input type="submit" value="Hinzufügen" />
 								</form>
 							</td>
 							<td sec:authorize="hasRole('ROLE_ADMIN')"> <!-- geht nicht bei Ingredients -->
 								<form method="post" action="/removeItem">
 									<input type="hidden" name="pid" value="0" th:value="${item.id}" />
 									<input type="hidden" name="number" value="1" /> 
-									<input type="submit" value="Remove" />
+									<input type="submit" value="Entfernen" />
 								</form>
 							</td>
 							<td sec:authorize="hasRole('ROLE_ADMIN')">
 								<form method="post" action="/editItem">
 									<input type="hidden" name="pid" value="0" th:value="${item.id}" />
 									<input type="hidden" name="number" value="1" /> 
-									<input type="submit" value="Edit" />
+									<input type="submit" value="Bearbeiten" />
 								</form>
 							</td>
 			</tr>			
 		</table>
-		<a href="addItem.html">Item hinzufügen</a> <!--  needs to be changed -->
+		<a href="addItem.html">Item erstellen</a> <!--  needs to be changed -->
 		<!--  <form th:action="editItem" method="post">
 	            
 	            <label for="Name">Name</label>:
@@ -54,7 +54,7 @@
 	            
 	        </form> -->
 		
-  		<table>
+  		<!--  <table>
 			<caption>Warenkorb</caption>
 			<thead>
 				<tr>
@@ -74,6 +74,6 @@
 			</tbody>
 		</table>
 		<p th:text="'Gesamt: ' + ${cart.price}">Summe: 100 Euro</p>
-		
+		 -->
 	</body>
 </html>
