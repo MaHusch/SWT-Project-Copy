@@ -55,21 +55,15 @@ public class ApplicationDataInitializer implements DataInitializer {
 		initializeCatalog(Store.itemCatalog);
 		initializeAccountancy();
 		initializeCustomers();
-		Seller Seller_Hans_Bergstein = new Seller("Bergstein", "Hans", "492161268", "hans123", "qwe");
-
-		/************************************* BAKER ************************************/
+		initializeUser();	
+	}
+	
+	private void initializeUser()
+	{
 		Baker Baker_Eduardo_Pienso = new Baker("Pienso", "Eduardo", "2341241212", "eddy", "pass");
-		
 		Deliverer Deliverer_Florentin_Dörre = new Deliverer("Doerre", "Florentin", "015123456", "flo", "123");
-
-
-		/*****************************************************************************/
-
-		// TODO Auto-generated method stub
-		Customer cu1 = new Customer("Jürgens", "Dieter", "12345");
-
-		System.out.println(tanManagement.generateNewTan(cu1.getTelephoneNumber()).getTanNumber());// tanManagement.getTan(cu1.getTelephoneNumber()).getTanNumber());
-		customerRepository.save(cu1);
+		Seller Seller_Hans_Bergstein = new Seller("Bergstein", "Hans", "492161268", "hans123", "qwe");
+			
 	}
 
 	private void initializeCatalog(ItemCatalog itemCatalog) {
@@ -78,11 +72,15 @@ public class ApplicationDataInitializer implements DataInitializer {
 			return;
 		}
 
-		Ingredient cheese = new Ingredient("Cheese", Money.of(0.50, EURO));
-		Ingredient mushroom = new Ingredient("mushrooms", Money.of(1.00, EURO));
+		Ingredient cheese = new Ingredient("Käse", Money.of(0.50, EURO));
+		Ingredient mushroom = new Ingredient("Pilze", Money.of(1.00, EURO));
+		Ingredient pineapple = new Ingredient("Ananas", Money.of(1.00, EURO));
+		Ingredient oniens = new Ingredient("Zwiebeln", Money.of(0.50, EURO));
+		
 		Pizza pizza1 = new Pizza("pizza1", Money.of(2.50, EURO));
 		Pizza pizza2 = new Pizza("pizza2", Money.of(2.50, EURO));
 		Pizza pizza3 = new Pizza("pizza3", Money.of(2.50, EURO));
+		Pizza custom = new Pizza("Basis",Money.of(2.0, EURO));
 		Item beer = new Item("Beer", Money.of(1.60, EURO), ItemType.DRINK);
 		Item freebeer = new Item("Beer", Money.of(0.0, EURO), ItemType.FREEDRINK); // extra
 																					// FreeDrink
@@ -103,11 +101,21 @@ public class ApplicationDataInitializer implements DataInitializer {
 		Store.itemCatalog.save(beer);
 		Store.itemCatalog.save(freebeer);
 		Store.itemCatalog.save(salat);
+		Store.itemCatalog.save(pineapple);
+		Store.itemCatalog.save(oniens);
+		Store.itemCatalog.save(custom);
 
+		/*Iterable<Item> test = Store.itemCatalog.findByType(ItemType.INGREDIENT);
+		
+		for(Item i : test)
+		{
+			System.out.println(i.getName());
+		}*/
 	}
 
-	public void initializeAccountancy() {
-		/********************************* ACCOUNTANY ************************************/
+	public void initializeAccountancy() 
+	{
+		
 		AccountancyEntry ace1 = new AccountancyEntry(Money.of(50, "EUR"), "Einkauf");
 		AccountancyEntry ace2 = new AccountancyEntry(Money.of(-200, "EUR"), "Diebstahl");
 		AccountancyEntry ace3 = new AccountancyEntry(Money.of(536, "EUR"), "Großbestellung");
@@ -116,11 +124,11 @@ public class ApplicationDataInitializer implements DataInitializer {
 		accountancy.add(ace3);
 
 		(new Thread(new SalaryThread(accountancy, businessTime))).start();
-		/*****************************************************************************/
-
+		
 	}
 
-	public void initializeCustomers() {
+	public void initializeCustomers() 
+	{
 		Customer cu1 = new Customer("Jürgens", "Dieter", "12345");
 		tanManagement.confirmTan(tanManagement.generateNewTan(cu1.getTelephoneNumber()));
 		// System.out.println(tanManagement.getTan(cu1.getTelephoneNumber()).getTanNumber());//tanManagement.getTan(cu1.getTelephoneNumber()).getTanNumber());
@@ -129,8 +137,10 @@ public class ApplicationDataInitializer implements DataInitializer {
 		tanManagement.confirmTan(tanManagement.generateNewTan(cu2.getTelephoneNumber()));
 		// System.out.println(tanManagement.getTan(cu2.getTelephoneNumber()).getTanNumber());//tanManagement.getTan(cu1.getTelephoneNumber()).getTanNumber());
 		customerRepository.save(cu2);
+		System.out.println(tanManagement.generateNewTan(cu1.getTelephoneNumber()).getTanNumber());// tanManagement.getTan(cu1.getTelephoneNumber()).getTanNumber());
 		for (Customer c : customerRepository.findAll()) {
 			// System.out.println("test"+c.getId());
+			
 		}
 	}
 }
