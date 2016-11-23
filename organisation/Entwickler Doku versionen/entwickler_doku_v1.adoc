@@ -27,7 +27,7 @@
 Kurzer Überblick über Ihre grundlegenden Entscheidungen und Lösungsansätze, die jeder, der mit der Architektur zu tun hat, verstanden haben sollte.
 
 == Bausteinsicht
-* Package-Diagramme
+* link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/artefacts/Entwurf/package__Package_Diagramm.jpg[Package-Diagramme]
 
 == Entwurfsentscheidungen
 * Architektur
