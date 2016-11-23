@@ -47,6 +47,12 @@
 		
 			<h1>Delivery Dashboard</h1>
 			
+			<form th:action="checkIn" method="post">
+				<input type="submit" value="checkIn" />
+			</form>
+			<form th:action="checkOut" method="post">
+				<input type="submit" value="checkOut" />
+			</form>
 			<form th:action="logout" method="post">
 				<input type="submit" value="logout" />
 			</form>
