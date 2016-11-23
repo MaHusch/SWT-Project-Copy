@@ -25,9 +25,9 @@ public class Baker extends StaffMember {
 	
 @Id @GeneratedValue private long employeeID;
 	
-	public Baker(String surname, String forename,String telephoneNumber, String username, String password, Role role){
+	public Baker(String surname, String forename,String telephoneNumber, String username, String password){
 		super(surname,forename,telephoneNumber);
-		this.updateUserAccount(username, password, role);
+		this.updateUserAccount(username, password, Role.of("ROLE_BAKER"));
 	} 
 	
 	public Baker(String surname, String forename,String telephoneNumber){

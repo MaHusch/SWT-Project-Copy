@@ -101,9 +101,9 @@ public class Oven {
 		}
 	}
 	
-	public ArrayList<Baker> getObservers(){
+	/*public ArrayList<Baker> getObservers(){
 		return Observers;
-	}
+	}*/
 	
 	
 	

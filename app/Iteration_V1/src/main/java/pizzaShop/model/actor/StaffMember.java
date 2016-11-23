@@ -9,7 +9,7 @@ import org.salespointframework.useraccount.*;
 import pizzaShop.model.store.Store;
 
 @Entity
-public class StaffMember extends Person{
+public abstract class StaffMember extends Person{
 	
 	
 	@Id @GeneratedValue private long employeeID;

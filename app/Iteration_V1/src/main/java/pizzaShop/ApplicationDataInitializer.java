@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import pizzaShop.model.actor.Baker;
 import pizzaShop.model.actor.Customer;
+import pizzaShop.model.actor.Deliverer;
 import pizzaShop.model.actor.Seller;
 import pizzaShop.model.catalog_item.Ingredient;
 import pizzaShop.model.catalog_item.Item;
@@ -54,12 +55,12 @@ public class ApplicationDataInitializer implements DataInitializer {
 		initializeCatalog(Store.itemCatalog);
 		initializeAccountancy();
 		initializeCustomers();
-		Seller Seller_Hans_Bergstein = new Seller("Bergstein", "Hans", "492161268", "hans123", "qwe",
-				Role.of("ROLE_SELLER"));
+		Seller Seller_Hans_Bergstein = new Seller("Bergstein", "Hans", "492161268", "hans123", "qwe");
 
 		/************************************* BAKER ************************************/
-		Baker Baker_Eduardo_Pienso = new Baker("Pienso", "Eduardo", "2341241212", "eddy", "pass",
-				Role.of("ROLE_BAKER"));
+		Baker Baker_Eduardo_Pienso = new Baker("Pienso", "Eduardo", "2341241212", "eddy", "pass");
+		
+		Deliverer Deliverer_Florentin_Dörre = new Deliverer("Doerre", "Florentin", "015123456", "flo", "123");
 
 
 		/*****************************************************************************/

@@ -1,6 +1,6 @@
 package pizzaShop.model.actor;
 
-public class Person {
+public abstract class Person {
 	
 	private String surname;
 	private String forename; 

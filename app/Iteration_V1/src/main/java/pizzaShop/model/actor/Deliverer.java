@@ -3,13 +3,21 @@ package pizzaShop.model.actor;  //TODO: Store should be tested before
 import java.util.*;
 
 import org.salespointframework.order.OrderIdentifier;
+import org.salespointframework.useraccount.Role;
 
 public class Deliverer extends StaffMember {
 	Boolean available;
 	List<OrderIdentifier> orderToDeliver;
 	
-	public Deliverer(String surname, String forename, String telephoneNumber) {
+	public Deliverer(String surname, String forename, String telephoneNumber, String username, String password) {
 		super(surname, forename, telephoneNumber);
+		this.setAvailable(false);
+		this.orderToDeliver = new LinkedList<OrderIdentifier>();
+		this.updateUserAccount(username, password, Role.of("ROLE_DELIVERER"));
+	}
+	
+	public Deliverer(String surname, String forename, String telephonenumber){
+		super(surname, forename,telephonenumber);
 		this.setAvailable(false);
 		this.orderToDeliver = new LinkedList<OrderIdentifier>();
 	}

@@ -97,4 +97,9 @@ public class Store {
 		return order;
 		
 	}
+	
+	public void updatePizzaqueue(Pizza pizza){
+		
+		
+	}
 }
