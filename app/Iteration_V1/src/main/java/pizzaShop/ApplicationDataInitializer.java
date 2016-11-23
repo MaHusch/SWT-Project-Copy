@@ -53,6 +53,7 @@ public class ApplicationDataInitializer implements DataInitializer {
 		
 		initializeCatalog(Store.itemCatalog);
 		initializeAccountancy();
+		initializeCustomers();
 		Seller Seller_Hans_Bergstein = new Seller("Bergstein","Hans","492161268","hans123", "qwe", Role.of("ROLE_SELLER"));
 		
 		/*************************************BAKER************************************/
@@ -124,5 +125,18 @@ public class ApplicationDataInitializer implements DataInitializer {
 		(new Thread(new SalaryThread(accountancy, businessTime))).start();
 		/*****************************************************************************/
 
+	}
+	
+	public void initializeCustomers(){
+		Customer cu1 = new Customer("Jürgens", "Dieter", "12345");
+		tanManagement.confirmTan(tanManagement.generateNewTan(cu1.getTelephoneNumber()));
+		//System.out.println(tanManagement.getTan(cu1.getTelephoneNumber()).getTanNumber());//tanManagement.getTan(cu1.getTelephoneNumber()).getTanNumber());
+		customerRepository.save(cu1);
+		Customer cu2 = new Customer("Pete", "Dieter", "123456");
+		tanManagement.confirmTan(tanManagement.generateNewTan(cu2.getTelephoneNumber()));
+		//System.out.println(tanManagement.getTan(cu2.getTelephoneNumber()).getTanNumber());//tanManagement.getTan(cu1.getTelephoneNumber()).getTanNumber());
+		customerRepository.save(cu2);
+		for(Customer c : customerRepository.findAll()){
+		//System.out.println("test"+c.getId());
 	}
 }

@@ -2,7 +2,6 @@ package pizzaShop.controller;
 
 import java.util.Optional;
 
-import org.salespointframework.accountancy.AccountancyEntry;
 import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.Order;
@@ -27,16 +26,16 @@ import pizzaShop.model.store.ItemCatalog;
 import pizzaShop.model.store.PizzaOrder;
 import pizzaShop.model.tan_management.Tan;
 import pizzaShop.model.tan_management.TanManagement;
-import pizzaShop.model.tan_management.TanStatus;
 
 @Controller
-@SessionAttributes({ "cart", "customer" })
+@SessionAttributes("cart")
 public class CartController {
 
 	private final OrderManager<Order> orderManager;
 	private final ItemCatalog itemCatalog;
 	private final TanManagement tanManagement;
 	private final CustomerRepository customerRepository;
+	private Customer customer;
 
 	@Autowired
 	public CartController(OrderManager<Order> orderManager, ItemCatalog itemCatalog, TanManagement tanManagement, CustomerRepository customerRepository) {
@@ -51,13 +50,17 @@ public class CartController {
 		return new Cart();
 	}
 	
-	@ModelAttribute("customer")
-	public Optional<Customer> initializeCustomer() {
-		return Optional.empty();
-	}
 
 	@RequestMapping("/orders")
 	public String pizzaCart(Model model, @ModelAttribute Cart cart) {
+		Customer c = new Customer("a", "b", "1");
+		customerRepository.save(c);
+		Customer temp;
+		for(Customer ca : customerRepository.findAll()){
+			temp = ca;
+			System.out.println("test"+temp.getId());
+		}
+		System.out.println("test"+customerRepository.findOne((long) 1).getTelephoneNumber());
 		model.addAttribute("items", itemCatalog.findAll());
 		model.addAttribute("total", cart.getPrice());
 		model.addAttribute("orders", orderManager.findBy(OrderStatus.OPEN));
@@ -72,14 +75,15 @@ public class CartController {
 	}
 
 	@RequestMapping(value = "/checkTan", method = RequestMethod.POST)
-	public String checkTan(@RequestParam("tnumber") String telephoneNumber, @RequestParam("tan") String tanValue, @ModelAttribute Optional<Customer> customer) {
+	public String checkTan(@RequestParam("tnumber") String telephoneNumber, @RequestParam("tan") String tanValue) {
 		Tan tan = tanManagement.getTan(telephoneNumber);
 		if (tan.getTanNumber().equals(tanValue)) {
-			for (Customer c : customerRepository.findAll()) {
-				/*if (telephoneNumber == c.getTelephoneNumber()) {
-					//customer = Optional.of(c);
-					System.out.println("valid");
-				}*/
+			for(Customer c : customerRepository.findAll()) {
+				System.out.println("test"+c.getTelephoneNumber());
+				if (telephoneNumber == c.getTelephoneNumber()) {
+					customer = c;
+					System.out.println("valid"+customer.getTelephoneNumber());
+				}
 			}
 		}
 		else{System.out.println("fail");}
@@ -89,14 +93,14 @@ public class CartController {
 	}
 
 	@RequestMapping(value = "/checkout", method = RequestMethod.POST)
-	public String buy(@ModelAttribute Cart cart, @LoggedIn Optional<UserAccount> userAccount, @ModelAttribute Optional<Customer> customer) {
+	public String buy(@ModelAttribute Cart cart, @LoggedIn Optional<UserAccount> userAccount) {
 		if (!userAccount.isPresent()) {
 			return "redirect:login";
 		}
-		else if(!customer.isPresent()){
+		/*else if(!customer.isPresent()){
 			return "redirect:orders";
-		}
-		PizzaOrder order = new PizzaOrder(userAccount.get(), Cash.CASH, tanManagement.getTan(customer.get().getTelephoneNumber()));
+		}*/
+		PizzaOrder order = new PizzaOrder(userAccount.get(), Cash.CASH, tanManagement.getTan(customer.getTelephoneNumber()));
 		cart.addItemsTo(order.getOrder());
 		orderManager.save(order.getOrder());
 		cart.clear();
@@ -104,3 +108,4 @@ public class CartController {
 
 	}
 }
+

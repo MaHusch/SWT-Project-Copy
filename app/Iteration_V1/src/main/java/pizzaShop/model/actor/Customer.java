@@ -5,12 +5,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class Customer extends Person{
-	
-	private boolean myCutlery = false; //temporärer Workaround weil Klasse Cutlery nicht existiert 
-	@Id @GeneratedValue private long customerID;
-	
-	
+public class Customer extends Person {
+
+	private boolean myCutlery = false; // temporärer Workaround weil Klasse
+										// Cutlery nicht existiert
+	private @Id @GeneratedValue long customerID;
+
+	public Customer() {
+
+	}
+
 	public Customer(String surname, String forename, String telephoneNumber) {
 		super(surname, forename, telephoneNumber);
 		// TODO Auto-generated constructor stub
@@ -24,6 +28,8 @@ public class Customer extends Person{
 		this.myCutlery = myCutlery;
 	}
 	
-	
-	
+	public long getId(){
+		return customerID;
+	}
+
 }
