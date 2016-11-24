@@ -38,7 +38,7 @@ public class CartController {
 	private final ItemCatalog itemCatalog;
 	private final TanManagement tanManagement;
 	private final CustomerRepository customerRepository;
-	private Customer customer;
+	private Optional<Customer> customer = Optional.empty();
 
 	@Autowired
 	public CartController(OrderManager<Order> orderManager, ItemCatalog itemCatalog, TanManagement tanManagement, CustomerRepository customerRepository) {
@@ -64,16 +64,14 @@ public class CartController {
 
 	@RequestMapping("/orders")
 	public String pizzaOrder(Model model) {
-		Customer c = new Customer("a", "b", "1");
-		customerRepository.save(c);
-		Customer temp;
 		for(Customer ca : customerRepository.findAll()){
-			temp = ca;
-			System.out.println("test"+temp.getId());
+			System.out.println("ID: "+ca.getId()+" tel: "+ca.getTelephoneNumber()+" Name: "+ca.getForename());
 		}
-		System.out.println("test"+customerRepository.findOne((long) 1).getTelephoneNumber());
+		//System.out.println("test"+customerRepository.findOne((long) 1).getTelephoneNumber());
 		model.addAttribute("items", itemCatalog.findAll());
 		model.addAttribute("orders", orderManager.findBy(OrderStatus.OPEN));
+		model.addAttribute("customer", customer);
+		
 		return "orders";
 	}
 
@@ -95,9 +93,9 @@ public class CartController {
 		if (tan.getTanNumber().equals(tanValue)) {
 			for(Customer c : customerRepository.findAll()) {
 				System.out.println("test"+c.getTelephoneNumber());
-				if (telephoneNumber == c.getTelephoneNumber()) {
-					customer = c;
-					System.out.println("valid"+customer.getTelephoneNumber());
+				if (telephoneNumber.equals(c.getTelephoneNumber())) {
+					customer = Optional.of(c);
+					System.out.println("valid: "+tanValue+" tel: "+customer.get().getTelephoneNumber());
 				}
 			}
 		}
@@ -112,14 +110,14 @@ public class CartController {
 		if (!userAccount.isPresent()) {
 			return "redirect:login";
 		}
-		/*else if(!customer.isPresent()){
-			return "redirect:orders";
-		}*/
-		PizzaOrder order = new PizzaOrder(userAccount.get(), Cash.CASH, new Tan("11221", TanStatus.VALID));//tanManagement.getTan(customer.getTelephoneNumber()));
-		cart.addItemsTo(order.getOrder());
-		orderManager.save(order.getOrder());
-		Store.getInstance().analyzeOrder(order);
-		cart.clear();
+		if(customer.isPresent()){
+			PizzaOrder pizzaOrder = new PizzaOrder(userAccount.get(), Cash.CASH, tanManagement.generateNewTan(customer.get().getTelephoneNumber()));//tanManagement.getTan(customer.getTelephoneNumber()));
+			cart.addItemsTo(pizzaOrder.getOrder());
+			orderManager.save(pizzaOrder.getOrder());
+			Store.getInstance().analyzeOrder(pizzaOrder);
+			cart.clear();
+			//customer = Optional.empty(); disabled for testing purposes
+		}
 		return "redirect:orders";
 
 	}

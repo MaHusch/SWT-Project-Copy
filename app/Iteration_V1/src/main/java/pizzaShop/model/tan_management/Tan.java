@@ -1,10 +1,20 @@
 package pizzaShop.model.tan_management;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+
+@Entity
 public class Tan {
 	
-	private String number;
+
+	
+	@Id private String number;
 	
 	private TanStatus status;
+	
+	public Tan(){}
 	
 	public Tan(String number, TanStatus status)
 	{
