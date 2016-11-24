@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.salespointframework.order.OrderIdentifier;
 
 import pizzaShop.model.actor.Deliverer;
 import pizzaShop.model.store.PizzaOrder;
@@ -11,19 +12,22 @@ import pizzaShop.model.store.PizzaOrder;
 public class DelivererTest {
 
 	Deliverer d1;
-	PizzaOrder o1; // TODO : test
+	
 	
 	@Before
 	public void setUp() throws Exception 
 	{
 		d1 = new Deliverer("Horst", "Peter", "1234");
 		
+		
 	}
 
-	/*@Test
-	public void testConstructor() { // TODO
-		
-	}*/
+	@Test
+	public void testConstructor()
+	{ 
+		assertTrue(d1.getOrders().isEmpty());
+		assertNotNull(d1.getUserAccount());
+	}
 	
 	@Test
 	public void testGetter()
@@ -41,6 +45,21 @@ public class DelivererTest {
 		assertFalse(d1.getAvailable());
 		
 	}
+	
+	/*@Test
+	public void testaddOrderIdentifier()
+	{
+		d1.addOrder(oi1);
+		assertTrue(d1.getOrders().contains(o1));
+	}
 
-	//TODO : test List<OrderIdentifier>
+	@Test
+	public void testremoveOrderIdentifier()
+	{
+		assertEquals(oi1,d1.removeOrder(oi1));
+		assertFalse(d1.getOrders().contains(o1));
+		d1.clearOrders();
+		assertTrue(d1.getOrders().isEmpty());
+	}*/
+	
 }

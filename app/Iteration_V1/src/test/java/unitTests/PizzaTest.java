@@ -63,5 +63,15 @@ public class PizzaTest {
 		assertEquals(p1.getIngredients().size(),0);
 	}
 	
+	@Test
+	public void testtoString()
+	{
+		assertEquals(p1.toString(),"Pizza");
+		p1.addIngredient(i1);
+		assertEquals(p1.toString(),"Pizza(Tomato)");
+		p1.addIngredient(i2);
+		assertEquals(p1.toString(),"Pizza(Tomato,Salami)");
+	}
+	
 
 }

@@ -29,7 +29,7 @@ public class OvenTest {
 		p1 = new Pizza("p1",Money.of(2.50, EURO));
 		p2 = new Pizza("p2",Money.of(2.50, EURO));
 		
-		b1 = new Baker("Pienso","Eduardo","2341241212","eddy","pass",Role.of("ROLE_BAKER"));
+		b1 = new Baker("Pienso","Eduardo","2341241212","eddy","pass");
 		
 		
 	}
