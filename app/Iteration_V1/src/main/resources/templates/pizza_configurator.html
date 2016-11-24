@@ -12,24 +12,28 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 
  <script type="text/javascript">
 
+ var items = []; 
+ 
  function addIngredient(){
 
     var ingredient_list = document.getElementById('ingredient_list');
     var INDEX = ingredient_list.selectedIndex; 
 	
     var item_id = ingredient_list[INDEX].id
-    setIngredientID(item_id);
-    
     var item_value = ingredient_list[INDEX].value
+    
+    items.push(item_id);
+    
+    transmitItems();
+    
     var ul = document.getElementById("pizza_configuration");
     var li = document.createElement("option");
-    li.id = item_id
     li.appendChild(document.createTextNode(item_value));
     ul.appendChild(li);
  }
  
- function setIngredientID(val){
-	 	document.getElementById('id_transmit').value = val
+ function transmitItems(val){
+	 	document.getElementById('id_transmit').value = items
 	 }
 
  </script>
@@ -41,21 +45,22 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
  
  
  
- <select id = "ingredient_list" name="ingredient List" size="5">
-      <option th:each="item : ${items}" th:text="${item.getName()} + ' ' + ${item.getPrice()}"  id="0" th:id="${item.getId()}">Cheese</option>
- </select>
+	 <select id = "ingredient_list" name="ingredient List" size="5">
+	      <option th:each="item : ${items}" th:text="${item.getName()} + ' ' + ${item.getPrice()}"  id="0" th:id="${item.getId()}">Cheese</option>
+	 </select>
+	
+	
+	<select id = "pizza_configuration" name="ingredient List" size="5">
+	</select>
+	
+	<input id="addIngredient" type="button" value="add ingredient" onclick="addIngredient();" />
+	
+	<form method="post" action="/addIngredientToPizza">
+				<input type="submit" name="id" value="Pizza fertigstellen"/>
+				<input type="hidden" name="id_transmit" id="id_transmit" value="" />
+	</form>
 
 
-<select id = "pizza_configuration" name="ingredient List" size="5">
-</select>
-
-<form method="post" action="/addIngredientToPizza">
-			<input type="submit" name="id" value="Zutat hinzufügen" onclick = "addIngredient();" />
-			<input type="hidden" name="id_transmit" id="id_transmit" value="" />
-</form>
-
-
-<input id="addIngredient" type="button" value="add_ingredient" onclick="addIngredient();" />
 
 
 

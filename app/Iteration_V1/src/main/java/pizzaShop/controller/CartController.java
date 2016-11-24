@@ -53,9 +53,17 @@ public class CartController {
 		return new Cart();
 	}
 	
+	@RequestMapping("/cart")
+	public String pizzaCart(Model model,@ModelAttribute Cart cart )
+	{
+		model.addAttribute("total", cart.getPrice());
+		
+		return "cart";
+	}
+	
 
 	@RequestMapping("/orders")
-	public String pizzaCart(Model model, @ModelAttribute Cart cart) {
+	public String pizzaOrder(Model model) {
 		Customer c = new Customer("a", "b", "1");
 		customerRepository.save(c);
 		Customer temp;
@@ -65,7 +73,6 @@ public class CartController {
 		}
 		System.out.println("test"+customerRepository.findOne((long) 1).getTelephoneNumber());
 		model.addAttribute("items", itemCatalog.findAll());
-		model.addAttribute("total", cart.getPrice());
 		model.addAttribute("orders", orderManager.findBy(OrderStatus.OPEN));
 		return "orders";
 	}

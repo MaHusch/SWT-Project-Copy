@@ -7,8 +7,12 @@
 	</head>
 	<body>
 		<h1>Papa Pizza</h1>
-		
+		<!-- Navigation nur zu Testzwecken -->
 		<a href="catalog.html">Catalog</a>
+		<a href="pizza_configurator.html">Pizza erstellen</a>
+		<a href="orders.html">Bestellungen</a>
+		<a href="cart.html">Warenkorb</a>
+		<a href="finances.html">Finances</a>
 		
 		<form th:action="login" method="post">
 				<input type="submit" value="login" />
@@ -43,7 +47,7 @@
 		
 		
 		
-		<div sec:authorize="hasRole('ROLE_DELIVERY')" >
+		<div sec:authorize="hasRole('ROLE_DELIVERER')" >
 		
 			<h1>Delivery Dashboard</h1>
 			

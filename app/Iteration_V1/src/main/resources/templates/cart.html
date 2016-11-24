@@ -1,0 +1,35 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/style.css}" />
+<title>Warenkorb</title>
+</head>
+<body>
+		<h1> Warenkorb </h1>
+		
+	  <table>
+			<caption>Warenkorb</caption>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Anzahl</th>
+					<th>Preis</th>
+				</tr>
+			</thead>
+			<tbody th:remove="all-but-first">
+
+				<tr th:each="item : ${cart} ">
+					<td th:text="${item.productName}">Gemüse</td>
+					<td th:text="${item.quantity}">10</td>
+					<td th:text="${item.price}">10 Euro</td>
+				</tr>
+
+			</tbody>
+		</table>
+		<p th:text="'Gesamt: ' + ${cart.price}">Summe: 100 Euro</p>
+		 
+</body>
+</html>
