@@ -24,7 +24,7 @@ public abstract class StaffMember extends Person{
 		
 		super(surname, forename, telephoneNumber);
 		
-		Store.staffMemberList.add(this);
+		//Store.staffMemberList.add(this); now in Controller
 		
 	}
 	
@@ -46,6 +46,7 @@ public abstract class StaffMember extends Person{
 			Store.employeeAccountManager.save(this.userAccount);
 		}else{
 			// updateUserAccount
+			
 		}
 				
 		
@@ -53,10 +54,28 @@ public abstract class StaffMember extends Person{
 		
 	}
 	
-	public void setUserAccount(UserAccount userAccount)	{ this.userAccount = userAccount;}
-	public void setUsername(String username)			{ this.username = username;}
-	public void setPassword(String password)			{ this.password = password;}
-	public void setRole(Role role)						{ this.role = role;}
+	public void setUserAccount(UserAccount userAccount)	
+	{ 
+		this.userAccount = userAccount;
+	}
 	
-	public UserAccount getUserAccount()					{ return this.userAccount;}
+	public void setUsername(String username)			
+	{ 
+		this.username = username;
+	}
+	
+	public void setPassword(String password)			
+	{ 
+		this.password = password;
+	}
+	
+	public void setRole(Role role)						
+	{ 
+		this.role = role;
+	}
+	
+	public UserAccount getUserAccount()					
+	{ 
+		return this.userAccount;
+	}
 }

@@ -23,6 +23,7 @@ public class Item extends Product {
 	
 	public Item(String name, javax.money.MonetaryAmount price,ItemType type)
 	{
+		// test Arguments (empty or false)
 		super(name,price);
 		this.type = type;
 		
@@ -30,6 +31,7 @@ public class Item extends Product {
 	}
 	
 	// TODO: construktor for freedrink? (no price needed)
+	
 	
 	public void setType(ItemType type)
 	{
@@ -39,6 +41,23 @@ public class Item extends Product {
 	public ItemType getType()
 	{
 		return type;
+	}
+	
+	public String toString() //for catalog template
+	{
+		switch(type) 
+		{
+		default: 
+			return "Getränk";
+		case FREEDRINK:
+			return "Freigetränk";
+		case INGREDIENT:
+			return "Zutat";
+		case SALAD:
+			return "Salad";
+		case PIZZA:
+			return "Pizza";
+		}
 	}
 	
 }

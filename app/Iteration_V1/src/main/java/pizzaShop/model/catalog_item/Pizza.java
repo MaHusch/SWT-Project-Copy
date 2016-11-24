@@ -8,6 +8,8 @@ import javax.persistence.OneToMany;
 
 import org.salespointframework.order.OrderIdentifier;
 
+import javassist.bytecode.Descriptor.Iterator;
+
 
 @Entity
 public class Pizza extends Item {
@@ -75,18 +77,23 @@ public class Pizza extends Item {
 		OrderId = orderId;
 	}
 	
-	/*public String toString()  //TODO: nicerer String
+	public String toString()  //TODO: nicerer String
 	{
-		String result = "Pizza";
+		String result = super.toString();
+		java.util.Iterator<Ingredient> i =ingredients.iterator();
 		
-		if(ingredients.size() != 0) result += " besteht aus "; 
-		for(Ingredient i : ingredients)
-		{
+		if(i.hasNext()) 
+		{	
+			result += "(" + i.next().getName();
 			
-			result += ", " + i.getName();
+			for(;i.hasNext();)
+			{
+				result += "," + i.next().getName();
+			}
+		
+			result += ")";
 		}
 		
-		
-		return result + ".";
-	}*/
+		return result;
+	}
 }
