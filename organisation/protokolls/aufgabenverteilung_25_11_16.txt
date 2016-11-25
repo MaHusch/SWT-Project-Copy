@@ -1,0 +1,27 @@
+aufgaben
+
+mitarbeiter/kunden/tan  anzeigen (Jannik)
+
+navigationsleiste (martin)
+
+tests (units bzw integrationstest(siehe testplan)) auch in testplan einfügen 
+
+css wer bock hat 
+
+pizzen im catalog anklickbar (erweiterbar/configurator mit optional) (Mel)
+
+items editierbar(florentin)
+
+dokus (jdoc (siehe videoshop) , entwickler , testplan)
+
+wann ist order fertig (pizza alle gebacken) ?
+--> order weiß anzahl pizzen und pizza weiß welcher order sie angehört (Joris)
+     - order wir nach backen der pizzen wird nach backen "finalisiert" (martin)
+     - seller sieht "ausliefbare orders" und kann "available" deliverer zuordnen (florentin)
+     - deliverer sieht seine orders
+
+ekd anpassen (jeder seine veränderungen)
+
+
+
+
