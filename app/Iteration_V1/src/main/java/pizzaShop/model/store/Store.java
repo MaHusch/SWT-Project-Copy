@@ -89,6 +89,7 @@ public class Store {
 				((Pizza) temp).setOrderId(order.getId());
 				for(int i = 0; i < l.getQuantity().getAmount().intValue(); i++){
 					pizzaQueue.add(((Pizza) temp));
+					order.addAsUnbaked();
 				}
 				
 				System.out.println(pizzaQueue);
