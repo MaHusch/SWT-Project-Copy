@@ -1,12 +1,8 @@
 package pizzaShop.model.store;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.OneToOne;
 
 import org.salespointframework.order.Order;
 import org.salespointframework.order.OrderIdentifier;
@@ -23,10 +19,11 @@ public class PizzaOrder{
 	@EmbeddedId private OrderIdentifier orderIdentifier;
 	private boolean freeDrink;
 	private boolean pickUp;
-	@Transient private Tan newTan;
+	@OneToOne private Tan newTan;
 	//private PizzaOrderStatus pizzaOrderStatus;
-	private final Order order;
+	@OneToOne private Order order;
 	
+	public PizzaOrder(){}
 	
 	public PizzaOrder(UserAccount userAccount, Tan newTan) {
 		this.order = new Order(userAccount);

@@ -9,17 +9,20 @@
 </head>
 <body>
 	<h1>Cart</h1>
-	
+
 	<div>
 		<h2>Kunden überprüpfen</h2>
 		<form method="post" action="/checkTan">
-			<label for="surname">Telefonnummer</label>:
-	        <input type="text" id="tnumber" name="tnumber"/> <br />
-	            
-	        <label for="forename">TAN</label>:
-	        <input type="text" id="tan" name="tan"/> <br />
-			<input type="submit" value="Check" />
+			<label for="surname">Telefonnummer</label>: <input type="text"
+				id="tnumber" name="tnumber" /> <br /> <label for="forename">TAN</label>:
+			<input type="text" id="tan" name="tan" /> <br /> <input
+				type="submit" value="Check" />
 		</form>
+	</div>
+
+	<div th:switch="${customer.isPresent()}">
+		<p th:case="true" th:text="'Kunde ist: '+${customer.get().getForename()}+' '+${customer.get().getSurname()}+' tel: '+${customer.get().getTelephoneNumber()}">User is present</p>
+		<p th:case="false" th:text="'Kein Kunde vorhanden'">User isn't present</p>
 	</div>
 
 	<!-- im cart.html zu finden
