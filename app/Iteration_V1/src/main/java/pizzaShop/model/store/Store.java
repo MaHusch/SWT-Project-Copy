@@ -99,6 +99,25 @@ public class Store {
 		
 	}
 	
+	public Item findItemByIdentifier(String identifier,ItemType filter){
+		Iterable<Item> items;
+		
+		if (filter == null) {
+			items = this.itemCatalog.findAll();
+		}
+		else{
+			items = this.itemCatalog.findByType(filter);
+		}
+		
+		for(Item item : items){
+			if(item.getId().getIdentifier().equals(identifier)){
+				return item;
+			}
+		}
+		
+		return null;	
+	}
+	
 	public void updatePizzaqueue(Pizza pizza){
 		
 		

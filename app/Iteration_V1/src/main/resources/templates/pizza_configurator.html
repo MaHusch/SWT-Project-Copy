@@ -10,52 +10,99 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <title>Pizza Konfigurator</title>
 
 
- <script type="text/javascript">
+ <script type="text/javascript">//<![CDATA[
 
  var items = []; 
  
- function addIngredient(){
+ // checks if there are already values in the configuration list in case a preconfiguration as been selected
+ function preevalutateConfiguration(){
+	 	var configuration = document.getElementById("pizza_configuration");
+		var ingredientList = document.getElementById("ingredient_list");
+		
+	 	// adds all the preexisting values to the configuration list and removes them from the ingredient list
+		for (var i = 0; i < configuration.length; i++){		
+			var itemID = configuration[i].id;
+			transmitItems(itemID);
+			
+			ingredientList.remove(itemID)
+		}
+		
+		
+}
 
-    var ingredient_list = document.getElementById('ingredient_list');
-    var INDEX = ingredient_list.selectedIndex; 
-	
-    var item_id = ingredient_list[INDEX].id
-    var item_value = ingredient_list[INDEX].value
-    
-    items.push(item_id);
-    
-    transmitItems();
-    
-    var ul = document.getElementById("pizza_configuration");
-    var li = document.createElement("option");
-    li.appendChild(document.createTextNode(item_value));
-    ul.appendChild(li);
+ function appendToList(listName,value,id){
+	 var list = document.getElementById(listName);
+	 var option = document.createElement("option");
+	 option.appendChild(document.createTextNode(value));
+	 option.setAttribute("id",id)
+	 list.appendChild(option);
  }
  
- function transmitItems(val){
-	 	document.getElementById('id_transmit').value = items
+ function addIngredient(){
+	
+    var ingredientList = document.getElementById('ingredient_list');
+    var index = ingredientList.selectedIndex; 
+	
+    var itemID = ingredientList[index].id;
+    var itemValue = ingredientList[index].value;
+    
+    //remove the selected item from the ingredient list
+    ingredientList.remove(index)
+    
+    //adds the selected item's id to the array and transmits the data to a hidden form value
+    transmitItems(itemID);
+    
+    //appends the selected item to the configuration list
+    appendToList("pizza_configuration",itemValue,itemID)
+ }
+ 
+ 
+ 
+ function removeIngredient(){
+	 // remove from the configuration list 
+	 var configuration = document.getElementById("pizza_configuration");
+	 var index = configuration.selectedIndex;
+	 
+	 var itemID = configuration[index].id
+	 var itemValue = configuration[index].value
+	 
+	 //remove the selected item from the configuration list
+	 configuration.remove(index)	 
+	 
+	 //removes the selected item's id from the items array
+	 var i = items.indexOf(itemID);
+	 if(i != -1) {
+	 	items.splice(i, 1);
 	 }
+	 
+	 //adds it back the ingredient list
+	 appendToList('ingredient_list',itemValue,itemID)
+ }
+ 
+ function transmitItems(itemID){
+	 items.push(itemID);
+	 document.getElementById('id_transmit').value = items;
+}
 
- </script>
+//]]>
+</script>
 
 </head>
 
+<body onLoad = "preevalutateConfiguration();">
 
-<body>
- 
- 
- 
 	 <select id = "ingredient_list" name="ingredient List" size="5">
 	      <option th:each="item : ${items}" th:text="${item.getName()} + ' ' + ${item.getPrice()}"  id="0" th:id="${item.getId()}">Cheese</option>
 	 </select>
 	
-	
-	<select id = "pizza_configuration" name="ingredient List" size="5">
+	<select id = "pizza_configuration" name="configuration" size="5" >
+		 <option th:each="ingredient : ${ingredients}" th:text="${ingredient.getName()} + ' ' + ${ingredient.getPrice()}"  id="0" th:id="${ingredient.getId()}">Cheese</option>
 	</select>
 	
 	<input id="addIngredient" type="button" value="add ingredient" onclick="addIngredient();" />
+	<input id="removeIngredient" type="button" value="remove ingredient" onclick="removeIngredient();" />
 	
-	<form method="post" action="/addIngredientToPizza">
+	<form method="post" action="/finishPizza">
 				<input type="submit" name="id" value="Pizza fertigstellen"/>
 				<input type="hidden" name="id_transmit" id="id_transmit" value="" />
 	</form>
