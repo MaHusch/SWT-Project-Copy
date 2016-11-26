@@ -38,6 +38,7 @@ public class CatalogController {
 	public String showCatalog(Model model)
 	{
 		model.addAttribute("items",itemCatalog.findAll());
+		model.addAttribute("ItemType",ItemType.values());
 		return "catalog";
 	}
 	

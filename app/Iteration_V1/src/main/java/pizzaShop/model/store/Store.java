@@ -89,6 +89,7 @@ public class Store {
 				((Pizza) temp).setOrderId(order.getId());
 				for(int i = 0; i < l.getQuantity().getAmount().intValue(); i++){
 					pizzaQueue.add(((Pizza) temp));
+					order.addAsUnbaked();
 				}
 				
 				System.out.println(pizzaQueue);
@@ -96,6 +97,25 @@ public class Store {
 		}
 		return order;
 		
+	}
+	
+	public Item findItemByIdentifier(String identifier,ItemType filter){
+		Iterable<Item> items;
+		
+		if (filter == null) {
+			items = this.itemCatalog.findAll();
+		}
+		else{
+			items = this.itemCatalog.findByType(filter);
+		}
+		
+		for(Item item : items){
+			if(item.getId().getIdentifier().equals(identifier)){
+				return item;
+			}
+		}
+		
+		return null;	
 	}
 	
 	public void updatePizzaqueue(Pizza pizza){

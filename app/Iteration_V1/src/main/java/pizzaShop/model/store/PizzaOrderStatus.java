@@ -1,6 +1,6 @@
 package pizzaShop.model.store;
 
-public enum PizzaOrderStatus {
+public enum PizzaOrderStatus{
 
-	INPROGRESS, DELIVERING, READY;
+	OPEN, COMPLETED, CANCELLED, DELIVERING, READY;
 }

@@ -25,6 +25,7 @@ import pizzaShop.model.actor.Customer;
 import pizzaShop.model.store.CustomerRepository;
 import pizzaShop.model.store.ItemCatalog;
 import pizzaShop.model.store.PizzaOrder;
+import pizzaShop.model.store.PizzaOrderRepository;
 import pizzaShop.model.store.Store;
 import pizzaShop.model.tan_management.Tan;
 import pizzaShop.model.tan_management.TanManagement;
@@ -38,14 +39,16 @@ public class CartController {
 	private final ItemCatalog itemCatalog;
 	private final TanManagement tanManagement;
 	private final CustomerRepository customerRepository;
+	private final PizzaOrderRepository pizzaOrderRepository;
 	private Optional<Customer> customer = Optional.empty();
 
 	@Autowired
-	public CartController(OrderManager<Order> orderManager, ItemCatalog itemCatalog, TanManagement tanManagement, CustomerRepository customerRepository) {
+	public CartController(OrderManager<Order> orderManager, ItemCatalog itemCatalog, TanManagement tanManagement, CustomerRepository customerRepository, PizzaOrderRepository pizzaOrderRepository) {
 		this.orderManager = orderManager;
 		this.itemCatalog = itemCatalog;
 		this.tanManagement = tanManagement;
 		this.customerRepository = customerRepository;
+		this.pizzaOrderRepository = pizzaOrderRepository;
 	}
 
 	@ModelAttribute("cart")
@@ -54,10 +57,8 @@ public class CartController {
 	}
 	
 	@RequestMapping("/cart")
-	public String pizzaCart(Model model,@ModelAttribute Cart cart )
+	public String pizzaCart(Model model)
 	{
-		model.addAttribute("total", cart.getPrice());
-		
 		return "cart";
 	}
 	
@@ -112,9 +113,8 @@ public class CartController {
 		}
 		if(customer.isPresent()){
 			PizzaOrder pizzaOrder = new PizzaOrder(userAccount.get(), Cash.CASH, tanManagement.generateNewTan(customer.get().getTelephoneNumber()));//tanManagement.getTan(customer.getTelephoneNumber()));
-			cart.addItemsTo(pizzaOrder.getOrder());
-			orderManager.save(pizzaOrder.getOrder());
-			Store.getInstance().analyzeOrder(pizzaOrder);
+			cart.addItemsTo(orderManager.save(pizzaOrder.getOrder()));
+			Store.getInstance().analyzeOrder(pizzaOrderRepository.save(pizzaOrder));
 			cart.clear();
 			//customer = Optional.empty(); disabled for testing purposes
 		}
