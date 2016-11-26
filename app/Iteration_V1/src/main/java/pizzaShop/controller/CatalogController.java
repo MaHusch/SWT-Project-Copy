@@ -2,6 +2,9 @@ package pizzaShop.controller;
 
 
 import static org.salespointframework.core.Currencies.EURO;
+
+import java.util.Optional;
+
 import org.javamoney.moneta.Money;
 import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.order.Cart;
@@ -52,10 +55,56 @@ public class CatalogController {
 
 	}
 	
-	@RequestMapping("/editItem")
-	public String editItem(@RequestParam("pid") ProductIdentifier id) {
+	@RequestMapping("/saveItem")
+	public String saveItem(@RequestParam("pid") ProductIdentifier id, @RequestParam("itemname") String name, 
+			 @RequestParam("itemprice") Number price, @RequestParam("itemtype") String type)
+	{
+		Item i = itemCatalog.findOne(id).orElse(null);
+		ItemType ityp;
+		// TODO: check Arguments
+		
+		switch(type)
+		{
+		default:
+			ityp = ItemType.FREEDRINK;
+			break;
+		case "DRINK":
+			ityp = ItemType.DRINK;
+			break;
+		case "INGREDIENT":
+			ityp = ItemType.INGREDIENT;
+			break;
+		case "PIZZA":
+			ityp = ItemType.PIZZA;
+			break;
+		case "SALAD":
+			ityp = ItemType.SALAD;
+			break;
+		}
+		
+		if(!i.equals(null))
+		{
+			if(i.getType().equals(ityp))
+			{
+			i.setName(name);
+			i.setPrice(Money.of(price, EURO));
+			}
+			else
+			{
+				itemCatalog.delete(i);
+				this.createItem(name, price, type);
+			}
+		}
 		
 		return "redirect:catalog";
+	}
+	
+	@RequestMapping("/editItem") 
+	public String editItem(Model model,@RequestParam("pid") ProductIdentifier id) {
+		
+		Optional<Item> i = itemCatalog.findOne(id);
+		model.addAttribute(i);
+		return "addItem";
 
 	}
 	
