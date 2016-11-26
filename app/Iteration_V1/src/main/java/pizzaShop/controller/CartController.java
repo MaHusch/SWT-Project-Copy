@@ -57,10 +57,8 @@ public class CartController {
 	}
 	
 	@RequestMapping("/cart")
-	public String pizzaCart(Model model,@ModelAttribute Cart cart )
+	public String pizzaCart(Model model)
 	{
-		model.addAttribute("total", cart.getPrice());
-		
 		return "cart";
 	}
 	
