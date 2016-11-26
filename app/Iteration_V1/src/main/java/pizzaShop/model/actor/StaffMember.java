@@ -74,8 +74,14 @@ public abstract class StaffMember extends Person{
 		this.role = role;
 	}
 	
+	public Role getRole()						
+	{ 
+		return this.role;
+	}
+	
 	public UserAccount getUserAccount()					
 	{ 
 		return this.userAccount;
 	}
+	
 }

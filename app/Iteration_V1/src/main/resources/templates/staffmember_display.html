@@ -1,0 +1,30 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}" />
+		<title>Welcome</title>
+	</head>
+	<body>
+		<h1>Welcome!</h1>
+
+		<h2>Tans</h2>
+		<table border="1">
+		
+					<tr>
+						<td>TelephoneNumber</td>
+						<td>TanNumber</td>
+						<td>Status</td>
+					</tr>	
+				<tbody>
+
+					<tr th:each=" staffmember : ${staffmember}">
+						<td th:text="${staffmember.getForename()}">Vorname</td>
+						<td th:text="${staffmember.getSurname()}">Nachname</td>
+						<td th:text="${staffmember.getRole()}">Rolle</td>
+					</tr>																						
+				</tbody>
+			</table>	
+			  
+	</body>
+</html>

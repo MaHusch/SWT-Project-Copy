@@ -16,7 +16,7 @@ public class Seller extends StaffMember{
 	
 	public Seller(String surname, String forename,String telephoneNumber, String username, String password){
 		super(surname,forename,telephoneNumber);
-		this.updateUserAccount(username, password, Role.of("ROLE_SELler"));
+		this.updateUserAccount(username, password, Role.of("ROLE_SELLER"));
 	} 
 	
 	public Seller(String surname, String forename,String telephoneNumber){
