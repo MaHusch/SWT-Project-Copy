@@ -33,7 +33,7 @@ public class MyTimerTask extends TimerTask {
 		
 		myTimer.cancel();
 		myPizza.setStatus(true);
-		myOven.notifyObservers();
+		myOven.notifyObservers(myPizza);
 		myOven.clear();
 		
 		

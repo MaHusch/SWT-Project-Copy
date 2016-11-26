@@ -23,6 +23,7 @@ public class Store {
 	
 	public static UserAccountManager employeeAccountManager;
 	public static ItemCatalog itemCatalog;
+	public static PizzaOrderRepository pizzaOrderRepo;
 	
 	public static ArrayList<StaffMember> staffMemberList;
 	public static Admin admin;
@@ -121,8 +122,20 @@ public class Store {
 		return null;	
 	}
 	
-	public void updatePizzaqueue(Pizza pizza){
+	public void updatePizzaOrder(Pizza pizza){
 		
+		if(pizza.equals(null)){
+			return;
+		}
+		else{
 		
+			Iterable<PizzaOrder> pizzaOrders = pizzaOrderRepo.findAll();
+		
+			for(PizzaOrder order : pizzaOrders){
+				if(order.getId() == pizza.getOrderId()){
+					order.markAsBaked();
+				}
+			}
+		}
 	}
 }

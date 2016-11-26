@@ -23,7 +23,7 @@ public class Oven {
 	}
 	
 	@SuppressWarnings("unused")
-	public Oven(){}		//braucht man anscheinend für Thymeleaf, aber warum?!
+	public Oven(){}		
 	
 	
 	public int getId(){
@@ -38,39 +38,27 @@ public class Oven {
 		return empty;
 	}
 		
-	public boolean notifyObservers(){
-		//System.out.println("informing bakers");
-		/*for(Baker baker : Observers){
-			baker.update(this, isEmpty());
-		}*/
-		return true;
+	public boolean notifyObservers(Pizza pizza){
+		if(!pizza.equals(null)){
+			Store.getInstance().updatePizzaOrder(pizza);
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
-	
-	/*public boolean registerObserver(Baker Observer){
-		Observers.add(Observer);
-		return true;
-	}	
-	
-	Werden nicht mehr benötigt, da der Store nur noch der Observer ist
-	
-	public boolean unregisterObserver(Baker Observer) {
-		Observers.remove(Observer);
-		return true;
-	}*/
-	
+		
 	public boolean fill(Pizza pizza){
-		currentPizza = pizza;
-		empty = false;
-		
-		notifyObservers();
-		
-		myTimer = new Timer();
-		myTimer.schedule(new MyTimerTask(myTimer, pizza, this), 0);
-
-		//notifyObservers();		ist im TimerTask drin, da nach ablauf des Timers erst der Bäker informiert werden soll
-		
-		return true;
-		 
+		if(!pizza.equals(null)){
+			currentPizza = pizza;
+			empty = false;
+			myTimer = new Timer();
+			myTimer.schedule(new MyTimerTask(myTimer, pizza, this), 0);		
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 	public void clear(){
@@ -100,12 +88,6 @@ public class Oven {
 			return null;
 		}
 	}
-	
-	/*public ArrayList<Baker> getObservers(){
-		return Observers;
-	}*/
-	
-	
 	
 }
 
