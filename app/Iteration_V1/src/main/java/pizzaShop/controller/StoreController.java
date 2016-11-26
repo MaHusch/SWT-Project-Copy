@@ -29,17 +29,22 @@ import pizzaShop.model.catalog_item.ItemType;
 import pizzaShop.model.catalog_item.Pizza;
 import pizzaShop.model.store.ItemCatalog;
 import pizzaShop.model.store.Store;
+import pizzaShop.model.tan_management.Tan;
+import pizzaShop.model.tan_management.TanManagement;
+import pizzaShop.model.tan_management.TanStatus;
 
 
 @Controller
 public class StoreController {
 	
 	ItemCatalog itemCatalog;
+	private final TanManagement tanManagement;
 
 	
 	@Autowired 
-	public StoreController(ItemCatalog itemCatalog) {
+	public StoreController(ItemCatalog itemCatalog, TanManagement tanManagement) {
 		this.itemCatalog = itemCatalog;
+		this.tanManagement = tanManagement;
 	}	
 	
 	
@@ -98,6 +103,16 @@ public class StoreController {
 		cart.addOrUpdateItem(newPizza, Quantity.of(1));
 		
 		return "redirect:cart";
+	}
+	
+	@RequestMapping("/tan")
+	public String tan(Model model) {
+		
+		model.addAttribute("tan", tanManagement.getAllTans());
+		
+		model.addAttribute("notConfirmedTans", tanManagement.getAllNotConfirmedTans());
+		
+		return "tan";
 	}
 	
 	

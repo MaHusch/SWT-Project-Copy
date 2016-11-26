@@ -132,6 +132,9 @@ public class ApplicationDataInitializer implements DataInitializer {
 
 	public void initializeCustomers() 
 	{
+		tanManagement.generateNewTan("2223333");
+		tanManagement.generateNewTan("4445555");
+		
 		Customer cu1 = new Customer("Jürgens", "Dieter", "12345");
 		tanManagement.confirmTan(tanManagement.generateNewTan(cu1.getTelephoneNumber()));
 		customerRepository.save(cu1);

@@ -1,0 +1,51 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}" />
+		<title>Welcome</title>
+	</head>
+	<body>
+		<h1>Welcome!</h1>
+
+		<h2>Tans</h2>
+		<table border="1">
+		
+					<tr>
+						<td>TelephoneNumber</td>
+						<td>TanNumber</td>
+						<td>Status</td>
+					</tr>	
+				<tbody>
+
+					<tr th:each=" entry : ${tan}">
+						<td th:text="${entry.getValue()}">TelephoneNumber</td>
+						<td th:text="${entry.getKey().getTanNumber()}">TanNumber</td>
+						<td th:text="${entry.getKey().getStatus()}">Status</td>
+					</tr>																						
+				</tbody>
+			</table>
+		
+		<br></br>
+		
+		<h2>Not Confirmed Tans</h2>
+		<table border="1">
+		
+					<tr>
+						<td>TelephoneNumber</td>
+						<td>TanNumber</td>
+						<td>Status</td>
+					</tr>	
+				<tbody>
+
+					<tr th:each=" entry : ${notConfirmedTans}">
+						<td th:text="${entry.getValue()}">TelephoneNumber</td>
+						<td th:text="${entry.getKey().getTanNumber()}">TanNumber</td>
+						<td th:text="${entry.getKey().getStatus()}">Status</td>
+					</tr>																						
+				</tbody>
+			</table>
+		
+			  
+	</body>
+</html>

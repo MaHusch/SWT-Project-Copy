@@ -1,6 +1,7 @@
 package pizzaShop.model.store;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.salespointframework.order.OrderLine;
 import org.salespointframework.useraccount.Role;
@@ -13,6 +14,7 @@ import pizzaShop.model.actor.StaffMember;
 import pizzaShop.model.catalog_item.Item;
 import pizzaShop.model.catalog_item.ItemType;
 import pizzaShop.model.catalog_item.Pizza;
+import pizzaShop.model.tan_management.TanManagement;
 
 @Component
 public class Store {
@@ -42,6 +44,7 @@ public class Store {
 		this.ovenList = new ArrayList<Oven>();		
 		this.admin = new Admin("Mustermann","Max","123456789");
 		this.admin.updateUserAccount("admin", "123", Role.of("ROLE_ADMIN"));
+			
 		
 		Oven oven1 = new Oven(this); 
 		Oven oven2 = new Oven(this); 
