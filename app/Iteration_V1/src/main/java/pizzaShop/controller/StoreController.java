@@ -48,6 +48,30 @@ public class StoreController {
 	}	
 	
 	
+	@RequestMapping("/sBaker")
+	public String sBaker()   //direct to baker dashboard(after login)
+	{
+		return "sBaker";
+	}
+	
+	@RequestMapping("/sAdmin")
+	public String sAdmin()
+	{
+		return "sAdmin";
+	}
+	
+	@RequestMapping("/sDeliverer")
+	public String sDeliverer()
+	{
+		return "sDeliverer";
+	}
+	
+	@RequestMapping("/sSeller")
+	public String sSeller()
+	{
+		return "sSeller";
+	}
+	
 	@RequestMapping({"/", "/index"})
 	public String index() {
 		return "index";
