@@ -23,10 +23,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import pizzaShop.model.actor.Customer;
 import pizzaShop.model.catalog_item.Ingredient;
 import pizzaShop.model.catalog_item.Item;
 import pizzaShop.model.catalog_item.ItemType;
 import pizzaShop.model.catalog_item.Pizza;
+import pizzaShop.model.store.CustomerRepository;
 import pizzaShop.model.store.ItemCatalog;
 import pizzaShop.model.store.Store;
 import pizzaShop.model.tan_management.Tan;
@@ -39,12 +41,14 @@ public class StoreController {
 	
 	ItemCatalog itemCatalog;
 	private final TanManagement tanManagement;
+	private final CustomerRepository customerRepository;
 
 	
 	@Autowired 
-	public StoreController(ItemCatalog itemCatalog, TanManagement tanManagement) {
+	public StoreController(ItemCatalog itemCatalog, TanManagement tanManagement, CustomerRepository customerRepository) {
 		this.itemCatalog = itemCatalog;
 		this.tanManagement = tanManagement;
+		this.customerRepository = customerRepository;
 	}	
 	
 	
@@ -145,6 +149,18 @@ public class StoreController {
 		model.addAttribute("staffmember", Store.staffMemberList);
 		
 		return "staffmember_display";
+	}
+	
+	@RequestMapping("/customer_display")
+	public String customer_display(Model model) {
+		
+		for(Customer ca : customerRepository.findAll()){
+			System.out.println("ID: "+ca.getId()+" tel: "+ca.getTelephoneNumber()+" Name: "+ca.getForename());
+		}
+		
+		model.addAttribute("customer", customerRepository.findAll());
+		
+		return "customer_display";
 	}
 	
 	

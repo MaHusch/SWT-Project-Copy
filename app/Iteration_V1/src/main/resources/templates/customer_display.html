@@ -8,20 +8,22 @@
 	<body>
 		<h1>Welcome!</h1>
 
-		<h2>Mitarbeiter</h2>
+		<h2>Kunden</h2>
 		<table border="1">
 		
 					<tr>
-						<td>Vornamer</td>
+						<td>Vorname</td>
 						<td>Nachname</td>
-						<td>Rolle</td>
+						<td>Addresse</td>
+						<td>Telefonnummer</td>
 					</tr>	
 				<tbody>
 
-					<tr th:each=" staffmember : ${staffmember}">
-						<td th:text="${staffmember.getForename()}">Vorname</td>
-						<td th:text="${staffmember.getSurname()}">Nachname</td>
-						<td th:text="${staffmember.getRole()}">Rolle</td>
+					<tr th:each=" customer : ${customer}">
+						<td th:text="${customer.getForename()}">Vorname</td>
+						<td th:text="${customer.getSurname()}">Nachname</td>
+						<td th:text="${customer.getAddress()}">Addresse</td>
+						<td th:text="${customer.getTelephoneNumber()}">Telefonnummer</td>
 					</tr>																						
 				</tbody>
 			</table>	
