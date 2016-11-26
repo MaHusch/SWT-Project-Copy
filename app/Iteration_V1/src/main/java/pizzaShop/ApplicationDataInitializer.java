@@ -64,6 +64,9 @@ public class ApplicationDataInitializer implements DataInitializer {
 		Deliverer Deliverer_Florentin_Dörre = new Deliverer("Doerre", "Florentin", "015123456", "flo", "123");
 		Seller Seller_Hans_Bergstein = new Seller("Bergstein", "Hans", "492161268", "hans123", "qwe");
 			
+		Store.staffMemberList.add(Seller_Hans_Bergstein);
+		Store.staffMemberList.add(Deliverer_Florentin_Dörre);
+		Store.staffMemberList.add(Baker_Eduardo_Pienso);
 	}
 
 	private void initializeCatalog(ItemCatalog itemCatalog) {
