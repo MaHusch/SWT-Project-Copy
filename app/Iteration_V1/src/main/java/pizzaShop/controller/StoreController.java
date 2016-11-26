@@ -154,10 +154,6 @@ public class StoreController {
 	@RequestMapping("/customer_display")
 	public String customer_display(Model model) {
 		
-		for(Customer ca : customerRepository.findAll()){
-			System.out.println("ID: "+ca.getId()+" tel: "+ca.getTelephoneNumber()+" Name: "+ca.getForename());
-		}
-		
 		model.addAttribute("customer", customerRepository.findAll());
 		
 		return "customer_display";
