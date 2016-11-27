@@ -8,6 +8,16 @@
 	</head>
 	
 	<body>
+	<nav>
+		<table>
+			<tr>
+				<td><a href="index.html">Startseite</a></td>
+				<td><a href="catalog.html">Unser Angebot</a></td>
+				<td><a href="pizza_configurator.html">Eigene Pizza erstellen</a></td>
+				<td><a sec:authorize="hasRole('ROLE_SELLER')" href="orders.html">Bestellungen</a></td>
+			</tr>
+		</table>
+	</nav>
 		
 	
 	<div ><!-- sec:authorize="hasRole('ROLE_SELLER')"  --> 

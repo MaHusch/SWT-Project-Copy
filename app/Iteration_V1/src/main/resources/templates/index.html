@@ -6,6 +6,18 @@
 		<title>Papa Pizza</title>
 	</head>
 	<body>
+	<nav>
+		<table>
+			<tr>
+				<td><a href="catalog.html">Unser Angebot</a></td>
+				<td><a href="pizza_configurator.html">Eigene Pizza erstellen</a></td>
+				<td><a href="cart.html">Warenkorb</a></td>
+				<td><a sec:authorize="hasRole('ROLE_SELLER')" href="orders.html">Bestellungen</a></td>
+				<td><a sec:authorize="hasRole('ROLE_SELLER')" href="register_customer.html">Kunden registrieren</a></td>
+				<td><a sec:authorize="hasRole('ROLE_ADMIN')" href="register_staffmember.html">Mitarbeiter registrieren</a></td>
+			</tr>
+		</table>
+	</nav>
 		<h1>Papa Pizza</h1>
 		<!-- Navigation nur zu Testzwecken -->
 		<a href="catalog.html">Catalog</a>

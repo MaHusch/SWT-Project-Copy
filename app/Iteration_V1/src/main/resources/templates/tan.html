@@ -6,6 +6,16 @@
 		<title>Welcome</title>
 	</head>
 	<body>
+	<nav>
+		<table>
+			<tr>
+				<td><a href="index.html">Startseite</a></td>
+				<td><a href="catalog.html">Unser Angebot</a></td>
+				<td><a href="cart.html">Warenkorb</a></td>
+				<td><a sec:authorize="hasRole('ROLE_SELLER')" href="orders.html">Bestellungen</a></td>
+			</tr>
+		</table>
+	</nav>
 		<h1>Welcome!</h1>
 
 		<h2>Tans</h2>

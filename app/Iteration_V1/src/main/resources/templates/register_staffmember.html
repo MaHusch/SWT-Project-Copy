@@ -8,44 +8,47 @@
 	</head>
 	
 	<body>
+	<nav>
+		<table>
+			<tr>
+				<td><a href="index.html">Startseite</a></td>
+				<td><a sec:authorize="hasRole('ROLE_ADMIN')" href="finances.html">Finanzen</a></td>
+				<td><a sec:authorize="hasRole('ROLE_ADMIN')" href="staffmember_display.html">Mitarbeiter anzeigen</a></td>
+			</tr>
+		</table>
+	</nav>
 	
 	<div sec:authorize="hasRole('ROLE_ADMIN')">
 	
-			<h2>Required Fields (*) must not be empty!</h2>
+		<h2>Required Fields (*) must not be empty!</h2>
 			
-	        <form th:action="registerEmployee" method="post">
-	            
-	            <label for="surname">Name*</label>:
-	            <input type="text" id="surname" name="surname"/> <br />
-	            
-	            <label for="forename">Vorname*</label>:
-	            <input type="text" id="forename" name="forename"/> <br />
-	            
-	             <label for="telnumber">Tel*</label>:
-	            <input type="text" id="telnumber" name="telnumber"/> <br />
-	            
-	            <label for="username">Benutzername*</label>:
-	            <input type="text" id="username" name="username"/> <br />
-	            
-	            <label for="password">Passwort*</label>:
-	            <input type="password" id="password" name="password" /> <br />
-	            
-	            <label for="role">Rolle*</label>:
+		<form th:action="registerEmployee" method="post">
+			<label for="surname">Name*</label>:
+			<input type="text" id="surname" name="surname"/> <br />
+			
+			<label for="forename">Vorname*</label>:
+			<input type="text" id="forename" name="forename"/> <br />
+			
+			<label for="telnumber">Tel*</label>:
+			<input type="text" id="telnumber" name="telnumber"/> <br />
+			
+			<label for="username">Benutzername*</label>:
+			<input type="text" id="username" name="username"/> <br />
+			
+			<label for="password">Passwort*</label>:
+			<input type="password" id="password" name="password" /> <br />
+			
+			<label for="role">Rolle*</label>:
 				<select name="role" id = "role" size="1">
-			      <option selected="selected" >Verkäufer</option>
-			      <option>Bäcker</option>
-			      <option>Lieferant</option>
-			    </select><br />
-			 
-			 
-	            <input type="submit" value="Registeren" />
-	            
-	        </form>
+					<option selected="selected" >Verkäufer</option>
+					<option>Bäcker</option>
+					<option>Lieferant</option>
+				</select><br />
+			
+			
+			<input type="submit" value="Registeren" />
+			
+		</form>
 	</div>
-	
-	
-	
-	
 	</body>
-
 </html>

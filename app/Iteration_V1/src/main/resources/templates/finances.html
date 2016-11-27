@@ -11,6 +11,16 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <title>Finances</title>
 </head>
 <body>
+	<nav>
+		<table>
+			<tr>
+				<td><a href="index.html">Startseite</a></td>
+				<td><a href="catalog.html">Unser Angebot</a></td>
+				<td><a sec:authorize="hasRole('ROLE_ADMIN')" href="customer_display.html">Kundenstamm</a></td>
+				<td><a sec:authorize="hasRole('ROLE_ADMIN')" href="register_staffmember.html">Mitarbeiter registrieren</a></td>
+			</tr>
+		</table>
+	</nav>
 	<h1>Finances</h1>
 	
 	

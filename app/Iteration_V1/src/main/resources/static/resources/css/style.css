@@ -17,11 +17,26 @@ h1 {
 	line-height: 3.2em;
 	text-align:center;
 }
+nav{
+	text-color:black;
+}
+nav table{
+	
+	width:100%;
+	background-color:tomato;
+	border: 1px solid;
+	border-color:"#E15A5A";
+	border-collapse: collapse;
+	text-align:center;
+	text-color:black;
+	
+}
+
 
 .ovens table{
 	float:left;
 	width:75%;
-	background-color:tomato;
+	background-color:red;
 	border: 1px solid;
 	border-color:"#E15A5A";
 	border-collapse: collapse;
@@ -32,6 +47,9 @@ h1 {
 .ovens td{
 	border:1px solid;
 	border-color:red;
+}
+.ovens tr:nth-child(even){
+	background-color:tomato;
 }
 
 .queue table{
