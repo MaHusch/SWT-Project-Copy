@@ -4,13 +4,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import org.salespointframework.core.AbstractEntity;
+import org.salespointframework.core.SalespointIdentifier;
+
 
 @Entity
-public class Tan {
+public class Tan extends AbstractEntity<SalespointIdentifier>{
 	
-
+	@Id private SalespointIdentifier ID;
 	
-	@Id private String number;
+	private String number;
 	
 	private TanStatus status;
 	
@@ -20,6 +23,8 @@ public class Tan {
 	{
 		this.status = status;
 		this.number = number;
+		
+		ID = new SalespointIdentifier(number);
 		
 		//System.out.println(this.number);
 		
@@ -40,6 +45,12 @@ public class Tan {
 	{
 		
 		this.status = newStatus;
+	}
+
+	@Override
+	public SalespointIdentifier getId() {
+		// TODO Auto-generated method stub
+		return this.ID;
 	}
 
 }
