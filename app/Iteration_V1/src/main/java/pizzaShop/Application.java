@@ -33,9 +33,9 @@ public class Application {
 
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
-
+			//TODO: register AuthSuccessHandler
 			http.csrf().disable();
-
+			
 			http.authorizeRequests().antMatchers("/**").permitAll().and().formLogin().loginProcessingUrl("/login").and()
 					.logout().logoutUrl("/logout").logoutSuccessUrl("/");
 		}

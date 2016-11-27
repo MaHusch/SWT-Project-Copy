@@ -67,6 +67,7 @@ public class StoreController {
 	@RequestMapping("/sDeliverer")
 	public String sDeliverer()
 	{
+		
 		return "sDeliverer";
 	}
 	
