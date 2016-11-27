@@ -9,9 +9,11 @@ import org.salespointframework.core.SalespointIdentifier;
 
 
 @Entity
-public class Tan extends AbstractEntity<SalespointIdentifier>{
+public class Tan{ //extends AbstractEntity<SalespointIdentifier>{
 	
-	@Id private SalespointIdentifier ID;
+	//@Id private SalespointIdentifier ID;
+	
+	@Id @GeneratedValue private long TanID;
 	
 	private String number;
 	
@@ -24,7 +26,7 @@ public class Tan extends AbstractEntity<SalespointIdentifier>{
 		this.status = status;
 		this.number = number;
 		
-		ID = new SalespointIdentifier(number);
+		//ID = new SalespointIdentifier(number);
 		
 		//System.out.println(this.number);
 		
@@ -47,10 +49,10 @@ public class Tan extends AbstractEntity<SalespointIdentifier>{
 		this.status = newStatus;
 	}
 
-	@Override
-	public SalespointIdentifier getId() {
+	//@Override
+	//public SalespointIdentifier getId() {
 		// TODO Auto-generated method stub
-		return this.ID;
-	}
+		//return this.ID;
+	//}
 
 }
