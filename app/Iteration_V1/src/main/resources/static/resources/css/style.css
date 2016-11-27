@@ -32,6 +32,21 @@ nav table{
 	
 }
 
+.tables table {
+
+	float:left;
+	width:100%;
+	background-color:red;
+	border: 1px solid;
+	border-color:"#E15A5A";
+	border-collapse: collapse;
+	text-align:center;	
+}
+
+.tables tr:nth-child(even) {
+	
+	background-color:tomato;
+}
 
 .ovens table{
 	float:left;
