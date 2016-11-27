@@ -52,6 +52,7 @@ public class AdminController {
 				break;
 				
 			default: //Seller ist bei HTML sowieso als default ausgewählt
+				role = "SELLER";
 				staffMember = new Seller(surname, forename, telephonenumber);
 				break;
 		}	

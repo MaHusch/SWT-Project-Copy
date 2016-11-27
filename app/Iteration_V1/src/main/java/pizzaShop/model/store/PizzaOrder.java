@@ -73,5 +73,19 @@ public class PizzaOrder {
 	public OrderIdentifier getId() {
 		return orderIdentifier;
 	}
-
+	
+	private void setOrderStatus(PizzaOrderStatus status)
+	{
+		this.pizzaOrderStatus = status;
+	}
+	
+	public void completeOrder() // TODO: creaty accountancyentry
+	{
+		this.setOrderStatus(PizzaOrderStatus.COMPLETED);
+	}
+	
+	public void deliverOrder()
+	{
+		this.setOrderStatus(PizzaOrderStatus.DELIVERING);
+	}
 }
