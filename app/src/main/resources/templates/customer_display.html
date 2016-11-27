@@ -1,0 +1,43 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}" />
+		<title>Welcome</title>
+	</head>
+	<body>
+	<nav>
+		<table>
+			<tr>
+				<td><a href="index.html">Startseite</a></td>
+				<td><a href="catalog.html">Unser Angebot</a></td>
+			</tr>
+		</table>
+	</nav>
+	
+		<h1>Welcome!</h1>
+
+		<h2>Kunden</h2>
+		<div class="tables">
+		<table border="1">
+		
+					<tr>
+						<td>Vorname</td>
+						<td>Nachname</td>
+						<td>Addresse</td>
+						<td>Telefonnummer</td>
+					</tr>	
+				<tbody>
+
+					<tr th:each=" customer : ${customer}">
+						<td th:text="${customer.getForename()}">Vorname</td>
+						<td th:text="${customer.getSurname()}">Nachname</td>
+						<td th:text="${customer.getAddress()}">Addresse</td>
+						<td th:text="${customer.getTelephoneNumber()}">Telefonnummer</td>
+					</tr>																						
+				</tbody>
+			</table>
+			</div>	
+			  
+	</body>
+</html>

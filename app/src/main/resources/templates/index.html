@@ -1,0 +1,100 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}" />
+		<title>Papa Pizza</title>
+	</head>
+	<body>
+	<nav>
+		<table>
+			<tr>
+				<td><a href="catalog.html">Unser Angebot</a></td>
+				<td><a href="pizza_configurator.html">Eigene Pizza erstellen</a></td>
+				<td><a href="cart.html">Warenkorb</a></td>
+				<td><a sec:authorize="hasRole('ROLE_SELLER')" href="orders.html">Bestellungen</a></td>
+				<td><a sec:authorize="hasRole('ROLE_SELLER')" href="register_customer.html">Kunden registrieren</a></td>
+				<td><a sec:authorize="hasRole('ROLE_ADMIN')" href="register_staffmember.html">Mitarbeiter registrieren</a></td>
+			</tr>
+		</table>
+	</nav>
+		<h1>Papa Pizza</h1>
+		<!-- Navigation nur zu Testzwecken -->
+		<a href="catalog.html">Catalog</a>
+		<a href="pizza_configurator.html">Pizza erstellen</a>
+		<a href="orders.html">Bestellungen</a>
+		<a href="cart.html">Warenkorb</a>
+		<a href="finances.html">Finances</a>
+		
+		<form th:action="login" method="post">
+				<input type="submit" value="login" />
+			</form>
+		
+		<p sec:authorize="isAuthenticated()" th:text="${'Hallo ' + #authentication?.name}">Hallo Nutzer</p>
+		
+		<div sec:authorize="hasRole('ROLE_ADMIN')" >
+		
+			<h1>Admin Dashboard</h1>
+	
+			<a href="register_staffmember.html">Neuen Mitarbeiter registrieren</a>
+			<a href="finances.html">Finances</a>
+			<a href="tan.html">Tanübersicht</a>
+			<a href="staffmember_display.html">Mitarbeiterübersicht</a>
+			<a href="customer_display.html">Kundenübersicht</a>
+			
+			<form th:action="logout" method="post">
+				<input type="submit" value="logout" />
+			</form>
+		</div>
+		
+		
+		
+		
+		<div sec:authorize="hasRole('ROLE_SELLER')" >
+			
+			<h1>Seller Dashboard</h1>
+			
+			<a href="catalog.html">Catalog</a>
+			
+			<form th:action="logout" method="post">
+				<input type="submit" value="logout" />
+			</form>
+		</div>
+		
+		
+		
+		<div sec:authorize="hasRole('ROLE_DELIVERER')" >
+		
+			<h1>Delivery Dashboard</h1>
+			
+		
+
+			<form th:action="checkIn" method="post">
+				<input type="hidden" name="pid" value="0" th:value="${user}" />	<!--  which class is user? -->
+				<input type="submit" value="checkIn" />
+			</form>
+			<form th:action="checkOut" method="post">
+				<input type="submit" value="checkOut" />
+			</form>
+			<form th:action="logout" method="post">
+				<input type="submit" value="logout" />
+			</form>
+		</div>		
+		
+		<div sec:authorize="hasRole('ROLE_BAKER')" >
+		
+			<h1>Baker Dashboard</h1>
+			
+			<a href="ovens.html">Ovens</a>
+			
+			<form th:action="logout" method="post">
+				<input type="submit" value="logout" />
+			</form>
+		</div>	
+		
+	</body>
+	
+	
+
+
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html 
+
+SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/style.css}" />
+<title>Öfen</title>
+</head>
+<body>
+	<nav>
+		<table>
+			<tr>
+				<td><a href="index.html">Startseite</a></td>
+			</tr>
+		</table>
+	</nav>
+	
+	
+		<h1>Öfen</h1>
+
+		
+	
+		<div class="ovens">
+		<table >
+			<tr th:each=" oven : ${ovens}">
+
+				<td th:text="${'Oven ID: ' + oven.getId()}">Oven ID: </td>
+				<td th:text="${'Oven content: ' + oven.getPizzaName()}">Content: </td>
+				<td>Time left: xx:yy </td>
+				<td>
+					<form method="post" action="/getNextPizza">
+						<input type="hidden" name="ovenID" value="0" th:value="${oven.getId()}" />
+						<input type="submit" value="Auswählen"  />
+					</form>
+				</td>
+			</tr>
+		</table>
+		</div>
+		
+		
+		<h2>Pizzaqueue</h2>
+		<div class="queue">
+		<table>
+		<tbody th:remove="all-but-first">
+			<tr th:each="pizza : ${queue}">
+				<td th:text = "${pizza.getName()}">Pizzas name </td>
+			</tr>		
+		</tbody>
+		</table>
+		</div>
+		
+
+</body>
+</html>

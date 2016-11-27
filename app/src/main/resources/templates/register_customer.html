@@ -1,0 +1,49 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}" />
+		<title>Welcome</title>
+	</head>
+	
+	<body>
+	<nav>
+		<table>
+			<tr>
+				<td><a href="index.html">Startseite</a></td>
+				<td><a href="catalog.html">Unser Angebot</a></td>
+				<td><a href="pizza_configurator.html">Eigene Pizza erstellen</a></td>
+				<td><a sec:authorize="hasRole('ROLE_SELLER')" href="orders.html">Bestellungen</a></td>
+			</tr>
+		</table>
+	</nav>
+		
+	
+	<div ><!-- sec:authorize="hasRole('ROLE_SELLER')"  --> 
+	
+			<h2>Kunden registrieren</h2>
+			<h2>Required Fields (*) must not be empty!</h2>
+			
+	        <form th:action="registerCustomer" method="post">
+	            
+	            <label for="surname">Name*</label>:
+	            <input type="text" id="surname" name="surname"/> <br />
+	            
+	            <label for="forename">Vorname*</label>:
+	            <input type="text" id="forename" name="forename"/> <br />
+	            
+	             <label for="telnumber">Tel*</label>:
+	            <input type="text" id="telnumber" name="telnumber"/> <br />
+	            			 
+	            <input type="submit" value="Registeren" />
+	            
+	        </form>
+	</div>
+	
+	
+	
+	
+	</body>
+
+</html>
