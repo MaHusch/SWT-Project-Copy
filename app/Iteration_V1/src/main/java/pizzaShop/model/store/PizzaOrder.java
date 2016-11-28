@@ -1,5 +1,6 @@
 package pizzaShop.model.store;
 
+import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
@@ -7,12 +8,9 @@ import javax.persistence.OneToOne;
 import org.junit.Assert;
 import org.salespointframework.order.Order;
 import org.salespointframework.order.OrderIdentifier;
-import org.salespointframework.order.OrderLine;
 import org.salespointframework.payment.PaymentMethod;
-import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
 
-import pizzaShop.model.catalog_item.Pizza;
 import pizzaShop.model.tan_management.Tan;
 
 @Entity
@@ -24,7 +22,7 @@ public class PizzaOrder {
 	private OrderIdentifier orderIdentifier;
 	private boolean freeDrink;
 	private boolean pickUp;
-	@OneToOne
+	@OneToOne(cascade = {CascadeType.ALL})
 	private Tan newTan;
 	private PizzaOrderStatus pizzaOrderStatus = PizzaOrderStatus.OPEN;
 	@OneToOne
