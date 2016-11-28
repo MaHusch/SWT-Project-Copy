@@ -65,9 +65,9 @@ public class CartController {
 
 	@RequestMapping("/orders")
 	public String pizzaOrder(Model model) {
-		for(Customer ca : customerRepository.findAll()){
+		/*for(Customer ca : customerRepository.findAll()){
 			System.out.println("ID: "+ca.getId()+" tel: "+ca.getTelephoneNumber()+" Name: "+ca.getForename());
-		}
+		}*/
 		//System.out.println("test"+customerRepository.findOne((long) 1).getTelephoneNumber());
 		model.addAttribute("items", itemCatalog.findAll());
 		model.addAttribute("orders", pizzaOrderRepository.findAll());

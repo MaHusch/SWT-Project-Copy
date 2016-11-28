@@ -27,7 +27,7 @@ public class PizzaOrder {
 	private PizzaOrderStatus pizzaOrderStatus = PizzaOrderStatus.OPEN;
 	@OneToOne
 	private Order order;
-	private int unbakedPizzas = 0;
+	private int unbakedPizzas;
 
 	public PizzaOrder() {
 	}
@@ -36,6 +36,7 @@ public class PizzaOrder {
 		this.order = new Order(userAccount);
 		this.newTan = newTan;
 		orderIdentifier = order.getId();
+		unbakedPizzas = 0;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -43,12 +44,14 @@ public class PizzaOrder {
 		this.order = new Order(userAccount, paymentMethod);
 		this.newTan = newTan;
 		orderIdentifier = order.getId();
+		unbakedPizzas = 0;
 		// TODO Auto-generated constructor stub
 	}
 
 	public int markAsBaked() {
-		unbakedPizzas--;
+		System.out.println("Unbaked Pizzas: " + unbakedPizzas);
 		Assert.assertTrue("No unbaked Pizza left!", unbakedPizzas >= 0);
+		unbakedPizzas--;
 		if (unbakedPizzas == 0) {
 			pizzaOrderStatus = PizzaOrderStatus.READY;
 			System.out.println("ready");
@@ -60,6 +63,10 @@ public class PizzaOrder {
 
 	public int addAsUnbaked() {
 		unbakedPizzas++;
+		return unbakedPizzas;
+	}
+	
+	public int getUnbakedPizzas(){
 		return unbakedPizzas;
 	}
 
