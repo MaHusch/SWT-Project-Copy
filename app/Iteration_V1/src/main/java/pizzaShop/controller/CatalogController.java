@@ -88,6 +88,8 @@ public class CatalogController {
 			{
 			i.setName(name);
 			i.setPrice(Money.of(price, EURO));
+			itemCatalog.save(i); // sonst wirds nicht auf den Catalog übertragen :O
+			
 			}
 			else
 			{
@@ -96,8 +98,8 @@ public class CatalogController {
 			}
 		}
 		System.out.println(ityp.name());
-		System.out.println(name);
-		System.out.println(price);
+		System.out.println(i.getName());
+		System.out.println(i.getPrice());
 		return "redirect:catalog";
 	}
 	
