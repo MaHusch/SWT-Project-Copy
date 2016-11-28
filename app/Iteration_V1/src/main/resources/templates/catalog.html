@@ -27,7 +27,7 @@
 			</tr>
 			<tr th:each="item : ${items} ">
 				<td th:text="${item.getName()}">PizzaPizza</td>
-				<td th:text="${item.getPrice()} + 0">10</td>
+				<td th:text="${{item.getPrice()}}">0,10 €</td>
 				<td th:text="${item.toString()}">Obst</td>
 				<td>
 					<form method="post" action="/add">
@@ -35,14 +35,7 @@
 						<input type="hidden" name="number" value="1" /> 
 						<input type="submit" value="Hinzufügen" />
 					</form>
-				</td>
-				<td th:if = "${item.getType().equals(ItemType[1])}">
-					<form method="post" action="/configurePizza">
-						<input type="hidden" name="pid" value="0" th:value="${item.id}" />
-						<input type="hidden" name="number" value="1" /> 
-						<input type="submit" value="Verfeinern" />
-					</form>
-				</td>		
+				</td>	
 				<td sec:authorize="hasRole('ROLE_ADMIN')"> <!-- geht nicht bei Ingredients -->
 					<form method="post" action="/removeItem">
 						<input type="hidden" name="pid" value="0" th:value="${item.id}" />
@@ -55,6 +48,13 @@
 						<input type="hidden" name="pid" value="0" th:value="${item.id}" />
 						<input type="hidden" name="number" value="1" /> 
 						<input type="submit" value="Bearbeiten" />
+					</form>
+				</td>
+				<td th:if = "${item.getType().equals(ItemType[1])}">
+					<form method="post" action="/configurePizza">
+						<input type="hidden" name="pid" value="0" th:value="${item.id}" />
+						<input type="hidden" name="number" value="1" /> 
+						<input type="submit" value="Verfeinern" />
 					</form>
 				</td>
 			</tr>			
