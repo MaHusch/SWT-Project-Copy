@@ -95,7 +95,9 @@ public class CatalogController {
 				this.createItem(name, price, type);
 			}
 		}
-		
+		System.out.println(ityp.name());
+		System.out.println(name);
+		System.out.println(price);
 		return "redirect:catalog";
 	}
 	
@@ -103,7 +105,8 @@ public class CatalogController {
 	public String editItem(Model model,@RequestParam("pid") ProductIdentifier id) {
 		
 		Optional<Item> i = itemCatalog.findOne(id);
-		model.addAttribute(i);
+		model.addAttribute("item",i.get());
+		model.addAttribute("ItemTypes",ItemType.values());
 		return "addItem";
 
 	}
