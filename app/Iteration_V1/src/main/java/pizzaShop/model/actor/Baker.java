@@ -17,7 +17,7 @@ import pizzaShop.model.store.Store;
 @Entity
 public class Baker extends StaffMember {
 	
-	private ArrayList<Oven> myOvens = new ArrayList<Oven>();
+	private ArrayList<Oven> myOvens;
 	private Pizzaqueue Queue = Pizzaqueue.getInstance();
 	private Pizza nextPizza;
 
@@ -28,10 +28,12 @@ public class Baker extends StaffMember {
 	public Baker(String surname, String forename,String telephoneNumber, String username, String password){
 		super(surname,forename,telephoneNumber);
 		this.updateUserAccount(username, password, Role.of("ROLE_BAKER"));
+		myOvens = new ArrayList<Oven>();
 	} 
 	
 	public Baker(String surname, String forename,String telephoneNumber){
 		super(surname,forename,telephoneNumber);
+		myOvens = new ArrayList<Oven>();
 	}
 	
 	public void getNextPizza(){

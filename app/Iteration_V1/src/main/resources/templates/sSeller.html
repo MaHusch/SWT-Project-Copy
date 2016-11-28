@@ -10,6 +10,17 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <title>SellerDashboard</title>
 </head>
 <body>
+	<nav>
+		<table>
+			<tr>
+				<td><a href="catalog.html">Unser Angebot</a></td>
+				<td><a href="cart.html">Warenkorb</a></td>
+				<td><a href="pizza_configurator">Pizza erstellen</a></td>
+				<td><a sec:authorize="hasRole('ROLE_SELLER')" href="orders.html">Bestellungen</a></td>
+				<td><a sec:authorize="hasRole('ROLE_SELLER')" href="register_customer.html">Kunden registrieren</a></td>
+			</tr>
+		</table>
+	</nav>
 
 	seller dashboard
 </body>

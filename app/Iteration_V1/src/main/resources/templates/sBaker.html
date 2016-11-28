@@ -10,6 +10,18 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <title>BakerDashboard</title>
 </head>
 <body>
+	<nav>
+		<table>
+			<tr>
+				<td><a href="ovens.html">Öfen</a></td>
+			</tr>
+		</table>
+	</nav>
+	
+	<p sec:authorize="isAuthenticated()" th:text="${'Hallo ' + #authentication?.name}">Hallo Nutzer</p>
+
+
+
 	baker dashboard
 </body>
 </html>

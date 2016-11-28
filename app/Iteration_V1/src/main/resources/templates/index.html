@@ -27,8 +27,8 @@
 		<a href="finances.html">Finances</a>
 		
 		<form th:action="login" method="post">
-				<input type="submit" value="login" />
-			</form>
+			<input type="submit" value="login" />
+		</form>
 		
 		<p sec:authorize="isAuthenticated()" th:text="${'Hallo ' + #authentication?.name}">Hallo Nutzer</p>
 		

@@ -23,7 +23,7 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 
 		
 	
-		<div class="ovens">
+		<div sec:authorize="hasRole('ROLE_BAKER')" class="ovens">
 		<table >
 			<tr th:each=" oven : ${ovens}">
 
@@ -52,6 +52,12 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 		</table>
 		</div>
 		
+		<div sec:authorize="hasRole('ROLE_ADMIN')">
+		
+			<form method="post" action="/addOven">
+				<input type="submit" value="Ofen hinzufügen" />
+			</form>
+		</div>		
 
 </body>
 </html>

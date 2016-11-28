@@ -20,17 +20,15 @@ public class BakerController {
 	
 	private Baker currentBaker;
 	
-	public BakerController(){
-		
-	}
+	public BakerController(){}
 	
 	@RequestMapping("/ovens")
 	public String ovenView(Model model, Principal principal){
 		
 		currentBaker = (Baker)Store.getInstance().getStaffMemberByName(principal.getName());
 		
-		if(currentBaker != null)
-		{
+		if(currentBaker != null){
+			
 			model.addAttribute("ovens",Store.getInstance().getOvens());
 			model.addAttribute("queue", Store.getInstance().getPizzaQueue());
 		}
@@ -40,12 +38,12 @@ public class BakerController {
 	@RequestMapping(value = "/getNextPizza", method = RequestMethod.POST)
 	public String getNextPizza(Model model, @RequestParam int ovenID){
 		
-		
 		for(int i = 0; i < Store.getInstance().getOvens().size(); i++){
+			
 			if(Store.getInstance().getOvens().get(i).getId() == ovenID){
-				if(Store.getInstance().getOvens().get(i).isEmpty()){
 				
-
+				if(Store.getInstance().getOvens().get(i).isEmpty()){
+					
 					currentBaker.getNextPizza();
 					currentBaker.putPizzaIntoOven(Store.getInstance().getOvens().get(i));
 				}
