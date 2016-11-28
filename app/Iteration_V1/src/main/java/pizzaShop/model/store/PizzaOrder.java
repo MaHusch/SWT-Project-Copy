@@ -27,7 +27,7 @@ public class PizzaOrder {
 	private PizzaOrderStatus pizzaOrderStatus = PizzaOrderStatus.OPEN;
 	@OneToOne
 	private Order order;
-	private int unbakedPizzas;
+	private int unbakedPizzas = 0;
 
 	public PizzaOrder() {
 	}
@@ -51,13 +51,16 @@ public class PizzaOrder {
 		Assert.assertTrue("No unbaked Pizza left!", unbakedPizzas >= 0);
 		if (unbakedPizzas == 0) {
 			pizzaOrderStatus = PizzaOrderStatus.READY;
-		}
+			System.out.println("ready");
 
+		}
+		
 		return unbakedPizzas;
 	}
 
 	public int addAsUnbaked() {
-		return unbakedPizzas++;
+		unbakedPizzas++;
+		return unbakedPizzas;
 	}
 
 	public Boolean getFreeDrink() {

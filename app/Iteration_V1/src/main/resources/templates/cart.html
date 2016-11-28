@@ -20,15 +20,15 @@
 		<h1> Warenkorb </h1>
 		
 	<div class="tables">	
-	<table>
-			<caption>Warenkorb</caption>
-			<thead>
+	<table border="1">
+			
+			
 				<tr>
 					<th>Name</th>
 					<th>Anzahl</th>
 					<th>Preis</th>
 				</tr>
-			</thead>
+			
 			<tbody th:remove="all-but-first">
 
 				<tr th:each="item : ${cart} ">

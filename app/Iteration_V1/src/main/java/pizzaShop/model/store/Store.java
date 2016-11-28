@@ -23,7 +23,7 @@ public class Store {
 	
 	public static UserAccountManager employeeAccountManager;
 	public static ItemCatalog itemCatalog;
-	public static PizzaOrderRepository pizzaOrderRepo;
+	public PizzaOrderRepository pizzaOrderRepo;
 	
 	public static ArrayList<StaffMember> staffMemberList;
 	public static Admin admin;
@@ -37,7 +37,7 @@ public class Store {
 	}
 	
 	@Autowired
-	public Store(UserAccountManager employeeAccountManager,ItemCatalog itemCatalog){
+	public Store(UserAccountManager employeeAccountManager,ItemCatalog itemCatalog, PizzaOrderRepository pizzaOrderRepo){
 		
 		this.employeeAccountManager = employeeAccountManager;
 		this.staffMemberList = new ArrayList<StaffMember>();
@@ -45,6 +45,7 @@ public class Store {
 		this.ovenList = new ArrayList<Oven>();		
 		this.admin = new Admin("Mustermann","Max","123456789");
 		this.admin.updateUserAccount("admin", "123", Role.of("ROLE_ADMIN"));
+		this.pizzaOrderRepo = pizzaOrderRepo;
 			
 		
 		Oven oven1 = new Oven(this); 
@@ -132,7 +133,10 @@ public class Store {
 			Iterable<PizzaOrder> pizzaOrders = pizzaOrderRepo.findAll();
 		
 			for(PizzaOrder order : pizzaOrders){
-				if(order.getId() == pizza.getOrderId()){
+				
+				System.out.println(order.getId());
+				
+				if(order.getId().equals(pizza.getOrderId())){
 					order.markAsBaked();
 				}
 			}

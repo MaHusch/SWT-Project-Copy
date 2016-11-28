@@ -94,9 +94,9 @@ public class ApplicationDataInitializer implements DataInitializer {
 
 		Pizzaqueue pizzaQueue = Store.getInstance().getPizzaQueue();
 
-		pizzaQueue.add(pizza1);
+		/*pizzaQueue.add(pizza1);
 		pizzaQueue.add(pizza2);
-		pizzaQueue.add(pizza3);
+		pizzaQueue.add(pizza3);*/
 
 		Store.itemCatalog.save(cheese);
 		Store.itemCatalog.save(mushroom);

@@ -70,7 +70,7 @@ public class CartController {
 		}
 		//System.out.println("test"+customerRepository.findOne((long) 1).getTelephoneNumber());
 		model.addAttribute("items", itemCatalog.findAll());
-		model.addAttribute("orders", orderManager.findBy(OrderStatus.OPEN));
+		model.addAttribute("orders", pizzaOrderRepository.findAll());
 		model.addAttribute("customer", customer);
 		
 		return "orders";

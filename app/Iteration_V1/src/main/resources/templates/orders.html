@@ -103,7 +103,7 @@
 		<tbody>
 			<tr th:each="order : ${orders} ">
 				<td th:text="${order.getId() }">arg</td>
-				<td th:text="${order.getTotalPrice() }">arg</td>
+				<td th:text="${order.getOrder().getTotalPrice() }">arg</td>
 			</tr>
 
 		</tbody>

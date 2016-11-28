@@ -18,10 +18,7 @@ import pizzaShop.model.store.*;
 @Controller
 public class BakerController {
 	
-	private ListIterator<Pizza> it;
-	private ArrayList<Pizza> list;
 	private Baker currentBaker;
-	//private ArrayList<Oven> myOvens = Store.getInstance().getOvens();
 	
 	public BakerController(){
 		

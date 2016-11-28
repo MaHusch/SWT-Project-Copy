@@ -10,7 +10,6 @@ public class Oven {
 
 	private static int ID = 1;
 	private int ovenID;
-	private ArrayList<Baker> Observers = new ArrayList<Baker>();
 	private Pizza currentPizza = null;
 	private Timer myTimer;
 	private boolean empty = true;
@@ -44,6 +43,7 @@ public class Oven {
 			return true;
 		}
 		else{
+			System.out.println("pizza ist null");
 			return false;
 		}
 	}
