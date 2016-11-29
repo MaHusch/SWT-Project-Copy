@@ -95,6 +95,11 @@ public class PizzaOrder {
 		this.setOrderStatus(PizzaOrderStatus.COMPLETED);
 	}
 	
+	public Tan getTanAssignedToPizzaOrder()
+	{
+		return this.newTan;
+	}
+	
 	public void deliverOrder()
 	{
 		this.setOrderStatus(PizzaOrderStatus.DELIVERING);
