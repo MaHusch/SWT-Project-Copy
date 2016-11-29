@@ -143,6 +143,7 @@ public class Store {
 					order.markAsBaked();
 					pizza.removeFirstOrder();
 					pizzaOrderRepo.save(order);
+					return;
 				}
 			}
 		}
