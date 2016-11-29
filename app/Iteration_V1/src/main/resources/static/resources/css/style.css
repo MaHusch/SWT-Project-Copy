@@ -3418,8 +3418,8 @@ a.btn.disabled, fieldset[disabled] a.btn {
 
 .btn-primary {
 	color: #fff;
-	background-color: #337ab7;
-	border-color: #2e6da4
+	background-color: rgb(210,120,25);
+	border-color: rgb(210,120,25);
 }
 
 .btn-primary.focus, .btn-primary:focus {
@@ -6254,13 +6254,13 @@ a.list-group-item-danger.active, a.list-group-item-danger.active:focus,
 }
 
 .panel-primary {
-	border-color: #337ab7
+	border-color: rgb(210,120,25);
 }
 
 .panel-primary>.panel-heading {
 	color: #fff;
-	background-color: #337ab7;
-	border-color: #337ab7
+	background-color: rgb(210,120,25);;
+	border-color: rgb(210,120,25);
 }
 
 .panel-primary>.panel-heading+.panel-collapse>.panel-body {
