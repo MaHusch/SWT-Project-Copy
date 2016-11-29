@@ -1,14 +1,14 @@
 package pizzaShop.model.catalog_item;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
 import org.salespointframework.order.OrderIdentifier;
-
-import javassist.bytecode.Descriptor.Iterator;
 
 
 @Entity
@@ -19,9 +19,10 @@ public class Pizza extends Item {
 	 */
 	private static final long serialVersionUID = 4746830994439574139L;
 	@OneToMany private List<Ingredient> ingredients; 
+	@ElementCollection private List<String> orderQueue = new ArrayList<String>();
+	
 	
 	private boolean isFinished;
-	private OrderIdentifier OrderId;
 	
 	@SuppressWarnings("unused")
 	private Pizza(){}
@@ -30,6 +31,7 @@ public class Pizza extends Item {
 	{
 		super(name,price,ItemType.PIZZA);
 		this.ingredients = new LinkedList<Ingredient>();
+		//this.orderQueue = 
 		this.setStatus(false);
 	}
 	
@@ -69,12 +71,18 @@ public class Pizza extends Item {
 		return isFinished;
 	}
 
-	public OrderIdentifier getOrderId() {
-		return OrderId;
+	public void addOrder(OrderIdentifier o){
+		orderQueue.add(o.toString());
+		
+	}
+	
+	public String getFirstOrder(){
+		return orderQueue.get(0);
 	}
 
-	public void setOrderId(OrderIdentifier orderId) {
-		OrderId = orderId;
+
+	public String removeFirstOrder(){
+		return orderQueue.remove(0);
 	}
 	
 	public String toString()  //TODO: nicerer String

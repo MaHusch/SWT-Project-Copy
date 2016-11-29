@@ -91,14 +91,14 @@ public class Store {
 		for(OrderLine l : order.getOrder().getOrderLines()){
 			Item temp = itemCatalog.findOne(l.getProductIdentifier()).get();
 			if(temp.getType().equals(ItemType.PIZZA)){
-				((Pizza) temp).setOrderId(order.getId());
 				for(int i = 0; i < l.getQuantity().getAmount().intValue(); i++){
+					((Pizza) temp).addOrder(order.getId());
 					System.out.println("Order ID in Analyze: " + order.getId());
 					pizzaQueue.add(((Pizza) temp));
 					order.addAsUnbaked();
 					System.out.println("Analyze Order: " + order.getUnbakedPizzas());
 				}
-				
+				pizzaOrderRepo.save(order);
 				System.out.println(pizzaQueue);
 			}
 		}
@@ -137,10 +137,12 @@ public class Store {
 			for(PizzaOrder order : pizzaOrders){
 				
 				System.out.println("Order ID: " + order.getId());
-				System.out.println("Pizza ID: " + pizza.getOrderId());
+				System.out.println("Pizza ID: " + pizza.getFirstOrder());
 				
-				if(order.getId().equals(pizza.getOrderId())){
+				if(order.getId().toString().equals(pizza.getFirstOrder())){
 					order.markAsBaked();
+					pizza.removeFirstOrder();
+					pizzaOrderRepo.save(order);
 				}
 			}
 		}

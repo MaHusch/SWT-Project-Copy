@@ -27,7 +27,7 @@ public class PizzaOrder {
 	private PizzaOrderStatus pizzaOrderStatus = PizzaOrderStatus.OPEN;
 	@OneToOne
 	private Order order;
-	private int unbakedPizzas;
+	private int unbakedPizzas = 0;
 
 	public PizzaOrder() {
 	}
@@ -36,7 +36,6 @@ public class PizzaOrder {
 		this.order = new Order(userAccount);
 		this.newTan = newTan;
 		orderIdentifier = order.getId();
-		unbakedPizzas = 0;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -44,7 +43,6 @@ public class PizzaOrder {
 		this.order = new Order(userAccount, paymentMethod);
 		this.newTan = newTan;
 		orderIdentifier = order.getId();
-		unbakedPizzas = 0;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -85,6 +83,11 @@ public class PizzaOrder {
 	private void setOrderStatus(PizzaOrderStatus status)
 	{
 		this.pizzaOrderStatus = status;
+	}
+	
+	public PizzaOrderStatus getOrderStatus()
+	{
+		return this.pizzaOrderStatus;
 	}
 	
 	public void completeOrder() // TODO: creaty accountancyentry
