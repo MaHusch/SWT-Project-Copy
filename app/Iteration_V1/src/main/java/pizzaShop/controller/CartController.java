@@ -67,6 +67,9 @@ public class CartController {
 
 	@RequestMapping("/cart")
 	public String pizzaCart(Model model) {
+		model.addAttribute("items", itemCatalog.findAll());
+		
+		model.addAttribute("customer", customer);
 		return "cart";
 	}
 
@@ -79,10 +82,9 @@ public class CartController {
 		 */
 		// System.out.println("test"+customerRepository.findOne((long)
 		// 1).getTelephoneNumber());
-		model.addAttribute("items", itemCatalog.findAll());
+		
 		model.addAttribute("orders", pizzaOrderRepository.findAll());
-		model.addAttribute("customer", customer);
-
+		
 		ArrayList<StaffMember> deliverers = new ArrayList<StaffMember>();
 
 		for (StaffMember staff : Store.staffMemberList) {
@@ -128,7 +130,7 @@ public class CartController {
 			System.out.println("fail");
 		}
 
-		return "redirect:orders";
+		return "redirect:cart";
 
 	}
 
@@ -153,6 +155,6 @@ public class CartController {
 		
 		System.out.println(lol);
 		 
-		return "redirect:orders";
+		return "redirect:cart";
 	}
 }

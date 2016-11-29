@@ -124,14 +124,14 @@ public class StoreController {
 			
 				Ingredient newIngredient = new Ingredient(itemName,itemPrice);
 				newPizza.addIngredient(newIngredient);
-				newPizza.setPrice(newPizza.getPrice().add(itemPrice));
 			}
 			
 		}
 		
-		cart.addOrUpdateItem(newPizza, Quantity.of(1));
+		Pizza savedPizza = itemCatalog.save(newPizza);
+		cart.addOrUpdateItem(savedPizza, Quantity.of(1));
 		
-		return "redirect:cart";
+		return "redirect:catalog";
 	}
 	
 	@RequestMapping("/tan")

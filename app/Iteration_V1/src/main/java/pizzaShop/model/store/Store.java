@@ -125,6 +125,19 @@ public class Store {
 		return null;	
 	}
 	
+	public void cleanUpItemCatalog()
+	{
+		Iterable<Item> items1 = itemCatalog.findAll();
+		Iterable<Item> items2 = itemCatalog.findAll();
+		
+		for(Item item1 : items1){
+			for(Item item2 : items2){
+				if(item1.getName().equals(item2.getName()))
+					itemCatalog.delete(item2);
+			}
+			
+		}
+	}
 	public void updatePizzaOrder(Pizza pizza){
 		
 		if(pizza.equals(null)){

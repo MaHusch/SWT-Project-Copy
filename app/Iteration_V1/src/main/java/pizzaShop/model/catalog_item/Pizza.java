@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -18,7 +19,7 @@ public class Pizza extends Item {
 	 * 
 	 */
 	private static final long serialVersionUID = 4746830994439574139L;
-	@OneToMany private List<Ingredient> ingredients; 
+	@OneToMany (cascade = {CascadeType.PERSIST}) private List<Ingredient> ingredients; 
 	@ElementCollection private List<String> orderQueue = new ArrayList<String>();
 	
 	
