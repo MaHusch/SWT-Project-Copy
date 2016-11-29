@@ -1,95 +1,215 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-		<link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}" />
-		<title>Papa Pizza</title>
-	</head>
-	<body>
-	<nav>
-		<table>
-			<tr>
-				<td><a href="catalog.html">Unser Angebot</a></td>
-				<td><a href="pizza_configurator.html">Eigene Pizza erstellen</a></td>
-				<td><a href="cart.html">Warenkorb</a></td>
-				<td><a sec:authorize="hasRole('ROLE_SELLER')" href="orders.html">Bestellungen</a></td>
-				<td><a sec:authorize="hasRole('ROLE_SELLER')" href="register_customer.html">Kunden registrieren</a></td>
-				<td><a sec:authorize="hasRole('ROLE_ADMIN')" href="register_staffmember.html">Mitarbeiter registrieren</a></td>
-			</tr>
-		</table>
-	</nav>
-		<h1>Papa Pizza</h1>
-		
-		
-		<form sec:authorize="!isAuthenticated()" th:action="login" method="post">
-			<input type="submit" value="login" />
-		</form>
-		
-		<p sec:authorize="isAuthenticated()" th:text="${'Hallo ' + #authentication?.name}">Hallo Nutzer</p>
-		
-		<div sec:authorize="hasRole('ROLE_ADMIN')" >
-		
-			<h1>Admin Dashboard</h1>
-	
-			<a href="register_staffmember.html">Neuen Mitarbeiter registrieren</a>
-			<a href="finances.html">Finances</a>
-			<a href="tan.html">Tanübersicht</a>
-			<a href="staffmember_display.html">Mitarbeiterübersicht</a>
-			<a href="customer_display.html">Kundenübersicht</a>
-			
-			<form th:action="logout" method="post">
-				<input type="submit" value="logout" />
-			</form>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/style.css}" />
+<title>Papa Pizza</title>
+<!-- Latest compiled and minified CSS -->
+
+
+</head>
+<body>
+	<header>
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed"
+						data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+						aria-expanded="false">
+						<span class="sr-only">Toggle navigation</span> <span
+							class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="index.html">Papa Pizza</a>
+				</div>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse"
+					id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li><a href="catalog.html">Unser Angebot</a></li>
+						<li><a href="pizza_configurator.html">Pizza erstellen</a></li>
+						<li><a href="cart.html">Warenkorb</a></li>
+						<li sec:authorize="isAuthenticated()" class="dropdown"><a
+							href="#" class="dropdown-toggle" data-toggle="dropdown"
+							role="button" aria-haspopup="true" aria-expanded="false">Menü
+								<span class="caret"></span>
+						</a>
+							<ul class="dropdown-menu">
+								<li><a sec:authorize="hasRole('ROLE_BAKER')"
+									href="ovens.html">Öfen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_DELIVERER')"
+									href="index.html">Deliverer Dashboard</a></li>
+								<li><a sec:authorize="hasRole('ROLE_SELLER')"
+									href="orders.html">Bestellungen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_SELLER')"
+									href="register_customer.html">Kunden registrieren</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="register_staffmember.html">Mitarbeiter registieren</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="finances.html">Finanzen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="addItem.html">Item hinzufügen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="catalog.html">Katalog bearbeiten</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="customer_display.html">Kunden anzeigen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="staffmember_display.html">Mitarbeiter anzeigen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="tan.html">TAN-Liste</a></li>
+
+							</ul></li>
+
+					</ul>
+
+					<p class="navbar-text navbar-right"
+						sec:authorize="isAuthenticated()"
+						th:text="${'Eingeloggt als: ' + #authentication?.name}" />
+					<a sec:authorize="!isAuthenticated()" class="navbar-text navbar-right" href="/login">Login</a> 
+					<a sec:authorize="isAuthenticated()" class="navbar-text navbar-right" href="/logout">Logout</a>
+				</div>
+				<!-- /.navbar-collapse -->
+			</div>
+			<!-- /.container-fluid -->
+		</nav>
+	</header>
+	<div class="container">
+		<div id="myCarousel" class="carousel slide" data-ride="carousel">
+			<!-- Indicators -->
+			<ol class="carousel-indicators">
+				<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+				<li data-target="#myCarousel" data-slide-to="1"></li>
+				<li data-target="#myCarousel" data-slide-to="2"></li>
+			</ol>
+
+			<!-- Wrapper for slides -->
+			<div class="carousel-inner">
+
+				<div class="item active">
+					<img src="resources/img/1.png" />
+					<div class="carousel-caption">
+						<h3>Unser Klassiker - Pizza Salame</h3>
+						<p>Nichts schlägt den Klassiker unter den Pizzen: Pizza
+							Salami, mit frisch geschnittener Salami und feinstem Edamer Käse
+							auf luftig krossigen Boden.</p>
+					</div>
+				</div>
+				<!-- End Item -->
+
+				<div class="item">
+					<img src="resources/img/2.jpg" width="698px" height="42px" />
+					<div class="carousel-caption">
+						<h3>Diese Woche spezial: Pizza Diablo</h3>
+						<p>Unsere Pizza dieser Woche ist Pizza Diablo. Trauen Sie
+							sich, Ihre Zunge einer solchen Schärfe auszusetzen, dass selbst
+							der Teufel kneifen würde?</p>
+					</div>
+				</div>
+				<!-- End Item -->
+
+				<div class="item">
+					<img src="resources/img/3.png" height="420" />
+					<div class="carousel-caption">
+						<h3>Es ist Pilzsaison: Pizza Funghi</h3>
+						<p>Es ist wieder soweit: Pilze wachsen noch und nöcher.
+							Natürlich kommen auf unsere Pizza Funghi nur die erlesesten Pilze
+							die wir finden konnten!</p>
+					</div>
+				</div>
+				<!-- End Item -->
+
+			</div>
+			<!-- End Carousel Inner -->
+
+			<!-- Controls -->
+			<a class="left carousel-control" href="#myCarousel" role="button"
+				data-slide="prev"> <span class="icon-prev" aria-hidden="true"></span>
+				<span class="sr-only">Previous</span>
+			</a> <a class="right carousel-control" href="#myCarousel" role="button"
+				data-slide="next"> <span class="icon-next" aria-hidden="true"></span>
+				<span class="sr-only">Next</span>
+			</a>
 		</div>
-		
-		
-		
-		
-		<div sec:authorize="hasRole('ROLE_SELLER')" >
-			
-			<h1>Seller Dashboard</h1>
-			
-			<a href="catalog.html">Catalog</a>
-			
-			<form th:action="logout" method="post">
-				<input type="submit" value="logout" />
-			</form>
+		<!-- End Carousel -->
+	</div>
+
+	<!-- FEAUTURETTE -->
+	<div class="container marketing">
+		<hr class="featurette-divider" />
+
+		<div class="row featurette">
+			<div class="col-md-7">
+				<h2 class="featurette-heading">
+					Unser Pizza-Angebot: <span class="text-muted">
+						Unvergleichlicher Genuss!</span>
+				</h2>
+				<p class="lead">Pizzen, gebacken in italienischer Tradition im
+					Steinofen, dafür steht Papa Pizza. In unserem Pizza-Angebot ist für
+					jedem die richtige Pizza dabei. Und falls wir doch nicht ihren
+					Geschmack getroffen haben sollten - Sie können sich auch selbst
+					eine Pizza zusammenstellen!</p>
+			</div>
+			<div class="col-md-5">
+				<a href="catalog.html"><img
+					class="featurette-image img-responsive center-block"
+					src="resources/img/1.png" alt="Generic placeholder image"
+					width="500" height="500" /> </a>
+			</div>
 		</div>
-		
-		
-		
-		<div sec:authorize="hasRole('ROLE_DELIVERER')" >
-		
-			<h1>Delivery Dashboard</h1>
-			
-		
 
-			<form th:action="checkIn" method="post">
-				<input type="hidden" name="pid" value="0" th:value="${user}" />	<!--  which class is user? -->
-				<input type="submit" value="checkIn" />
-			</form>
-			<form th:action="checkOut" method="post">
-				<input type="submit" value="checkOut" />
-			</form>
-			<form th:action="logout" method="post">
-				<input type="submit" value="logout" />
-			</form>
-		</div>		
-		
-		<div sec:authorize="hasRole('ROLE_BAKER')" >
-		
-			<h1>Baker Dashboard</h1>
-			
-			<a href="ovens.html">Ovens</a>
-			
-			<form th:action="logout" method="post">
-				<input type="submit" value="logout" />
-			</form>
-		</div>	
-		
-	</body>
-	
-	
+		<hr class="featurette-divider" />
+
+		<div class="row featurette">
+			<div class="col-md-7 col-md-push-5">
+				<h2 class="featurette-heading">
+					Oh yeah, it's that good. <span class="text-muted">See for
+						yourself.</span>
+				</h2>
+				<p class="lead">Donec ullamcorper nulla non metus auctor
+					fringilla. Vestibulum id ligula porta felis euismod semper.
+					Praesent commodo cursus magna, vel scelerisque nisl consectetur.
+					Fusce dapibus, tellus ac cursus commodo.</p>
+			</div>
+			<div class="col-md-5 col-md-pull-7">
+				<img class="featurette-image img-responsive center-block"
+					src="resources/img/cola.jpg" alt="Generic placeholder image"
+					width="500" height="500" />
+			</div>
+		</div>
+
+		<hr class="featurette-divider" />
+
+		<div class="row featurette">
+			<div class="col-md-7">
+				<h2 class="featurette-heading">
+					And lastly, this one. <span class="text-muted">Checkmate.</span>
+				</h2>
+				<p class="lead">Donec ullamcorper nulla non metus auctor
+					fringilla. Vestibulum id ligula porta felis euismod semper.
+					Praesent commodo cursus magna, vel scelerisque nisl consectetur.
+					Fusce dapibus, tellus ac cursus commodo.</p>
+			</div>
+			<div class="col-md-5">
+				<img class="featurette-image img-responsive center-block"
+					src="resources/img/salad.jpg" alt="Generic placeholder image"
+					width="500" height="500" />
+			</div>
+		</div>
+
+		<hr class="featurette-divider" />
+	</div>
 
 
+
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+		integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+		crossorigin="anonymous"></script>
+</body>
 </html>
