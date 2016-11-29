@@ -23,7 +23,7 @@ public class Store {
 	
 	public static UserAccountManager employeeAccountManager;
 	public static ItemCatalog itemCatalog;
-	public static PizzaOrderRepository pizzaOrderRepo;
+	public PizzaOrderRepository pizzaOrderRepo;
 	
 	public static ArrayList<StaffMember> staffMemberList;
 	public static Admin admin;
@@ -37,7 +37,7 @@ public class Store {
 	}
 	
 	@Autowired
-	public Store(UserAccountManager employeeAccountManager,ItemCatalog itemCatalog){
+	public Store(UserAccountManager employeeAccountManager,ItemCatalog itemCatalog, PizzaOrderRepository pizzaOrderRepo){
 		
 		this.employeeAccountManager = employeeAccountManager;
 		this.staffMemberList = new ArrayList<StaffMember>();
@@ -45,6 +45,7 @@ public class Store {
 		this.ovenList = new ArrayList<Oven>();		
 		this.admin = new Admin("Mustermann","Max","123456789");
 		this.admin.updateUserAccount("admin", "123", Role.of("ROLE_ADMIN"));
+		this.pizzaOrderRepo = pizzaOrderRepo;
 			
 		
 		Oven oven1 = new Oven(this); 
@@ -90,12 +91,14 @@ public class Store {
 		for(OrderLine l : order.getOrder().getOrderLines()){
 			Item temp = itemCatalog.findOne(l.getProductIdentifier()).get();
 			if(temp.getType().equals(ItemType.PIZZA)){
-				((Pizza) temp).setOrderId(order.getId());
 				for(int i = 0; i < l.getQuantity().getAmount().intValue(); i++){
+					((Pizza) temp).addOrder(order.getId());
+					System.out.println("Order ID in Analyze: " + order.getId());
 					pizzaQueue.add(((Pizza) temp));
 					order.addAsUnbaked();
+					System.out.println("Analyze Order: " + order.getUnbakedPizzas());
 				}
-				
+				pizzaOrderRepo.save(order);
 				System.out.println(pizzaQueue);
 			}
 		}
@@ -122,6 +125,19 @@ public class Store {
 		return null;	
 	}
 	
+	public void cleanUpItemCatalog()
+	{
+		Iterable<Item> items1 = itemCatalog.findAll();
+		Iterable<Item> items2 = itemCatalog.findAll();
+		
+		for(Item item1 : items1){
+			for(Item item2 : items2){
+				if(item1.getName().equals(item2.getName()))
+					itemCatalog.delete(item2);
+			}
+			
+		}
+	}
 	public void updatePizzaOrder(Pizza pizza){
 		
 		if(pizza.equals(null)){
@@ -132,8 +148,15 @@ public class Store {
 			Iterable<PizzaOrder> pizzaOrders = pizzaOrderRepo.findAll();
 		
 			for(PizzaOrder order : pizzaOrders){
-				if(order.getId() == pizza.getOrderId()){
+				
+				System.out.println("Order ID: " + order.getId());
+				System.out.println("Pizza ID: " + pizza.getFirstOrder());
+				
+				if(order.getId().toString().equals(pizza.getFirstOrder())){
 					order.markAsBaked();
+					pizza.removeFirstOrder();
+					pizzaOrderRepo.save(order);
+					return;
 				}
 			}
 		}

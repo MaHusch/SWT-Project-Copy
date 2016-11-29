@@ -4,8 +4,34 @@
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 		<link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}" />
 		<title>Item erstellen</title>
+
+
+ <script type="text/javascript">//<![CDATA[
+ 
+ // checks if there are already values in the configuration list in case a preconfiguration as been selected
+ 
+ 
+ function checkExistingItem(){
+	 var value = document.getElementById('existingItem').getAttribute('value');
+	 
+	 // if an item is already present, change the form so it calls the function to overwrite,update and save the item's information
+	 if (value === "true") {
+		 var form = document.getElementById("itemForm");
+		 form.action = "/saveItem";
+	 }
+	 
+}
+
+//]]>
+ </script>
+ 
+ 
 </head>
-<body>
+
+<body onLoad = "checkExistingItem();">
+
+
+
 	<nav>
 		<table>
 			<tr>
@@ -14,26 +40,45 @@
 			</tr>
 		</table>
 	</nav>
-	<h1> Item erstellen</h1>
 	
-	<form th:action="createItem" method="post">
+	<div th:if = "${item}" value ="true" id= "existingItem"></div>
+	
+	
+	<h1> Item erstellen</h1>
+	<form th:action="createItem" method="post" id = "itemForm" >
 	<!-- Pizza Zutaten werden hinzugefügt bei edit Item -->	  
 		<label for="itemtype">Itemtyp</label>: 
-			<select name="itemtype" id = "itemtype" size="1">
-				<option selected="selected" >PIZZA</option>
-				<option>DRINK</option>
-				<option>FREEDRINK</option>
-				<option>INGREDIENT</option>
-				<option>SALAD</option>
-			</select><br />
-
+			
+			<div  th:if = "${item}">
+				<select name="itemtype" id = "itemtype" size="1">
+					 <option th:each="itemType : ${ItemTypes}" th:text="${itemType.name()}" selected= "selected" th:if= "${itemType.name() == item.getType().name()}"> Cheese</option>
+					 <option th:each="itemType : ${ItemTypes}" th:text="${itemType.name()}" th:if= "${itemType.name() != item.getType().name()}"> Cheese</option>
+				</select><br />
+			</div>
+			
+			<div  th:if = "${item == null}">
+				<select name="itemtype" id = "itemtype" size="1">
+					<option selected="selected" >PIZZA</option>
+					<option>DRINK</option>
+					<option>FREEDRINK</option>
+					<option>INGREDIENT</option>
+					<option>SALAD</option>
+				</select><br />
+			</div>
+		
+		
 		<label for="itemname">Name</label>:
-		<input type="text" id="itemname" name="itemname"/> <br />
+		<div  th:if = "${item}"><input type="text" id="itemname" name="itemname" value = "" th:value = "${item.getName()}"/> <br /></div>
+		<div  th:if = "${item == null}"><input type="text" id="itemname" name="itemname"/> <br /></div>
 
 		<label for="itemprice">Preis </label>:
-		<input type="number" step="0.1" id="itemprice" name="itemprice"/> <br />
-
-		<input type="submit" value="Erstellen" />
+		<div  th:if = "${item}"><input type="number" step="0.1" id="itemprice" name="itemprice" value = "" th:value = "${item.getPrice().getNumber().floatValue()}"/> <br /></div>
+		<div  th:if = "${item == null}"><input type="number" step="0.1" id="itemprice" name="itemprice" /> <br /></div>
+		
+		<div  th:if = "${item}"><input type="hidden" name="pid" value="0" th:value="${item.id}" /></div>
+		
+		<input type="submit" value="Erstellen" th:if = "${item == null}"/>
+		<input type="submit" value="Bearbeiten" th:if = "${item}"/>
 	</form>
 </body>
 </html>

@@ -10,6 +10,22 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <title>AdminDashboard</title>
 </head>
 <body>
+	<nav>
+		<table>
+			<tr>
+				<td><a href="catalog.html">Unser Angebot</a></td>
+				<td><a sec:authorize="hasRole('ROLE_ADMIN')" href="register_staffmember.html">Mitarbeiter registrieren</a></td>
+				<td><a sec:authorize="hasRole('ROLE_ADMIN')" href="finances.html">Finanzen</a></td>
+				<td><a sec:authorize="hasRole('ROLE_ADMIN')" href="addItem.html">Item hinzufügen</a></td>
+				<td><a sec:authorize="hasRole('ROLE_ADMIN')" href="customer_display">Kunden anzeigen</a></td>
+				<td><a sec:authorize="hasRole('ROLE_ADMIN')" href="staffmember_display">Mitarbeiter anzeigen</a></td>
+				<td><a sec:authorize="hasRole('ROLE_ADMIN')" href="tan.html">TAN Liste</a></td>
+			</tr>
+		</table>
+	</nav>
+	
+	<p sec:authorize="isAuthenticated()" th:text="${'Hallo ' + #authentication?.name}">Hallo Nutzer</p>
+	
 	admin dashboard
 </body>
 </html>

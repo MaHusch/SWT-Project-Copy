@@ -11,6 +11,7 @@ import pizzaShop.model.actor.Baker;
 import pizzaShop.model.actor.Deliverer;
 import pizzaShop.model.actor.Seller;
 import pizzaShop.model.actor.StaffMember;
+import pizzaShop.model.store.Oven;
 import pizzaShop.model.store.Store;
 
 @Controller
@@ -62,6 +63,15 @@ public class AdminController {
 		staffMember.updateUserAccount(username, password, Role.of("ROLE_" + role));
 		
 		return "index";
+	}
+	
+	@RequestMapping(value = "/addOven", method = RequestMethod.POST)
+	public String addOven(Model model){
+		
+		new Oven(Store.getInstance());
+		
+		return "ovens";
+		
 	}
 	
 }

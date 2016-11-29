@@ -62,10 +62,12 @@ public class ApplicationDataInitializer implements DataInitializer {
 	{
 		Baker Baker_Eduardo_Pienso = new Baker("Pienso", "Eduardo", "2341241212", "eddy", "pass");
 		Deliverer Deliverer_Florentin_Dörre = new Deliverer("Doerre", "Florentin", "015123456", "flo", "123");
+		Deliverer Deliverer_Martin_Huschenbett = new Deliverer("Huschenbett", "Martin", "40918310", "maddin", "qwe");
 		Seller Seller_Hans_Bergstein = new Seller("Bergstein", "Hans", "492161268", "hans123", "qwe");
 			
 		Store.staffMemberList.add(Seller_Hans_Bergstein);
 		Store.staffMemberList.add(Deliverer_Florentin_Dörre);
+		Store.staffMemberList.add(Deliverer_Martin_Huschenbett);
 		Store.staffMemberList.add(Baker_Eduardo_Pienso);
 	}
 
@@ -94,9 +96,9 @@ public class ApplicationDataInitializer implements DataInitializer {
 
 		Pizzaqueue pizzaQueue = Store.getInstance().getPizzaQueue();
 
-		pizzaQueue.add(pizza1);
+		/*pizzaQueue.add(pizza1);
 		pizzaQueue.add(pizza2);
-		pizzaQueue.add(pizza3);
+		pizzaQueue.add(pizza3);*/
 
 		Store.itemCatalog.save(cheese);
 		Store.itemCatalog.save(mushroom);

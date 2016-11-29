@@ -10,6 +10,24 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <title>DelivererDashboard</title>
 </head>
 <body>
+
+	<div sec:authorize="hasRole('ROLE_DELIVERER')" >
+		
+			<h1>Delivery Dashboard</h1>
+				
+	<p sec:authorize="isAuthenticated()" th:text="${'Hallo ' + #authentication?.name}">Hallo Nutzer</p>
+s
+			<form th:action="checkIn" method="post">
+				<input type="hidden" name="pid" value="0" th:value="${user}" />	<!--  which class is user? -->
+				<input type="submit" value="checkIn" />
+			</form>
+			<form th:action="checkOut" method="post">
+				<input type="submit" value="checkOut" />
+			</form>
+			<form th:action="logout" method="post">
+				<input type="submit" value="logout" />
+			</form>
+	</div>	
 	deliverer dashboard
 </body>
 </html>

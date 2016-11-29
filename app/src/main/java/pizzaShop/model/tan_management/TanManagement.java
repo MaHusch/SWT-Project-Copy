@@ -71,7 +71,7 @@ public class TanManagement {
 		
 		String receivedTelephoneNumber = this.getTelephoneNumber(tan);
 		
-		if(telephoneNumber.equals(receivedTelephoneNumber)) return true;
+		if(telephoneNumber.equals(receivedTelephoneNumber) && tan.getStatus() == TanStatus.VALID) return true;
 		
 		else return false;
 		
@@ -86,7 +86,7 @@ public class TanManagement {
 			{
 				Map.Entry<Tan, String> entry = (Map.Entry<Tan, String>)hashMapIterator.next();
 				
-				if(entry.getKey().getTanNumber().equals(tanString) && entry.getValue().equals(telephoneNumber)) return true;
+				if(entry.getKey().getTanNumber().equals(tanString) && entry.getValue().equals(telephoneNumber) && entry.getKey().getStatus() == TanStatus.VALID) return true;
 
 			
 			}
@@ -142,7 +142,7 @@ public class TanManagement {
 			if(!tanAlreadyExists)
 			{
 				
-				Tan newlyCreatedTan = new Tan(newTanString, TanStatus.VALID);
+				Tan newlyCreatedTan = new Tan(newTanString, TanStatus.NOT_CONFIRMED);
 				
 				notConfirmedTans.put(newlyCreatedTan, telephoneNumber);
 						
@@ -216,7 +216,9 @@ public class TanManagement {
 					
 		}
 
-		//System.out.println("new tan added");
+		System.out.println("new tan added");
+		
+		tan.setStatus(TanStatus.VALID);
 		
 		tanHashMap.put(tan, telephoneNumber);
 		

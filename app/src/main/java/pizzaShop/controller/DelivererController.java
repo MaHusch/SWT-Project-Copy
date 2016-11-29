@@ -14,6 +14,7 @@ import pizzaShop.model.actor.Deliverer;
 import pizzaShop.model.store.PizzaOrder;
 import pizzaShop.model.store.PizzaOrderRepository;
 import pizzaShop.model.store.Store;
+import pizzaShop.model.tan_management.TanManagement;
 
 @Controller
 public class DelivererController {
@@ -21,11 +22,13 @@ public class DelivererController {
 	private Deliverer currentDeliverer;
 	String username;
 	private final PizzaOrderRepository pizzaOrderRepository;
+	private final TanManagement tanManagement;
 	
 	@Autowired
-	public DelivererController(PizzaOrderRepository pizzaOrderRepository)
+	public DelivererController(PizzaOrderRepository pizzaOrderRepository,TanManagement tanManagement)
 	{
 		this.pizzaOrderRepository = pizzaOrderRepository;
+		this.tanManagement = tanManagement;
 	}
 	
 	//TODO: remove redundancy
@@ -83,6 +86,7 @@ public class DelivererController {
 			{
 				if(p.getId().equals(deliveredOrder))
 				{
+					tanManagement.confirmTan( p.getTanAssignedToPizzaOrder());
 					p.completeOrder();
 				}
 			}

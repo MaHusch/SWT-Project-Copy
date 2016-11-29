@@ -88,6 +88,8 @@ public class CatalogController {
 			{
 			i.setName(name);
 			i.setPrice(Money.of(price, EURO));
+			itemCatalog.save(i); // sonst wirds nicht auf den Catalog übertragen :O
+			
 			}
 			else
 			{
@@ -95,7 +97,9 @@ public class CatalogController {
 				this.createItem(name, price, type);
 			}
 		}
-		
+		System.out.println(ityp.name());
+		System.out.println(i.getName());
+		System.out.println(i.getPrice());
 		return "redirect:catalog";
 	}
 	
@@ -103,7 +107,8 @@ public class CatalogController {
 	public String editItem(Model model,@RequestParam("pid") ProductIdentifier id) {
 		
 		Optional<Item> i = itemCatalog.findOne(id);
-		model.addAttribute(i);
+		model.addAttribute("item",i.get());
+		model.addAttribute("ItemTypes",ItemType.values());
 		return "addItem";
 
 	}
