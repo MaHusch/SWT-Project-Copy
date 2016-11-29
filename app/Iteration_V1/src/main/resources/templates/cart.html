@@ -83,7 +83,7 @@
 					<label for="surname">Telefonnummer</label>: <input type="text"
 						id="tnumber" name="tnumber" /> <br /> <label for="forename">TAN</label>:
 					<input type="text" id="tan" name="tan" /> <br /> <input
-						type="submit" value="Check" />
+						class="btn btn-primary" type="submit" value="Check" />
 				</form>
 				<div th:switch="${customer.isPresent()}">
 					<p th:case="true"
@@ -119,7 +119,7 @@
 
 				<form sec:authorize="hasRole('ROLE_SELLER')" method="post"
 					action="/checkout">
-					<input type="submit" value="Kaufen" />
+					<input class="btn btn-primary" type="submit" value="Kaufen" />
 				</form>
 			</div>
 		</div>

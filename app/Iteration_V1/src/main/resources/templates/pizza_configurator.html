@@ -10,116 +10,217 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <title>Pizza Konfigurator</title>
 
 
- <script type="text/javascript">//<![CDATA[
+<script type="text/javascript">
+	//<![CDATA[
 
- var items = []; 
- 
- // checks if there are already values in the configuration list in case a preconfiguration as been selected
- function preevalutateConfiguration(){
-	 	var configuration = document.getElementById("pizza_configuration");
+	var items = [];
+
+	// checks if there are already values in the configuration list in case a preconfiguration as been selected
+	function preevalutateConfiguration() {
+		var configuration = document.getElementById("pizza_configuration");
 		var ingredientList = document.getElementById("ingredient_list");
-		
-	 	// adds all the preexisting values to the configuration list and removes them from the ingredient list
-		for (var i = 0; i < configuration.length; i++){		
+
+		// adds all the preexisting values to the configuration list and removes them from the ingredient list
+		for (var i = 0; i < configuration.length; i++) {
 			var itemID = configuration[i].id;
 			transmitItems(itemID);
-			
 			ingredientList.remove(itemID)
 		}
-		
-		
-}
+	}
 
- function appendToList(listName,value,id){
-	 var list = document.getElementById(listName);
-	 var option = document.createElement("option");
-	 option.appendChild(document.createTextNode(value));
-	 option.setAttribute("id",id)
-	 list.appendChild(option);
- }
- 
- function addIngredient(){
-	
-    var ingredientList = document.getElementById('ingredient_list');
-    var index = ingredientList.selectedIndex; 
-	
-    var itemID = ingredientList[index].id;
-    var itemValue = ingredientList[index].value;
-    
-    //remove the selected item from the ingredient list
-    ingredientList.remove(index)
-    
-    //adds the selected item's id to the array and transmits the data to a hidden form value
-    transmitItems(itemID);
-    
-    //appends the selected item to the configuration list
-    appendToList("pizza_configuration",itemValue,itemID)
- }
- 
- 
- 
- function removeIngredient(){
-	 // remove from the configuration list 
-	 var configuration = document.getElementById("pizza_configuration");
-	 var index = configuration.selectedIndex;
-	 
-	 var itemID = configuration[index].id
-	 var itemValue = configuration[index].value
-	 
-	 //remove the selected item from the configuration list
-	 configuration.remove(index)	 
-	 
-	 //removes the selected item's id from the items array
-	 var i = items.indexOf(itemID);
-	 if(i != -1) {
-	 	items.splice(i, 1);
-	 }
-	 
-	 //adds it back the ingredient list
-	 appendToList('ingredient_list',itemValue,itemID)
- }
- 
- function transmitItems(itemID){
-	 items.push(itemID);
-	 document.getElementById('id_transmit').value = items;
-}
+	function appendToList(listName, value, id) {
+		var list = document.getElementById(listName);
+		var option = document.createElement("option");
+		option.appendChild(document.createTextNode(value));
+		option.setAttribute("id", id)
+		list.appendChild(option);
+	}
 
-//]]>
+	function addIngredient() {
+
+		var ingredientList = document.getElementById('ingredient_list');
+		var index = ingredientList.selectedIndex;
+
+		var itemID = ingredientList[index].id;
+		var itemValue = ingredientList[index].value;
+
+		//remove the selected item from the ingredient list
+		ingredientList.remove(index)
+
+		//adds the selected item's id to the array and transmits the data to a hidden form value
+		transmitItems(itemID);
+
+		//appends the selected item to the configuration list
+		appendToList("pizza_configuration", itemValue, itemID)
+	}
+
+	function removeIngredient() {
+		// remove from the configuration list 
+		var configuration = document.getElementById("pizza_configuration");
+		var index = configuration.selectedIndex;
+
+		var itemID = configuration[index].id
+		var itemValue = configuration[index].value
+
+		//remove the selected item from the configuration list
+		configuration.remove(index)
+
+		//removes the selected item's id from the items array
+		var i = items.indexOf(itemID);
+		if (i != -1) {
+			items.splice(i, 1);
+		}
+
+		//adds it back the ingredient list
+		appendToList('ingredient_list', itemValue, itemID)
+	}
+
+	function transmitItems(itemID) {
+		items.push(itemID);
+		document.getElementById('id_transmit').value = items;
+	}
+
+	//]]>
 </script>
 
 </head>
 
-<body onLoad = "preevalutateConfiguration();">
-<nav>
-		<table>
-			<tr>
-				<td><a href="index.html">Startseite</a></td>
-				<td><a href="catalog.html">Unser Angebot</a></td>
-				<td><a href="cart.html">Warenkorb</a></td>
-				<td><a sec:authorize="hasRole('ROLE_SELLER')" href="orders.html">Bestellungen</a></td>
-			</tr>
-		</table>
-	</nav>
+<body onLoad="preevalutateConfiguration();">
+	<!-- Navbar -->
+	<header>
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed"
+						data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+						aria-expanded="false">
+						<span class="sr-only">Toggle navigation</span> <span
+							class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="index.html">Papa Pizza</a>
+				</div>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse"
+					id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li><a href="catalog.html">Unser Angebot</a></li>
+						<li><a href="pizza_configurator.html">Pizza erstellen</a></li>
+						<li><a href="cart.html">Warenkorb</a></li>
+						<li sec:authorize="isAuthenticated()" class="dropdown"><a
+							href="#" class="dropdown-toggle" data-toggle="dropdown"
+							role="button" aria-haspopup="true" aria-expanded="false">Menü
+								<span class="caret"></span>
+						</a>
+							<ul class="dropdown-menu">
+								<li><a sec:authorize="hasRole('ROLE_BAKER')"
+									href="ovens.html">Öfen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_DELIVERER')"
+									href="index.html">Deliverer Dashboard</a></li>
+								<li><a sec:authorize="hasRole('ROLE_SELLER')"
+									href="orders.html">Bestellungen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_SELLER')"
+									href="register_customer.html">Kunden registrieren</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="register_staffmember.html">Mitarbeiter registieren</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="finances.html">Finanzen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="addItem.html">Item hinzufügen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="catalog.html">Katalog bearbeiten</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="customer_display.html">Kunden anzeigen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="staffmember_display.html">Mitarbeiter anzeigen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="tan.html">TAN-Liste</a></li>
+							</ul></li>
+					</ul>
+					<p class="navbar-text navbar-right"
+						sec:authorize="isAuthenticated()"
+						th:text="${'Eingeloggt als: ' + #authentication?.name}" />
+					<a sec:authorize="!isAuthenticated()"
+						class="navbar-text navbar-right" href="/login">Login</a> <a
+						sec:authorize="isAuthenticated()" class="navbar-text navbar-right"
+						href="/logout">Logout</a>
+				</div>
+				<!-- /.navbar-collapse -->
+			</div>
+			<!-- /.container-fluid -->
+		</nav>
+	</header>
 
-	 <select id = "ingredient_list" name="ingredient List" size="5">
-	      <option th:each="item : ${items}" th:text="${item.getName()} + ' ' + ${item.getPrice()}"  id="0" th:id="${item.getId()}">Cheese</option>
-	 </select>
-	
-	<select id = "pizza_configuration" name="configuration" size="5" >
-		 <option th:each="ingredient : ${ingredients}" th:text="${ingredient.getName()} + ' ' + ${ingredient.getPrice()}"  id="0" th:id="${ingredient.getId()}">Cheese</option>
+	<!-- Panel for select ingredients -->
+	<div class="container col-md-3">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Treffen Sie Ihre Auswahl!</div>
+			<div class="panel-body">
+				<select id="ingredient_list" name="ingredient List" size="5">
+					<option th:each="item : ${items}"
+						th:text="${item.getName()} + ' ' + ${item.getPrice()}" id="0"
+						th:id="${item.getId()}">Cheese</option>
+				</select> <input class="btn btn-primary" id="addIngredient" type="button"
+					value="add ingredient" onclick="addIngredient();" />
+			</div>
+		</div>
+	</div>
+
+	<!-- Panel for current pizza -->
+	<div class="container col-md-4">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Ihre Pizza</div>
+			<div class="panel-body">
+				<select id="pizza_configuration" name="configuration" size="5">
+					<option th:each="ingredient : ${ingredients}"
+						th:text="${ingredient.getName()} + ' ' + ${ingredient.getPrice()}"
+						id="0" th:id="${ingredient.getId()}">Cheese</option>
+				</select> <br /> <input class="btn btn-primary" id="removeIngredient"
+					type="button" value="remove ingredient"
+					onclick="removeIngredient();" />
+				<form method="post" action="/finishPizza">
+					<input class="btn btn-primary" type="submit" name="id"
+						value="Pizza fertigstellen" /> <input type="hidden"
+						name="id_transmit" id="id_transmit" value="" />
+				</form>
+
+			</div>
+		</div>
+	</div>
+
+
+	<!-- <select id="ingredient_list" name="ingredient List" size="5">
+		<option th:each="item : ${items}"
+			th:text="${item.getName()} + ' ' + ${item.getPrice()}" id="0"
+			th:id="${item.getId()}">Cheese</option>
 	</select>
-	
-	<input id="addIngredient" type="button" value="add ingredient" onclick="addIngredient();" />
-	<input id="removeIngredient" type="button" value="remove ingredient" onclick="removeIngredient();" />
-	
+
+	<select id="pizza_configuration" name="configuration" size="5">
+		<option th:each="ingredient : ${ingredients}"
+			th:text="${ingredient.getName()} + ' ' + ${ingredient.getPrice()}"
+			id="0" th:id="${ingredient.getId()}">Cheese</option>
+	</select>
+
+	<input id="addIngredient" type="button" value="add ingredient"
+		onclick="addIngredient();" />
+	<input id="removeIngredient" type="button" value="remove ingredient"
+		onclick="removeIngredient();" />
+
 	<form method="post" action="/finishPizza">
-				<input type="submit" name="id" value="Pizza fertigstellen"/>
-				<input type="hidden" name="id_transmit" id="id_transmit" value="" />
-	</form>
+		<input type="submit" name="id" value="Pizza fertigstellen" /> <input
+			type="hidden" name="id_transmit" id="id_transmit" value="" />
+	</form> -->
 
 
 
 
-
- </body>
- </html>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+		integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+		crossorigin="anonymous"></script>
+</body>
+</html>
