@@ -13,11 +13,12 @@
 			<tr>
 				<td><a href="index.html">Startseite</a></td>
 				<td><a href="catalog.html">Unser Angebot</a></td>
-				<td><a href="pizza_configurator.html">Eigene Pizza erstellen</a></td>
+				<td><a href="pizza_configurator.html">Eigene Pizza
+						erstellen</a></td>
 			</tr>
 		</table>
 	</nav>
-	
+
 	<h1>Cart</h1>
 
 	<div>
@@ -31,36 +32,14 @@
 	</div>
 
 	<div th:switch="${customer.isPresent()}">
-		<p th:case="true" th:text="'Kunde ist: '+${customer.get().getForename()}+' '+${customer.get().getSurname()}+' tel: '+${customer.get().getTelephoneNumber()}">User is present</p>
-		<p th:case="false" th:text="'Kein Kunde vorhanden'">User isn't present</p>
+		<p th:case="true"
+			th:text="'Kunde ist: '+${customer.get().getForename()}+' '+${customer.get().getSurname()}+' tel: '+${customer.get().getTelephoneNumber()}">User
+			is present</p>
+		<p th:case="false" th:text="'Kein Kunde vorhanden'">User isn't
+			present</p>
 	</div>
 
-	<!-- im cart.html zu finden
-	<table>
-		<thead>
-			<tr>
-				<th>Name</th>
-				<th>Preis</th>
-				<th>Hinzufügen</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="Item : ${items} ">
-				<td th:text="${Item.getName() }">arg</td>
-				<td th:text="${Item.getPrice()}">arg</td>
-				<td>
-					<form method="post" action="/add">
-						<input type="hidden" name="pid" value="0" th:value="${Item.id}" />
-						<input type="hidden" name="number" value="1" /> 
-						<input type="submit" value="Add" />
-					</form>
 
-				</td>
-			</tr>
-
-		</tbody>
-	</table>
-	-->
 	<div class="tables">
 
 		<table>
@@ -99,15 +78,29 @@
 				<th>Preis</th>
 				<th>Status</th>
 				<th>Unbaked</th>
+				<th>Lieferant</th>
 
 			</tr>
 		</thead>
 		<tbody>
 			<tr th:each="order : ${orders} ">
 				<td th:text="${order.getId() }">arg</td>
-				<td th:text="${order.getOrder().getTotalPrice() }">arg</td>
+				<td th:text="${{order.getOrder().getTotalPrice()}}">arg</td>
 				<td th:text="${order.getOrderStatus() }">arg</td>
 				<td th:text="${order.getUnbakedPizzas() }">arg</td>
+				<form method="post" action="/assignDeliverer">
+				 <td><select name="delivererlist" size="1">
+						<option th:each=" deliverer : ${deliverers}"
+							th:text="${deliverer.getForename()}">eddy</option>
+				</select></td>
+				<td>
+						<input type="hidden" value="0" id="lol" th:value="${deliverer}" />
+						<!-- <input type="hidden" value="0" name="orderId" th:value="${order.getId()}" /> -->
+						<input type="submit" value="Lieferant schicken" />
+						
+					</td>
+					</form>
+				
 			</tr>
 
 		</tbody>
