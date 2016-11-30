@@ -46,7 +46,7 @@ public class PizzaTest {
 	public void testaddIngredient()
 	{
 		assertTrue(p1.addIngredient(i1));
-		assertTrue(p1.getIngredients().contains(i1));
+		assertTrue(p1.getIngredients().contains(i1.getName()));
 		assertFalse(p1.addIngredient(i1));
 		
 	}
@@ -56,10 +56,10 @@ public class PizzaTest {
 	{
 		p1.addIngredient(i1);
 		p1.addIngredient(i2);
-		assertEquals(p1.removeIngredient(i1), i1);
+		assertEquals(p1.removeIngredient(i1), i1.getName());
 		assertFalse(p1.getIngredients().contains(i1));
 		assertNull(p1.removeIngredient(i1));
-		assertEquals(p1.removeIngredient(i2),i2);
+		assertEquals(p1.removeIngredient(i2),i2.getName());
 		assertEquals(p1.getIngredients().size(),0);
 	}
 	
