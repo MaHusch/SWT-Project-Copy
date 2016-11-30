@@ -14,3 +14,50 @@
 
 * Im EKD Kommentare hinzufügen für zum Beispiel beim Katalog, dass das ein Interface mit @Autowired ist
 
+== ToDo
+
+* Eingaben überprüfen! - Fehlermeldungen hinzufügen
+
+* Items aus dem Warenkorb entfernen
+
+* Dashboards überarbeiten - nach login nicht weiterleiten auf startseite, sondern sXXX.html dashboards
+
+* Kundenregistration - Adresse hinzufügen
+
+* Cutlery 
+
+* Ofenliste:
+	** Timer hinzufügen
+	** Meldungen falls Ofen schon voll ist, bzw falls PizzaQueue leer ist
+
+* Deliverer:
+	** seine OrderListe hinzufügen
+	** Meldung bei erfolgreichem Einloggen/Ausloggen (Button verschwinden?)
+
+* Admin:
+	** Orders unterteilen in aktuelle, laufende und alle die es gab
+	** Nach Mitarbeiterregistrierung auf Mitarbeiterliste verweisen
+	** Mitarbeiter entfernen/editieren
+	** Angabe des Gehalts hinzufügen
+	** Kunden entfernen/editieren
+
+* Accountancy:
+	** Automatische Einträge bei abgeschlossenen Orders
+	** Gehalt für die Mitarbeiter festlegen
+	** Wöchentliche Abrechnung
+
+* Orders:
+	** Kunde erhält Rabatt bei Abholung: Checkbox
+	** Freigetränk - Anzeigen neben Warenkorb
+
+* Catalog:
+	** Filtern
+	** Zutaten raus
+
+* Pizza zusammenstellen:
+	** Verfeinerung der Pizza überarbeiten
+
+* Entwickerdoku, JDoc
+
+
+
