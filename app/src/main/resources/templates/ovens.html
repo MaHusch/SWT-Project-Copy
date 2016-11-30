@@ -94,14 +94,16 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 						<td>
 							<form method="post" action="/getNextPizza">
 								<input type="hidden" name="ovenID" value="0"
-									th:value="${oven.getId()}" /> <input class="btn btn-primary" type="submit"
-									value="Auswählen" />
+									th:value="${oven.getId()}" /> <input class="btn btn-primary"
+									type="submit" value="Auswählen" />
 							</form>
 						</td>
 					</tr>
 				</table>
-				<form sec:authorize="hasRole('ROLE_ADMIN')" method="post" action="/addOven">
-					<input class="btn btn-primary" type="submit" value="Ofen hinzufügen" />
+				<form sec:authorize="hasRole('ROLE_ADMIN')" method="post"
+					action="/addOven">
+					<input class="btn btn-primary" type="submit"
+						value="Ofen hinzufügen" />
 				</form>
 			</div>
 		</div>
@@ -122,6 +124,14 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 		</div>
 	</div>
 
+	<div th:if="${error.getError() == true}" class="container col-md-4">
+		<div class="panel panel-danger">
+			<div class="panel-heading">Fehler!</div>
+			<div class="panel-body">
+				<p>PizzaQueue ist leer! Ofen kann nicht befüllt werden!</p>
+			</div>
+		</div>
+	</div>
 
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

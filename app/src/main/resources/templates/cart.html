@@ -80,11 +80,22 @@
 			<div class="panel-heading">Kunden überprüfen</div>
 			<div class="panel-body">
 				<form method="post" action="/checkTan">
-					<label for="surname">Telefonnummer</label>: <input type="text"
-						id="tnumber" name="tnumber" /> <br /> <label for="forename">TAN</label>:
-					<input type="text" id="tan" name="tan" /> <br /> <input
-						class="btn btn-primary" type="submit" value="Check" />
+					<table>
+						<tr>
+							<td><label for="surname">Telefonnummer</label>:</td>
+							<td><input type="text" id="tnumber" name="tnumber" /></td>
+						</tr>
+						<tr>
+							<td><label for="forename">TAN</label>:</td>
+							<td><input type="text" id="tan" name="tan" /></td>
+						</tr>
+						<tr>
+							<td><input class="btn btn-primary" type="submit"
+								value="Check" /></td>
+						</tr>
+					</table>
 				</form>
+
 				<div th:switch="${customer.isPresent()}">
 					<p th:case="true"
 						th:text="'Kunde ist: '+${customer.get().getForename()}+' '+${customer.get().getSurname()}+' tel: '+${customer.get().getTelephoneNumber()}">User

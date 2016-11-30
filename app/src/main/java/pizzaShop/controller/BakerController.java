@@ -19,6 +19,7 @@ import pizzaShop.model.store.*;
 public class BakerController {
 	
 	private Baker currentBaker;
+	private ErrorClass error = new ErrorClass(false);
 	
 	public BakerController(){}
 	
@@ -26,11 +27,11 @@ public class BakerController {
 	public String ovenView(Model model, Principal principal){
 		
 		currentBaker = (Baker)Store.getInstance().getStaffMemberByName(principal.getName());
-		
 		if(currentBaker != null){
 			
 			model.addAttribute("ovens",Store.getInstance().getOvens());
 			model.addAttribute("queue", Store.getInstance().getPizzaQueue());
+			model.addAttribute("error", error );
 		}
 		return "ovens";
 	}
@@ -43,8 +44,15 @@ public class BakerController {
 			if(Store.getInstance().getOvens().get(i).getId() == ovenID){
 				
 				if(Store.getInstance().getOvens().get(i).isEmpty()){
-					
+					try{
 					currentBaker.getNextPizza();
+					error.setError(false);
+					}
+					catch (Exception e){
+						error.setError(true);
+						return "redirect:ovens";
+					}
+					
 					currentBaker.putPizzaIntoOven(Store.getInstance().getOvens().get(i));
 				}
 			}
