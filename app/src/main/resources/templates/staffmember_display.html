@@ -1,38 +1,112 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-		<link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}" />
-		<title>Mitarbeiter anzeigen</title>
-	</head>
-	<body>
-	<nav>
-		<table>
-			<tr>
-				<td><a href="index.html">Startseite</a></td>
-				<td><a sec:authorize="hasRole('ROLE_ADMIN')" href="finances.html">Finanzen</a></td>
-				<td><a sec:authorize="hasRole('ROLE_ADMIN')" href="register_staffmember.html">Mitarbeiter registrieren</a></td>
-			</tr>
-		</table>
-	</nav>
-		<h1>Welcome!</h1>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/style.css}" />
+<title>Mitarbeiter anzeigen</title>
+</head>
+<body>
+	<!-- Navbar -->
+	<header>
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed"
+						data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+						aria-expanded="false">
+						<span class="sr-only">Toggle navigation</span> <span
+							class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="index.html">Papa Pizza</a>
+				</div>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse"
+					id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li><a href="catalog.html">Unser Angebot</a></li>
+						<li><a href="pizza_configurator.html">Pizza erstellen</a></li>
+						<li><a href="cart.html">Warenkorb</a></li>
+						<li sec:authorize="isAuthenticated()" class="dropdown"><a
+							href="#" class="dropdown-toggle" data-toggle="dropdown"
+							role="button" aria-haspopup="true" aria-expanded="false">Menü
+								<span class="caret"></span>
+						</a>
+							<ul class="dropdown-menu">
+								<li><a sec:authorize="hasRole('ROLE_BAKER')"
+									href="ovens.html">Öfen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_DELIVERER')"
+									href="index.html">Deliverer Dashboard</a></li>
+								<li><a sec:authorize="hasRole('ROLE_SELLER')"
+									href="orders.html">Bestellungen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_SELLER')"
+									href="register_customer.html">Kunden registrieren</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="register_staffmember.html">Mitarbeiter registieren</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="finances.html">Finanzen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="addItem.html">Item hinzufügen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="catalog.html">Katalog bearbeiten</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="customer_display.html">Kunden anzeigen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="staffmember_display.html">Mitarbeiter anzeigen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="tan.html">TAN-Liste</a></li>
 
-		<h2>Mitarbeiter</h2>
-		<div class="tables">
-		<table border="1">
-			<tr>
-				<td>Vornamer</td>
-				<td>Nachname</td>
-				<td>Rolle</td>
-			</tr>	
-			<tbody>
-				<tr th:each=" staffmember : ${staffmember}">
-					<td th:text="${staffmember.getForename()}">Vorname</td>
-					<td th:text="${staffmember.getSurname()}">Nachname</td>
-					<td th:text="${staffmember.getRole()}">Rolle</td>
-				</tr>																						
-			</tbody>
-		</table>	
+							</ul></li>
+
+					</ul>
+
+					<p class="navbar-text navbar-right"
+						sec:authorize="isAuthenticated()"
+						th:text="${'Eingeloggt als: ' + #authentication?.name}" />
+					<a sec:authorize="!isAuthenticated()"
+						class="navbar-text navbar-right" href="/login">Login</a> <a
+						sec:authorize="isAuthenticated()" class="navbar-text navbar-right"
+						href="/logout">Logout</a>
+				</div>
+				<!-- /.navbar-collapse -->
+			</div>
+			<!-- /.container-fluid -->
+		</nav>
+	</header>
+
+	<!-- staffmember list panel -->
+	<div sec:authorize="hasRole('ROLE_ADMIN')" class="container col-md-6">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Mitarbeiter Anzeige</div>
+			<div class="panel-body">
+					<table class="table table-striped table-bordered">
+						<tr>
+							<td>Vornamer</td>
+							<td>Nachname</td>
+							<td>Rolle</td>
+						</tr>
+						<tbody>
+							<tr th:each=" staffmember : ${staffmember}">
+								<td th:text="${staffmember.getForename()}">Vorname</td>
+								<td th:text="${staffmember.getSurname()}">Nachname</td>
+								<td th:text="${staffmember.getRole()}">Rolle</td>
+							</tr>
+						</tbody>
+					</table>
+			</div>
 		</div>
-	</body>
+	</div>
+
+
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+		integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+		crossorigin="anonymous"></script>
+</body>
 </html>
