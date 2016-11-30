@@ -9,6 +9,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
+import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.order.OrderIdentifier;
 
 
@@ -19,7 +20,7 @@ public class Pizza extends Item {
 	 * 
 	 */
 	private static final long serialVersionUID = 4746830994439574139L;
-	@OneToMany (cascade = {CascadeType.PERSIST}) private List<Ingredient> ingredients; 
+	@ElementCollection private List<String> ingredients; 
 	@ElementCollection private List<String> orderQueue = new ArrayList<String>();
 	
 	
@@ -31,7 +32,7 @@ public class Pizza extends Item {
 	public Pizza(String name, javax.money.MonetaryAmount price)
 	{
 		super(name,price,ItemType.PIZZA);
-		this.ingredients = new LinkedList<Ingredient>();
+		this.ingredients = new ArrayList<String>();
 		//this.orderQueue = 
 		this.setStatus(false);
 	}
@@ -44,26 +45,26 @@ public class Pizza extends Item {
 	
 	public boolean addIngredient(Ingredient i) //change name ?
 	{
-		if(ingredients.contains(i)) return false;
+		if(ingredients.contains(i.getName())) return false;
 		
-		ingredients.add(i);
+		ingredients.add(i.getName());
 		this.setPrice(getPrice().add(i.getPrice()));
 		return true;
 	}
 	
-	public Ingredient removeIngredient(Ingredient i)
+	public String removeIngredient(Ingredient i)
 	{
-		if(ingredients.contains(i))
+		if(ingredients.contains(i.getName()))
 		{
-			ingredients.remove(i);
+			ingredients.remove(i.getName());
 			this.setPrice(getPrice().subtract(i.getPrice()));
-			return i;
+			return i.getName();
 		}
 		
 		return null;
 	}
 	
-	public List<Ingredient> getIngredients()
+	public List<String> getIngredients()
 	{
 		return ingredients;
 	}
@@ -89,15 +90,15 @@ public class Pizza extends Item {
 	public String toString()  //TODO: nicerer String
 	{
 		String result = super.toString();
-		java.util.Iterator<Ingredient> i =ingredients.iterator();
+		java.util.Iterator<String> i =ingredients.iterator();
 		
 		if(i.hasNext()) 
 		{	
-			result += "(" + i.next().getName();
+			result += "(" + i.next();
 			
 			for(;i.hasNext();)
 			{
-				result += "," + i.next().getName();
+				result += "," + i.next();
 			}
 		
 			result += ")";

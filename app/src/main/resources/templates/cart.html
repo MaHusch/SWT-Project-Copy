@@ -8,61 +8,128 @@
 <title>Warenkorb</title>
 </head>
 <body>
-	<nav>
-		<table>
-			<tr>
-				<td><a href="index.html">Startseite</a></td>
-				<td><a href="catalog.html">Unser Angebot</a></td>
-				<td><a href="pizza_configurator.html">Eigene Pizza erstellen</a></td>
-			</tr>
-		</table>
-	</nav>
-		<h1> Warenkorb </h1>
-		
-	<div sec:authorize="hasRole('ROLE_SELLER')">
-		<h2>Kunden überprüpfen</h2>
-		<form method="post" action="/checkTan">
-			<label for="surname">Telefonnummer</label>: <input type="text"
-				id="tnumber" name="tnumber" /> <br /> <label for="forename">TAN</label>:
-			<input type="text" id="tan" name="tan" /> <br /> <input
-				type="submit" value="Check" />
-		</form>
-	</div>	
-	
-	<div th:switch="${customer.isPresent()}">
-		<p th:case="true"
-			th:text="'Kunde ist: '+${customer.get().getForename()}+' '+${customer.get().getSurname()}+' tel: '+${customer.get().getTelephoneNumber()}">User
-			is present</p>
-		<p th:case="false" th:text="'Kein Kunde vorhanden'">User isn't
-			present</p>
-	</div>
-	
-	<div class="tables">	
-	<table border="1">
-			
-			
-				<tr>
-					<th>Name</th>
-					<th>Anzahl</th>
-					<th>Preis</th>
-				</tr>
-			
-			<tbody th:remove="all-but-first">
+	<!-- NavBar -->
+	<header>
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed"
+						data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+						aria-expanded="false">
+						<span class="sr-only">Toggle navigation</span> <span
+							class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="index.html">Papa Pizza</a>
+				</div>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse"
+					id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li><a href="catalog.html">Unser Angebot</a></li>
+						<li><a href="pizza_configurator.html">Pizza erstellen</a></li>
+						<li><a href="cart.html">Warenkorb</a></li>
+						<li sec:authorize="isAuthenticated()" class="dropdown"><a
+							href="#" class="dropdown-toggle" data-toggle="dropdown"
+							role="button" aria-haspopup="true" aria-expanded="false">Menü
+								<span class="caret"></span>
+						</a>
+							<ul class="dropdown-menu">
+								<li><a sec:authorize="hasRole('ROLE_BAKER')"
+									href="ovens.html">Öfen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_DELIVERER')"
+									href="index.html">Deliverer Dashboard</a></li>
+								<li><a sec:authorize="hasRole('ROLE_SELLER')"
+									href="orders.html">Bestellungen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_SELLER')"
+									href="register_customer.html">Kunden registrieren</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="register_staffmember.html">Mitarbeiter registieren</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="finances.html">Finanzen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="addItem.html">Item hinzufügen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="catalog.html">Katalog bearbeiten</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="customer_display.html">Kunden anzeigen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="staffmember_display.html">Mitarbeiter anzeigen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="tan.html">TAN-Liste</a></li>
+							</ul></li>
+					</ul>
+					<p class="navbar-text navbar-right"
+						sec:authorize="isAuthenticated()"
+						th:text="${'Eingeloggt als: ' + #authentication?.name}" />
+					<a sec:authorize="!isAuthenticated()"
+						class="navbar-text navbar-right" href="/login">Login</a> <a
+						sec:authorize="isAuthenticated()" class="navbar-text navbar-right"
+						href="/logout">Logout</a>
+				</div>
+				<!-- /.navbar-collapse -->
+			</div>
+			<!-- /.container-fluid -->
+		</nav>
+	</header>
 
-				<tr th:each="item : ${cart} ">
-					<td th:text="${item.productName}">Gemüse</td>
-					<td th:text="${item.quantity}">10</td>
-					<td th:text="${item.price}">10 Euro</td>
-				</tr>
-
-			</tbody>
-		</table>
+	<!-- Panel for CustomerCheck -->
+	<div sec:authorize="hasRole('ROLE_SELLER')" class="container col-md-4">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Kunden überprüfen</div>
+			<div class="panel-body">
+				<form method="post" action="/checkTan">
+					<label for="surname">Telefonnummer</label>: <input type="text"
+						id="tnumber" name="tnumber" /> <br /> <label for="forename">TAN</label>:
+					<input type="text" id="tan" name="tan" /> <br /> <input
+						class="btn btn-primary" type="submit" value="Check" />
+				</form>
+				<div th:switch="${customer.isPresent()}">
+					<p th:case="true"
+						th:text="'Kunde ist: '+${customer.get().getForename()}+' '+${customer.get().getSurname()}+' tel: '+${customer.get().getTelephoneNumber()}">User
+						is present</p>
+					<p th:case="false" th:text="'Kein Kunde vorhanden'">User isn't
+						present</p>
+				</div>
+			</div>
 		</div>
-		<p th:text="'Gesamt: ' + ${cart.price}">Summe: 100 Euro</p>
-		
-		<form sec:authorize="hasRole('ROLE_SELLER')"  method="post" action="/checkout">
-			<input type="submit" value="Kaufen" />
-		</form>
-		 
+	</div>
+
+	<!-- Panel for Cart -->
+	<div class="container col-md-6">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Warenkorb</div>
+			<div class="panel-body">
+				<table class="table table-striped table-bordered" border="1">
+					<tr>
+						<th>Name</th>
+						<th>Anzahl</th>
+						<th>Preis</th>
+					</tr>
+					<tbody th:remove="all-but-first">
+						<tr th:each="item : ${cart} ">
+							<td th:text="${item.productName}">Gemüse</td>
+							<td th:text="${item.quantity}">10</td>
+							<td th:text="${item.price}">10 Euro</td>
+						</tr>
+					</tbody>
+				</table>
+				<p th:text="'Gesamt: ' + ${cart.price}">Summe: 100 Euro</p>
+
+				<form sec:authorize="hasRole('ROLE_SELLER')" method="post"
+					action="/checkout">
+					<input class="btn btn-primary" type="submit" value="Kaufen" />
+				</form>
+			</div>
+		</div>
+	</div>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+		integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+		crossorigin="anonymous"></script>
 </body>
 </html>

@@ -1,6 +1,9 @@
 package pizzaShop.controller;
 
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 import javax.money.MonetaryAmount;
@@ -90,10 +93,26 @@ public class StoreController {
 			Pizza pizza = (Pizza)(Store.getInstance().findItemByIdentifier(itemID,null));
 			
 			if (pizza == null){return "redirect:pizza_configurator";}
-			else {model.addAttribute("ingredients",pizza.getIngredients());}
+			else {
+				List<String> ingrNames = pizza.getIngredients();
+				ArrayList<Item> ingredients = new ArrayList<Item>(); 
+				
+				for(String name : ingrNames)
+				{
+					Iterator<Item> i = itemCatalog.findByName(name).iterator();
+					if(i.hasNext())
+					{
+						Item x = i.next();
+						if(x.getType().equals(ItemType.INGREDIENT))
+							ingredients.add((Ingredient) x);
+						else
+							System.out.println("Zutat ist keine Ingredient");
+						}
+				}
+				model.addAttribute("ingredients", ingredients);
 			
+			}
 		}
-	
 		return "pizza_configurator";
 	}
 	
@@ -111,7 +130,7 @@ public class StoreController {
 		if (ids == null || ids.length == 0)
 			return "redirect:pizza_configurator";
 		else
-			newPizza = new Pizza("custom",Money.of(7, "EUR"));
+			newPizza = new Pizza("custom",Money.of(2, "EUR"));
 		
 		
 		for(int i = 0; i < ids.length; i++ ){

@@ -1,0 +1,16 @@
+= Protokoll Gruppe 2016
+
+
+== Bemerkungen
+
+* Zur Präsentation :
+	** mehr zum Publikum sprechen
+	** freier Reden
+	** weniger auf die Folien starren
+
+* **Dokumentationen!**
+
+* Bootstrap darf benutzt werden
+
+* Im EKD Kommentare hinzufügen für zum Beispiel beim Katalog, dass das ein Interface mit @Autowired ist
+
