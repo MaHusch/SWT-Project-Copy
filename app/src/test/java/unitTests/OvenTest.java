@@ -14,7 +14,7 @@ import pizzaShop.model.store.Store;
 
 public class OvenTest {
 	
-	oven o1;
+	Oven o1;
 	
 	Pizza p1;
 	Pizza p2;
