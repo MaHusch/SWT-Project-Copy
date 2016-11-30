@@ -121,10 +121,17 @@
 						</tr>
 					</table>
 				</form>
-
 			</div>
 		</div>
+	</div>
 
+	<div th:if="${error.getError() == true}" class="container col-md-4">
+		<div class="panel panel-danger">
+			<div class="panel-heading">Fehler!</div>
+			<div class="panel-body">
+				<p>Felder mit (*) dürfen nicht leer sein!</p>
+			</div>
+		</div>
 	</div>
 
 
