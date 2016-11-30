@@ -1,84 +1,238 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-		<link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}" />
-		<title>Item erstellen</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/style.css}" />
+<title>Item erstellen</title>
 
 
- <script type="text/javascript">//<![CDATA[
- 
- // checks if there are already values in the configuration list in case a preconfiguration as been selected
- 
- 
- function checkExistingItem(){
-	 var value = document.getElementById('existingItem').getAttribute('value');
-	 
-	 // if an item is already present, change the form so it calls the function to overwrite,update and save the item's information
-	 if (value === "true") {
-		 var form = document.getElementById("itemForm");
-		 form.action = "/saveItem";
-	 }
-	 
-}
+<script type="text/javascript">
+	//<![CDATA[
 
-//]]>
- </script>
- 
- 
+	// checks if there are already values in the configuration list in case a preconfiguration as been selected
+
+	function checkExistingItem() {
+		var value = document.getElementById('existingItem').getAttribute(
+				'value');
+
+		// if an item is already present, change the form so it calls the function to overwrite,update and save the item's information
+		if (value === "true") {
+			var form = document.getElementById("itemForm");
+			form.action = "/saveItem";
+		}
+
+	}
+
+	//]]>
+</script>
+
+
 </head>
 
-<body onLoad = "checkExistingItem();">
+<body onLoad="checkExistingItem();">
 
+	<!-- Navbar -->
+	<header>
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed"
+						data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+						aria-expanded="false">
+						<span class="sr-only">Toggle navigation</span> <span
+							class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="index.html">Papa Pizza</a>
+				</div>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse"
+					id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li><a href="catalog.html">Unser Angebot</a></li>
+						<li><a href="pizza_configurator.html">Pizza erstellen</a></li>
+						<li><a href="cart.html">Warenkorb</a></li>
+						<li sec:authorize="isAuthenticated()" class="dropdown"><a
+							href="#" class="dropdown-toggle" data-toggle="dropdown"
+							role="button" aria-haspopup="true" aria-expanded="false">Menü
+								<span class="caret"></span>
+						</a>
+							<ul class="dropdown-menu">
+								<li><a sec:authorize="hasRole('ROLE_BAKER')"
+									href="ovens.html">Öfen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_DELIVERER')"
+									href="index.html">Deliverer Dashboard</a></li>
+								<li><a sec:authorize="hasRole('ROLE_SELLER')"
+									href="orders.html">Bestellungen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_SELLER')"
+									href="register_customer.html">Kunden registrieren</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="register_staffmember.html">Mitarbeiter registieren</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="finances.html">Finanzen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="addItem.html">Item hinzufügen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="catalog.html">Katalog bearbeiten</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="customer_display.html">Kunden anzeigen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="staffmember_display.html">Mitarbeiter anzeigen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="tan.html">TAN-Liste</a></li>
 
+							</ul></li>
 
-	<nav>
-		<table>
-			<tr>
-				<td><a href="index.html">Startseite</a></td>
-				<td><a href="catalog.html">Unser Angebot</a></td>
-			</tr>
-		</table>
-	</nav>
-	
-	<div th:if = "${item}" value ="true" id= "existingItem"></div>
-	
-	
-	<h1> Item erstellen</h1>
-	<form th:action="createItem" method="post" id = "itemForm" >
-	<!-- Pizza Zutaten werden hinzugefügt bei edit Item -->	  
-		<label for="itemtype">Itemtyp</label>: 
-			
-			<div  th:if = "${item}">
-				<select name="itemtype" id = "itemtype" size="1">
-					 <option th:each="itemType : ${ItemTypes}" th:text="${itemType.name()}" selected= "selected" th:if= "${itemType.name() == item.getType().name()}"> Cheese</option>
-					 <option th:each="itemType : ${ItemTypes}" th:text="${itemType.name()}" th:if= "${itemType.name() != item.getType().name()}"> Cheese</option>
-				</select><br />
+					</ul>
+
+					<p class="navbar-text navbar-right"
+						sec:authorize="isAuthenticated()"
+						th:text="${'Eingeloggt als: ' + #authentication?.name}" />
+					<a sec:authorize="!isAuthenticated()"
+						class="navbar-text navbar-right" href="/login">Login</a> <a
+						sec:authorize="isAuthenticated()" class="navbar-text navbar-right"
+						href="/logout">Logout</a>
+				</div>
+				<!-- /.navbar-collapse -->
 			</div>
-			
-			<div  th:if = "${item == null}">
-				<select name="itemtype" id = "itemtype" size="1">
-					<option selected="selected" >PIZZA</option>
-					<option>DRINK</option>
-					<option>FREEDRINK</option>
-					<option>INGREDIENT</option>
-					<option>SALAD</option>
-				</select><br />
+			<!-- /.container-fluid -->
+		</nav>
+	</header>
+	
+	<!-- Item panel -->
+	<div class="container col-md-4">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Neues Katalogitem erstellen/bearbeiten</div>
+			<div class="panel-body">
+				<form th:action="createItem" method="post" id="itemForm">
+					<!-- Pizza Zutaten werden hinzugefügt bei edit Item -->
+					<label for="itemtype">Itemtyp</label>:
+
+					<div th:if="${item}">
+						<select name="itemtype" id="itemtype" size="1">
+							<option th:each="itemType : ${ItemTypes}"
+								th:text="${itemType.name()}" selected="selected"
+								th:if="${itemType.name() == item.getType().name()}">
+								Cheese</option>
+							<option th:each="itemType : ${ItemTypes}"
+								th:text="${itemType.name()}"
+								th:if="${itemType.name() != item.getType().name()}">
+								Cheese</option>
+						</select><br />
+					</div>
+
+					<div th:if="${item == null}">
+						<select name="itemtype" id="itemtype" size="1">
+							<option selected="selected">PIZZA</option>
+							<option>DRINK</option>
+							<option>FREEDRINK</option>
+							<option>INGREDIENT</option>
+							<option>SALAD</option>
+						</select><br />
+					</div>
+
+
+					<label for="itemname">Name</label>:
+					<div th:if="${item}">
+						<input type="text" id="itemname" name="itemname" value=""
+							th:value="${item.getName()}" /> <br />
+					</div>
+					<div th:if="${item == null}">
+						<input type="text" id="itemname" name="itemname" /> <br />
+					</div>
+
+					<label for="itemprice">Preis </label>:
+					<div th:if="${item}">
+						<input type="number" step="0.1" id="itemprice" name="itemprice"
+							value="" th:value="${item.getPrice().getNumber().floatValue()}" />
+						<br />
+					</div>
+					<div th:if="${item == null}">
+						<input type="number" step="0.1" id="itemprice" name="itemprice" />
+						<br />
+					</div>
+
+					<div th:if="${item}">
+						<input type="hidden" name="pid" value="0" th:value="${item.id}" />
+					</div>
+
+					<input type="submit" value="Erstellen" th:if="${item == null}" />
+					<input type="submit" value="Bearbeiten" th:if="${item}" />
+				</form>
+
+
 			</div>
-		
-		
+		</div>
+
+	</div>
+	<!-- <div th:if="${item}" value="true" id="existingItem"></div>
+
+
+	<h1>Item erstellen</h1>
+	<form th:action="createItem" method="post" id="itemForm">
+		 Pizza Zutaten werden hinzugefügt bei edit Item 
+		<label for="itemtype">Itemtyp</label>:
+
+		<div th:if="${item}">
+			<select name="itemtype" id="itemtype" size="1">
+				<option th:each="itemType : ${ItemTypes}"
+					th:text="${itemType.name()}" selected="selected"
+					th:if="${itemType.name() == item.getType().name()}">
+					Cheese</option>
+				<option th:each="itemType : ${ItemTypes}"
+					th:text="${itemType.name()}"
+					th:if="${itemType.name() != item.getType().name()}">
+					Cheese</option>
+			</select><br />
+		</div>
+
+		<div th:if="${item == null}">
+			<select name="itemtype" id="itemtype" size="1">
+				<option selected="selected">PIZZA</option>
+				<option>DRINK</option>
+				<option>FREEDRINK</option>
+				<option>INGREDIENT</option>
+				<option>SALAD</option>
+			</select><br />
+		</div>
+
+
 		<label for="itemname">Name</label>:
-		<div  th:if = "${item}"><input type="text" id="itemname" name="itemname" value = "" th:value = "${item.getName()}"/> <br /></div>
-		<div  th:if = "${item == null}"><input type="text" id="itemname" name="itemname"/> <br /></div>
+		<div th:if="${item}">
+			<input type="text" id="itemname" name="itemname" value=""
+				th:value="${item.getName()}" /> <br />
+		</div>
+		<div th:if="${item == null}">
+			<input type="text" id="itemname" name="itemname" /> <br />
+		</div>
 
 		<label for="itemprice">Preis </label>:
-		<div  th:if = "${item}"><input type="number" step="0.1" id="itemprice" name="itemprice" value = "" th:value = "${item.getPrice().getNumber().floatValue()}"/> <br /></div>
-		<div  th:if = "${item == null}"><input type="number" step="0.1" id="itemprice" name="itemprice" /> <br /></div>
-		
-		<div  th:if = "${item}"><input type="hidden" name="pid" value="0" th:value="${item.id}" /></div>
-		
-		<input type="submit" value="Erstellen" th:if = "${item == null}"/>
-		<input type="submit" value="Bearbeiten" th:if = "${item}"/>
-	</form>
+		<div th:if="${item}">
+			<input type="number" step="0.1" id="itemprice" name="itemprice"
+				value="" th:value="${item.getPrice().getNumber().floatValue()}" />
+			<br />
+		</div>
+		<div th:if="${item == null}">
+			<input type="number" step="0.1" id="itemprice" name="itemprice" /> <br />
+		</div>
+
+		<div th:if="${item}">
+			<input type="hidden" name="pid" value="0" th:value="${item.id}" />
+		</div>
+
+		<input type="submit" value="Erstellen" th:if="${item == null}" /> <input
+			type="submit" value="Bearbeiten" th:if="${item}" />
+	</form>-->
+
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+		integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+		crossorigin="anonymous"></script>
 </body>
 </html>
