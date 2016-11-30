@@ -1,5 +1,12 @@
 = Protokoll Gruppe 2016
 
+__Treffen am 28.11.2016__
+
+__Schriftführer: Martin Huschenbett__
+
+__Nächstes Treffen: 02.11.2016__
+
+__Teilnehmer: Mel, Jannik, Joris, Florentin, Martin, Daniel__
 
 == Bemerkungen
 
@@ -8,7 +15,7 @@
 	** freier Reden
 	** weniger auf die Folien starren
 
-* **Dokumentationen!**
+* Dokumentationen!
 
 * Bootstrap darf benutzt werden
 
@@ -58,6 +65,8 @@
 	** Verfeinerung der Pizza überarbeiten
 
 * Entwickerdoku, JDoc
+
+Diese ToDos werden noch in Issues umgewandelt und zugewiesen
 
 
 
