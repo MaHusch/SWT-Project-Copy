@@ -103,7 +103,7 @@
 	</header>
 	
 	<!-- Item panel -->
-	<div class="container col-md-4">
+	<div sec:authorize="hasRole('ROLE_ADMIN')" class="container col-md-4">
 		<div class="panel panel-primary">
 			<div class="panel-heading">Neues Katalogitem erstellen/bearbeiten</div>
 			<div class="panel-body">
