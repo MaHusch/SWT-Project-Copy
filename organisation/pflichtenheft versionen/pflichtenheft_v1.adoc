@@ -3,11 +3,11 @@
 
 == Projektname
 
-__Version:__    *1.0*
+__Version:__    *1.1*
 
-__Status:__     *In Arbeit*
+__Status:__     *Fertig*
 
-__Stand:__      *05.11.2016*
+__Stand:__      *30.11.2016*
 
 == Zusammenfassung
 Das Pflichtenheft enthält die Aufgabe und Wünsche des Kunden an die zu entwickelnde Software. 
@@ -147,10 +147,10 @@ Der Administrator kann die einzelnen Einträge editieren, sowie neue Einträge h
 * Pizza-Essgarnitur Verwaltung
 * Veränderliches Sortiment
 * Wöchentliche Abrechnung der Filiale
-* Mitarbeiterverwaltung fehlt
+* Mitarbeiterverwaltung 
 * Rückemeldung des Lieferanten
 * Katalog: suchen filtern
-* Berichtserstellung in html (Grapisch ist optional)
+* Finanzberichtserstellung in html 
 * Bestellübersicht filtern können
 
 === Kann-Kriterien
@@ -159,6 +159,7 @@ Der Administrator kann die einzelnen Einträge editieren, sowie neue Einträge h
 * Standortberücksichtigung
 * Online-Bestellung per Kundenaccount
 * Warenkorb auslösen
+* Finanzübersicht graphisch
 
 == GUI Prototyp
 
