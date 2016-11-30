@@ -86,7 +86,7 @@ public class DelivererController {
 			{
 				if(p.getId().equals(deliveredOrder))
 				{
-					tanManagement.confirmTan( p.getTanAssignedToPizzaOrder());
+					tanManagement.confirmTan( p.getTan());
 					p.completeOrder();
 				}
 			}

@@ -147,7 +147,7 @@ public class CartController {
 			cart.clear();
 			// customer = Optional.empty(); disabled for testing purposes
 		}
-		return "redirect:orders";
+		return "redirect:cart";
 
 	}
 	@RequestMapping(value = "/assignDeliverer", method = RequestMethod.POST)
@@ -155,6 +155,6 @@ public class CartController {
 		
 		System.out.println(lol);
 		 
-		return "redirect:cart";
+		return "redirect:orders";
 	}
 }

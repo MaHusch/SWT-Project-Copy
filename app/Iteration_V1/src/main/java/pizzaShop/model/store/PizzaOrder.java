@@ -22,11 +22,15 @@ public class PizzaOrder {
 	private OrderIdentifier orderIdentifier;
 	private boolean freeDrink;
 	private boolean pickUp;
+	
 	@OneToOne(cascade = {CascadeType.ALL})
 	private Tan newTan;
+	
 	private PizzaOrderStatus pizzaOrderStatus = PizzaOrderStatus.OPEN;
+	
 	@OneToOne
 	private Order order;
+	
 	private int unbakedPizzas = 0;
 
 	public PizzaOrder() {
@@ -51,7 +55,7 @@ public class PizzaOrder {
 		Assert.assertTrue("No unbaked Pizza left!", unbakedPizzas >= 0);
 		unbakedPizzas--;
 		if (unbakedPizzas == 0) {
-			pizzaOrderStatus = PizzaOrderStatus.READY;
+			this.readyOrder();
 			System.out.println("ready");
 
 		}
@@ -95,7 +99,7 @@ public class PizzaOrder {
 		this.setOrderStatus(PizzaOrderStatus.COMPLETED);
 	}
 	
-	public Tan getTanAssignedToPizzaOrder()
+	public Tan getTan()
 	{
 		return this.newTan;
 	}
@@ -103,5 +107,9 @@ public class PizzaOrder {
 	public void deliverOrder()
 	{
 		this.setOrderStatus(PizzaOrderStatus.DELIVERING);
+	}
+	
+	public void readyOrder(){
+		this.setOrderStatus(PizzaOrderStatus.READY);
 	}
 }
