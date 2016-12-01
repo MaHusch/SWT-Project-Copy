@@ -30,6 +30,11 @@ import pizzaShop.model.store.SalaryThread;
 import pizzaShop.model.store.Store;
 import pizzaShop.model.tan_management.TanManagement;
 
+/**
+ * 
+ * @author Florentin
+ *  Class initializes data like staffmember or items for the ItemCatalog
+ */
 @Component
 public class ApplicationDataInitializer implements DataInitializer {
 
@@ -48,7 +53,7 @@ public class ApplicationDataInitializer implements DataInitializer {
 		this.customerRepository = customerRepository;
 		this.tanManagement = tanManagement;
 	}
-
+	
 	@Override
 	public void initialize() {
 
@@ -70,7 +75,12 @@ public class ApplicationDataInitializer implements DataInitializer {
 		Store.staffMemberList.add(Deliverer_Martin_Huschenbett);
 		Store.staffMemberList.add(Baker_Eduardo_Pienso);
 	}
-
+	
+	/**
+	 * Itemcatalog with its items is initialized here
+	 * @param itemCatalog ItemCatalog to fill 
+	 * 
+	 */
 	private void initializeCatalog(ItemCatalog itemCatalog) {
 
 		if (Store.itemCatalog.findAll().iterator().hasNext()) {
@@ -86,11 +96,11 @@ public class ApplicationDataInitializer implements DataInitializer {
 		Pizza pizza2 = new Pizza("pizza2", Money.of(2.50, EURO));
 		Pizza pizza3 = new Pizza("pizza3", Money.of(2.50, EURO));
 		Pizza custom = new Pizza("Basis",Money.of(2.0, EURO));
-		Item beer = new Item("Beer", Money.of(1.60, EURO), ItemType.DRINK);
-		Item freebeer = new Item("Beer", Money.of(0.0, EURO), ItemType.FREEDRINK); // extra
+		Item beer = new Item("Desperados", Money.of(1.60, EURO), ItemType.DRINK);
+		Item freebeer = new Item("Sternburg", Money.of(0.0, EURO), ItemType.FREEDRINK); // extra
 																					// FreeDrink
 																					// class?
-		Item salat = new Item("Salad", Money.of(2.0, EURO), ItemType.SALAD);
+		Item salat = new Item("Ceasar-Salad", Money.of(2.0, EURO), ItemType.SALAD);
 		pizza1.addIngredient(mushroom);
 		pizza1.addIngredient(cheese);
 
@@ -110,14 +120,12 @@ public class ApplicationDataInitializer implements DataInitializer {
 		Store.itemCatalog.save(oniens);
 		Store.itemCatalog.save(custom);
 
-		/*Iterable<Item> test = Store.itemCatalog.findByType(ItemType.INGREDIENT);
 		
-		for(Item i : test)
-		{
-			System.out.println(i.getName());
-		}*/
 	}
-
+	
+	/**
+	 * Accountancy initialized here
+	 */
 	public void initializeAccountancy() 
 	{
 		
@@ -131,7 +139,10 @@ public class ApplicationDataInitializer implements DataInitializer {
 		(new Thread(new SalaryThread(accountancy, businessTime))).start();
 		
 	}
-
+	
+	/**
+	 * Customer initialized here
+	 */
 	public void initializeCustomers() 
 	{	
 		Customer cu1 = new Customer("Jürgens", "Dieter", "12345");
