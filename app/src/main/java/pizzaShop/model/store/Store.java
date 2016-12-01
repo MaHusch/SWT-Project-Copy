@@ -154,7 +154,12 @@ public class Store {
 
 				if (order.getId().toString().equals(pizza.getFirstOrder())) {
 					order.markAsBaked();
-					pizza.removeFirstOrder();
+					try {
+						pizza.removeFirstOrder();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					pizzaOrderRepo.save(order);
 					return;
 				}

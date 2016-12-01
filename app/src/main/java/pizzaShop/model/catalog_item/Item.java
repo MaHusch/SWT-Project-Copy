@@ -21,12 +21,11 @@ public class Item extends Product {
 	@SuppressWarnings("deprecation")
 	public Item(){}
 	
-	public Item(String name, javax.money.MonetaryAmount price,ItemType type)
+	public Item(String name, javax.money.MonetaryAmount price,ItemType type) 
 	{
 		// test Arguments (empty or false)
 		super(name,price);
 		this.type = type;
-		
 		if (type == ItemType.FREEDRINK) this.setPrice(Money.of(0.0, EURO));
 	}
 	

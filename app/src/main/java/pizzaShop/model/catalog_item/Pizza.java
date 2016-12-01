@@ -83,7 +83,8 @@ public class Pizza extends Item {
 	}
 
 
-	public String removeFirstOrder(){
+	public String removeFirstOrder() throws Exception{
+		if(orderQueue.isEmpty()) throw new NullPointerException("Die Pizza hat keine Orders zugewiesen");
 		return orderQueue.remove(0);
 	}
 	

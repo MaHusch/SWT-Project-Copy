@@ -20,6 +20,7 @@ import pizzaShop.model.catalog_item.Ingredient;
 import pizzaShop.model.catalog_item.Item;
 import pizzaShop.model.catalog_item.ItemType;
 import pizzaShop.model.catalog_item.Pizza;
+import pizzaShop.model.store.ErrorClass;
 import pizzaShop.model.store.ItemCatalog;
 
 
@@ -29,6 +30,7 @@ import pizzaShop.model.store.ItemCatalog;
 public class CatalogController {
 	
 	private final ItemCatalog itemCatalog;
+	private ErrorClass error = new ErrorClass(false);
 	
 	@Autowired
 	public CatalogController(ItemCatalog itemCatalog)
@@ -62,6 +64,7 @@ public class CatalogController {
 		Item i = itemCatalog.findOne(id).orElse(null);
 		ItemType ityp;
 		// TODO: check Arguments
+		
 		
 		switch(type)
 		{
@@ -109,13 +112,15 @@ public class CatalogController {
 		Optional<Item> i = itemCatalog.findOne(id);
 		model.addAttribute("item",i.get());
 		model.addAttribute("ItemTypes",ItemType.values());
+		model.addAttribute("error",error);
 		return "addItem";
 
 	}
 	
 	@RequestMapping("addItem")
-	public String addItem()
+	public String addItem(Model model)
 	{
+		model.addAttribute("error",error);
 		return "addItem";
 	}
 	
@@ -125,6 +130,13 @@ public class CatalogController {
 							 @RequestParam("itemtype") String type)
 	{
 		Item neu;
+		if(name.isEmpty() || price.floatValue() < 0) 
+			{
+			//TODO: interact with frontend
+			System.out.println("fehler");
+			error.setError(true);
+			return "redirect:addItem";
+			}
 	
 		if(type.equals("PIZZA"))
 		{
