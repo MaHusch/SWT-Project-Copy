@@ -19,7 +19,7 @@ __Teilnehmer: Mel, Jannik, Joris, Florentin, Martin, Daniel__
 
 * Bootstrap darf benutzt werden
 
-* Im EKD Kommentare hinzufügen für zum Beispiel beim Katalog, dass das ein Interface mit @Autowired ist
+* Im EKD Kommentare hinzufügen für zum Beispiel beim Katalog, dass das ein Interface mit @Autowired ist (Florentin)
 
 == ToDo
 
@@ -27,14 +27,15 @@ __Teilnehmer: Mel, Jannik, Joris, Florentin, Martin, Daniel__
 
 * Items aus dem Warenkorb entfernen (Joris)
 
-* Dashboards überarbeiten - nach login nicht weiterleiten auf startseite, sondern sXXX.html dashboards
+* Dashboards überarbeiten - nach login nicht weiterleiten auf startseite, sondern sXXX.html dashboards (Martin)
 
 * Kundenregistration - Adresse hinzufügen (Jannik)
 
 * Cutlery (Florentin) 
+* Customerliste auf abgelaufene Cutleries überprüfen (Mel?)
 
 * Ofenliste:
-	** Timer hinzufügen
+	** Timer hinzufügen (Mel)
 	** Meldungen falls Ofen schon voll ist, bzw falls PizzaQueue leer ist (Martin)
 
 * Deliverer:
@@ -42,18 +43,18 @@ __Teilnehmer: Mel, Jannik, Joris, Florentin, Martin, Daniel__
 	** Meldung bei erfolgreichem Einloggen/Ausloggen (Button verschwinden?) (Florentin)
 
 * Admin:
-	** Orders unterteilen in aktuelle, laufende und alle die es gab
-	** Nach Mitarbeiterregistrierung auf Mitarbeiterliste verweisen
-	** Mitarbeiter entfernen/editieren
-	** Angabe des Gehalts hinzufügen
-	** Kunden entfernen/editieren
+	** Orders unterteilen in aktuelle, laufende und alle die es gab (Jannik)
+	** Nach Mitarbeiterregistrierung auf Mitarbeiterliste verweisen (Jannik)
+	** Mitarbeiter entfernen/editieren (Jannik)
+	** Angabe des Gehalts hinzufügen (bei jedem Mitarbeiter) --> Gehaltsklassen?
+	** Kunden entfernen/editieren (Jannik & Mel)
 
 * Accountancy(Joris):
 	** Automatische Einträge bei abgeschlossenen Orders
 	** Gehalt für die Mitarbeiter festlegen
 	** Wöchentliche Abrechnung
 
-* Orders:
+* Orders(Joris):
 	** Kunde erhält Rabatt bei Abholung: Checkbox
 	** Freigetränk - Anzeigen neben Warenkorb
 
@@ -64,7 +65,7 @@ __Teilnehmer: Mel, Jannik, Joris, Florentin, Martin, Daniel__
 * Pizza zusammenstellen(Mel):
 	** Verfeinerung der Pizza überarbeiten
 
-* Entwickerdoku, JDoc (jeder)
+* Entwickerdoku(Martin), JDoc (jeder)
 
 Diese ToDos werden noch in Issues umgewandelt und zugewiesen
 
