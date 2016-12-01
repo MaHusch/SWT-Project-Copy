@@ -3,6 +3,8 @@ package pizzaShop.controller;
 
 import static org.salespointframework.core.Currencies.EURO;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Optional;
 
 import org.javamoney.moneta.Money;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import groovyjarjarantlr.collections.List;
 import pizzaShop.model.catalog_item.Ingredient;
 import pizzaShop.model.catalog_item.Item;
 import pizzaShop.model.catalog_item.ItemType;
@@ -35,6 +38,7 @@ public class CatalogController {
 	
 	private final ItemCatalog itemCatalog;
 	private ErrorClass error = new ErrorClass(false);
+	private Iterable<Item> items;
 	
 	/**
 	 * on creation spring searches the itemCatalog and allocates it to the local variabel
@@ -55,13 +59,22 @@ public class CatalogController {
 	@RequestMapping("/catalog")
 	public String showCatalog(Model model)
 	{
-		model.addAttribute("items",itemCatalog.findAll());
+		items = itemCatalog.findAll();
+		ArrayList<Item> filteredItems = new ArrayList<Item>();
+		
+		for(Item i : items)
+		{
+			ItemType type = i.getType();
+			if(!(type.equals(ItemType.FREEDRINK) || type.equals(ItemType.INGREDIENT)))
+				filteredItems.add(i); 
+		}
+		model.addAttribute("items", filteredItems);
 		model.addAttribute("ItemType",ItemType.values());
 		return "catalog";
 	}
 	
 	/**
-	 * on /remove a given item will be reomved from the catalog
+	 * on /remove a given item will be removed from the catalog
 	 * @param id the productidentifier of the item which will be removed
 	 * @return redirects to the catalog template
 	 */
@@ -76,7 +89,7 @@ public class CatalogController {
 	}
 	
 	/**
-	 * when item is edited the new item will be saved in the itemCatalog
+	 * after a item is edited the new item will be saved in the itemCatalog
 	 * @param id productidentifier of item which shall be altered
 	 * @param name new name of the item (not empty)  
 	 * @param price new price of the item (greater or equal 0)
@@ -150,7 +163,7 @@ public class CatalogController {
 	}
 	
 	/**
-	 * adds an error variabel to the model (to catch errors)
+	 * adds an error variable to the model (to catch errors)
 	 * @param model for generating the addItem template
 	 * @return directs to the addItem template
 	 */
@@ -166,7 +179,7 @@ public class CatalogController {
 	 * @param name name of the new item (not empty)
 	 * @param price price of the new item (greater or equal 0)
 	 * @param type ItemType of the new item
-	 * @return redirects to the catalog template if successfull otherwise to the addItem template with error description
+	 * @return redirects to the catalog template if successful otherwise to the addItem template with error description
 	 */
 	@RequestMapping("/createItem")
 	public String createItem(@RequestParam("itemname") String name, 
@@ -203,6 +216,27 @@ public class CatalogController {
 		
 		itemCatalog.save(neu);
 		
+		return "redirect:catalog";
+	}
+	
+	@RequestMapping("/filterCatalog")
+	public String filterCatalog(Model model, String filter)
+	{
+		switch(filter)
+		{
+		case "Getränke":
+			items = itemCatalog.findByType(ItemType.DRINK);
+			break;
+		case "Salate":
+			items = itemCatalog.findByType(ItemType.SALAD);
+			break;
+		case "Pizza":
+			items = itemCatalog.findByType(ItemType.PIZZA);
+			break;
+		default:	
+			items = itemCatalog.findAll();
+		}
+		model.addAttribute("items",items);
 		return "redirect:catalog";
 	}
 
