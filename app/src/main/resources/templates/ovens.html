@@ -81,7 +81,7 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 
 
 
-	<div sec:authorize="hasRole('ROLE_BAKER')" class="container col-md-6">
+	<div sec:authorize="hasRole('ROLE_BAKER') || hasRole('ROLE_ADMIN')" class="container col-md-6">
 		<div class="panel panel-primary">
 			<div class="panel-heading">Ofenliste</div>
 			<div class="panel-body">
@@ -91,8 +91,8 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 						<td th:text="${'Oven content: ' + oven.getPizzaName()}">Content:
 						</td>
 						<td>Time left: xx:yy</td>
-						<td>
-							<form method="post" action="/getNextPizza">
+						<td sec:authorize="hasRole('ROLE_BAKER')">
+							<form  method="post" action="/getNextPizza">
 								<input type="hidden" name="ovenID" value="0"
 									th:value="${oven.getId()}" /> <input class="btn btn-primary"
 									type="submit" value="Auswählen" />

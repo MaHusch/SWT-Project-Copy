@@ -65,13 +65,15 @@ public class AdminController {
 
 		return "index";
 	}
+	
 
 	@RequestMapping(value = "/addOven", method = RequestMethod.POST)
 	public String addOven(Model model) {
 
 		new Oven(Store.getInstance());
+		model.addAttribute("error", error);
 
-		return "ovens";
+		return "redirect:ovens";
 
 	}
 

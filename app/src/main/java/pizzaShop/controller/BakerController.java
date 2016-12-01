@@ -26,13 +26,10 @@ public class BakerController {
 	@RequestMapping("/ovens")
 	public String ovenView(Model model, Principal principal){
 		
-		currentBaker = (Baker)Store.getInstance().getStaffMemberByName(principal.getName());
-		if(currentBaker != null){
 			
 			model.addAttribute("ovens",Store.getInstance().getOvens());
 			model.addAttribute("queue", Store.getInstance().getPizzaQueue());
 			model.addAttribute("error", error );
-		}
 		return "ovens";
 	}
 	
