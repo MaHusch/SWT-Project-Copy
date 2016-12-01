@@ -80,9 +80,9 @@
 	<h1>Bestellungen</h1>
 
 
-	<div sec:authorize="hasRole('ROLE_SELLER')" class="container col-md-6">
+	<div sec:authorize="hasRole('ROLE_SELLER') || hasRole('ROLE_ADMIN')" class="container col-md-8">
 		<div class="panel panel-primary">
-			<div class="panel-heading">Übersicht der Bestellungen</div>
+			<div class="panel-heading">Übersicht der aktiven Bestellungen</div>
 			<div class="panel-body">
 				<table class="table table-striped table-bordered">
 					<thead>
@@ -115,7 +115,17 @@
 			</div>
 		</div>
 	</div>
-
+	
+	<div sec:authorize="hasRole('ROLE_ADMIN')" class="container col-md-6">
+	<div class="panel panel-primary">
+	<div class="panel-heading">Übersicht aller Bestellungen</div>
+	<div class="panel-body">
+	
+	<!-- insert table of all orders here -->
+	</div>
+	</div>
+	
+	</div>
 
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
