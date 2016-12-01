@@ -44,4 +44,6 @@ Eine Software entwickeln für einen Pizzaservice.
 * link:https://github.com/st-tu-dresden-praktikum/swt16w16/tree/master/artefacts/Analyse[Analyse Diagramme]
 
 * link:https://github.com/st-tu-dresden-praktikum/swt16w16/tree/master/artefacts/Entwurf[Entwurfsdiagramme]
+ 
+*link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/organisation/test_plan.adoc[Testplan]
                   
