@@ -23,7 +23,11 @@ import pizzaShop.model.catalog_item.Pizza;
 import pizzaShop.model.store.ErrorClass;
 import pizzaShop.model.store.ItemCatalog;
 
-
+/**
+ * Controller to create the Catalog View
+ * @author Florentin
+ *
+ */
 
 
 @Controller
@@ -32,13 +36,22 @@ public class CatalogController {
 	private final ItemCatalog itemCatalog;
 	private ErrorClass error = new ErrorClass(false);
 	
+	/**
+	 * on creation spring searches the itemCatalog and allocates it to the local variabel
+	 * @param itemCatalog the itemCatalog of the shop
+	 */
 	@Autowired
 	public CatalogController(ItemCatalog itemCatalog)
 	{
 		this.itemCatalog = itemCatalog;
 	}
 	
-		
+	
+	/**
+	 * on /catalog the itemCatalog is shown
+	 * @param model for the html view
+	 * @return redirects to the catalog template
+	 */
 	@RequestMapping("/catalog")
 	public String showCatalog(Model model)
 	{
@@ -47,6 +60,11 @@ public class CatalogController {
 		return "catalog";
 	}
 	
+	/**
+	 * on /remove a given item will be reomved from the catalog
+	 * @param id the productidentifier of the item which will be removed
+	 * @return redirects to the catalog template
+	 */
 	@RequestMapping("/removeItem")
 	public String removeItem(@RequestParam("pid") ProductIdentifier id) {
 		if(!itemCatalog.findOne(id).get().getType().equals(ItemType.INGREDIENT))
@@ -57,6 +75,14 @@ public class CatalogController {
 
 	}
 	
+	/**
+	 * when item is edited the new item will be saved in the itemCatalog
+	 * @param id productidentifier of item which shall be altered
+	 * @param name new name of the item (not empty)  
+	 * @param price new price of the item (greater or equal 0)
+	 * @param type new type of the item
+	 * @return redirects to the catalog page
+	 */
 	@RequestMapping("/saveItem")
 	public String saveItem(@RequestParam("pid") ProductIdentifier id, @RequestParam("itemname") String name, 
 			 @RequestParam("itemprice") Number price, @RequestParam("itemtype") String type)
@@ -106,6 +132,12 @@ public class CatalogController {
 		return "redirect:catalog";
 	}
 	
+	/**
+	 * directs to the addItem template with an optional Item searched by the parameter id
+	 * @param model model for the addItem template
+	 * @param id the id of the item to be edited
+	 * @return directs to the addItem template
+	 */
 	@RequestMapping("/editItem") 
 	public String editItem(Model model,@RequestParam("pid") ProductIdentifier id) {
 		
@@ -117,6 +149,11 @@ public class CatalogController {
 
 	}
 	
+	/**
+	 * adds an error variabel to the model (to catch errors)
+	 * @param model for generating the addItem template
+	 * @return directs to the addItem template
+	 */
 	@RequestMapping("addItem")
 	public String addItem(Model model)
 	{
@@ -124,6 +161,13 @@ public class CatalogController {
 		return "addItem";
 	}
 	
+	/**
+	 * checks if the inputs are valid and creates an new item and adds it the itemCatalog
+	 * @param name name of the new item (not empty)
+	 * @param price price of the new item (greater or equal 0)
+	 * @param type ItemType of the new item
+	 * @return redirects to the catalog template if successfull otherwise to the addItem template with error description
+	 */
 	@RequestMapping("/createItem")
 	public String createItem(@RequestParam("itemname") String name, 
 							 @RequestParam("itemprice") Number price,
