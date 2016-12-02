@@ -6,9 +6,7 @@ import java.util.Optional;
 import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.Order;
-import org.salespointframework.order.OrderIdentifier;
 import org.salespointframework.order.OrderManager;
-import org.salespointframework.order.OrderStatus;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.UserAccount;
@@ -16,7 +14,6 @@ import org.salespointframework.useraccount.web.LoggedIn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,7 +31,6 @@ import pizzaShop.model.store.StaffMemberRepository;
 import pizzaShop.model.store.Store;
 import pizzaShop.model.tan_management.Tan;
 import pizzaShop.model.tan_management.TanManagement;
-import pizzaShop.model.tan_management.TanStatus;
 
 @Controller
 @SessionAttributes("cart")
@@ -101,7 +97,7 @@ public class CartController {
 		return "orders";
 	}
 
-	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	@RequestMapping(value = "/addCartItem", method = RequestMethod.POST)
 	public String addItem(@RequestParam("pid") ProductIdentifier id, @RequestParam("number") int number,
 			@ModelAttribute Cart cart) {
 		// Assert.notNull(id, "ID must not be null!");
@@ -111,6 +107,14 @@ public class CartController {
 			cart.addOrUpdateItem(itemCatalog.findOne(id).get(), Quantity.of(number));
 		}
 		return "redirect:catalog";
+
+	}
+	
+	@RequestMapping(value = "/removeCartItem", method = RequestMethod.POST)
+	public String addItem(@RequestParam("ciid") String cartId, @ModelAttribute Cart cart) {
+		
+		cart.removeItem(cartId);
+		return "redirect:cart";
 
 	}
 

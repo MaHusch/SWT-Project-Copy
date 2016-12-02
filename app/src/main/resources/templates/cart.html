@@ -1,6 +1,6 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css"
@@ -117,12 +117,19 @@
 						<th>Name</th>
 						<th>Anzahl</th>
 						<th>Preis</th>
+						<th>Entfernen</th>
 					</tr>
 					<tbody th:remove="all-but-first">
 						<tr th:each="item : ${cart} ">
 							<td th:text="${item.productName}">Gemüse</td>
 							<td th:text="${item.quantity}">10</td>
 							<td th:text="${item.price}">10 Euro</td>
+							<td>
+							<form method="post" action="/removeCartItem">
+								<input type="hidden" name="ciid" th:value="${item.getId()}" />
+								<input class="btn btn-primary" type="submit" value="Entfernen" />
+							</form>
+							</td>
 						</tr>
 					</tbody>
 				</table>
