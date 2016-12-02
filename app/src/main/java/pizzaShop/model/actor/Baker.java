@@ -17,7 +17,7 @@ import pizzaShop.model.store.Store;
 public class Baker extends StaffMember {
 
 	private ArrayList<Oven> myOvens;
-	private Pizzaqueue Queue = Pizzaqueue.getInstance();
+	private Pizzaqueue Queue = Store.getInstance().getPizzaQueue();
 	private Pizza nextPizza;
 
 	@Id
@@ -36,7 +36,7 @@ public class Baker extends StaffMember {
 	}
 
 	public void getNextPizza() throws Exception {
-
+		
 		if (!Queue.isEmpty()) {
 			nextPizza = Queue.poll();
 		} else {

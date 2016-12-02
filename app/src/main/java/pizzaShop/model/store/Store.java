@@ -50,8 +50,6 @@ public class Store {
 		Oven oven1 = new Oven(this);
 		Oven oven2 = new Oven(this);
 		Oven oven3 = new Oven(this);
-		Oven oven4 = new Oven(this);
-		System.out.println(oven3.getId());
 
 		this.store = this;
 	}
@@ -91,10 +89,8 @@ public class Store {
 			if (temp.getType().equals(ItemType.PIZZA)) {
 				for (int i = 0; i < l.getQuantity().getAmount().intValue(); i++) {
 					((Pizza) temp).addOrder(order.getId());
-					System.out.println("Order ID in Analyze: " + order.getId());
 					pizzaQueue.add(((Pizza) temp));
 					order.addAsUnbaked();
-					System.out.println("Analyze Order: " + order.getUnbakedPizzas());
 				}
 
 			}

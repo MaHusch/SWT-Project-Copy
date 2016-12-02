@@ -25,7 +25,8 @@ public class BakerController {
 	
 	@RequestMapping("/ovens")
 	public String ovenView(Model model, Principal principal){
-		
+			
+			currentBaker = (Baker) Store.getInstance().getStaffMemberByName(principal.getName());
 			
 			model.addAttribute("ovens",Store.getInstance().getOvens());
 			model.addAttribute("queue", Store.getInstance().getPizzaQueue());
@@ -43,14 +44,16 @@ public class BakerController {
 				if(Store.getInstance().getOvens().get(i).isEmpty()){
 					try{
 					currentBaker.getNextPizza();
+					System.out.println("in try");
 					error.setError(false);
+					currentBaker.putPizzaIntoOven(Store.getInstance().getOvens().get(i));
+					return "redirect:ovens";
 					}
 					catch (Exception e){
+						e.printStackTrace();
 						error.setError(true);
 						return "redirect:ovens";
 					}
-					
-					currentBaker.putPizzaIntoOven(Store.getInstance().getOvens().get(i));
 				}
 			}
 		}
