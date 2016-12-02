@@ -6,5 +6,5 @@ package pizzaShop.model.catalog_item;
  *Enumeration for the item class
  */
 public enum ItemType {
-SALAD,PIZZA,DRINK,FREEDRINK,INGREDIENT;
+SALAD,PIZZA,DRINK,FREEDRINK,INGREDIENT,CUTLERY;
 }

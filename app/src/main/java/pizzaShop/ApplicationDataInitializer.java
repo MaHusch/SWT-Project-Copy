@@ -18,6 +18,7 @@ import pizzaShop.model.actor.Baker;
 import pizzaShop.model.actor.Customer;
 import pizzaShop.model.actor.Deliverer;
 import pizzaShop.model.actor.Seller;
+import pizzaShop.model.catalog_item.Cutlery;
 import pizzaShop.model.catalog_item.Ingredient;
 import pizzaShop.model.catalog_item.Item;
 import pizzaShop.model.catalog_item.ItemType;
@@ -113,7 +114,7 @@ public class ApplicationDataInitializer implements DataInitializer {
 		Pizza custom = new Pizza("Basis",Money.of(2.0, EURO));
 		Item beer = new Item("Desperados", Money.of(1.60, EURO), ItemType.DRINK);
 		Item freebeer = new Item("Sternburg", Money.of(0.0, EURO), ItemType.FREEDRINK); // extra
-																					// FreeDrink
+		Cutlery cutlery1 = new Cutlery("PapasBesteck",Money.of(15.0, EURO), businessTime.getTime());																			// FreeDrink
 																					// class?
 		Item salat = new Item("Ceasar-Salad", Money.of(2.0, EURO), ItemType.SALAD);
 		pizza1.addIngredient(mushroom);
@@ -134,7 +135,7 @@ public class ApplicationDataInitializer implements DataInitializer {
 		Store.itemCatalog.save(pineapple);
 		Store.itemCatalog.save(oniens);
 		Store.itemCatalog.save(custom);
-
+		Store.itemCatalog.save(cutlery1);
 		
 	}
 	
