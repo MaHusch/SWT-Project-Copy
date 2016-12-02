@@ -33,6 +33,7 @@ import pizzaShop.model.tan_management.TanManagement;
 /**
  * 
  * @author Florentin
+ *  
  *  Class initializes data like staffmember or items for the ItemCatalog
  */
 @Component
@@ -44,6 +45,14 @@ public class ApplicationDataInitializer implements DataInitializer {
 	private final CustomerRepository customerRepository;
 	private final TanManagement tanManagement;
 
+	/**
+	 * gets the components via autowired
+	 * @param accountancy
+	 * @param userAccountManager
+	 * @param businessTime
+	 * @param customerRepository
+	 * @param tanManagement
+	 */
 	@Autowired
 	public ApplicationDataInitializer(Accountancy accountancy, UserAccountManager userAccountManager,
 			BusinessTime businessTime, CustomerRepository customerRepository, TanManagement tanManagement) {
@@ -54,6 +63,9 @@ public class ApplicationDataInitializer implements DataInitializer {
 		this.tanManagement = tanManagement;
 	}
 	
+	/**
+	 * calls each initialize function
+	 */
 	@Override
 	public void initialize() {
 
@@ -63,6 +75,9 @@ public class ApplicationDataInitializer implements DataInitializer {
 		initializeUser();	
 	}
 	
+	/**
+	 * initializes users like deliverer and baker and puts them into the StaffMemberList
+	 */
 	private void initializeUser()
 	{
 		Baker Baker_Eduardo_Pienso = new Baker("Pienso", "Eduardo", "2341241212", "eddy", "pass");
