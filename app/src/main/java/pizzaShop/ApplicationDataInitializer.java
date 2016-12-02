@@ -119,7 +119,7 @@ public class ApplicationDataInitializer implements DataInitializer {
 		Item salat = new Item("Ceasar-Salad", Money.of(2.0, EURO), ItemType.SALAD);
 		pizza1.addIngredient(mushroom);
 		pizza1.addIngredient(cheese);
-
+		
 		Pizzaqueue pizzaQueue = Store.getInstance().getPizzaQueue();
 
 		/*pizzaQueue.add(pizza1);
