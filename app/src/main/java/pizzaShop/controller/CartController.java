@@ -151,9 +151,9 @@ public class CartController {
 
 	}
 	@RequestMapping(value = "/assignDeliverer", method = RequestMethod.POST)
-	public String assignDeliverer(Model model, @RequestParam String lol){// @RequestParam OrderIdentifier orderId){
+	public String assignDeliverer(Model model, @RequestParam("delivererName") String name){// @RequestParam OrderIdentifier orderId){
 		
-		System.out.println(lol);
+		System.out.println(name);
 		 
 		return "redirect:orders";
 	}

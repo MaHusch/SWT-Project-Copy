@@ -6,6 +6,28 @@
 <link rel="stylesheet" type="text/css"
 	th:href="@{/resources/css/style.css}" />
 <title>Bestellungen</title>
+
+
+<script type="text/javascript">//<![CDATA[
+	
+function assignDeliverer(){
+	// get the selected deliverer from the list
+	var delivererList = document.getElementById("delivererList");
+	var index = delivererList.selectedIndex;
+	var deliverer = delivererList[index].value;
+	
+	//assign the value to the hidden input field
+	var delivererName = document.getElementById("delivererName");
+	delivererName.value = deliverer;
+	
+	//alert(deliverer);
+}
+
+	
+//]]>
+</script>
+
+
 </head>
 <body>
 
@@ -101,13 +123,14 @@
 							<td th:text="${order.getOrderStatus() }">arg</td>
 							<td th:text="${order.getUnbakedPizzas() }">arg</td>
 							<form method="post" action="/assignDeliverer">
-								<td><select name="delivererlist" size="1">
+								<td><select name="delivererList" id="delivererList" size="1">
 										<option th:each=" deliverer : ${deliverers}"
 											th:text="${deliverer.getForename()}">eddy</option>
 								</select></td>
-								<td><input type="hidden" value="0" id="lol"
-									th:value="${deliverer}" /> <!-- <input type="hidden" value="0" name="orderId" th:value="${order.getId()}" /> -->
-									<input type="submit" value="Lieferant schicken" /></td>
+								
+								<td><input type="hidden" value="0" id="delivererName" name="delivererName" th:value="${deliverer}" /> 
+									<!-- <input type="hidden" value="0" name="orderId" th:value="${order.getId()}" /> -->
+									<input type="submit" value="Lieferant schicken" onclick = "assignDeliverer();" /></td>
 							</form>
 						</tr>
 					</tbody>
