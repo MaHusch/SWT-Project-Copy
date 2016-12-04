@@ -76,19 +76,14 @@ public class StoreController {
 	@RequestMapping("/sDeliverer")
 	public String sDeliverer(Principal prinicpal,Model model)
 	{
-		ArrayList<PizzaOrder> delivererOrders = new ArrayList<PizzaOrder>();
+		
 		//TODO: what if not deliverer? (maybe check Class before
 		Deliverer currentDeliverer = (Deliverer) Store.getInstance().getStaffMemberByName(prinicpal.getName());
 		
-		for(OrderIdentifier oId : currentDeliverer.getOrders())
-		{
-			PizzaOrder pO = pizzaOrderRepository.findOne(oId);
-			if(!pO.equals(null)) delivererOrders.add(pO);
-			
-		}
+	
 		
 		model.addAttribute("available",currentDeliverer.getAvailable());
-		model.addAttribute("orders",delivererOrders);
+		
 		return "sDeliverer";
 	}
 	

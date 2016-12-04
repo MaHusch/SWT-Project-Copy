@@ -1,6 +1,7 @@
 package pizzaShop.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.salespointframework.order.OrderIdentifier;
@@ -31,6 +32,23 @@ public class DelivererController {
 		this.tanManagement = tanManagement;
 	}
 	
+	
+	@RequestMapping("/getDelivererOrders")
+	public String getDelivererOrders(Model model, Principal principal)
+	{
+		ArrayList<PizzaOrder> delivererOrders = new ArrayList<PizzaOrder>();
+		
+		for(OrderIdentifier oId : currentDeliverer.getOrders())
+		{
+			PizzaOrder pO = pizzaOrderRepository.findOne(oId);
+			System.out.println(pO.toString());
+			if(!pO.equals(null)) delivererOrders.add(pO);
+			
+		}
+		
+		model.addAttribute("orders",delivererOrders);
+		return "redirect:sDeliverer";
+	}
 	//TODO: remove redundancy
 	@RequestMapping("/checkOut")
 	public String checkOut(Model model,Principal principal)
