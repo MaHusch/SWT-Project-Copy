@@ -1,8 +1,10 @@
 package pizzaShop.model.actor;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 import pizzaShop.model.catalog_item.Cutlery;
 
@@ -12,22 +14,23 @@ public class Customer extends Person {
 	private Cutlery myCutlery = null; 
 										
 	private @Id @GeneratedValue long customerID;
-
+	
 	private String surname;
 	private String forename; 
-	private String telephoneNumber; 
-	private String address;
+	private String telephoneNumber;
+	@OneToOne(cascade = {CascadeType.ALL})
+	private Address address;
 	
 	
 	public Customer() {
 		
 	}
 
-	public Customer(String surname, String forename, String telephoneNumber, String address) {
+	public Customer(String surname ,String forename, String telephoneNumber, String local, String postcode, String street, String housenumber) {
 		this.surname = surname;
 		this.forename = forename; 
 		this.telephoneNumber = telephoneNumber;
-		this.address = address;
+		this.address = new Address(local,postcode,street,housenumber);
 		//super(surname,forename,telephoneNumber);
 		// TODO Auto-generated constructor stub
 	}
@@ -73,11 +76,11 @@ public class Customer extends Person {
 		this.surname = surname;
 	}
 
-	public String getAddress() {
+	public Address getAddress() {
 		return address;
 	}
 
-	public void setAddress(String address) {
+	public void setAddress(Address address) {
 		this.address = address;
 	}
 	

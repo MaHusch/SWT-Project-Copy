@@ -86,15 +86,23 @@
 					<tr>
 						<td>Vorname</td>
 						<td>Nachname</td>
-						<td>Addresse</td>
 						<td>Telefonnummer</td>
+						<td>Ort</td>
+						<td>Postleitzahl</td>
+						<td>Straßenname</td>
+						<td>Hausnummer</td>
+						
 					</tr>
 					<tbody>
 						<tr th:each=" customer : ${customer}">
 							<td th:text="${customer.getForename()}">Vorname</td>
 							<td th:text="${customer.getSurname()}">Nachname</td>
-							<td th:text="${customer.getAddress()}">Addresse</td>
 							<td th:text="${customer.getTelephoneNumber()}">Telefonnummer</td>
+							<td th:text="${customer.getAddress().getLocal()}">Ort</td>
+							<td th:text="${customer.getAddress().getPostcode()}">Postleitzahl</td>
+							<td th:text="${customer.getAddress().getStreet()}">Straßenname</td>
+							<td th:text="${customer.getAddress().getHousenumber()}">Hausnummer</td>
+							
 						</tr>
 					</tbody>
 				</table>
