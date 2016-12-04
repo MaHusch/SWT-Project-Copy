@@ -32,13 +32,14 @@ public class SellerController {
 	@RequestMapping(value = "/registerCustomer", method = RequestMethod.POST)
 	public String addCustomer(@RequestParam  ("surname")   String  surname,
 								 @RequestParam  ("forename")  String  forename,
-								 @RequestParam  ("telnumber") String  telephonenumber){
+								 @RequestParam  ("telnumber") String  telephonenumber,
+	 							@RequestParam  ("address") String  address){
 		
-		if ( surname == "" || forename == ""  || telephonenumber == "") {			
+		if ( surname == "" || forename == ""  || telephonenumber == "" || address == "") {			
 			return "redirect:register_customer";
 		}
 
-		customerRepository.save(new Customer(surname, forename, telephonenumber));
+		customerRepository.save(new Customer(surname, forename, telephonenumber, address));
 		tanManagment.generateNewTan(telephonenumber);
 		return "index";
 	}

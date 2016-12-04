@@ -23,10 +23,11 @@ public class Customer extends Person {
 		
 	}
 
-	public Customer(String surname, String forename, String telephoneNumber) {
+	public Customer(String surname, String forename, String telephoneNumber, String address) {
 		this.surname = surname;
 		this.forename = forename; 
 		this.telephoneNumber = telephoneNumber;
+		this.address = address;
 		//super(surname,forename,telephoneNumber);
 		// TODO Auto-generated constructor stub
 	}
