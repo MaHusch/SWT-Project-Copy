@@ -4,17 +4,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import pizzaShop.model.catalog_item.Cutlery;
+
 @Entity
 public class Customer extends Person {
 
-	private boolean myCutlery = false; // temporärer Workaround weil Klasse
-										// Cutlery nicht existiert
+	private Cutlery myCutlery = null; 
+										
 	private @Id @GeneratedValue long customerID;
 
 	private String surname;
 	private String forename; 
 	private String telephoneNumber; 
 	private String address;
+	
 	
 	public Customer() {
 		
@@ -28,11 +31,11 @@ public class Customer extends Person {
 		// TODO Auto-generated constructor stub
 	}
 
-	public boolean getMyCutlery() {
+	public Cutlery getMyCutlery() {
 		return myCutlery;
 	}
 
-	public void setMyCutlery(boolean myCutlery) {
+	public void setMyCutlery(Cutlery myCutlery) {
 		this.myCutlery = myCutlery;
 	}
 	
