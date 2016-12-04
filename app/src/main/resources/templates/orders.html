@@ -119,19 +119,29 @@ function assignDeliverer(){
 					<tbody>
 						<tr th:each="order : ${orders} ">
 							<td th:text="${order.getId() }">arg</td>
-							<td th:text="${{order.getOrder().getTotalPrice()}}">arg</td>
+							<td th:text="${{order.getTotalPrice()}}">arg</td>
 							<td th:text="${order.getOrderStatus() }">arg</td>
 							<td th:text="${order.getUnbakedPizzas() }">arg</td>
+							
+							<td th:if="${order.getPickUp()}">
+							<form method="post" action="/confirmCollection">
+								<input type="hidden" value="0" name="orderID" th:value="${order.getId()}" /> 
+								<input type="submit" value="Abholung bestätigen"/>
+							</form>
+							</td>
+							
+							<td th:unless="${order.getPickUp()}">
 							<form method="post" action="/assignDeliverer">
-								<td><select name="delivererList" id="delivererList" size="1">
+								<select name="delivererList" id="delivererList" size="1">
 										<option th:each=" deliverer : ${deliverers}"
 											th:text="${deliverer.getForename()}">eddy</option>
-								</select></td>
+								</select>
 								
-								<td><input type="hidden" value="0" id="delivererName" name="delivererName" th:value="${deliverer}" /> 
-									<input type="hidden" value="0" name="orderID" th:value="${order.getId()}" /> 
-									<input type="submit" value="Lieferant schicken" onclick = "assignDeliverer();" /></td>
+								<input type="hidden" value="0" id="delivererName" name="delivererName" th:value="${deliverer}" /> 
+								<input type="hidden" value="0" name="orderID" th:value="${order.getId()}" /> 
+								<input type="submit" value="Lieferant schicken" onclick = "assignDeliverer();" />
 							</form>
+							</td>
 						</tr>
 					</tbody>
 				</table>
