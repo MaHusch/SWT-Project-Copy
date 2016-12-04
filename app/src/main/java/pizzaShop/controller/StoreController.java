@@ -1,6 +1,7 @@
 package pizzaShop.controller;
 
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.javamoney.moneta.Money;
 import org.salespointframework.catalog.Product;
 import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.order.Cart;
+import org.salespointframework.order.OrderIdentifier;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.Password;
 import org.salespointframework.useraccount.UserAccount;
@@ -27,12 +29,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import pizzaShop.model.actor.Customer;
+import pizzaShop.model.actor.Deliverer;
 import pizzaShop.model.catalog_item.Ingredient;
 import pizzaShop.model.catalog_item.Item;
 import pizzaShop.model.catalog_item.ItemType;
 import pizzaShop.model.catalog_item.Pizza;
 import pizzaShop.model.store.CustomerRepository;
 import pizzaShop.model.store.ItemCatalog;
+import pizzaShop.model.store.PizzaOrder;
+import pizzaShop.model.store.PizzaOrderRepository;
 import pizzaShop.model.store.Store;
 import pizzaShop.model.tan_management.Tan;
 import pizzaShop.model.tan_management.TanManagement;
@@ -45,13 +50,14 @@ public class StoreController {
 	ItemCatalog itemCatalog;
 	private final TanManagement tanManagement;
 	private final CustomerRepository customerRepository;
-
+	private final PizzaOrderRepository pizzaOrderRepository;
 	
 	@Autowired 
-	public StoreController(ItemCatalog itemCatalog, TanManagement tanManagement, CustomerRepository customerRepository) {
+	public StoreController(ItemCatalog itemCatalog, TanManagement tanManagement, CustomerRepository customerRepository, PizzaOrderRepository pOR) {
 		this.itemCatalog = itemCatalog;
 		this.tanManagement = tanManagement;
 		this.customerRepository = customerRepository;
+		this.pizzaOrderRepository = pOR;
 	}	
 	
 	
@@ -68,9 +74,21 @@ public class StoreController {
 	}
 	
 	@RequestMapping("/sDeliverer")
-	public String sDeliverer()
+	public String sDeliverer(Principal prinicpal,Model model)
 	{
+		ArrayList<PizzaOrder> delivererOrders = new ArrayList<PizzaOrder>();
+		//TODO: what if not deliverer? (maybe check Class before
+		Deliverer currentDeliverer = (Deliverer) Store.getInstance().getStaffMemberByName(prinicpal.getName());
 		
+		for(OrderIdentifier oId : currentDeliverer.getOrders())
+		{
+			PizzaOrder pO = pizzaOrderRepository.findOne(oId);
+			if(!pO.equals(null)) delivererOrders.add(pO);
+			
+		}
+		
+		model.addAttribute("available",currentDeliverer.getAvailable());
+		model.addAttribute("orders",delivererOrders);
 		return "sDeliverer";
 	}
 	

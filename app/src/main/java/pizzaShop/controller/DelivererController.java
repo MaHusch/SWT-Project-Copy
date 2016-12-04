@@ -33,7 +33,7 @@ public class DelivererController {
 	
 	//TODO: remove redundancy
 	@RequestMapping("/checkOut")
-	public String checkOut(Principal principal)
+	public String checkOut(Model model,Principal principal)
 	{
 		username = principal.getName();
 		System.out.println(username);
@@ -60,11 +60,12 @@ public class DelivererController {
 			}
 		}
 		
-		return "redirect:index";
+		//model.addAttribute("available",currentDeliverer.getAvailable());
+		return "redirect:sDeliverer";
 	}
 	
 	@RequestMapping("/checkIn")
-	public String checkIn(Principal principal) //TODO: check OrderStatus change
+	public String checkIn(Model model,Principal principal) //TODO: check OrderStatus change
 	{
 		username = principal.getName();
 		System.out.println(username);
@@ -86,14 +87,13 @@ public class DelivererController {
 			{
 				if(p.getId().equals(deliveredOrder))
 				{
-					tanManagement.confirmTan( p.getTan());
+					tanManagement.confirmTan( p.getTan()); //TODO: assign new TAN?
 					p.completeOrder();
 				}
 			}
 		}
 		
 		currentDeliverer.clearOrders();
-		
-		return "redirect:index";
+		return "redirect:sDeliverer";
 	}
 }
