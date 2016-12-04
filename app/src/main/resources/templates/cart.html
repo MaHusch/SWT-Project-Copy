@@ -137,7 +137,11 @@
 
 				<form sec:authorize="hasRole('ROLE_SELLER')" method="post"
 					action="/checkout">
+					<div class="checkbox">
+						<label><input type="checkbox" value="lol" />In der Fiale abholen</label>
+					</div>
 					<input class="btn btn-primary" type="submit" value="Kaufen" />
+					
 				</form>
 			</div>
 		</div>
