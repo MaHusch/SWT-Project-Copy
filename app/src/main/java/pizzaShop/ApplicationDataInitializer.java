@@ -18,6 +18,7 @@ import pizzaShop.model.actor.Baker;
 import pizzaShop.model.actor.Customer;
 import pizzaShop.model.actor.Deliverer;
 import pizzaShop.model.actor.Seller;
+import pizzaShop.model.catalog_item.Cutlery;
 import pizzaShop.model.catalog_item.Ingredient;
 import pizzaShop.model.catalog_item.Item;
 import pizzaShop.model.catalog_item.ItemType;
@@ -30,6 +31,12 @@ import pizzaShop.model.store.SalaryThread;
 import pizzaShop.model.store.Store;
 import pizzaShop.model.tan_management.TanManagement;
 
+/**
+ * 
+ * @author Florentin
+ *  
+ *  Class initializes data like staffmember or items for the ItemCatalog
+ */
 @Component
 public class ApplicationDataInitializer implements DataInitializer {
 
@@ -39,6 +46,14 @@ public class ApplicationDataInitializer implements DataInitializer {
 	private final CustomerRepository customerRepository;
 	private final TanManagement tanManagement;
 
+	/**
+	 * gets the components via autowired
+	 * @param accountancy
+	 * @param userAccountManager
+	 * @param businessTime
+	 * @param customerRepository
+	 * @param tanManagement
+	 */
 	@Autowired
 	public ApplicationDataInitializer(Accountancy accountancy, UserAccountManager userAccountManager,
 			BusinessTime businessTime, CustomerRepository customerRepository, TanManagement tanManagement) {
@@ -48,7 +63,10 @@ public class ApplicationDataInitializer implements DataInitializer {
 		this.customerRepository = customerRepository;
 		this.tanManagement = tanManagement;
 	}
-
+	
+	/**
+	 * calls each initialize function
+	 */
 	@Override
 	public void initialize() {
 
@@ -58,19 +76,27 @@ public class ApplicationDataInitializer implements DataInitializer {
 		initializeUser();	
 	}
 	
+	/**
+	 * initializes users like deliverer and baker and puts them into the StaffMemberList
+	 */
 	private void initializeUser()
 	{
 		Baker Baker_Eduardo_Pienso = new Baker("Pienso", "Eduardo", "2341241212", "eddy", "pass");
-		Deliverer Deliverer_Florentin_Dörre = new Deliverer("Doerre", "Florentin", "015123456", "flo", "123");
+		Deliverer Deliverer_Florentin_Doerre = new Deliverer("Doerre", "Florentin", "015123456", "flo", "123");
 		Deliverer Deliverer_Martin_Huschenbett = new Deliverer("Huschenbett", "Martin", "40918310", "maddin", "qwe");
 		Seller Seller_Hans_Bergstein = new Seller("Bergstein", "Hans", "492161268", "hans123", "qwe");
 			
 		Store.staffMemberList.add(Seller_Hans_Bergstein);
-		Store.staffMemberList.add(Deliverer_Florentin_Dörre);
+		Store.staffMemberList.add(Deliverer_Florentin_Doerre);
 		Store.staffMemberList.add(Deliverer_Martin_Huschenbett);
 		Store.staffMemberList.add(Baker_Eduardo_Pienso);
 	}
-
+	
+	/**
+	 * Itemcatalog with its items is initialized here
+	 * @param itemCatalog ItemCatalog to fill 
+	 * 
+	 */
 	private void initializeCatalog(ItemCatalog itemCatalog) {
 
 		if (Store.itemCatalog.findAll().iterator().hasNext()) {
@@ -86,14 +112,14 @@ public class ApplicationDataInitializer implements DataInitializer {
 		Pizza pizza2 = new Pizza("pizza2", Money.of(2.50, EURO));
 		Pizza pizza3 = new Pizza("pizza3", Money.of(2.50, EURO));
 		Pizza custom = new Pizza("Basis",Money.of(2.0, EURO));
-		Item beer = new Item("Beer", Money.of(1.60, EURO), ItemType.DRINK);
-		Item freebeer = new Item("Beer", Money.of(0.0, EURO), ItemType.FREEDRINK); // extra
-																					// FreeDrink
+		Item beer = new Item("Desperados", Money.of(1.60, EURO), ItemType.DRINK);
+		Item freebeer = new Item("Sternburg", Money.of(0.0, EURO), ItemType.FREEDRINK); // extra
+		Cutlery cutlery1 = new Cutlery("PapasBesteck",Money.of(15.0, EURO), businessTime.getTime());																			// FreeDrink
 																					// class?
-		Item salat = new Item("Salad", Money.of(2.0, EURO), ItemType.SALAD);
+		Item salat = new Item("Ceasar-Salad", Money.of(2.0, EURO), ItemType.SALAD);
 		pizza1.addIngredient(mushroom);
 		pizza1.addIngredient(cheese);
-
+		
 		Pizzaqueue pizzaQueue = Store.getInstance().getPizzaQueue();
 
 		/*pizzaQueue.add(pizza1);
@@ -109,15 +135,13 @@ public class ApplicationDataInitializer implements DataInitializer {
 		Store.itemCatalog.save(pineapple);
 		Store.itemCatalog.save(oniens);
 		Store.itemCatalog.save(custom);
-
-		/*Iterable<Item> test = Store.itemCatalog.findByType(ItemType.INGREDIENT);
+		Store.itemCatalog.save(cutlery1);
 		
-		for(Item i : test)
-		{
-			System.out.println(i.getName());
-		}*/
 	}
-
+	
+	/**
+	 * Accountancy initialized here
+	 */
 	public void initializeAccountancy() 
 	{
 		
@@ -131,10 +155,13 @@ public class ApplicationDataInitializer implements DataInitializer {
 		(new Thread(new SalaryThread(accountancy, businessTime))).start();
 		
 	}
-
+	
+	/**
+	 * Customer initialized here
+	 */
 	public void initializeCustomers() 
 	{	
-		Customer cu1 = new Customer("Jürgens", "Dieter", "12345");
+		Customer cu1 = new Customer("Jürgens", "Dieter", "12345", "Dresden", "01324", "Müllerstraße", "5b");
 		tanManagement.confirmTan(tanManagement.generateNewTan(cu1.getTelephoneNumber()));
 		customerRepository.save(cu1);
 		System.out.println(tanManagement.getTan(customerRepository.save(cu1).getTelephoneNumber()).getTanNumber());

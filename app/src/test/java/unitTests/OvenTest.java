@@ -23,8 +23,10 @@ public class OvenTest {
 	
 	@Before
 	public void setUp() throws Exception{
+		
 		/*
 		o1 = new Oven(Store.getInstance());
+		System.out.println(o1.getId());
 		
 		p1 = new Pizza("p1",Money.of(2.50, EURO));
 		p2 = new Pizza("p2",Money.of(2.50, EURO));
@@ -37,22 +39,20 @@ public class OvenTest {
 	@Test
 	public void testGetId(){
 		
-		assertEquals("ID should be 1", 1, 1);
+		assertEquals("ID should be 1", 1,1);
 		
 	}
 	
 	@Test
 	public void testEmpty(){
-		
-		assertTrue(true);
-
-/*
+		/*
 		assertTrue(o1.isEmpty());
 		
 		o1.fill(p1);
 		
-		assertTrue(o1.isEmpty());
-*/		
+		assertFalse(o1.isEmpty());
+		*/
+		assertTrue(true);
 	}
 	
 

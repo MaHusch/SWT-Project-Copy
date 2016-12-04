@@ -1,6 +1,7 @@
 package pizzaShop.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.salespointframework.order.OrderIdentifier;
@@ -31,9 +32,26 @@ public class DelivererController {
 		this.tanManagement = tanManagement;
 	}
 	
+	
+	@RequestMapping("/getDelivererOrders")
+	public String getDelivererOrders(Model model, Principal principal)
+	{
+		ArrayList<PizzaOrder> delivererOrders = new ArrayList<PizzaOrder>();
+		
+		for(OrderIdentifier oId : currentDeliverer.getOrders())
+		{
+			PizzaOrder pO = pizzaOrderRepository.findOne(oId);
+			System.out.println(pO.toString());
+			if(!pO.equals(null)) delivererOrders.add(pO);
+			
+		}
+		
+		model.addAttribute("orders",delivererOrders);
+		return "redirect:sDeliverer";
+	}
 	//TODO: remove redundancy
 	@RequestMapping("/checkOut")
-	public String checkOut(Principal principal)
+	public String checkOut(Model model,Principal principal)
 	{
 		username = principal.getName();
 		System.out.println(username);
@@ -60,11 +78,12 @@ public class DelivererController {
 			}
 		}
 		
-		return "redirect:index";
+		//model.addAttribute("available",currentDeliverer.getAvailable());
+		return "redirect:sDeliverer";
 	}
 	
 	@RequestMapping("/checkIn")
-	public String checkIn(Principal principal) //TODO: check OrderStatus change
+	public String checkIn(Model model,Principal principal) //TODO: check OrderStatus change
 	{
 		username = principal.getName();
 		System.out.println(username);
@@ -86,14 +105,13 @@ public class DelivererController {
 			{
 				if(p.getId().equals(deliveredOrder))
 				{
-					tanManagement.confirmTan( p.getTan());
+					tanManagement.confirmTan( p.getTan()); //TODO: assign new TAN?
 					p.completeOrder();
 				}
 			}
 		}
 		
 		currentDeliverer.clearOrders();
-		
-		return "redirect:index";
+		return "redirect:sDeliverer";
 	}
 }

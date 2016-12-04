@@ -1,6 +1,6 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css"
@@ -80,11 +80,22 @@
 			<div class="panel-heading">Kunden überprüfen</div>
 			<div class="panel-body">
 				<form method="post" action="/checkTan">
-					<label for="surname">Telefonnummer</label>: <input type="text"
-						id="tnumber" name="tnumber" /> <br /> <label for="forename">TAN</label>:
-					<input type="text" id="tan" name="tan" /> <br /> <input
-						class="btn btn-primary" type="submit" value="Check" />
+					<table>
+						<tr>
+							<td><label for="surname">Telefonnummer</label>:</td>
+							<td><input type="text" id="tnumber" name="tnumber" /></td>
+						</tr>
+						<tr>
+							<td><label for="forename">TAN</label>:</td>
+							<td><input type="text" id="tan" name="tan" /></td>
+						</tr>
+						<tr>
+							<td><input class="btn btn-primary" type="submit"
+								value="Check" /></td>
+						</tr>
+					</table>
 				</form>
+
 				<div th:switch="${customer.isPresent()}">
 					<p th:case="true"
 						th:text="'Kunde ist: '+${customer.get().getForename()}+' '+${customer.get().getSurname()}+' tel: '+${customer.get().getTelephoneNumber()}">User
@@ -106,12 +117,19 @@
 						<th>Name</th>
 						<th>Anzahl</th>
 						<th>Preis</th>
+						<th>Entfernen</th>
 					</tr>
 					<tbody th:remove="all-but-first">
 						<tr th:each="item : ${cart} ">
 							<td th:text="${item.productName}">Gemüse</td>
 							<td th:text="${item.quantity}">10</td>
 							<td th:text="${item.price}">10 Euro</td>
+							<td>
+							<form method="post" action="/removeCartItem">
+								<input type="hidden" name="ciid" th:value="${item.getId()}" />
+								<input class="btn btn-primary" type="submit" value="Entfernen" />
+							</form>
+							</td>
 						</tr>
 					</tbody>
 				</table>
@@ -119,11 +137,18 @@
 
 				<form sec:authorize="hasRole('ROLE_SELLER')" method="post"
 					action="/checkout">
+					<label for="onSite">Abholung vor Ort</label>:
+					<input type="hidden" name="onSite" value="0" />
+					<input type="checkbox"  name="onSite" value="1"/>
 					<input class="btn btn-primary" type="submit" value="Kaufen" />
 				</form>
 			</div>
 		</div>
 	</div>
+	
+	
+	
+	
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<!-- Latest compiled and minified JavaScript -->

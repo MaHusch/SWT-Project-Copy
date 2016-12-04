@@ -50,8 +50,6 @@ public class Store {
 		Oven oven1 = new Oven(this);
 		Oven oven2 = new Oven(this);
 		Oven oven3 = new Oven(this);
-		Oven oven4 = new Oven(this);
-		System.out.println(oven3.getId());
 
 		this.store = this;
 	}
@@ -84,6 +82,16 @@ public class Store {
 
 		return null;
 	}
+	
+	public StaffMember getStaffMemberByForename(String name){
+		
+		for(StaffMember staffMember : staffMemberList){
+			if(staffMember.getForename().equals(name)){
+				return staffMember;
+			}
+		}
+		return null;
+	}
 
 	public PizzaOrder analyzeOrder(PizzaOrder order) {
 		for (OrderLine l : order.getOrder().getOrderLines()) {
@@ -91,10 +99,8 @@ public class Store {
 			if (temp.getType().equals(ItemType.PIZZA)) {
 				for (int i = 0; i < l.getQuantity().getAmount().intValue(); i++) {
 					((Pizza) temp).addOrder(order.getId());
-					System.out.println("Order ID in Analyze: " + order.getId());
 					pizzaQueue.add(((Pizza) temp));
 					order.addAsUnbaked();
-					System.out.println("Analyze Order: " + order.getUnbakedPizzas());
 				}
 
 			}
@@ -154,7 +160,12 @@ public class Store {
 
 				if (order.getId().toString().equals(pizza.getFirstOrder())) {
 					order.markAsBaked();
-					pizza.removeFirstOrder();
+					try {
+						pizza.removeFirstOrder();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					pizzaOrderRepo.save(order);
 					return;
 				}

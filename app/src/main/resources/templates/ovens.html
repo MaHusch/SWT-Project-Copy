@@ -8,8 +8,86 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <link rel="stylesheet" type="text/css"
 	th:href="@{/resources/css/style.css}" />
 <title>Öfen</title>
+
+<script type="text/javascript">
+//<![CDATA[
+
+var ovens = [];
+	
+var clicked = false;
+
+var bakeTime = 10;
+
+function addOvens(){
+	var table = document.getElementById("ovenTable");
+	
+	for (var i = 0, row; row = table.rows[i]; i++) {
+		   //iterate through rows
+		   for (var j = 0, col; col = row.cells[j]; j++) {
+		     //iterate through columns
+			 var ovenID = col.id;
+			 if(isNumber(ovenID) == true){
+				ovens[ovenID] = [false,bakeTime];
+			 	//alert(ovenID);
+			 }
+		 }  
+	}
+	
+}
+
+// regex taken from "http://stackoverflow.com/questions/1303646/check-whether-variable-is-number-or-string-in-javascript"
+function isNumber(n){
+	return /^-?[\d.]+(?:e-?\d+)?$/.test(n);
+}
+
+function setOvenTimer(id,started){
+	ovens[id][0] = started;
+}
+
+function startTimer(id) {
+	
+	var ovenID = id.replace("timer","");
+	setOvenTimer(ovenID,true);
+	
+	if (clicked === false) {
+		clock = setInterval("timer()", 1000);
+		clicked = true;
+	}
+	else if (clicked === true) {
+	}
+}
+function timer() {
+	for(var i = 1; i <= Object.keys(ovens).length; i++){
+		if (ovens[i][0] == true){
+			var seconds = ovens[i][1] - 1;
+			if (seconds == 0){ stopTimer(i); break;}
+			ovens[i][1] = seconds;
+			
+			document.getElementById(i).innerHTML = "Timer: " + seconds + " sekunden";
+		}
+		
+	}
+	
+}
+function stopTimer(id) {
+	window.clearInterval(clock);
+	clock = setInterval("timer()", 1000);
+	
+	ovens[id][1] = bakeTime;
+	ovens[id][0] = false;
+	
+	document.getElementById(id).innerHTML = "fertig";
+	clicked = false;
+}
+
+//]]>
+</script>
+
+		
 </head>
-<body>
+
+<body onLoad="addOvens();">
+
 	<!-- Navbar -->
 	<header>
 		<nav class="navbar navbar-default">
@@ -81,27 +159,30 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 
 
 
-	<div sec:authorize="hasRole('ROLE_BAKER')" class="container col-md-6">
+	<div sec:authorize="hasRole('ROLE_BAKER') || hasRole('ROLE_ADMIN')" class="container col-md-6">
 		<div class="panel panel-primary">
 			<div class="panel-heading">Ofenliste</div>
 			<div class="panel-body">
-				<table class="table table-striped table-bordered">
+				<table class="table table-striped table-bordered" id="ovenTable">
 					<tr th:each=" oven : ${ovens}">
 						<td th:text="${'Oven ID: ' + oven.getId()}">Oven ID:</td>
-						<td th:text="${'Oven content: ' + oven.getPizzaName()}">Content:
-						</td>
-						<td>Time left: xx:yy</td>
-						<td>
-							<form method="post" action="/getNextPizza">
+						<td th:text="${'Oven content: ' + oven.getPizzaName()}">Content:</td>
+						<td th:id="${oven.getId()}">Time left: xx:yy</td>
+						<td sec:authorize="hasRole('ROLE_BAKER')">
+							
+							<input type="submit" th:id="timer + ${oven.getId()}" value="Click here to start timer" name="submit" onClick="startTimer(this.id)"/>
+							<form  method="post" action="/getNextPizza">
 								<input type="hidden" name="ovenID" value="0"
-									th:value="${oven.getId()}" /> <input class="btn btn-primary" type="submit"
-									value="Auswählen" />
+									th:value="${oven.getId()}" /> <input class="btn btn-primary"
+									type="submit" value="Auswählen" onclick="startClock()" />
 							</form>
 						</td>
 					</tr>
 				</table>
-				<form sec:authorize="hasRole('ROLE_ADMIN')" method="post" action="/addOven">
-					<input class="btn btn-primary" type="submit" value="Ofen hinzufügen" />
+				<form sec:authorize="hasRole('ROLE_ADMIN')" method="post"
+					action="/addOven">
+					<input class="btn btn-primary" type="submit"
+						value="Ofen hinzufügen" />
 				</form>
 			</div>
 		</div>
@@ -122,6 +203,14 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 		</div>
 	</div>
 
+	<div th:if="${error.getError() == false}" class="container col-md-4">
+		<div class="panel panel-danger">
+			<div class="panel-heading">Fehler!</div>
+			<div class="panel-body">
+				<p>PizzaQueue ist leer! Ofen kann nicht befüllt werden!</p>
+			</div>
+		</div>
+	</div>
 
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

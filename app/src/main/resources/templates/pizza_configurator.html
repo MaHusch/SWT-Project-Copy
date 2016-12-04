@@ -70,11 +70,14 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 		if (i != -1) {
 			items.splice(i, 1);
 		}
-
+		
+		//overwrite the current id transmission value with the edited item list
+		document.getElementById('id_transmit').value = items;
+		
 		//adds it back the ingredient list
 		appendToList('ingredient_list', itemValue, itemID)
 	}
-
+	
 	function transmitItems(itemID) {
 		items.push(itemID);
 		document.getElementById('id_transmit').value = items;

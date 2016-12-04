@@ -52,7 +52,7 @@
 									href="addItem.html">Item hinzufügen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
 									href="catalog.html">Katalog bearbeiten</a></li>
-								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+								<li><a sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER')"
 									href="customer_display.html">Kunden anzeigen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
 									href="staffmember_display.html">Mitarbeiter anzeigen</a></li>
@@ -78,7 +78,7 @@
 	</header>
 	
 	<!-- customer list panel -->
-	<div sec:authorize="hasRole('ROLE_ADMIN')" class="container col-md-6">
+	<div sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER')" class="container col-md-6">
 		<div class="panel panel-primary">
 			<div class="panel-heading">Kunden Anzeige</div>
 			<div class="panel-body">
@@ -86,15 +86,23 @@
 					<tr>
 						<td>Vorname</td>
 						<td>Nachname</td>
-						<td>Addresse</td>
 						<td>Telefonnummer</td>
+						<td>Ort</td>
+						<td>Postleitzahl</td>
+						<td>Straßenname</td>
+						<td>Hausnummer</td>
+						
 					</tr>
 					<tbody>
 						<tr th:each=" customer : ${customer}">
 							<td th:text="${customer.getForename()}">Vorname</td>
 							<td th:text="${customer.getSurname()}">Nachname</td>
-							<td th:text="${customer.getAddress()}">Addresse</td>
 							<td th:text="${customer.getTelephoneNumber()}">Telefonnummer</td>
+							<td th:text="${customer.getAddress().getLocal()}">Ort</td>
+							<td th:text="${customer.getAddress().getPostcode()}">Postleitzahl</td>
+							<td th:text="${customer.getAddress().getStreet()}">Straßenname</td>
+							<td th:text="${customer.getAddress().getHousenumber()}">Hausnummer</td>
+							
 						</tr>
 					</tbody>
 				</table>

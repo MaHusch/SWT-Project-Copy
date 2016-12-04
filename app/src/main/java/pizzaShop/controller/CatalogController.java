@@ -3,6 +3,9 @@ package pizzaShop.controller;
 
 import static org.salespointframework.core.Currencies.EURO;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.Optional;
 
 import org.javamoney.moneta.Money;
@@ -16,35 +19,70 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import groovyjarjarantlr.collections.List;
 import pizzaShop.model.catalog_item.Ingredient;
 import pizzaShop.model.catalog_item.Item;
 import pizzaShop.model.catalog_item.ItemType;
 import pizzaShop.model.catalog_item.Pizza;
+import pizzaShop.model.catalog_item.PriceComparator;
+import pizzaShop.model.store.ErrorClass;
 import pizzaShop.model.store.ItemCatalog;
 
-
+/**
+ * Controller to create the Catalog View
+ * @author Florentin
+ *
+ */
 
 
 @Controller
 public class CatalogController {
 	
 	private final ItemCatalog itemCatalog;
+	private ErrorClass error = new ErrorClass(false);
+	private Iterable<Item> items;
 	
+	/**
+	 * on creation spring searches the itemCatalog and allocates it to the local variabel
+	 * @param itemCatalog the itemCatalog of the shop
+	 */
 	@Autowired
 	public CatalogController(ItemCatalog itemCatalog)
 	{
 		this.itemCatalog = itemCatalog;
 	}
 	
-		
+	
+	/**
+	 * on /catalog the itemCatalog is shown
+	 * @param model for the html view
+	 * @return redirects to the catalog template
+	 */
 	@RequestMapping("/catalog")
 	public String showCatalog(Model model)
 	{
-		model.addAttribute("items",itemCatalog.findAll());
+		items = itemCatalog.findAll();
+		ArrayList<Item> filteredItems = new ArrayList<Item>();
+		
+		for(Item i : items)
+		{
+			ItemType type = i.getType();
+			if(!(type.equals(ItemType.FREEDRINK) || type.equals(ItemType.INGREDIENT)))
+				filteredItems.add(i); 
+		}
+		
+		Collections.sort(filteredItems, new PriceComparator()); 
+		
+		model.addAttribute("items", filteredItems);
 		model.addAttribute("ItemType",ItemType.values());
 		return "catalog";
 	}
 	
+	/**
+	 * on /remove a given item will be removed from the catalog
+	 * @param id the productidentifier of the item which will be removed
+	 * @return redirects to the catalog template
+	 */
 	@RequestMapping("/removeItem")
 	public String removeItem(@RequestParam("pid") ProductIdentifier id) {
 		if(!itemCatalog.findOne(id).get().getType().equals(ItemType.INGREDIENT))
@@ -55,6 +93,14 @@ public class CatalogController {
 
 	}
 	
+	/**
+	 * after a item is edited the new item will be saved in the itemCatalog
+	 * @param id productidentifier of item which shall be altered
+	 * @param name new name of the item (not empty)  
+	 * @param price new price of the item (greater or equal 0)
+	 * @param type new type of the item
+	 * @return redirects to the catalog page
+	 */
 	@RequestMapping("/saveItem")
 	public String saveItem(@RequestParam("pid") ProductIdentifier id, @RequestParam("itemname") String name, 
 			 @RequestParam("itemprice") Number price, @RequestParam("itemtype") String type)
@@ -62,6 +108,7 @@ public class CatalogController {
 		Item i = itemCatalog.findOne(id).orElse(null);
 		ItemType ityp;
 		// TODO: check Arguments
+		
 		
 		switch(type)
 		{
@@ -103,28 +150,55 @@ public class CatalogController {
 		return "redirect:catalog";
 	}
 	
+	/**
+	 * directs to the addItem template with an optional Item searched by the parameter id
+	 * @param model model for the addItem template
+	 * @param id the id of the item to be edited
+	 * @return directs to the addItem template
+	 */
 	@RequestMapping("/editItem") 
 	public String editItem(Model model,@RequestParam("pid") ProductIdentifier id) {
 		
 		Optional<Item> i = itemCatalog.findOne(id);
 		model.addAttribute("item",i.get());
 		model.addAttribute("ItemTypes",ItemType.values());
+		model.addAttribute("error",error);
 		return "addItem";
 
 	}
 	
+	/**
+	 * adds an error variable to the model (to catch errors)
+	 * @param model for generating the addItem template
+	 * @return directs to the addItem template
+	 */
 	@RequestMapping("addItem")
-	public String addItem()
+	public String addItem(Model model)
 	{
+		model.addAttribute("error",error);
 		return "addItem";
 	}
 	
+	/**
+	 * checks if the inputs are valid and creates an new item and adds it the itemCatalog
+	 * @param name name of the new item (not empty)
+	 * @param price price of the new item (greater or equal 0)
+	 * @param type ItemType of the new item
+	 * @return redirects to the catalog template if successful otherwise to the addItem template with error description
+	 */
 	@RequestMapping("/createItem")
 	public String createItem(@RequestParam("itemname") String name, 
 							 @RequestParam("itemprice") Number price,
 							 @RequestParam("itemtype") String type)
 	{
 		Item neu;
+		if(name.isEmpty() || price.floatValue() < 0) 
+			{
+			//TODO: interact with frontend
+			System.out.println("fehler");
+			error.setError(true);
+			return "redirect:addItem";
+			}
 	
 		if(type.equals("PIZZA"))
 		{
@@ -147,6 +221,24 @@ public class CatalogController {
 		
 		itemCatalog.save(neu);
 		
+		return "redirect:catalog";
+	}
+	
+	@RequestMapping("/filterCatalog")
+	public String filterCatalog(Model model, String filter)
+	{
+		switch(filter)
+		{
+		case "Getränke":
+			items = itemCatalog.findByType(ItemType.DRINK);
+			break;
+		case "Essen":
+			items = itemCatalog.findByType(ItemType.PIZZA);
+			// add salad
+		default:	
+			items = itemCatalog.findAll();
+		}
+		model.addAttribute("items",items);
 		return "redirect:catalog";
 	}
 

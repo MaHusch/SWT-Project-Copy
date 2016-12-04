@@ -1,5 +1,6 @@
 package pizzaShop.model.store;
 
+import javax.money.MonetaryAmount;
 import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -36,17 +37,19 @@ public class PizzaOrder {
 	public PizzaOrder() {
 	}
 
-	public PizzaOrder(UserAccount userAccount, Tan newTan) {
+	public PizzaOrder(UserAccount userAccount, Tan newTan, boolean pickUp) {
 		this.order = new Order(userAccount);
 		this.newTan = newTan;
 		orderIdentifier = order.getId();
+		this.pickUp = pickUp;
 		// TODO Auto-generated constructor stub
 	}
 
-	public PizzaOrder(UserAccount userAccount, PaymentMethod paymentMethod, Tan newTan) {
+	public PizzaOrder(UserAccount userAccount, PaymentMethod paymentMethod, Tan newTan, boolean pickUp) {
 		this.order = new Order(userAccount, paymentMethod);
 		this.newTan = newTan;
 		orderIdentifier = order.getId();
+		this.pickUp = pickUp;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -112,4 +115,17 @@ public class PizzaOrder {
 	public void readyOrder(){
 		this.setOrderStatus(PizzaOrderStatus.READY);
 	}
+
+	public boolean getPickUp() {
+		return pickUp;
+	}
+	
+	public MonetaryAmount getTotalPrice(){
+		MonetaryAmount tmpPrice = order.getTotalPrice();
+		if(this.getPickUp()){
+			tmpPrice = tmpPrice.multiply(0.9);
+		}
+		return tmpPrice;
+	}
+
 }

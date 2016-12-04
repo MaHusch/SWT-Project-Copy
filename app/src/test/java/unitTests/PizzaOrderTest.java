@@ -26,7 +26,7 @@ public class PizzaOrderTest {
 		//uam = new UserAccountManager();
 		ua1 = new UserAccount();
 		t1 = new Tan("11293", TanStatus.VALID);
-		po1 = new PizzaOrder(ua1, Cash.CASH, t1);
+		po1 = new PizzaOrder(ua1, Cash.CASH, t1, false);
 	}
 	
 	@Test

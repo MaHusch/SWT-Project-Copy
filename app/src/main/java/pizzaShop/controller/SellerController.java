@@ -14,12 +14,12 @@ import pizzaShop.model.tan_management.TanManagement;
 @Controller
 public class SellerController {
 
-	private final TanManagement tanManagment;
+	private final TanManagement tanManagement;
 	private final CustomerRepository customerRepository;
 
 	@Autowired
-	public SellerController(TanManagement tanManagment, CustomerRepository customerRepository) {
-		this.tanManagment = tanManagment;
+	public SellerController(TanManagement tanManagement, CustomerRepository customerRepository) {
+		this.tanManagement = tanManagement;
 		this.customerRepository = customerRepository;
 	}
 
@@ -32,15 +32,19 @@ public class SellerController {
 	@RequestMapping(value = "/registerCustomer", method = RequestMethod.POST)
 	public String addCustomer(@RequestParam  ("surname")   String  surname,
 								 @RequestParam  ("forename")  String  forename,
-								 @RequestParam  ("telnumber") String  telephonenumber){
+								 @RequestParam  ("telnumber") String  telephonenumber,
+	 							 @RequestParam  ("local") String  local,
+	 							@RequestParam  ("postcode") String  postcode,
+	 							@RequestParam  ("street") String  street,
+	 							@RequestParam  ("housenumber") String  housenumber){
 		
-		if ( surname == "" || forename == ""  || telephonenumber == "") {			
+		if ( surname == "" || forename == ""  || telephonenumber == "" || local == "" || street == "" || housenumber == "" || postcode == "") {			
 			return "redirect:register_customer";
 		}
 
-		customerRepository.save(new Customer(surname, forename, telephonenumber));
-		tanManagment.generateNewTan(telephonenumber);
-		return "index";
+		customerRepository.save(new Customer(surname, forename, telephonenumber, local, postcode, street, housenumber));
+		tanManagement.generateNewTan(telephonenumber);
+		return "redirect:customer_display";
 	}
 	
 }
