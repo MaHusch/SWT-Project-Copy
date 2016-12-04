@@ -14,12 +14,12 @@ import pizzaShop.model.tan_management.TanManagement;
 @Controller
 public class SellerController {
 
-	private final TanManagement tanManagment;
+	private final TanManagement tanManagement;
 	private final CustomerRepository customerRepository;
 
 	@Autowired
-	public SellerController(TanManagement tanManagment, CustomerRepository customerRepository) {
-		this.tanManagment = tanManagment;
+	public SellerController(TanManagement tanManagement, CustomerRepository customerRepository) {
+		this.tanManagement = tanManagement;
 		this.customerRepository = customerRepository;
 	}
 
@@ -40,8 +40,8 @@ public class SellerController {
 		}
 
 		customerRepository.save(new Customer(surname, forename, telephonenumber, address));
-		tanManagment.generateNewTan(telephonenumber);
-		return "index";
+		tanManagement.generateNewTan(telephonenumber);
+		return "redirect:customer_display";
 	}
 	
 }
