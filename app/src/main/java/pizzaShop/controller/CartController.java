@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.Order;
+import org.salespointframework.order.OrderIdentifier;
 import org.salespointframework.order.OrderManager;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.quantity.Quantity;
@@ -64,7 +65,7 @@ public class CartController {
 	@RequestMapping("/cart")
 	public String pizzaCart(Model model) {
 		model.addAttribute("items", itemCatalog.findAll());
-		
+
 		model.addAttribute("customer", customer);
 		return "cart";
 	}
@@ -78,9 +79,9 @@ public class CartController {
 		 */
 		// System.out.println("test"+customerRepository.findOne((long)
 		// 1).getTelephoneNumber());
-		
+
 		model.addAttribute("orders", pizzaOrderRepository.findAll());
-		
+
 		ArrayList<StaffMember> deliverers = new ArrayList<StaffMember>();
 
 		for (StaffMember staff : Store.staffMemberList) {
@@ -109,10 +110,10 @@ public class CartController {
 		return "redirect:catalog";
 
 	}
-	
+
 	@RequestMapping(value = "/removeCartItem", method = RequestMethod.POST)
 	public String addItem(@RequestParam("ciid") String cartId, @ModelAttribute Cart cart) {
-		
+
 		cart.removeItem(cartId);
 		return "redirect:cart";
 
@@ -154,11 +155,20 @@ public class CartController {
 		return "redirect:cart";
 
 	}
+
 	@RequestMapping(value = "/assignDeliverer", method = RequestMethod.POST)
-	public String assignDeliverer(Model model, @RequestParam("delivererName") String name){// @RequestParam OrderIdentifier orderId){
-		
+	public String assignDeliverer(Model model, @RequestParam("delivererName") String name,
+			@RequestParam("orderID") OrderIdentifier orderID) {// @RequestParam
+																// OrderIdentifier
+																// orderId){
+
 		System.out.println(name);
-		 
+		System.out.println(orderID);
+
+		Deliverer deliverer = (Deliverer) Store.getInstance().getStaffMemberByForename(name);
+
+		deliverer.addOrder(orderID);
+
 		return "redirect:orders";
 	}
 }

@@ -44,7 +44,6 @@ public class BakerController {
 				if(Store.getInstance().getOvens().get(i).isEmpty()){
 					try{
 					currentBaker.getNextPizza();
-					System.out.println("in try");
 					error.setError(false);
 					currentBaker.putPizzaIntoOven(Store.getInstance().getOvens().get(i));
 					return "redirect:ovens";

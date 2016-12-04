@@ -82,6 +82,16 @@ public class Store {
 
 		return null;
 	}
+	
+	public StaffMember getStaffMemberByForename(String name){
+		
+		for(StaffMember staffMember : staffMemberList){
+			if(staffMember.getForename().equals(name)){
+				return staffMember;
+			}
+		}
+		return null;
+	}
 
 	public PizzaOrder analyzeOrder(PizzaOrder order) {
 		for (OrderLine l : order.getOrder().getOrderLines()) {

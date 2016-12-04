@@ -89,7 +89,7 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 					th:text="${'Hallo ' + #authentication?.name}">Hallo Nutzer</p>
 				<table class="table">
 					<tr>
-						<td th:if="${!available}"><form th:action="checkIn" method="post">
+						<td th:if="${available == false}"><form th:action="checkIn" method="post">
 								<input type="hidden" name="pid" value="0" th:value="${user}" />
 								<!--  which class is user? -->
 								<input class="btn btn-primary" type="submit" value="checkIn" />
@@ -97,7 +97,7 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 					</tr>
 					<tr>
 
-						<td th:if="${available}"><form th:action="checkOut" method="post">
+						<td th:if="${available == true}"><form th:action="checkOut" method="post">
 								<input class="btn btn-primary" type="submit" value="checkOut" />
 							</form></td>
 					</tr>
