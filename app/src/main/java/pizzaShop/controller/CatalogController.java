@@ -4,6 +4,7 @@ package pizzaShop.controller;
 import static org.salespointframework.core.Currencies.EURO;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Optional;
 
@@ -23,6 +24,7 @@ import pizzaShop.model.catalog_item.Ingredient;
 import pizzaShop.model.catalog_item.Item;
 import pizzaShop.model.catalog_item.ItemType;
 import pizzaShop.model.catalog_item.Pizza;
+import pizzaShop.model.catalog_item.PriceComparator;
 import pizzaShop.model.store.ErrorClass;
 import pizzaShop.model.store.ItemCatalog;
 
@@ -68,6 +70,9 @@ public class CatalogController {
 			if(!(type.equals(ItemType.FREEDRINK) || type.equals(ItemType.INGREDIENT)))
 				filteredItems.add(i); 
 		}
+		
+		Collections.sort(filteredItems, new PriceComparator()); 
+		
 		model.addAttribute("items", filteredItems);
 		model.addAttribute("ItemType",ItemType.values());
 		return "catalog";
@@ -227,12 +232,9 @@ public class CatalogController {
 		case "Getränke":
 			items = itemCatalog.findByType(ItemType.DRINK);
 			break;
-		case "Salate":
-			items = itemCatalog.findByType(ItemType.SALAD);
-			break;
-		case "Pizza":
+		case "Essen":
 			items = itemCatalog.findByType(ItemType.PIZZA);
-			break;
+			// add salad
 		default:	
 			items = itemCatalog.findAll();
 		}

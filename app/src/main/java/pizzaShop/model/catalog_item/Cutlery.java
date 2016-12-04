@@ -11,20 +11,33 @@ import org.salespointframework.time.BusinessTime;
 public class Cutlery extends Item {
 
 	private LocalDateTime returnTill;
+	public Integer loanPeriod;
+	
 	
 	@SuppressWarnings("unused")
 	public Cutlery() {}
 
 	public Cutlery(String name, MonetaryAmount price, LocalDateTime time) {
 		super(name, price, ItemType.CUTLERY);
-		System.out.println("aktuelle Zeit" + time.toString()); // no businesstime?
+		System.out.println("aktuelle Zeit" + time.toString()); 
 		this.returnTill = time;
-		// TODO Auto-generated constructor stub
+		this.loanPeriod = 28; // according to task --> 4 weeks 
+		
 	}
 	
 	public LocalDateTime getDate()
 	{
 		return returnTill;
+	}
+	// item --> customer?
+	
+	/**
+	 * 
+	 * @param time time when cutlery lent --> return till will be calculated
+	 */
+	public void setDate(LocalDateTime time)
+	{
+		this.returnTill = time.plusDays(loanPeriod);
 	}
 
 }
