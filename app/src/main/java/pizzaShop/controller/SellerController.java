@@ -33,13 +33,16 @@ public class SellerController {
 	public String addCustomer(@RequestParam  ("surname")   String  surname,
 								 @RequestParam  ("forename")  String  forename,
 								 @RequestParam  ("telnumber") String  telephonenumber,
-	 							@RequestParam  ("address") String  address){
+	 							 @RequestParam  ("local") String  local,
+	 							@RequestParam  ("postcode") String  postcode,
+	 							@RequestParam  ("street") String  street,
+	 							@RequestParam  ("housenumber") String  housenumber){
 		
-		if ( surname == "" || forename == ""  || telephonenumber == "" || address == "") {			
+		if ( surname == "" || forename == ""  || telephonenumber == "" || local == "" || street == "" || housenumber == "" || postcode == "") {			
 			return "redirect:register_customer";
 		}
 
-		customerRepository.save(new Customer(surname, forename, telephonenumber, address));
+		customerRepository.save(new Customer(surname, forename, telephonenumber, local, postcode, street, housenumber));
 		tanManagement.generateNewTan(telephonenumber);
 		return "redirect:customer_display";
 	}
