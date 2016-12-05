@@ -143,20 +143,22 @@ public class CartController {
 	}
 
 	@RequestMapping(value = "/checkout", method = RequestMethod.POST)
-	public String buy(@ModelAttribute Cart cart, @RequestParam("onSite") String onSiteStr,  @LoggedIn Optional<UserAccount> userAccount) {
+	public String buy(@ModelAttribute Cart cart, @RequestParam("onSite") String onSiteStr,
+			@LoggedIn Optional<UserAccount> userAccount) {
 		if (!userAccount.isPresent()) {
 			return "redirect:login";
 		}
-		assertTrue("Checkbox liefert anderen Wert als 0 oder 1! nämlich"+onSiteStr, onSiteStr.equals("0,1") | onSiteStr.equals("0"));
+		assertTrue("Checkbox liefert anderen Wert als 0 oder 1! nämlich" + onSiteStr,
+				onSiteStr.equals("0,1") | onSiteStr.equals("0"));
 		if (customer.isPresent()) {
 			boolean onSite = false;
 			System.out.println(onSiteStr + " onSite");
-			if(onSiteStr.equals("0,1")){
+			if (onSiteStr.equals("0,1")) {
 				onSite = true;
 			}
-			
+
 			PizzaOrder pizzaOrder = new PizzaOrder(userAccount.get(), Cash.CASH,
-					tanManagement.generateNewTan(customer.get().getTelephoneNumber()), onSite);// tanManagement.getTan(customer.getTelephoneNumber()));
+					tanManagement.generateNewTan(customer.get().getTelephoneNumber()), onSite, customer.get());// tanManagement.getTan(customer.getTelephoneNumber()));
 			cart.addItemsTo(orderManager.save(pizzaOrder.getOrder()));
 			Store.getInstance().analyzeOrder(pizzaOrderRepository.save(pizzaOrder));
 			cart.clear();
@@ -170,15 +172,10 @@ public class CartController {
 	public String assignDeliverer(Model model, @RequestParam("delivererName") String name,
 			@RequestParam("orderID") OrderIdentifier orderID) {// @RequestParam
 																// OrderIdentifier
-																// orderId){
-
-		System.out.println(name);
-		System.out.println(orderID);
-
+																// orderId)
 		Deliverer deliverer = (Deliverer) Store.getInstance().getStaffMemberByForename(name);
 
 		deliverer.addOrder(orderID);
-
 		return "redirect:orders";
 	}
 }

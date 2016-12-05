@@ -1,5 +1,7 @@
 package pizzaShop.model.store;
 
+import java.util.Iterator;
+
 import javax.money.MonetaryAmount;
 import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
@@ -9,9 +11,11 @@ import javax.persistence.OneToOne;
 import org.junit.Assert;
 import org.salespointframework.order.Order;
 import org.salespointframework.order.OrderIdentifier;
+import org.salespointframework.order.OrderLine;
 import org.salespointframework.payment.PaymentMethod;
 import org.salespointframework.useraccount.UserAccount;
 
+import pizzaShop.model.actor.Customer;
 import pizzaShop.model.tan_management.Tan;
 
 @Entity
@@ -23,32 +27,38 @@ public class PizzaOrder {
 	private OrderIdentifier orderIdentifier;
 	private boolean freeDrink;
 	private boolean pickUp;
-	
-	@OneToOne(cascade = {CascadeType.ALL})
+
+	@OneToOne(cascade = { CascadeType.ALL })
 	private Tan newTan;
-	
+
 	private PizzaOrderStatus pizzaOrderStatus = PizzaOrderStatus.OPEN;
-	
+
 	@OneToOne
 	private Order order;
-	
+
 	private int unbakedPizzas = 0;
+
+	@OneToOne
+	private Customer customer;
 
 	public PizzaOrder() {
 	}
 
-	public PizzaOrder(UserAccount userAccount, Tan newTan, boolean pickUp) {
+	public PizzaOrder(UserAccount userAccount, Tan newTan, boolean pickUp, Customer customer) {
 		this.order = new Order(userAccount);
 		this.newTan = newTan;
 		orderIdentifier = order.getId();
+		this.customer = customer;
 		this.pickUp = pickUp;
 		// TODO Auto-generated constructor stub
 	}
 
-	public PizzaOrder(UserAccount userAccount, PaymentMethod paymentMethod, Tan newTan, boolean pickUp) {
+	public PizzaOrder(UserAccount userAccount, PaymentMethod paymentMethod, Tan newTan, boolean pickUp,
+			Customer customer) {
 		this.order = new Order(userAccount, paymentMethod);
 		this.newTan = newTan;
 		orderIdentifier = order.getId();
+		this.customer = customer;
 		this.pickUp = pickUp;
 		// TODO Auto-generated constructor stub
 	}
@@ -62,7 +72,7 @@ public class PizzaOrder {
 			System.out.println("ready");
 
 		}
-		
+
 		return unbakedPizzas;
 	}
 
@@ -70,8 +80,8 @@ public class PizzaOrder {
 		unbakedPizzas++;
 		return unbakedPizzas;
 	}
-	
-	public int getUnbakedPizzas(){
+
+	public int getUnbakedPizzas() {
 		return unbakedPizzas;
 	}
 
@@ -86,46 +96,63 @@ public class PizzaOrder {
 	public OrderIdentifier getId() {
 		return orderIdentifier;
 	}
-	
-	private void setOrderStatus(PizzaOrderStatus status)
-	{
+
+	private void setOrderStatus(PizzaOrderStatus status) {
 		this.pizzaOrderStatus = status;
 	}
-	
-	public PizzaOrderStatus getOrderStatus()
-	{
+
+	public PizzaOrderStatus getOrderStatus() {
 		return this.pizzaOrderStatus;
 	}
-	
+
 	public void completeOrder() // TODO: creaty accountancyentry
 	{
 		this.setOrderStatus(PizzaOrderStatus.COMPLETED);
 	}
-	
-	public Tan getTan()
-	{
+
+	public Tan getTan() {
 		return this.newTan;
 	}
-	
-	public void deliverOrder()
-	{
+
+	public void deliverOrder() {
 		this.setOrderStatus(PizzaOrderStatus.DELIVERING);
 	}
-	
-	public void readyOrder(){
+
+	public void readyOrder() {
 		this.setOrderStatus(PizzaOrderStatus.READY);
 	}
 
 	public boolean getPickUp() {
 		return pickUp;
 	}
-	
-	public MonetaryAmount getTotalPrice(){
+
+	public MonetaryAmount getTotalPrice() {
 		MonetaryAmount tmpPrice = order.getTotalPrice();
-		if(this.getPickUp()){
+		if (this.getPickUp()) {
 			tmpPrice = tmpPrice.multiply(0.9);
 		}
 		return tmpPrice;
+	}
+	
+	public Customer getCustomer(){
+		return customer;
+	}
+	
+	@Override
+	public String toString(){
+		
+		Iterator<OrderLine> it = order.getOrderLines().iterator();
+		
+		String result = "";
+		
+		while(it.hasNext()){
+			
+			result = result + (" " + it.next().getProductName() + ";");
+		}
+		
+		return result;
+		
+		
 	}
 
 }

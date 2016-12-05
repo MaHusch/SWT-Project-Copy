@@ -116,8 +116,9 @@ function assignDeliverer(){
 							<th>Lieferant</th>
 						</tr>
 					</thead>
-					<tbody>
-						<tr th:each="order : ${orders} ">
+					<tbody>	
+					<div th:each="order : ${orders}">
+						<tr th:if="${order.getOrderStatus().equals(PizzaOrderStatus[1])}">
 							<td th:text="${order.getId() }">arg</td>
 							<td th:text="${{order.getTotalPrice()}}">arg</td>
 							<td th:text="${order.getOrderStatus() }">arg</td>
@@ -143,6 +144,7 @@ function assignDeliverer(){
 							</form>
 							</td>
 						</tr>
+						</div>
 					</tbody>
 				</table>
 			</div>

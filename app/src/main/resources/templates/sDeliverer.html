@@ -81,36 +81,50 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 	</header>
 
 	<div sec:authorize="hasRole('ROLE_DELIVERER')"
-		class="container col-md-6">
+		class="container col-md-3">
 		<div class="panel panel-primary">
 			<div class="panel-heading">Deliverer Dashboard</div>
 			<div class="panel-body">
 				<p sec:authorize="isAuthenticated()"
 					th:text="${'Hallo ' + #authentication?.name}">Hallo Nutzer</p>
-				<table class="table">
-					<tr>
-						<td th:if="${available == false}"><form th:action="checkIn" method="post">
-								<input type="hidden" name="pid" value="0" th:value="${user}" />
-								<!--  which class is user? -->
-								<input class="btn btn-primary" type="submit" value="checkIn" />
-							</form></td>
-					</tr>
-					<tr>
+				<form th:if="${available == false}" th:action="checkIn"
+					method="post">
+					<!-- <input type="hidden" name="pid" value="0" th:value="${user}" />
+					  which class is user? -->
+					<input class="btn btn-primary" type="submit" value="checkIn" />
+				</form>
 
-						<td th:if="${available == true}"><form th:action="checkOut" method="post">
-								<input class="btn btn-primary" type="submit" value="checkOut" />
-							</form></td>
-					</tr>
-				</table>
-				<table class="table">
+				<form th:if="${available == true}" th:action="checkOut"
+					method="post">
+					<input class="btn btn-primary" type="submit" value="checkOut" />
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div class="container col-md-6">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Auszuliefernde Bestellungen</div>
+			<div class="panel-body">
+
+				<table class="table table-striped table-bordered">
 					<tr>
-						<td> Id</td>
-						<td> Adresse </td>
+						<td>Inhalt</td>
+						<td>Kunde</td>
+						<td>Adresse</td>
+
 					</tr>
-					<tr th:each="order : ${orders} ">
-							<td th:text="${order.getId() }">arg</td>
-					</tr>		<!--  OrderAdress -->
+					<tr th:each="order : ${orders}">
+						<td th:text="${order.toString()}">inhalt</td>
+						<td
+							th:text="${order.getCustomer().getForename() +' ' + order.getCustomer().getSurname()}">customer</td>
+						<td th:text="${order.getCustomer().getAddress().toString()}">address
+						</td>
+
+
+					</tr>
 				</table>
+				<a href="sDeliverer.html"><input class="btn btn-primary" value="Aktualisieren" /></a>
 			</div>
 		</div>
 	</div>

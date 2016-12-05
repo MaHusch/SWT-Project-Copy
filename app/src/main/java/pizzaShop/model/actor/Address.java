@@ -38,4 +38,11 @@ public class Address {
 	public void setHousenumber(String housenumber){this.housenumber = housenumber;}
 	public void setPostcode(String postcode){this.postcode = postcode;}
 	
+
+	@Override
+	public String toString(){
+		
+		return (postcode + " " + local + "\n" + street + " " + housenumber);
+	}
+	
 }

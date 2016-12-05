@@ -73,19 +73,19 @@ public class StoreController {
 		return "sAdmin";
 	}
 	
-	@RequestMapping("/sDeliverer")
+	/*@RequestMapping("/sDeliverer")
 	public String sDeliverer(Principal prinicpal,Model model)
 	{
 		
 		//TODO: what if not deliverer? (maybe check Class before
 		Deliverer currentDeliverer = (Deliverer) Store.getInstance().getStaffMemberByName(prinicpal.getName());
 		
-	
+		//model.addAttribute("order", currentDeliverer.getOrders());
 		
 		model.addAttribute("available",currentDeliverer.getAvailable());
 		
 		return "sDeliverer";
-	}
+	}*/
 	
 	@RequestMapping("/sSeller")
 	public String sSeller()
