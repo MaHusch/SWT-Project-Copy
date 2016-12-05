@@ -31,6 +31,7 @@ import pizzaShop.model.store.CustomerRepository;
 import pizzaShop.model.store.ItemCatalog;
 import pizzaShop.model.store.PizzaOrder;
 import pizzaShop.model.store.PizzaOrderRepository;
+import pizzaShop.model.store.PizzaOrderStatus;
 import pizzaShop.model.store.StaffMemberRepository;
 import pizzaShop.model.store.Store;
 import pizzaShop.model.tan_management.Tan;
@@ -75,15 +76,6 @@ public class CartController {
 
 	@RequestMapping("/orders")
 	public String pizzaOrder(Model model) {
-		/*
-		 * for(Customer ca : customerRepository.findAll()){
-		 * System.out.println("ID: "+ca.getId()+" tel: "+ca.getTelephoneNumber()
-		 * +" Name: "+ca.getForename()); }
-		 */
-		// System.out.println("test"+customerRepository.findOne((long)
-		// 1).getTelephoneNumber());
-
-		model.addAttribute("orders", pizzaOrderRepository.findAll());
 
 		ArrayList<StaffMember> deliverers = new ArrayList<StaffMember>();
 
@@ -95,7 +87,21 @@ public class CartController {
 				}
 			}
 		}
-
+		
+		ArrayList<PizzaOrder> uncompletedOrders = new ArrayList<PizzaOrder>();
+		ArrayList<PizzaOrder> completedOrders = new ArrayList<PizzaOrder>();
+		
+		for(PizzaOrder po : pizzaOrderRepository.findAll()){
+			if(po.getOrderStatus().equals(PizzaOrderStatus.COMPLETED)){
+				completedOrders.add(po);
+			}
+			else{
+				uncompletedOrders.add(po);
+			}
+		}
+		
+		model.addAttribute("uncompletedOrders", uncompletedOrders);
+		model.addAttribute("completedOrders", completedOrders);
 		model.addAttribute("deliverers", deliverers);
 
 		return "orders";
