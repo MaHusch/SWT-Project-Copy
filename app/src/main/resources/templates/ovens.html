@@ -132,7 +132,7 @@ function stopTimer(id) {
 									href="addItem.html">Item hinzufügen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
 									href="catalog.html">Katalog bearbeiten</a></li>
-								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+								<li><a sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER')"
 									href="customer_display.html">Kunden anzeigen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
 									href="staffmember_display.html">Mitarbeiter anzeigen</a></li>
