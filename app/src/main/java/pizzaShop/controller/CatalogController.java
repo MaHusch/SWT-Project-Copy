@@ -23,6 +23,7 @@ import groovyjarjarantlr.collections.List;
 import pizzaShop.model.catalog_item.Ingredient;
 import pizzaShop.model.catalog_item.Item;
 import pizzaShop.model.catalog_item.ItemType;
+import pizzaShop.model.catalog_item.NameComparator;
 import pizzaShop.model.catalog_item.Pizza;
 import pizzaShop.model.catalog_item.PriceComparator;
 import pizzaShop.model.store.ErrorClass;
@@ -71,7 +72,7 @@ public class CatalogController {
 				filteredItems.add(i); 
 		}
 		
-		Collections.sort(filteredItems, new PriceComparator()); 
+		Collections.sort(filteredItems, new NameComparator(true)); 
 		
 		model.addAttribute("items", filteredItems);
 		model.addAttribute("ItemType",ItemType.values());
@@ -225,15 +226,16 @@ public class CatalogController {
 	}
 	
 	@RequestMapping("/filterCatalog")
-	public String filterCatalog(Model model, String filter)
+	public String filterCatalog(Model model, String typefilter)
 	{
-		switch(filter)
+		switch(typefilter)
 		{
 		case "Getränke":
 			items = itemCatalog.findByType(ItemType.DRINK);
 			break;
 		case "Essen":
 			items = itemCatalog.findByType(ItemType.PIZZA);
+			
 			// add salad
 		default:	
 			items = itemCatalog.findAll();

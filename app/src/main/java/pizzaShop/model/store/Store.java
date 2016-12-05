@@ -131,8 +131,27 @@ public class Store {
 
 		return null;
 	}
+	
+	public static ItemType StringtoItemtype(String type) //use to remove redundancy?!
+	{
+		switch(type)
+		{
+		default:
+			return ItemType.FREEDRINK;
+		case "DRINK":
+			return ItemType.DRINK;
+		case "INGREDIENT":
+			return ItemType.INGREDIENT;
+		case "PIZZA":
+			return ItemType.PIZZA;
+		case "SALAD":
+			return ItemType.SALAD;
+		case "Cutlery":
+			return ItemType.CUTLERY;
+		}
+	}
 
-	public void cleanUpItemCatalog() {
+	public void cleanUpItemCatalog() { //unused?
 		Iterable<Item> items1 = itemCatalog.findAll();
 		Iterable<Item> items2 = itemCatalog.findAll();
 
