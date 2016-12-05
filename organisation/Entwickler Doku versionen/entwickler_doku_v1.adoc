@@ -56,7 +56,7 @@ und des laufenden Sortiments (dessen Zusammenstellung und Preise sich kontinuier
 == Kontextabgrenzung
 * Externe Schnittstellen
 	** Spring Salespoint Framework
-	** ...
+	** Bootstraps CSS
 
 
 == Lösungsstrategie
