@@ -42,7 +42,7 @@ public class CatalogController {
 	private final ItemCatalog itemCatalog;
 	private ErrorClass error = new ErrorClass(false);
 	private Iterable<Item> items;
-	
+	private ArrayList<Item> filteredItems;
 	/**
 	 * on creation spring searches the itemCatalog and allocates it to the local variabel
 	 * @param itemCatalog the itemCatalog of the shop
@@ -63,18 +63,18 @@ public class CatalogController {
 	public String showCatalog(Model model)
 	{
 		items = itemCatalog.findAll();
-		ArrayList<Item> filteredItems = new ArrayList<Item>();
 		
-		for(Item i : items)
+		
+		/*for(Item i : items)
 		{
 			ItemType type = i.getType();
 			if(!(type.equals(ItemType.FREEDRINK) || type.equals(ItemType.INGREDIENT)))
 				filteredItems.add(i); 
 		}
 		
-		Collections.sort(filteredItems, new NameComparator(true)); 
+		Collections.sort(filteredItems, new NameComparator(true)); */
 		
-		model.addAttribute("items", filteredItems);
+		model.addAttribute("items", items);
 		model.addAttribute("ItemType",ItemType.values());
 		return "catalog";
 	}
@@ -158,7 +158,7 @@ public class CatalogController {
 	 * @return directs to the addItem template
 	 */
 	@RequestMapping("/editItem") 
-	public String editItem(Model model,@RequestParam("pid") ProductIdentifier id) {
+	public String directToEditItem(Model model,@RequestParam("pid") ProductIdentifier id) {
 		
 		Optional<Item> i = itemCatalog.findOne(id);
 		model.addAttribute("item",i.get());
@@ -174,7 +174,7 @@ public class CatalogController {
 	 * @return directs to the addItem template
 	 */
 	@RequestMapping("addItem")
-	public String addItem(Model model)
+	public String directToAddItem(Model model)
 	{
 		model.addAttribute("error",error);
 		return "addItem";
@@ -226,22 +226,43 @@ public class CatalogController {
 	}
 	
 	@RequestMapping("/filterCatalog")
-	public String filterCatalog(Model model, String typefilter)
+	public String filterCatalog(Model model, @RequestParam("selection") String selection,
+								@RequestParam("filter") String filter)
 	{
-		switch(typefilter)
+		filteredItems = new ArrayList<Item>();
+		System.out.println(filter + ' ' + selection);
+		
+		switch(selection)
 		{
 		case "Getränke":
-			items = itemCatalog.findByType(ItemType.DRINK);
+			for(Item i : itemCatalog.findByType(ItemType.DRINK)) filteredItems.add(i);
 			break;
 		case "Essen":
-			items = itemCatalog.findByType(ItemType.PIZZA);
+			for(Item i : itemCatalog.findByType(ItemType.PIZZA)) filteredItems.add(i);
+			for(Item i : itemCatalog.findByType(ItemType.SALAD)) filteredItems.add(i);
 			
-			// add salad
-		default:	
-			items = itemCatalog.findAll();
+		default: // alles ist default	
+			for(Item i : itemCatalog.findAll()) filteredItems.add(i);
 		}
-		model.addAttribute("items",items);
-		return "redirect:catalog";
+		
+		switch(filter)
+		{
+		case "hoechster Preis zuerst":
+			Collections.sort(filteredItems, new PriceComparator(false));
+			break;
+		case "niedrigster Preis zuerst":
+			Collections.sort(filteredItems, new PriceComparator(true));
+			break;
+		case "von A bis Z":
+			Collections.sort(filteredItems, new NameComparator(true));
+			break;
+		case "von Z bis A":
+			Collections.sort(filteredItems, new NameComparator(false));
+		}
+		
+		model.addAttribute("items",filteredItems);
+		model.addAttribute("ItemType",ItemType.values());
+		return "catalog";
 	}
 
 }
