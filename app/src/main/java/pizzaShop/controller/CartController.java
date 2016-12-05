@@ -48,17 +48,19 @@ public class CartController {
 	private final PizzaOrderRepository pizzaOrderRepository;
 	private final StaffMemberRepository staffMemberRepository;
 	private Optional<Customer> customer = Optional.empty();
+	private final Store store;
 
 	@Autowired
 	public CartController(OrderManager<Order> orderManager, ItemCatalog itemCatalog, TanManagement tanManagement,
 			CustomerRepository customerRepository, PizzaOrderRepository pizzaOrderRepository,
-			StaffMemberRepository staffMemberRepository) {
+			StaffMemberRepository staffMemberRepository, Store store) {
 		this.orderManager = orderManager;
 		this.itemCatalog = itemCatalog;
 		this.tanManagement = tanManagement;
 		this.customerRepository = customerRepository;
 		this.pizzaOrderRepository = pizzaOrderRepository;
 		this.staffMemberRepository = staffMemberRepository;
+		this.store = store;
 	}
 
 	@ModelAttribute("cart")
@@ -79,7 +81,7 @@ public class CartController {
 
 		ArrayList<StaffMember> deliverers = new ArrayList<StaffMember>();
 
-		for (StaffMember staff : Store.staffMemberList) {
+		for (StaffMember staff : store.getStaffMemberList()) {
 			if (staff.getRole().getName().contains("DELIVERER")) {
 				Deliverer deliverer = (Deliverer) staff;
 				if (deliverer.getAvailable()) {
@@ -166,7 +168,7 @@ public class CartController {
 			PizzaOrder pizzaOrder = new PizzaOrder(userAccount.get(), Cash.CASH,
 					tanManagement.generateNewTan(customer.get().getTelephoneNumber()), onSite, customer.get());// tanManagement.getTan(customer.getTelephoneNumber()));
 			cart.addItemsTo(orderManager.save(pizzaOrder.getOrder()));
-			Store.getInstance().analyzeOrder(pizzaOrderRepository.save(pizzaOrder));
+			store.analyzeOrder(pizzaOrderRepository.save(pizzaOrder));
 			cart.clear();
 			// customer = Optional.empty(); disabled for testing purposes
 		}
@@ -179,7 +181,7 @@ public class CartController {
 			@RequestParam("orderID") OrderIdentifier orderID) {// @RequestParam
 																// OrderIdentifier
 																// orderId)
-		Deliverer deliverer = (Deliverer) Store.getInstance().getStaffMemberByForename(name);
+		Deliverer deliverer = (Deliverer) store.getStaffMemberByForename(name);
 
 		deliverer.addOrder(orderID);
 		return "redirect:orders";

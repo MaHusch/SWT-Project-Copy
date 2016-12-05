@@ -1,9 +1,10 @@
 package pizzaShop.model.store;
 
 
-import java.util.*;
+import java.util.Timer;
 
-import pizzaShop.model.actor.Baker;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import pizzaShop.model.catalog_item.Pizza;
 
 public class Oven {
@@ -14,15 +15,17 @@ public class Oven {
 	private Timer myTimer;
 	private boolean empty = true;
 	
+	private final Store store;
 	
+	@Autowired
 	public Oven(Store store){
+		this.store = store;
 		this.ovenID = this.ID++;	
-		store.getOvens().add(this);
+		
 		
 	}
 	
-	@SuppressWarnings("unused")
-	public Oven(){}		
+	
 	
 	
 	public int getId(){
@@ -39,7 +42,7 @@ public class Oven {
 		
 	public boolean notifyObservers(Pizza pizza){
 		if(!pizza.equals(null)){
-			Store.getInstance().updatePizzaOrder(pizza);
+			store.updatePizzaOrder(pizza);
 			return true;
 		}
 		else{

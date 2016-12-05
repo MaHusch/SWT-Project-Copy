@@ -2,7 +2,7 @@ package pizzaShop;
 
 import static org.salespointframework.core.Currencies.EURO;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.javamoney.moneta.Money;
 import org.salespointframework.accountancy.Accountancy;
@@ -14,6 +14,7 @@ import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import pizzaShop.model.actor.Admin;
 import pizzaShop.model.actor.Baker;
 import pizzaShop.model.actor.Customer;
 import pizzaShop.model.actor.Deliverer;
@@ -25,9 +26,9 @@ import pizzaShop.model.catalog_item.ItemType;
 import pizzaShop.model.catalog_item.Pizza;
 import pizzaShop.model.store.CustomerRepository;
 import pizzaShop.model.store.ItemCatalog;
-import pizzaShop.model.store.Oven;
 import pizzaShop.model.store.Pizzaqueue;
 import pizzaShop.model.store.SalaryThread;
+import pizzaShop.model.store.StaffMemberRepository;
 import pizzaShop.model.store.Store;
 import pizzaShop.model.tan_management.TanManagement;
 
@@ -41,27 +42,33 @@ import pizzaShop.model.tan_management.TanManagement;
 public class ApplicationDataInitializer implements DataInitializer {
 
 	private final Accountancy accountancy;
-	private final UserAccountManager userAccountManager;
+	private final UserAccountManager employeeAccountManager;
 	private final BusinessTime businessTime;
 	private final CustomerRepository customerRepository;
 	private final TanManagement tanManagement;
+	private final Store store;
+	private final ItemCatalog itemCatalog;
+	private final StaffMemberRepository staffMemberRepository;
 
 	/**
 	 * gets the components via autowired
 	 * @param accountancy
-	 * @param userAccountManager
+	 * @param employeeAccountManager
 	 * @param businessTime
 	 * @param customerRepository
 	 * @param tanManagement
 	 */
 	@Autowired
-	public ApplicationDataInitializer(Accountancy accountancy, UserAccountManager userAccountManager,
-			BusinessTime businessTime, CustomerRepository customerRepository, TanManagement tanManagement) {
+	public ApplicationDataInitializer(Accountancy accountancy, UserAccountManager employeeAccountManager,
+			BusinessTime businessTime, CustomerRepository customerRepository, TanManagement tanManagement, Store store, ItemCatalog itemCatalog, StaffMemberRepository staffMemberRepository) {
 		this.accountancy = accountancy;
-		this.userAccountManager = userAccountManager;
+		this.employeeAccountManager = employeeAccountManager;
 		this.businessTime = businessTime;
 		this.customerRepository = customerRepository;
 		this.tanManagement = tanManagement;
+		this.store = store;
+		this.itemCatalog = itemCatalog;
+		this.staffMemberRepository = staffMemberRepository;
 	}
 	
 	/**
@@ -70,7 +77,7 @@ public class ApplicationDataInitializer implements DataInitializer {
 	@Override
 	public void initialize() {
 
-		initializeCatalog(Store.itemCatalog);
+		initializeCatalog();
 		initializeAccountancy();
 		initializeCustomers();
 		initializeUser();	
@@ -81,15 +88,19 @@ public class ApplicationDataInitializer implements DataInitializer {
 	 */
 	private void initializeUser()
 	{
-		Baker Baker_Eduardo_Pienso = new Baker("Pienso", "Eduardo", "2341241212", "eddy", "pass");
-		Deliverer Deliverer_Florentin_Doerre = new Deliverer("Doerre", "Florentin", "015123456", "flo", "123");
-		Deliverer Deliverer_Martin_Huschenbett = new Deliverer("Huschenbett", "Martin", "40918310", "maddin", "qwe");
-		Seller Seller_Hans_Bergstein = new Seller("Bergstein", "Hans", "492161268", "hans123", "qwe");
-			
-		Store.staffMemberList.add(Seller_Hans_Bergstein);
-		Store.staffMemberList.add(Deliverer_Florentin_Doerre);
-		Store.staffMemberList.add(Deliverer_Martin_Huschenbett);
-		Store.staffMemberList.add(Baker_Eduardo_Pienso);
+		Admin admin = new Admin("Mustermann", "Max", "123456789");
+		store.updateUserAccount(admin, "admin", "123", Role.of("ROLE_ADMIN"));
+		
+		Baker Baker_Eduardo_Pienso = new Baker("Pienso", "Eduardo", "2341241212");
+		store.updateUserAccount(Baker_Eduardo_Pienso, "eddy", "pass", Role.of("ROLE_BAKER"));
+		Deliverer Deliverer_Florentin_Doerre = new Deliverer("Doerre", "Florentin", "015123456");
+		store.updateUserAccount(Deliverer_Florentin_Doerre, "flo", "123", Role.of("ROLE_DELIVERER"));
+		Deliverer Deliverer_Martin_Huschenbett = new Deliverer("Huschenbett", "Martin", "40918310");
+		store.updateUserAccount(Deliverer_Martin_Huschenbett, "maddin", "qwe", Role.of("ROLE_DELIVERER"));
+		Seller Seller_Hans_Bergstein = new Seller("Bergstein", "Hans", "492161268");
+		store.updateUserAccount(Seller_Hans_Bergstein, "hans123", "qwe", Role.of("ROLE_SELLER"));
+		
+		store.getStaffMemberList().addAll(Arrays.asList(Seller_Hans_Bergstein, Deliverer_Florentin_Doerre, Deliverer_Martin_Huschenbett, Baker_Eduardo_Pienso));
 	}
 	
 	/**
@@ -97,16 +108,16 @@ public class ApplicationDataInitializer implements DataInitializer {
 	 * @param itemCatalog ItemCatalog to fill 
 	 * 
 	 */
-	private void initializeCatalog(ItemCatalog itemCatalog) {
+	private void initializeCatalog() {
 
-		if (Store.itemCatalog.findAll().iterator().hasNext()) {
+		if (itemCatalog.findAll().iterator().hasNext()) {
 			return;
 		}
 
 		Ingredient cheese = new Ingredient("Käse", Money.of(0.50, EURO));
 		Ingredient mushroom = new Ingredient("Pilze", Money.of(1.00, EURO));
 		Ingredient pineapple = new Ingredient("Ananas", Money.of(1.00, EURO));
-		Ingredient oniens = new Ingredient("Zwiebeln", Money.of(0.50, EURO));
+		Ingredient onions = new Ingredient("Zwiebeln", Money.of(0.50, EURO));
 		
 		Pizza pizza1 = new Pizza("pizza1", Money.of(2.50, EURO));
 		Pizza pizza2 = new Pizza("pizza2", Money.of(2.50, EURO));
@@ -120,22 +131,14 @@ public class ApplicationDataInitializer implements DataInitializer {
 		pizza1.addIngredient(mushroom);
 		pizza1.addIngredient(cheese);
 		
-		Pizzaqueue pizzaQueue = Store.getInstance().getPizzaQueue();
+		Pizzaqueue pizzaQueue = store.getPizzaQueue();
 
 		/*pizzaQueue.add(pizza1);
 		pizzaQueue.add(pizza2);
 		pizzaQueue.add(pizza3);*/
 
-		Store.itemCatalog.save(cheese);
-		Store.itemCatalog.save(mushroom);
-		Store.itemCatalog.save(pizza1);
-		Store.itemCatalog.save(beer);
-		Store.itemCatalog.save(freebeer);
-		Store.itemCatalog.save(salat);
-		Store.itemCatalog.save(pineapple);
-		Store.itemCatalog.save(oniens);
-		Store.itemCatalog.save(custom);
-		Store.itemCatalog.save(cutlery1);
+		itemCatalog.save(Arrays.asList(cheese, mushroom, pizza1, beer, freebeer, salat, pineapple, onions, custom, cutlery1));
+		
 		
 	}
 	

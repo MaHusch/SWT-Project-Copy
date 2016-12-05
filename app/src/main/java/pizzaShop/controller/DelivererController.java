@@ -26,18 +26,20 @@ public class DelivererController {
 	String username;
 	private final PizzaOrderRepository pizzaOrderRepository;
 	private final TanManagement tanManagement;
+	private final Store store;
 
 	@Autowired
-	public DelivererController(PizzaOrderRepository pizzaOrderRepository, TanManagement tanManagement) {
+	public DelivererController(PizzaOrderRepository pizzaOrderRepository, TanManagement tanManagement, Store store) {
 		this.pizzaOrderRepository = pizzaOrderRepository;
 		this.tanManagement = tanManagement;
+		this.store = store;
 	}
 
 	@RequestMapping("/sDeliverer")
 	public String sDeliverer(Principal prinicpal, Model model) {
 
 		// TODO: what if not deliverer? (maybe check Class before
-		currentDeliverer = (Deliverer) Store.getInstance().getStaffMemberByName(prinicpal.getName());
+		currentDeliverer = (Deliverer) store.getStaffMemberByName(prinicpal.getName());
 		
 		model.addAttribute("available", currentDeliverer.getAvailable());
 
@@ -87,7 +89,7 @@ public class DelivererController {
 		username = principal.getName();
 		System.out.println(username);
 		// startpage for deliverer as extra template ?!
-		currentDeliverer = (Deliverer) Store.getInstance().getStaffMemberByName(username);
+		currentDeliverer = (Deliverer) store.getStaffMemberByName(username);
 
 		currentDeliverer.checkIn();
 		System.out.println(currentDeliverer.getAvailable());

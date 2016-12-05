@@ -33,7 +33,7 @@ public abstract class StaffMember extends Person {
 		return this.username;
 	}
 
-	public void updateUserAccount(String username, String password, Role role) {
+	/*public void updateUserAccount(String username, String password, Role role) {
 
 		if (this.userAccount == null) {
 			setUsername(username);
@@ -47,7 +47,7 @@ public abstract class StaffMember extends Person {
 
 		}
 
-	}
+	}*/
 
 	public void setUserAccount(UserAccount userAccount) {
 		this.userAccount = userAccount;

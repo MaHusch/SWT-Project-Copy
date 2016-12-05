@@ -51,13 +51,15 @@ public class StoreController {
 	private final TanManagement tanManagement;
 	private final CustomerRepository customerRepository;
 	private final PizzaOrderRepository pizzaOrderRepository;
+	private final Store store;
 	
 	@Autowired 
-	public StoreController(ItemCatalog itemCatalog, TanManagement tanManagement, CustomerRepository customerRepository, PizzaOrderRepository pOR) {
+	public StoreController(ItemCatalog itemCatalog, TanManagement tanManagement, CustomerRepository customerRepository, PizzaOrderRepository pOR, Store store) {
 		this.itemCatalog = itemCatalog;
 		this.tanManagement = tanManagement;
 		this.customerRepository = customerRepository;
 		this.pizzaOrderRepository = pOR;
+		this.store = store;
 	}	
 	
 	
@@ -78,7 +80,7 @@ public class StoreController {
 	{
 		
 		//TODO: what if not deliverer? (maybe check Class before
-		Deliverer currentDeliverer = (Deliverer) Store.getInstance().getStaffMemberByName(prinicpal.getName());
+		Deliverer currentDeliverer = (Deliverer) store.getStaffMemberByName(prinicpal.getName());
 		
 		//model.addAttribute("order", currentDeliverer.getOrders());
 		
@@ -103,7 +105,7 @@ public class StoreController {
 		model.addAttribute("items",itemCatalog.findByType(ItemType.INGREDIENT));
 		
 		if(itemID != null){
-			Pizza pizza = (Pizza)(Store.getInstance().findItemByIdentifier(itemID,null));
+			Pizza pizza = (Pizza)(store.findItemByIdentifier(itemID,null));
 			
 			if (pizza == null){return "redirect:pizza_configurator";}
 			else {
@@ -148,7 +150,7 @@ public class StoreController {
 		
 		for(int i = 0; i < ids.length; i++ ){
 			
-			Item foundItem = Store.getInstance().findItemByIdentifier(ids[i],ItemType.INGREDIENT);
+			Item foundItem = store.findItemByIdentifier(ids[i],ItemType.INGREDIENT);
 			
 			if (foundItem != null){
 				MonetaryAmount itemPrice = foundItem.getPrice();
@@ -179,7 +181,7 @@ public class StoreController {
 	@RequestMapping("/staffmember_display")
 	public String staffmember_display(Model model) {
 		
-		model.addAttribute("staffmember", Store.staffMemberList);
+		model.addAttribute("staffmember", store.getStaffMemberList());
 		
 		return "staffmember_display";
 	}

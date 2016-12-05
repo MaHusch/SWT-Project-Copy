@@ -1,7 +1,7 @@
 package pizzaShop.model.store;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.List;
 
 import org.salespointframework.order.OrderLine;
 import org.salespointframework.useraccount.Role;
@@ -9,58 +9,38 @@ import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import pizzaShop.model.actor.Admin;
 import pizzaShop.model.actor.StaffMember;
 import pizzaShop.model.catalog_item.Item;
 import pizzaShop.model.catalog_item.ItemType;
 import pizzaShop.model.catalog_item.Pizza;
-import pizzaShop.model.tan_management.TanManagement;
 
 @Component
 public class Store {
 
-	private static Store store = null;
+	private final UserAccountManager employeeAccountManager;
+	private final ItemCatalog itemCatalog;
+	private final PizzaOrderRepository pizzaOrderRepo;
 
-	public static UserAccountManager employeeAccountManager;
-	public static ItemCatalog itemCatalog;
-	public PizzaOrderRepository pizzaOrderRepo;
-
-	public static ArrayList<StaffMember> staffMemberList;
-	public static Admin admin;
-
+	private List<StaffMember> staffMemberList;
 	private ArrayList<Oven> ovenList;
+	private Pizza nextPizza;
 
 	private Pizzaqueue pizzaQueue = Pizzaqueue.getInstance();
 
-	public Store() {
-	}
-
 	@Autowired
-	public Store(UserAccountManager employeeAccountManager, ItemCatalog itemCatalog,
-			PizzaOrderRepository pizzaOrderRepo) {
+	public Store(UserAccountManager employeeAccountManager, ItemCatalog itemCatalog, PizzaOrderRepository pizzaOrderRepo) {
 
 		this.employeeAccountManager = employeeAccountManager;
-		this.staffMemberList = new ArrayList<StaffMember>();
 		this.itemCatalog = itemCatalog;
-		this.ovenList = new ArrayList<Oven>();
-		this.admin = new Admin("Mustermann", "Max", "123456789");
-		this.admin.updateUserAccount("admin", "123", Role.of("ROLE_ADMIN"));
 		this.pizzaOrderRepo = pizzaOrderRepo;
 
-		Oven oven1 = new Oven(this);
-		Oven oven2 = new Oven(this);
-		Oven oven3 = new Oven(this);
+		this.staffMemberList = new ArrayList<StaffMember>();
+		this.ovenList = new ArrayList<Oven>();
 
-		this.store = this;
-	}
+		ovenList.add(new Oven(this));
+		ovenList.add(new Oven(this));
+		ovenList.add(new Oven(this));
 
-	// Store is a singleton
-	public static Store getInstance() {
-		/*
-		 * if (store == null) { store = new Store(); }
-		 */
-
-		return store;
 	}
 
 	public Pizzaqueue getPizzaQueue() {
@@ -73,6 +53,26 @@ public class Store {
 		return ovenList;
 	}
 
+	public List<StaffMember> getStaffMemberList() {
+		return staffMemberList;
+	}
+
+	public void updateUserAccount(StaffMember member, String username, String password, Role role) {
+
+		if (member.getUserAccount() == null) {
+			member.setUsername(username);
+			member.setPassword(password);
+			member.setRole(role);
+
+			member.setUserAccount(employeeAccountManager.create(username, password, role));
+
+		} else {
+			// updateUserAccount
+
+		}
+
+	}
+
 	public StaffMember getStaffMemberByName(String name) {
 
 		for (StaffMember staffMember : staffMemberList) {
@@ -82,11 +82,11 @@ public class Store {
 
 		return null;
 	}
-	
-	public StaffMember getStaffMemberByForename(String name){
-		
-		for(StaffMember staffMember : staffMemberList){
-			if(staffMember.getForename().equals(name)){
+
+	public StaffMember getStaffMemberByForename(String name) {
+
+		for (StaffMember staffMember : staffMemberList) {
+			if (staffMember.getForename().equals(name)) {
 				return staffMember;
 			}
 		}
@@ -105,7 +105,7 @@ public class Store {
 
 			}
 		}
-		if(order.getUnbakedPizzas() == 0){
+		if (order.getUnbakedPizzas() == 0) {
 			order.readyOrder();
 		}
 		pizzaOrderRepo.save(order);
@@ -131,11 +131,11 @@ public class Store {
 
 		return null;
 	}
-	
-	public static ItemType StringtoItemtype(String type) //use to remove redundancy?!
+
+	public static ItemType StringtoItemtype(String type) // use to remove
+															// redundancy?!
 	{
-		switch(type)
-		{
+		switch (type) {
 		default:
 			return ItemType.FREEDRINK;
 		case "DRINK":
@@ -151,7 +151,7 @@ public class Store {
 		}
 	}
 
-	public void cleanUpItemCatalog() { //unused?
+	public void cleanUpItemCatalog() { // unused?
 		Iterable<Item> items1 = itemCatalog.findAll();
 		Iterable<Item> items2 = itemCatalog.findAll();
 
@@ -190,5 +190,27 @@ public class Store {
 				}
 			}
 		}
+	}
+
+	public void getNextPizza() throws Exception {
+
+		if (!pizzaQueue.isEmpty()) {
+			nextPizza = pizzaQueue.poll();
+		} else {
+			throw new NullPointerException("There is no Pizza in the PizzaQueue!");
+		}
+	}
+
+	public boolean putPizzaIntoOven(Oven oven) {
+
+		for (int i = 0; i < ovenList.size(); i++) {
+			if (ovenList.get(i).getId() == oven.getId() && ovenList.get(i).isEmpty()) {
+				ovenList.get(i).fill(nextPizza);
+				System.out.println(ovenList.get(i).getPizza());
+
+				return true;
+			}
+		}
+		return false;
 	}
 }

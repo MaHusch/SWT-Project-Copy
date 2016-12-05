@@ -20,7 +20,10 @@ public class AdminController {
 
 	private ErrorClass error = new ErrorClass(false);
 
-	public AdminController() {
+	private final Store store;
+	
+	public AdminController(Store store) {
+		this.store = store;
 	}
 
 	@RequestMapping("/register_staffmember")
@@ -60,8 +63,8 @@ public class AdminController {
 			break;
 		}
 
-		Store.staffMemberList.add(staffMember);
-		staffMember.updateUserAccount(username, password, Role.of("ROLE_" + role));
+		store.getStaffMemberList().add(staffMember);
+		store.updateUserAccount(staffMember, username, password, Role.of("ROLE_" + role));
 
 		return "index";
 	}
@@ -70,7 +73,7 @@ public class AdminController {
 	@RequestMapping(value = "/addOven", method = RequestMethod.POST)
 	public String addOven(Model model) {
 
-		new Oven(Store.getInstance());
+		store.getOvens().add(new Oven(store));
 		model.addAttribute("error", error);
 
 		return "redirect:ovens";
