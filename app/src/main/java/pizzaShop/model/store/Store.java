@@ -189,6 +189,32 @@ public class Store {
 	
 	}
 
+	public void saveEditedItem(Item editedItem, String name, String type , Number price) throws Exception
+	{
+		if(editedItem.equals(null)) throw new NullPointerException("zu editierendes Item existiert nicht");
+		if(name.isEmpty()) throw new IllegalArgumentException("Name darf nicht leer sein");
+		if(price.floatValue() < 0) throw new IllegalArgumentException("Preis darf nicht negativ sein");
+		
+		ItemType newType = Store.StringtoItemtype(type);
+		
+		if(editedItem.getType().equals(newType))
+		{
+		itemCatalog.delete(editedItem); //altes Element rauslöschen
+		editedItem.setName(name);
+		System.out.println(editedItem.getName());
+		editedItem.setPrice(Money.of(price, EURO));
+		itemCatalog.save(editedItem); 
+		
+		}
+		else
+		{
+			System.out.println("anderer Itemtyp --> neues Item");
+			itemCatalog.delete(editedItem);
+			this.createNewItem(name, type, price);
+		}
+
+	}
+	
 	public void cleanUpItemCatalog() { // unused?
 		Iterable<Item> items1 = itemCatalog.findAll();
 		Iterable<Item> items2 = itemCatalog.findAll();

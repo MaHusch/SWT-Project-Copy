@@ -101,13 +101,20 @@ public class CatalogController {
 	{
 		Item i = itemCatalog.findOne(id).orElse(null);
 		ItemType ityp;
-		// TODO: check Arguments
+		
 		System.out.println("bearbeiten" + i.getName());
 		
-		ityp = Store.StringtoItemtype(type);
+		try {
+			store.saveEditedItem(i, name, type, price);
+		} catch (Exception e) {
+			// TODO hand over arguments with error on template
+			error.setError(true);
+			e.printStackTrace(); //setErrorMessage
+			return "redirect:addItem";
+		}
 		
 		
-		if(!i.equals(null))
+		/*if(!i.equals(null))
 		{
 			if(i.getType().equals(ityp))
 			{
@@ -124,10 +131,8 @@ public class CatalogController {
 				itemCatalog.delete(i);
 				this.createItem(name, price, type);
 			}
-		}
-		System.out.println(ityp.name());
-		System.out.println(i.getName());
-		System.out.println(i.getPrice());
+		}*/
+		
 		return "redirect:catalog";
 	}
 	
