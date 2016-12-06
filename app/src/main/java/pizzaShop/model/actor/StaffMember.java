@@ -68,6 +68,10 @@ public abstract class StaffMember extends Person {
 	public Role getRole() {
 		return this.role;
 	}
+	
+	public long getId(){
+		return employeeID;
+	}
 
 	public UserAccount getUserAccount() {
 		return this.userAccount;
