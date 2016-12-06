@@ -28,6 +28,7 @@ import pizzaShop.model.actor.Customer;
 import pizzaShop.model.actor.Deliverer;
 import pizzaShop.model.actor.StaffMember;
 import pizzaShop.model.store.CustomerRepository;
+import pizzaShop.model.store.ErrorClass;
 import pizzaShop.model.store.ItemCatalog;
 import pizzaShop.model.store.PizzaOrder;
 import pizzaShop.model.store.PizzaOrderRepository;
@@ -49,6 +50,7 @@ public class CartController {
 	private final StaffMemberRepository staffMemberRepository;
 	private Optional<Customer> customer = Optional.empty();
 	private final Store store;
+	private ErrorClass error;
 
 	@Autowired
 	public CartController(OrderManager<Order> orderManager, ItemCatalog itemCatalog, TanManagement tanManagement,
@@ -61,6 +63,7 @@ public class CartController {
 		this.pizzaOrderRepository = pizzaOrderRepository;
 		this.staffMemberRepository = staffMemberRepository;
 		this.store = store;
+		error = new ErrorClass(false);
 	}
 
 	@ModelAttribute("cart")
@@ -71,7 +74,7 @@ public class CartController {
 	@RequestMapping("/cart")
 	public String pizzaCart(Model model) {
 		model.addAttribute("items", itemCatalog.findAll());
-
+		model.addAttribute("error", error);
 		model.addAttribute("customer", customer);
 		return "cart";
 	}
@@ -89,22 +92,22 @@ public class CartController {
 				}
 			}
 		}
-		
+
 		ArrayList<PizzaOrder> uncompletedOrders = new ArrayList<PizzaOrder>();
 		ArrayList<PizzaOrder> completedOrders = new ArrayList<PizzaOrder>();
-		
-		for(PizzaOrder po : pizzaOrderRepository.findAll()){
-			if(po.getOrderStatus().equals(PizzaOrderStatus.COMPLETED)){
+
+		for (PizzaOrder po : pizzaOrderRepository.findAll()) {
+			if (po.getOrderStatus().equals(PizzaOrderStatus.COMPLETED)) {
 				completedOrders.add(po);
-			}
-			else{
+			} else {
 				uncompletedOrders.add(po);
 			}
 		}
-		
+
 		model.addAttribute("uncompletedOrders", uncompletedOrders);
 		model.addAttribute("completedOrders", completedOrders);
 		model.addAttribute("deliverers", deliverers);
+		model.addAttribute("error", error);
 
 		return "orders";
 	}
@@ -135,6 +138,7 @@ public class CartController {
 
 		Tan tan = tanManagement.getTan(telephoneNumber);
 		if (tan.getTanNumber().equals(tanValue)) {
+			error.setError(false);
 			for (Customer c : customerRepository.findAll()) {
 				System.out.println("test" + c.getTelephoneNumber());
 				if (telephoneNumber.equals(c.getTelephoneNumber())) {
@@ -143,6 +147,7 @@ public class CartController {
 				}
 			}
 		} else {
+			error.setError(true);
 			System.out.println("fail");
 		}
 
@@ -180,10 +185,13 @@ public class CartController {
 	public String assignDeliverer(Model model, @RequestParam("delivererName") String name,
 			@RequestParam("orderID") OrderIdentifier orderID) {// @RequestParam
 																// OrderIdentifier
-																// orderId)
-		Deliverer deliverer = (Deliverer) store.getStaffMemberByForename(name);
+		if (name == null || name.equals("")) {
+			error.setError(true);
+		} else {
+			Deliverer deliverer = (Deliverer) store.getStaffMemberByForename(name);
 
-		deliverer.addOrder(orderID);
+			deliverer.addOrder(orderID);
+		}
 		return "redirect:orders";
 	}
 }

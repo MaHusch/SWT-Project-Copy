@@ -7,9 +7,30 @@
 <link rel="stylesheet" type="text/css"
 	th:href="@{/resources/css/style.css}" />
 <title>Welcome</title>
+
+
+<script type="text/javascript">
+	//<![CDATA[
+
+	// checks if there are already values in the configuration list in case a preconfiguration as been selected
+
+	function checkExistingStaffMember() {
+		var value = document.getElementById('existingStaffMember').getAttribute('value');
+		// if an item is already present, change the form so it calls the function to overwrite,update and save the item's information
+		if (value == "true") {
+			var form = document.getElementById("registerForm");
+			//form.action = "/editEmployee";
+		}
+
+	}
+
+	//]]>
+</script>
+
+
 </head>
 
-<body>
+<body onLoad="checkExistingStaffMember();">
 	<!-- Navbar -->
 	<header>
 		<nav class="navbar navbar-default">
@@ -78,18 +99,22 @@
 			<!-- /.container-fluid -->
 		</nav>
 	</header>
+	
+	
+	<div th:if="${staffMember}" value = "true" id="existingStaffMember"></div>
+	
 	<!-- panel for customer_registration -->
 	<div sec:authorize="hasRole('ROLE_ADMIN')" class="container col-md-6">
 		<div class="panel panel-primary">
 			<div class="panel-heading">Neuen Mitarbeiter registrieren</div>
 			<div class="panel-body">
 				<p>Felder mit (*) müssen befüllt werden!</p>
-				<form th:action="registerEmployee" method="post">
+				<form th:action="registerEmployee" method="post" id = "registerForm">
 					<table>
 						<tr>
 							<td><label for="surname">Name*</label>:</td>
-							<td><input type="text" id="surname" name="surname" /></td>
-
+							<td th:if = "${staffMember}"><input type="text" id="surname" name="surname" th:value="${staffMember.getSurname()}"/></td>
+							<td th:if = "${staffMember} == null"><input type="text" id="surname" name="surname"/></td>
 						</tr>
 						<tr>
 							<td><label for="forename">Vorname*</label>:</td>

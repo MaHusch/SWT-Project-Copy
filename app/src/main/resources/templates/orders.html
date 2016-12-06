@@ -64,7 +64,8 @@
 									href="ovens.html">Öfen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_DELIVERER')"
 									href="index.html">Deliverer Dashboard</a></li>
-								<li><a sec:authorize="hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')"
+								<li><a
+									sec:authorize="hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')"
 									href="orders.html">Bestellungen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_SELLER')"
 									href="register_customer.html">Kunden registrieren</a></li>
@@ -127,7 +128,8 @@
 								<td th:text="${order.getOrderStatus() }">arg</td>
 								<td th:text="${order.getUnbakedPizzas() }">arg</td>
 
-								<td sec:authorize="hasRole('ROLE_SELLER')" th:if="${order.getPickUp()}">
+								<td sec:authorize="hasRole('ROLE_SELLER')"
+									th:if="${order.getPickUp()}">
 									<form method="post" action="/confirmCollection">
 										<input type="hidden" value="0" name="orderID"
 											th:value="${order.getId()}" /> <input type="submit"
@@ -135,7 +137,8 @@
 									</form>
 								</td>
 
-								<td sec:authorize="hasRole('ROLE_SELLER')" th:unless="${order.getPickUp()}">
+								<td sec:authorize="hasRole('ROLE_SELLER')"
+									th:unless="${order.getPickUp()}">
 									<form method="post" action="/assignDeliverer">
 										<select name="delivererList" id="delivererList" size="1">
 											<option th:each=" deliverer : ${deliverers}"
@@ -143,7 +146,8 @@
 										</select> <input type="hidden" value="0" id="delivererName"
 											name="delivererName" th:value="${deliverer}" /> <input
 											type="hidden" value="0" name="orderID"
-											th:value="${order.getId()}" /> <input class="btn btn-primary" type="submit"
+											th:value="${order.getId()}" /> <input
+											class="btn btn-primary" type="submit"
 											value="Lieferant schicken" onclick="assignDeliverer();" />
 									</form>
 								</td>
@@ -176,18 +180,16 @@
 								<td th:text="${{order.getTotalPrice()}}">arg</td>
 								<td th:text="${order.getOrderStatus() }">arg</td>
 								<td th:text="${order.getUnbakedPizzas() }">arg</td>
-
 							</tr>
 						</div>
 					</tbody>
 				</table>
-
-
-				<!-- insert table of all orders here -->
 			</div>
 		</div>
-
 	</div>
+
+	<p th:if="${error.getError() == true}">Fehler</p>
+
 
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

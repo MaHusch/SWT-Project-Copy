@@ -118,26 +118,28 @@ public class ApplicationDataInitializer implements DataInitializer {
 		Ingredient mushroom = new Ingredient("Pilze", Money.of(1.00, EURO));
 		Ingredient pineapple = new Ingredient("Ananas", Money.of(1.00, EURO));
 		Ingredient onions = new Ingredient("Zwiebeln", Money.of(0.50, EURO));
+		Ingredient paprika = new Ingredient("Paprika", Money.of(0.50, EURO));
+		Ingredient bacon = new Ingredient("Bacon", Money.of(0.50, EURO));
+		Ingredient chicken_stripes = new Ingredient("Hähnchenstreifen",Money.of(1.50, EURO));
 		
 		Pizza pizza1 = new Pizza("pizza1", Money.of(2.50, EURO));
 		Pizza pizza2 = new Pizza("pizza2", Money.of(2.50, EURO));
 		Pizza pizza3 = new Pizza("pizza3", Money.of(2.50, EURO));
 		Pizza custom = new Pizza("Basis",Money.of(2.0, EURO));
 		Item beer = new Item("Desperados", Money.of(1.60, EURO), ItemType.DRINK);
+		Item cola = new Item("Coca Cola", Money.of(2.50, EURO), ItemType.DRINK);
+		Item water = new Item("BonAqua", Money.of(1.50, EURO), ItemType.DRINK);
 		Item freebeer = new Item("Sternburg", Money.of(0.0, EURO), ItemType.FREEDRINK); // extra
-		Cutlery cutlery1 = new Cutlery("PapasBesteck",Money.of(15.0, EURO), businessTime.getTime());																			// FreeDrink
+		//Cutlery cutlery1 = new Cutlery("PapasBesteck",Money.of(15.0, EURO), businessTime.getTime());																			// FreeDrink
 																					// class?
-		Item salat = new Item("Ceasar-Salad", Money.of(2.0, EURO), ItemType.SALAD);
+		Item salat1 = new Item("Ceasar-Salat", Money.of(2.0, EURO), ItemType.SALAD);
+		Item salat2 = new Item("Chef-Salat",Money.of(3.0, EURO),ItemType.SALAD);
 		pizza1.addIngredient(mushroom);
 		pizza1.addIngredient(cheese);
 		
-		Pizzaqueue pizzaQueue = store.getPizzaQueue();
+		
 
-		/*pizzaQueue.add(pizza1);
-		pizzaQueue.add(pizza2);
-		pizzaQueue.add(pizza3);*/
-
-		itemCatalog.save(Arrays.asList(cheese, mushroom, pizza1, beer, freebeer, salat, pineapple, onions, custom, cutlery1));
+		itemCatalog.save(Arrays.asList(water,cola,cheese, mushroom,chicken_stripes,bacon,paprika, pizza1, beer, freebeer, salat1,salat2, pineapple, onions, custom));
 		
 		
 	}

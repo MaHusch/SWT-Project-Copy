@@ -101,29 +101,38 @@ public class CatalogController {
 	{
 		Item i = itemCatalog.findOne(id).orElse(null);
 		ItemType ityp;
-		// TODO: check Arguments
-		System.out.println("bearbeiten");
-		ityp = Store.StringtoItemtype(type);
+		
+		System.out.println("bearbeiten" + i.getName());
+		
+		try {
+			store.saveEditedItem(i, name, type, price);
+		} catch (Exception e) {
+			// TODO hand over arguments with error on template
+			error.setError(true);
+			e.printStackTrace(); //setErrorMessage
+			return "redirect:addItem";
+		}
 		
 		
-		if(!i.equals(null))
+		/*if(!i.equals(null))
 		{
 			if(i.getType().equals(ityp))
 			{
+			itemCatalog.delete(i); //altes Element rauslöschen
 			i.setName(name);
+			System.out.println(i.getName());
 			i.setPrice(Money.of(price, EURO));
 			itemCatalog.save(i); // sonst wirds nicht auf den Catalog übertragen :O
 			
 			}
 			else
 			{
+				System.out.println("anderer Itemtyp --> neues Item");
 				itemCatalog.delete(i);
 				this.createItem(name, price, type);
 			}
-		}
-		/*System.out.println(ityp.name());
-		System.out.println(i.getName());
-		System.out.println(i.getPrice());*/
+		}*/
+		
 		return "redirect:catalog";
 	}
 	
@@ -168,9 +177,16 @@ public class CatalogController {
 							 @RequestParam("itemprice") Number price,
 							 @RequestParam("itemtype") String type)
 	{
-		Item neu;
 		System.out.println("erstellen");
-		if(name.isEmpty() || price.floatValue() < 0) 
+		try {
+			store.createNewItem(name, type, price);
+		} catch (Exception e) {
+			error.setError(true);
+			e.printStackTrace(); //setErrorMessage
+			return "redirect:addItem";
+		}
+		
+		/*if(name.isEmpty() || price.floatValue() < 0) 
 			{
 			//TODO: interact with frontend
 			System.out.println("fehler");
@@ -197,7 +213,7 @@ public class CatalogController {
 			neu = new Item(name,Money.of(price, EURO),t);
 		}
 		
-		itemCatalog.save(neu);
+		itemCatalog.save(neu); */
 		
 		return "redirect:catalog";
 	}

@@ -11,9 +11,7 @@ import pizzaShop.model.store.Store;
 @Entity
 public abstract class StaffMember extends Person {
 
-	@Id
-	@GeneratedValue
-	private long employeeID;
+	@Id @GeneratedValue private long employeeID;
 
 	private String username;
 	private String password;
@@ -70,6 +68,7 @@ public abstract class StaffMember extends Person {
 	}
 	
 	public long getId(){
+		System.out.println(this.employeeID);
 		return employeeID;
 	}
 

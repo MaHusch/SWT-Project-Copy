@@ -1,6 +1,7 @@
 package pizzaShop.controller;
 
 import org.salespointframework.useraccount.Role;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,21 +14,32 @@ import pizzaShop.model.actor.Seller;
 import pizzaShop.model.actor.StaffMember;
 import pizzaShop.model.store.ErrorClass;
 import pizzaShop.model.store.Oven;
+import pizzaShop.model.store.StaffMemberRepository;
 import pizzaShop.model.store.Store;
 
 @Controller
 public class AdminController {
 
 	private ErrorClass error = new ErrorClass(false);
+	private final StaffMemberRepository staffMemberRepository;
 
 	private final Store store;
 	
-	public AdminController(Store store) {
+	@Autowired
+	public AdminController(Store store, StaffMemberRepository staffMemberRepository) {
 		this.store = store;
+		this.staffMemberRepository = staffMemberRepository;
+		
+		
 	}
 
 	@RequestMapping("/register_staffmember")
-	public String registrationIndex(Model model) {
+	public String registrationIndex(Model model, @RequestParam(value = "sid", required = false) long ID) {
+		
+		StaffMember member = staffMemberRepository.findOne(ID);
+		model.addAttribute("staffMember",member);
+		//staffMemberRepository.delete(id);
+		
 		model.addAttribute("error", error);
 		return "register_staffmember";
 	}
@@ -65,6 +77,8 @@ public class AdminController {
 
 		store.getStaffMemberList().add(staffMember);
 		store.updateUserAccount(staffMember, username, password, Role.of("ROLE_" + role));
+		
+		
 
 		return "index";
 	}
