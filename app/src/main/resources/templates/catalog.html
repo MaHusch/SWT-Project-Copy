@@ -155,9 +155,9 @@
 		</div>
 	</div>
 
-	<div sec:authorize="!isAuthenticated()" th:each="item : ${items}"
+	<div sec:authorize="!isAuthenticated()" th:each="item : ${items}" th:unless="${item.getType().equals(ItemType[3]) or item.getType().equals(ItemType[4])}"
 		class="container col-sm-3">
-		<div class="panel panel-primary">
+		<div  class="panel panel-primary">
 			<div class="panel-heading" th:text="${item.getName()}">Itemname</div>
 			<div class="panel-body">
 				<p th:text="${'Preis: ' + item.getPrice()}" />

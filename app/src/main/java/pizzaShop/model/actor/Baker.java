@@ -13,45 +13,29 @@ import pizzaShop.model.store.Oven;
 import pizzaShop.model.store.Pizzaqueue;
 import pizzaShop.model.store.Store;
 
+/**
+ * BakerClass for representing a Baker of the PizzaShop
+ * @author Martin Huschenbett
+ *
+ */
+
+
 @Entity
 public class Baker extends StaffMember {
-
-	/*private ArrayList<Oven> myOvens;
-	 *private Pizzaqueue Queue = Store.getInstance().getPizzaQueue();
-	 *private Pizza nextPizza;
-	 */
 
 	@Id
 	@GeneratedValue
 	private long employeeID;
 
+	/**
+	 * Constructor
+	 * @param surname
+	 * @param forename
+	 * @param telephoneNumber
+	 */
 	public Baker(String surname, String forename, String telephoneNumber) {
 		super(surname, forename, telephoneNumber);
 		//myOvens = new ArrayList<Oven>();
 	}
-
-	/*public void getNextPizza() throws Exception {
-		
-		if (!Queue.isEmpty()) {
-			nextPizza = Queue.poll();
-		} else {
-			throw new NullPointerException("There is no Pizza in the PizzaQueue!");
-		}
-	}
-
-	public boolean putPizzaIntoOven(Oven oven) {
-
-		myOvens = Store.getInstance().getOvens();
-
-		for (int i = 0; i < myOvens.size(); i++) {
-			if (myOvens.get(i).getId() == oven.getId() && myOvens.get(i).isEmpty()) {
-				myOvens.get(i).fill(nextPizza);
-				System.out.println(myOvens.get(i).getPizza());
-
-				return true;
-			}
-		}
-		return false;
-	}*/
 
 }

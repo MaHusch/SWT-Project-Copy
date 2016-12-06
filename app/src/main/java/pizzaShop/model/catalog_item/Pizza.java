@@ -13,8 +13,8 @@ import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.order.OrderIdentifier;
 
 /**
- * class to represent pizzas
- * @author Florentin
+ * PiizaClass for represesenting a Pizza of the PizzaShop
+ * @author Florentin Dörre
  */
 @Entity
 public class Pizza extends Item {

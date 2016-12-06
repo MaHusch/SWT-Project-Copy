@@ -1,7 +1,1 @@
-pizzaShop
-pizzaShop.controller
 pizzaShop.model.actor
-pizzaShop.model.catalog_item
-pizzaShop.model.store
-pizzaShop.model.tan_management
-unitTests
