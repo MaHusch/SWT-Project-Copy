@@ -14,11 +14,9 @@
 	// checks if there are already values in the configuration list in case a preconfiguration as been selected
 
 	function checkExistingItem() {
-		var value = document.getElementById('existingItem').getAttribute(
-				'value');
-
+		var value = document.getElementById('existingItem').getAttribute('value');
 		// if an item is already present, change the form so it calls the function to overwrite,update and save the item's information
-		if (value === "true") {
+		if (value == "true") {
 			var form = document.getElementById("itemForm");
 			form.action = "/saveItem";
 		}
@@ -101,6 +99,8 @@
 			<!-- /.container-fluid -->
 		</nav>
 	</header>
+	
+	<div th:if="${item}" value = "true" id="existingItem"></div>
 	
 	<!-- Item panel -->
 	<div sec:authorize="hasRole('ROLE_ADMIN')" class="container col-md-4">
