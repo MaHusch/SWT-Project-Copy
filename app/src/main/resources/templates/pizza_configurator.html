@@ -70,14 +70,14 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 		if (i != -1) {
 			items.splice(i, 1);
 		}
-		
+
 		//overwrite the current id transmission value with the edited item list
 		document.getElementById('id_transmit').value = items;
-		
+
 		//adds it back the ingredient list
 		appendToList('ingredient_list', itemValue, itemID)
 	}
-	
+
 	function transmitItems(itemID) {
 		items.push(itemID);
 		document.getElementById('id_transmit').value = items;
@@ -121,7 +121,8 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 									href="ovens.html">Öfen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_DELIVERER')"
 									href="sDeliverer.html">Deliverer Dashboard</a></li>
-								<li><a sec:authorize="hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')"
+								<li><a
+									sec:authorize="hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')"
 									href="orders.html">Bestellungen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_SELLER')"
 									href="register_customer.html">Kunden registrieren</a></li>
@@ -133,7 +134,8 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 									href="addItem.html">Item hinzufügen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
 									href="catalog.html">Katalog bearbeiten</a></li>
-								<li><a sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER')"
+								<li><a
+									sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER')"
 									href="customer_display.html">Kunden anzeigen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
 									href="staffmember_display.html">Mitarbeiter anzeigen</a></li>
@@ -188,6 +190,15 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 						name="id_transmit" id="id_transmit" value="" />
 				</form>
 
+			</div>
+		</div>
+	</div>
+
+	<div th:if="${error.getError() == true}" class="container col-md-6">
+		<div class="panel panel-danger">
+			<div class="panel-heading">Fehler!</div>
+			<div class="panel-body">
+				<p>Ihre Liste an Zutaten darf nicht leer sein!</p>
 			</div>
 		</div>
 	</div>
