@@ -150,6 +150,8 @@ public class Store {
 			return ItemType.CUTLERY;
 		}
 	}
+	
+	
 
 	public void cleanUpItemCatalog() { // unused?
 		Iterable<Item> items1 = itemCatalog.findAll();

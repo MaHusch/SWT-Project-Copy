@@ -28,6 +28,7 @@ import pizzaShop.model.catalog_item.Pizza;
 import pizzaShop.model.catalog_item.PriceComparator;
 import pizzaShop.model.store.ErrorClass;
 import pizzaShop.model.store.ItemCatalog;
+import pizzaShop.model.store.Store;
 
 /**
  * Controller to create the Catalog View
@@ -40,6 +41,7 @@ import pizzaShop.model.store.ItemCatalog;
 public class CatalogController {
 	
 	private final ItemCatalog itemCatalog;
+	private final Store store;
 	private ErrorClass error = new ErrorClass(false);
 	private Iterable<Item> items;
 	private ArrayList<Item> filteredItems;
@@ -48,9 +50,10 @@ public class CatalogController {
 	 * @param itemCatalog the itemCatalog of the shop
 	 */
 	@Autowired
-	public CatalogController(ItemCatalog itemCatalog)
+	public CatalogController(ItemCatalog itemCatalog, Store store)
 	{
 		this.itemCatalog = itemCatalog;
+		this.store = store;
 	}
 	
 	
@@ -63,16 +66,6 @@ public class CatalogController {
 	public String showCatalog(Model model)
 	{
 		items = itemCatalog.findAll();
-		
-		
-		/*for(Item i : items)
-		{
-			ItemType type = i.getType();
-			if(!(type.equals(ItemType.FREEDRINK) || type.equals(ItemType.INGREDIENT)))
-				filteredItems.add(i); 
-		}
-		
-		Collections.sort(filteredItems, new NameComparator(true)); */
 		
 		model.addAttribute("items", items);
 		model.addAttribute("ItemType",ItemType.values());
@@ -109,26 +102,9 @@ public class CatalogController {
 		Item i = itemCatalog.findOne(id).orElse(null);
 		ItemType ityp;
 		// TODO: check Arguments
+		System.out.println("bearbeiten");
+		ityp = Store.StringtoItemtype(type);
 		
-		
-		switch(type)
-		{
-		default:
-			ityp = ItemType.FREEDRINK;
-			break;
-		case "DRINK":
-			ityp = ItemType.DRINK;
-			break;
-		case "INGREDIENT":
-			ityp = ItemType.INGREDIENT;
-			break;
-		case "PIZZA":
-			ityp = ItemType.PIZZA;
-			break;
-		case "SALAD":
-			ityp = ItemType.SALAD;
-			break;
-		}
 		
 		if(!i.equals(null))
 		{
@@ -145,9 +121,9 @@ public class CatalogController {
 				this.createItem(name, price, type);
 			}
 		}
-		System.out.println(ityp.name());
+		/*System.out.println(ityp.name());
 		System.out.println(i.getName());
-		System.out.println(i.getPrice());
+		System.out.println(i.getPrice());*/
 		return "redirect:catalog";
 	}
 	
@@ -193,6 +169,7 @@ public class CatalogController {
 							 @RequestParam("itemtype") String type)
 	{
 		Item neu;
+		System.out.println("erstellen");
 		if(name.isEmpty() || price.floatValue() < 0) 
 			{
 			//TODO: interact with frontend
@@ -231,6 +208,7 @@ public class CatalogController {
 	{
 		filteredItems = new ArrayList<Item>();
 		System.out.println(filter + ' ' + selection);
+		
 		
 		switch(selection)
 		{
