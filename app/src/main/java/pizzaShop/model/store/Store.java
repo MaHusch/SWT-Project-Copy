@@ -1,8 +1,11 @@
 package pizzaShop.model.store;
 
+import static org.salespointframework.core.Currencies.EURO;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import org.javamoney.moneta.Money;
 import org.salespointframework.order.OrderLine;
 import org.salespointframework.useraccount.Role;
 import org.salespointframework.useraccount.UserAccountManager;
@@ -10,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import pizzaShop.model.actor.StaffMember;
+import pizzaShop.model.catalog_item.Ingredient;
 import pizzaShop.model.catalog_item.Item;
 import pizzaShop.model.catalog_item.ItemType;
 import pizzaShop.model.catalog_item.Pizza;
@@ -151,7 +155,39 @@ public class Store {
 		}
 	}
 	
+	public void createNewItem(String name, String type, Number price) throws Exception
+	{
+		Item newItem;
+		
+		ItemType itype = Store.StringtoItemtype(type);
+		
+		if(name.isEmpty()) 
+		{
+			throw new IllegalArgumentException("Name darf nicht leer sein");
+		}
+		
+		if(price.floatValue() < 0)
+		{
+			throw new IllegalArgumentException("Preis darf nicht negativ sein");
+		}
+		
+		if(itype.equals(ItemType.PIZZA))
+		{
+			newItem = new Pizza(name,Money.of(price, EURO));
+			
+		}
+		else if(type.equals(ItemType.CUTLERY))
+		{
+			newItem = new Ingredient(name,Money.of(price, EURO));
+		}
+		else
+		{	
+			newItem = new Item(name,Money.of(price, EURO),itype);
+		}
+		
+		itemCatalog.save(newItem);
 	
+	}
 
 	public void cleanUpItemCatalog() { // unused?
 		Iterable<Item> items1 = itemCatalog.findAll();
