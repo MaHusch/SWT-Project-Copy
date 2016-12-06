@@ -33,6 +33,8 @@ public class DelivererController {
 		this.pizzaOrderRepository = pizzaOrderRepository;
 		this.tanManagement = tanManagement;
 		this.store = store;
+	
+
 	}
 
 	@RequestMapping("/sDeliverer")

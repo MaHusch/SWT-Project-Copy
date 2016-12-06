@@ -66,6 +66,15 @@ public class TanManagement {
 				
 	}
 	
+	/**
+	 * This method checks whether the given TelephoneNumber is the same as the TelephoneNumber that is saved 
+	 * with the given TAN as the key in the TanHashMap.
+	 * 
+	 * @param tan				the TAN Object to be checked
+	 * @param telephoneNumber	the TelephoneNumber to be checked
+	 * @return
+	 */
+	
 	public boolean checkTan(Tan tan, String telephoneNumber)
 	{
 		
@@ -76,6 +85,15 @@ public class TanManagement {
 		else return false;
 		
 	}
+	
+	/**
+	 * This method checks whether the given TelephoneNumber is the same as the TelephoneNumber that is saved 
+	 * with the given TAN as the key in the TanHashMap.
+	 * 
+	 * @param tanString			the TanNumber to be checked
+	 * @param telephoneNumber	the TelephoneNumber to be checked
+	 * @return
+	 */
 	
 	public boolean checkTan(String tanString, String telephoneNumber)
 	{
@@ -94,6 +112,15 @@ public class TanManagement {
 		return false;
 		
 	}
+	
+	/**
+	 * Generates a new TAN for the given TelephoneNumber. 
+	 * To confirm the newly generated TAN after the order has been complete use confirmTan(tan)
+	 * If generating a new TAN fails a TAN with the status NOT_FOUND is returned.
+	 * 
+	 * @param telephoneNumber	the TelephoneNumber 
+	 * @return
+	 */
 	
 	public Tan generateNewTan(String telephoneNumber)
 	{
@@ -155,6 +182,12 @@ public class TanManagement {
 			
 	}
 	
+	/**
+	 * This method invalidates a Tan by setting its status to USED and replacing the TelephoneNumber with an empty String.
+	 * 
+	 * @param tan	The Tan you want to invalidate
+	 */
+	
 	public void invalidateTan(Tan tan)
 	{
 		
@@ -201,6 +234,12 @@ public class TanManagement {
 		return allEntrys;
 	}
 	
+	/**
+	 * This method confirms a Tan by setting its status to VALID and putting it into the tanHashMap.
+	 * 
+	 * @param tan	The Tan you want to confirm
+	 */
+	
 	public void confirmTan(Tan tan)
 	{
 		String telephoneNumber = this.notConfirmedTans.get(tan);
@@ -225,6 +264,7 @@ public class TanManagement {
 		deleteNotConfirmedTan(tan);
 		
 	}
+		
 	
 	public boolean deleteNotConfirmedTan(Tan tan)
 	{

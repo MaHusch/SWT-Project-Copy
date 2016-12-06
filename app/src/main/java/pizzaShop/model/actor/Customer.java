@@ -38,7 +38,7 @@ public class Customer extends Person {
 	public Cutlery getMyCutlery() {
 		return myCutlery;
 	}
-
+	
 	public void setMyCutlery(Cutlery myCutlery) {
 		this.myCutlery = myCutlery;
 	}
