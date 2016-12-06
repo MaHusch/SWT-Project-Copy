@@ -30,6 +30,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import pizzaShop.model.actor.Customer;
 import pizzaShop.model.actor.Deliverer;
+import pizzaShop.model.actor.StaffMember;
 import pizzaShop.model.catalog_item.Ingredient;
 import pizzaShop.model.catalog_item.Item;
 import pizzaShop.model.catalog_item.ItemType;
@@ -38,6 +39,7 @@ import pizzaShop.model.store.CustomerRepository;
 import pizzaShop.model.store.ItemCatalog;
 import pizzaShop.model.store.PizzaOrder;
 import pizzaShop.model.store.PizzaOrderRepository;
+import pizzaShop.model.store.StaffMemberRepository;
 import pizzaShop.model.store.Store;
 import pizzaShop.model.tan_management.Tan;
 import pizzaShop.model.tan_management.TanManagement;
@@ -51,14 +53,16 @@ public class StoreController {
 	private final TanManagement tanManagement;
 	private final CustomerRepository customerRepository;
 	private final PizzaOrderRepository pizzaOrderRepository;
+	private final StaffMemberRepository staffMemberRepository;
 	private final Store store;
 	
 	@Autowired 
-	public StoreController(ItemCatalog itemCatalog, TanManagement tanManagement, CustomerRepository customerRepository, PizzaOrderRepository pOR, Store store) {
+	public StoreController(ItemCatalog itemCatalog, TanManagement tanManagement, CustomerRepository customerRepository, PizzaOrderRepository pOR, Store store, StaffMemberRepository staffMemberRepository) {
 		this.itemCatalog = itemCatalog;
 		this.tanManagement = tanManagement;
 		this.customerRepository = customerRepository;
 		this.pizzaOrderRepository = pOR;
+		this.staffMemberRepository = staffMemberRepository;
 		this.store = store;
 	}	
 	
@@ -180,6 +184,19 @@ public class StoreController {
 		
 		return "customer_display";
 	}
+	
+	@RequestMapping("/editEmployee") 
+	public String directToEditItem(Model model,@RequestParam("sid") long id) {
+		
+		StaffMember member = staffMemberRepository.findOne(id);
+		model.addAttribute("staffmember",member);
+		//staffMemberRepository.delete(id);
+		//model.addAttribute("error",error);
+		return "register_staffmember";
+
+	}
+	
+
 	
 	
 }
