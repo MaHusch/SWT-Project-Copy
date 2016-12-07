@@ -96,9 +96,15 @@
 								
 								
 								<td>
-									<form method="post" action="/editEmployee">
+									<form method="post" action="/editEmployee" sec:authorize="hasRole('ROLE_ADMIN')">
 										<input type="hidden" name="StaffMemberName" id="StaffMemberName" th:value= "${staffmember.getUsername()}"/>
 										<input class="btn btn-primary" type="submit" value="Bearbeiten" />
+									</form>
+								</td>
+								<td>
+									<form method="post" action="/deleteStaffMember" sec:authorize="hasRole('ROLE_ADMIN')">
+										<input type="hidden" name="StaffMemberName" id="StaffMemberName" th:value= "${staffmember.getUsername()}"/>
+										<input class="btn btn-primary" type="submit" value="Entfernen" />
 									</form>
 								</td>
 						

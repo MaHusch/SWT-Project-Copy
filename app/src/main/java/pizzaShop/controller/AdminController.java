@@ -128,6 +128,23 @@ public class AdminController {
 		
 		return "redirect:staffmember_display";
 	}
+	
+	@RequestMapping(value = "/deleteStaffMember")
+	public String updateStaffMember(Model model, @RequestParam("StaffMemberName") String username)
+	{
+		StaffMember member = store.getStaffMemberByName(username);
+		
+		Optional<UserAccount> userAccount = employeeAccountManager.findByUsername(username);
+		
+		if(userAccount.isPresent()){
+			employeeAccountManager.disable(userAccount.get().getId());
+		}
+		
+		ArrayList<StaffMember> staffMemberList = (ArrayList<StaffMember>) store.getStaffMemberList();
+		staffMemberList.remove(member);
+	
+		return "redirect:staffmember_display";
+	}
 
 	@RequestMapping(value = "/addOven", method = RequestMethod.POST)
 	public String addOven(Model model) {

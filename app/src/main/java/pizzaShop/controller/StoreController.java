@@ -186,12 +186,14 @@ public class StoreController {
 
 	
 	@RequestMapping("/editEmployee") 
-	public String directToEditItem(Model model,@RequestParam("StaffMemberName") String name,RedirectAttributes redirectAttrs) {
+	public String directToEditStaffMember(Model model,@RequestParam("StaffMemberName") String name,RedirectAttributes redirectAttrs) {
 		redirectAttrs.addAttribute("name", name).addFlashAttribute("message", "StaffMember");
 		model.addAttribute("error",error);
 		return "redirect:register_staffmember";
 
 	}
+	
+	
 	
 
 }
