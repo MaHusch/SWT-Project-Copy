@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import pizzaShop.model.actor.Address;
 import pizzaShop.model.actor.Customer;
 import pizzaShop.model.actor.Deliverer;
 import pizzaShop.model.actor.StaffMember;
@@ -193,6 +194,38 @@ public class StoreController {
 
 	}
 	
+	@RequestMapping("/editCustomer") 
+	public String editCustomer(Model model,@RequestParam("cid") long id,RedirectAttributes redirectAttrs) {
+		redirectAttrs.addAttribute("cid", id).addFlashAttribute("message", "Customer");
+		model.addAttribute("error",error);
+		return "redirect:register_customer";
+
+	}
+	
+	@RequestMapping("/deleteCustomer") 
+	public String deleteCustomer(Model model,@RequestParam("cid") long id) {
+		model.addAttribute("error",error);
+		
+		customerRepository.delete(id);
+		
+		return "redirect:customer_display";
+
+	}
+	
+	@RequestMapping(value = "/updateCustomer")
+	public String updateStaffMember(@RequestParam("surname") String surname, @RequestParam("forename") String forename,
+			@RequestParam("telnumber") String telephonenumber, @RequestParam("local") String local,
+			@RequestParam("postcode") String postcode, @RequestParam("street") String street,
+			@RequestParam("housenumber") String housenumber, @RequestParam("cid") long id)
+	{
+		customerRepository.delete(id);
+		
+		Customer updatedCustomer = new Customer(surname,forename, telephonenumber, local, postcode, street, housenumber);
+		
+		customerRepository.save(updatedCustomer);
+		
+		return "redirect:customer_display";
+	}
 	
 	
 

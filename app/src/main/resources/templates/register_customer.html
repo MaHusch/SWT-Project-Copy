@@ -7,9 +7,30 @@
 <link rel="stylesheet" type="text/css"
 	th:href="@{/resources/css/style.css}" />
 <title>Welcome</title>
+
+<script type="text/javascript">
+	//<![CDATA[
+
+	// checks if there are already values in the configuration list in case a preconfiguration as been selected
+
+	function checkExistingCustomer() {
+		
+		var value = document.getElementById('existingCustomer').getAttribute('value');
+		// if an item is already present, change the form so it calls the function to overwrite,update and save the item's information
+		if (value == "true") {
+			var form = document.getElementById("registerForm");
+			alert("moin");
+			form.action = "/updateCustomer";
+		}
+
+	}
+
+	//]]>
+</script>
+
 </head>
 
-<body>
+<body onLoad="checkExistingCustomer();">
 	<!-- Navbar -->
 	<header>
 		<nav class="navbar navbar-default">
@@ -78,46 +99,57 @@
 			<!-- /.container-fluid -->
 		</nav>
 	</header>
+	
+	<div th:if="${existingCustomer}" value = "true" id="existingCustomer"></div>
 
 	<!-- panel for customer registration -->
-	<div sec:authorize="hasRole('ROLE_SELLER')" class="container col-md-6">
+	<div sec:authorize="hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')" class="container col-md-6">
 		<div class="panel panel-primary">
 			<div class="panel-heading">Kunden Registrieren</div>
 			<div class="panel-body">
 				<p>Felder mit (*) müssen befüllt werden!</p>
-				<form th:action="registerCustomer" method="post">
+				<form th:action="registerCustomer" method="post" id="registerForm">
 					<table>
 						<tr>
 							<td><label for="surname">Name*</label>:</td>
-							<td><input type="text" id="surname" name="surname" /></td>
+							<td th:if = "${existingCustomer}"><input type="text" id="surname" name="surname" th:value="${existingCustomer.getSurname()}"/></td>
+							<td th:if = "${existingCustomer} == null"><input type="text" id="surname" name="surname"/></td>
 						</tr>
 						<tr>
 							<td><label for="forename">Vorname*</label>:</td>
-							<td><input type="text" id="forename" name="forename" /></td>
+							<td th:if = "${existingCustomer}"><input type="text" id="forename" name="forename" th:value="${existingCustomer.getForename()}"/></td>
+							<td th:if = "${existingCustomer} == null"><input type="text" id="forename" name="forename" /></td>
 						</tr>
 						<tr>
 							<td><label for="telnumber">Tel*</label>:</td>
-							<td><input type="text" id="telnumber" name="telnumber" /></td>
+							<td th:if = "${existingCustomer}"><input type="text" id="telnumber" name="telnumber" th:value="${existingCustomer.getTelephoneNumber()}"/></td>
+							<td th:if = "${existingCustomer} == null"><input type="text" id="telnumber" name="telnumber" /></td>
 						</tr>
 						<tr>
 							<td><label for="local">Ort*</label>:</td>
-							<td><input type="text" id="local" name="local" /></td>
+							<td th:if = "${existingCustomer}"><input type="text" id="local" name="local" th:value="${existingCustomer.getAddress().getLocal()}"/></td>
+							<td th:if = "${existingCustomer} == null"><input type="text" id="local" name="local" /></td>
 						</tr>
 						<tr>
 							<td><label for="postcode">Postleitzahl*</label>:</td>
-							<td><input type="text" id="postcode" name="postcode" /></td>
+							<td th:if = "${existingCustomer}"><input type="text" id="postcode" name="postcode" th:value="${existingCustomer.getAddress().getPostcode()}"/></td>
+							<td th:if = "${existingCustomer} == null"><input type="text" id="postcode" name="postcode" /></td>
 						</tr>
 						<tr>
 							<td><label for="street">Straßenname*</label>:</td>
-							<td><input type="text" id="street" name="street" /></td>
+							<td th:if = "${existingCustomer}"><input type="text" id="street" name="street" th:value="${existingCustomer.getAddress().getStreet()}"/></td>
+							<td th:if = "${existingCustomer} == null"><input type="text" id="street" name="street" /></td>
 						</tr>
 						<tr>
 							<td><label for="housenumber">Hausnummber*</label>:</td>
-							<td><input type="text" id="housenumber" name="housenumber" /></td>
+							<td th:if = "${existingCustomer}"><input type="text" id="housenumber" name="housenumber" th:value="${existingCustomer.getAddress().getHousenumber()}"/></td>
+							<td th:if = "${existingCustomer} == null"><input type="text" id="housenumber" name="housenumber" /></td>
 						</tr>
 						<tr>
-							<td><input class="btn btn-primary" type="submit"
-								value="Registeren" /></td>
+							<td>
+							<input th:if = "${existingCustomer}" type="hidden" id="cid" name="cid" th:value="${existingCustomer.getId()}"/>
+							<input th:if = "${existingCustomer == null}" class="btn btn-primary" type="submit" value="Registrieren" />
+							<input th:if = "${existingCustomer}" class="btn btn-primary" type="submit" value="Bestätigen" /></td>
 						</tr>
 					</table>
 				</form>

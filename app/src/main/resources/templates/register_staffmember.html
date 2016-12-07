@@ -146,7 +146,7 @@
 						<tr>
 							<td>
 							<input th:if = "${staffMember}" type="hidden" id="username" name="username" th:value="${staffMember.getUsername()}"/>
-							<input th:if = "${staffMember} == null" class="btn btn-primary" type="submit" value="Registrieren" />
+							<input th:if = "${staffMember == null}" class="btn btn-primary" type="submit" value="Registrieren" />
 							<input th:if = "${staffMember}" class="btn btn-primary" type="submit" value="Bestätigen" /></td>
 						</tr>
 					</table>

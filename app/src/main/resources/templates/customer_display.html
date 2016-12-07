@@ -103,6 +103,18 @@
 							<td th:text="${customer.getAddress().getStreet()}">Straßenname</td>
 							<td th:text="${customer.getAddress().getHousenumber()}">Hausnummer</td>
 							
+							<td sec:authorize="hasRole('ROLE_ADMIN')">
+								<form method="post" action="/editCustomer" sec:authorize="hasRole('ROLE_ADMIN')">
+									<input type="hidden" name="cid" id="cid" th:value= "${customer.getId()}"/>
+									<input class="btn btn-primary" type="submit" value="Bearbeiten" />
+								</form>
+							</td>
+							<td sec:authorize="hasRole('ROLE_ADMIN')">
+								<form method="post" action="/deleteCustomer" sec:authorize="hasRole('ROLE_ADMIN')">
+									<input type="hidden" name="cid" id="cid" th:value= "${customer.getId()}"/>
+									<input class="btn btn-primary" type="submit" value="Entfernen" />
+								</form>
+							</td>
 						</tr>
 					</tbody>
 				</table>

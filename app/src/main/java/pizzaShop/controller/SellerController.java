@@ -27,7 +27,15 @@ public class SellerController {
 	}
 
 	@RequestMapping("/register_customer")
-	public String registrationIndex(Model model) {
+	public String registrationIndex(Model model, @RequestParam(value = "cid", required = false) Long id) {
+		
+		Long customerId = id;
+		
+		if(customerId != null){
+			Customer customer = customerRepository.findOne(id);		
+			model.addAttribute("existingCustomer", customer);
+		}
+		
 		model.addAttribute("error", error);
 		return "register_customer";
 	}
