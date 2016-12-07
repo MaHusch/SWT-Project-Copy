@@ -40,6 +40,18 @@ Bibliotheken von Drittanbietern: SalespointFramework, Spring, java.util
 == Testfälle und Verantwortlichkeit
 Jede testbezogene Aufgabe muss einem Ansprechpartner zugeordnet werden.
 
+= UnitTests
+
+|ID |Anwendungsfall |Vorbedingungen |Eingabe |Ausgabe
+|U-Item-testContructor|Item wird erstellt|Item soll erzeugt werden|Name,Preis,Itemtype|erstelltes Objekt|
+|U-Item-testGetter|Attribute des Items werden abgefragt(vorallem Itemtype, da Rest von Product geerbt)| Item wurde erzeugt| Itemtyp des Objektes|
+|U-Pizza-testContructor|Pizza wird erstellt|Pizza soll erzeugt werden| Name und Anfangspreis der Pizza| Pizzaobjekt mit keiner Zutat, welche den Itemtyp "PIZZA" hat und ungebacken ist (Status auf false)|
+|U-Pizza-testSetter|Pizza kommt aus dem Ofen|Pizza wurde erzeugt|der boolesche Wert "true" bei der Funktion "setStatus"|Pizza deren Status "true" entspricht|
+|U-Pizza-testaddIngredient|Zutat wird einer Pizza hinzugefügt|Pizza- und Zutatobjekt existiert bereits|Zutat|Zutat wird Zutatenliste der Pizza hinzugefügt und "true zurückgegeben, falls noch nicht vorhanden ansonsten wird "false" zurückgegeben|
+|U-Pizza-testremoveIngredient|Zutat wird von einer Pizza entfernt| --- | Pizza und Zutat welcher entfernt werden soll| falls die Zutat auf der Pizza ist, wird sie entfernt und deren Name zurückgegeben, ansonsten wird ein "null" Objekt zurückgegeben|
+|U-Pizza-testtoString| Anzeige der Zutatenliste der Pizzen im ItemCatalog| Pizzaobjekt wurde erzeugt | --- | Pizza(Zutat1,Zutat2, ...) in Form eines Strings|
+|...|...|...|...|...|  
+
 = Integrationstests
 // See http://asciidoctor.org/docs/user-manual/#tables
 [options="headers"]
