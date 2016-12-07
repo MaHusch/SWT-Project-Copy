@@ -1,6 +1,7 @@
 package pizzaShop.model.catalog_item;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -69,6 +70,7 @@ public class Pizza extends Item {
 		if(ingredients.contains(i.getName())) return false;
 		
 		ingredients.add(i.getName());
+		Collections.sort(ingredients);
 		this.setPrice(getPrice().add(i.getPrice()));
 		return true;
 	}
