@@ -24,6 +24,7 @@ public class Store {
 	private final UserAccountManager employeeAccountManager;
 	private final ItemCatalog itemCatalog;
 	private final PizzaOrderRepository pizzaOrderRepo;
+	private final StaffMemberRepository staffMemberRepository;
 
 	private List<StaffMember> staffMemberList;
 	private ArrayList<Oven> ovenList;
@@ -32,11 +33,12 @@ public class Store {
 	private Pizzaqueue pizzaQueue = Pizzaqueue.getInstance();
 
 	@Autowired
-	public Store(UserAccountManager employeeAccountManager, ItemCatalog itemCatalog, PizzaOrderRepository pizzaOrderRepo) {
+	public Store(UserAccountManager employeeAccountManager, ItemCatalog itemCatalog, PizzaOrderRepository pizzaOrderRepo, StaffMemberRepository staffMemberRepository) {
 
 		this.employeeAccountManager = employeeAccountManager;
 		this.itemCatalog = itemCatalog;
 		this.pizzaOrderRepo = pizzaOrderRepo;
+		this.staffMemberRepository = staffMemberRepository;
 
 		this.staffMemberList = new ArrayList<StaffMember>();
 		this.ovenList = new ArrayList<Oven>();
@@ -61,8 +63,8 @@ public class Store {
 		return staffMemberList;
 	}
 
-	public void updateUserAccount(StaffMember member, String username, String password, Role role) {
-
+	public void updateUserAccount(StaffMember member, String username, String password, Role role) {		
+		
 		if (member.getUserAccount() == null) {
 			member.setUsername(username);
 			member.setPassword(password);
@@ -71,7 +73,6 @@ public class Store {
 			member.setUserAccount(employeeAccountManager.create(username, password, role));
 			
 		} else {
-			// updateUserAccount
 
 		}
 

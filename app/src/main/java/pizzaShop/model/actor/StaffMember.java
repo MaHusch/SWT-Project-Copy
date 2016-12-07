@@ -95,6 +95,10 @@ public abstract class StaffMember extends Person {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public String getPassword() {
+		return this.password;
+	}
 
 	/**
 	 * setter for the Role

@@ -19,7 +19,7 @@
 		// if an item is already present, change the form so it calls the function to overwrite,update and save the item's information
 		if (value == "true") {
 			var form = document.getElementById("registerForm");
-			//form.action = "/editEmployee";
+			form.action = "/updateStaffMember";
 		}
 
 	}
@@ -118,21 +118,24 @@
 						</tr>
 						<tr>
 							<td><label for="forename">Vorname*</label>:</td>
-							<td><input type="text" id="forename" name="forename" /></td>
+							<td th:if = "${staffMember}"><input type="text" id="forename" name="forename" th:value="${staffMember.getForename()}"/></td>
+							<td th:if = "${staffMember} == null"><input type="text" id="forename" name="forename" /></td>
 						</tr>
 						<tr>
 							<td><label for="telnumber">Tel*</label>:</td>
-							<td><input type="text" id="telnumber" name="telnumber" /></td>
+							<td th:if = "${staffMember}"><input type="text" id="telnumber" name="telnumber" th:value="${staffMember.getTelephoneNumber()}"/></td>
+							<td th:if = "${staffMember} == null"><input type="text" id="telnumber" name="telnumber" /></td>
 						</tr>
-						<tr>
+						<tr th:if = "${staffMember} == null">
 							<td><label for="username">Benutzername*</label>:</td>
-							<td><input type="text" id="username" name="username" /></td>
+							<td th:if = "${staffMember} == null"><input type="text" id="username" name="username" /></td>
 						</tr>
 						<tr>
 							<td><label for="password">Passwort*</label>:</td>
-							<td><input type="password" id="password" name="password" /></td>
+							<td th:if = "${staffMember}"><input type="password" id="password" name="password" th:value="${staffMember.getPassword()}"/></td>
+							<td th:if = "${staffMember} == null"><input type="password" id="password" name="password" /></td>
 						</tr>
-						<tr>
+						<tr th:if = "${staffMember == null}" >
 							<td><label for="role">Rolle*</label>:</td>
 							<td><select name="role" id="role" size="1">
 									<option selected="selected">Verkäufer</option>
@@ -141,7 +144,9 @@
 							</select></td>
 						</tr>
 						<tr>
-							<td><input class="btn btn-primary" type="submit"
+							<td>
+							<input th:if = "${staffMember}" type="hidden" id="username" name="username" th:value="${staffMember.getUsername()}"/>
+							<input class="btn btn-primary" type="submit"
 								value="Registeren" /></td>
 						</tr>
 					</table>

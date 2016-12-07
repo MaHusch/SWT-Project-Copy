@@ -97,7 +97,7 @@
 								
 								<td>
 									<form method="post" action="/editEmployee">
-										<input type="hidden" name="sid" id="sid" th:value= "${staffmember.getId()}"/>
+										<input type="hidden" name="StaffMemberName" id="StaffMemberName" th:value= "${staffmember.getUsername()}"/>
 										<input class="btn btn-primary" type="submit" value="Bearbeiten" />
 									</form>
 								</td>

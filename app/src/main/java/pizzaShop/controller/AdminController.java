@@ -1,6 +1,8 @@
 package pizzaShop.controller;
 
 import org.salespointframework.useraccount.Role;
+import org.salespointframework.useraccount.UserAccount;
+import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,28 +19,38 @@ import pizzaShop.model.store.Oven;
 import pizzaShop.model.store.StaffMemberRepository;
 import pizzaShop.model.store.Store;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 @Controller
 public class AdminController {
 
 	private ErrorClass error = new ErrorClass(false);
 	private final StaffMemberRepository staffMemberRepository;
+	private final UserAccountManager employeeAccountManager;
 
 	private final Store store;
 	
 	@Autowired
-	public AdminController(Store store, StaffMemberRepository staffMemberRepository) {
+	public AdminController(Store store, StaffMemberRepository staffMemberRepository, UserAccountManager employeeAccountManager) {
 		this.store = store;
 		this.staffMemberRepository = staffMemberRepository;
+		this.employeeAccountManager = employeeAccountManager;
 		
 		
 	}
 
 	@RequestMapping("/register_staffmember")
-	public String registrationIndex(Model model, @RequestParam(value = "sid", required = false) long ID) {
+	public String registrationIndex(Model model, @RequestParam(value = "name", required = false) String name) {
 		
-		StaffMember member = staffMemberRepository.findOne(ID);
+		StaffMember member = store.getStaffMemberByName(name);
+		//System.out.println(member.getUsername());
 		model.addAttribute("staffMember",member);
-		//staffMemberRepository.delete(id);
+		
+		//ArrayList<StaffMember> staffMemberList = (ArrayList<StaffMember>) store.getStaffMemberList();
+		//StaffMember updatedMember = staffMemberList.get(staffMemberList.indexOf(member));
+
 		
 		model.addAttribute("error", error);
 		return "register_staffmember";
@@ -76,13 +88,46 @@ public class AdminController {
 		}
 
 		store.getStaffMemberList().add(staffMember);
+		
+		/*
+		Optional<UserAccount> userAccount = employeeAccountManager.findByUsername(username);
+		
+		if(userAccount.isPresent()){
+			employeeAccountManager.disable(userAccount.get().getId());
+		}
+		
+		Optional<UserAccount> userAccount = employeeAccountManager.findByUsername(username);
+		
+		if (employeeAccountManager.contains(userAccount.get().getId())) {
+		
+		} else {
+			
+		}
+		*/
+		
 		store.updateUserAccount(staffMember, username, password, Role.of("ROLE_" + role));
-		
-		
 
-		return "index";
+		return "redirect:staffmember_display";
 	}
 	
+	@RequestMapping(value = "/updateStaffMember")
+	public String updateStaffMember(Model model, @RequestParam("surname") String surname,
+			@RequestParam("forename") String forename, @RequestParam("telnumber") String telephonenumber, @RequestParam("username") String username, @RequestParam("password") String password)
+	{
+		StaffMember member = store.getStaffMemberByName(username);
+		
+		member.setForename(forename);
+		member.setSurname(surname);
+		member.setTelephoneNumber(telephonenumber);
+		
+		Optional<UserAccount> userAccount = employeeAccountManager.findByUsername(username);
+		
+		if(userAccount.isPresent()){
+			employeeAccountManager.changePassword(userAccount.get(), password);
+		}
+		
+		return "redirect:staffmember_display";
+	}
 
 	@RequestMapping(value = "/addOven", method = RequestMethod.POST)
 	public String addOven(Model model) {
