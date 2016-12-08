@@ -70,7 +70,7 @@ public class PizzaTest {
 		p1.addIngredient(i1);
 		assertEquals(p1.toString(),"Pizza(Tomato)");
 		p1.addIngredient(i2);
-		assertEquals(p1.toString(),"Pizza(Tomato,Salami)");
+		assertEquals(p1.toString(),"Pizza(Salami,Tomato)");
 	}
 	
 
