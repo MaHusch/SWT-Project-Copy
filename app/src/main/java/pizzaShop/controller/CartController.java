@@ -1,10 +1,12 @@
 package pizzaShop.controller;
 
+import static org.salespointframework.core.Currencies.EURO;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Optional;
 
+import org.javamoney.moneta.Money;
 import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.Order;
@@ -12,6 +14,7 @@ import org.salespointframework.order.OrderIdentifier;
 import org.salespointframework.order.OrderManager;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.quantity.Quantity;
+import org.salespointframework.time.BusinessTime;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.web.LoggedIn;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,7 @@ import junit.framework.Assert;
 import pizzaShop.model.actor.Customer;
 import pizzaShop.model.actor.Deliverer;
 import pizzaShop.model.actor.StaffMember;
+import pizzaShop.model.catalog_item.Cutlery;
 import pizzaShop.model.store.CustomerRepository;
 import pizzaShop.model.store.ErrorClass;
 import pizzaShop.model.store.ItemCatalog;
@@ -48,6 +52,7 @@ public class CartController {
 	private final CustomerRepository customerRepository;
 	private final PizzaOrderRepository pizzaOrderRepository;
 	private final StaffMemberRepository staffMemberRepository;
+	private final BusinessTime businesstime;
 	private Optional<Customer> customer = Optional.empty();
 	private final Store store;
 	private ErrorClass error;
@@ -55,7 +60,7 @@ public class CartController {
 	@Autowired
 	public CartController(OrderManager<Order> orderManager, ItemCatalog itemCatalog, TanManagement tanManagement,
 			CustomerRepository customerRepository, PizzaOrderRepository pizzaOrderRepository,
-			StaffMemberRepository staffMemberRepository, Store store) {
+			StaffMemberRepository staffMemberRepository, Store store, BusinessTime businesstime) {
 		this.orderManager = orderManager;
 		this.itemCatalog = itemCatalog;
 		this.tanManagement = tanManagement;
@@ -63,6 +68,7 @@ public class CartController {
 		this.pizzaOrderRepository = pizzaOrderRepository;
 		this.staffMemberRepository = staffMemberRepository;
 		this.store = store;
+		this.businesstime = businesstime;
 		error = new ErrorClass(false);
 	}
 
@@ -157,17 +163,25 @@ public class CartController {
 
 	@RequestMapping(value = "/checkout", method = RequestMethod.POST)
 	public String buy(@ModelAttribute Cart cart, @RequestParam("onSite") String onSiteStr,
-			@LoggedIn Optional<UserAccount> userAccount) {
+			@RequestParam("cutlery") String cutleryStr,@LoggedIn Optional<UserAccount> userAccount) {
 		if (!userAccount.isPresent()) {
 			return "redirect:login";
 		}
 		assertTrue("Checkbox liefert anderen Wert als 0 oder 1! nämlich" + onSiteStr,
 				onSiteStr.equals("0,1") | onSiteStr.equals("0"));
+		System.out.println("cutler ist:" + cutleryStr);
 		if (customer.isPresent()) {
 			boolean onSite = false;
+			boolean cutlery = true;
 			System.out.println(onSiteStr + " onSite");
 			if (onSiteStr.equals("0,1")) {
 				onSite = true;
+			}
+			if(cutleryStr.equals("0")) cutlery = false;
+			
+			//TODO: check if customer already has a cutlery --> throw error
+			if(cutlery) { 
+				customer.get().setMyCutlery(new Cutlery("Essgarnitur",Money.of(15.0, EURO),businesstime.getTime()));	
 			}
 
 			PizzaOrder pizzaOrder = new PizzaOrder(userAccount.get(), Cash.CASH,

@@ -174,8 +174,7 @@ public class Store {
 		
 		if(itype.equals(ItemType.PIZZA))
 		{
-			newItem = new Pizza(name,Money.of(price, EURO));
-			
+			newItem = new Pizza(name,Money.of(price, EURO));	
 		}
 		else if(type.equals(ItemType.CUTLERY))
 		{
