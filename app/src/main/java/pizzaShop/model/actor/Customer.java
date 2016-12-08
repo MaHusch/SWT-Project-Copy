@@ -21,7 +21,7 @@ public class Customer extends Person {
 	/**
 	 * Cutlery of the Customer
 	 */
-	private Cutlery myCutlery = null;
+	@OneToOne private Cutlery myCutlery = null;
 
 	private @Id @GeneratedValue long customerID;
 
@@ -64,7 +64,7 @@ public class Customer extends Person {
 	 * getter for myCutlery
 	 * @return myCutlery
 	 */
-	public Cutlery getMyCutlery() {
+	public Cutlery getCutlery() {
 		return myCutlery;
 	}
 	/**
@@ -72,7 +72,7 @@ public class Customer extends Person {
 	 * @param myCutlery
 	 */
 	
-	public void setMyCutlery(Cutlery myCutlery) {
+	public void setCutlery(Cutlery myCutlery) {
 		this.myCutlery = myCutlery;
 	}
 	

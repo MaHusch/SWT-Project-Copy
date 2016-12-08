@@ -181,7 +181,9 @@ public class CartController {
 			
 			//TODO: check if customer already has a cutlery --> throw error
 			if(cutlery) { 
-				customer.get().setMyCutlery(new Cutlery("Essgarnitur",Money.of(15.0, EURO),businesstime.getTime()));	
+				//customerRepository.delete(customer.get());
+				customer.get().setCutlery(new Cutlery("Essgarnitur",Money.of(15.0, EURO),businesstime.getTime()));	
+				//customerRepository.save(customer.get());
 			}
 
 			PizzaOrder pizzaOrder = new PizzaOrder(userAccount.get(), Cash.CASH,

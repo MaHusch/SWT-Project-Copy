@@ -91,6 +91,7 @@
 						<td>Postleitzahl</td>
 						<td>Straßenname</td>
 						<td>Hausnummer</td>
+						<td>Ablaufdatum der Essgarnitur </td>
 						
 					</tr>
 					<tbody>
@@ -102,7 +103,7 @@
 							<td th:text="${customer.getAddress().getPostcode()}">Postleitzahl</td>
 							<td th:text="${customer.getAddress().getStreet()}">Straßenname</td>
 							<td th:text="${customer.getAddress().getHousenumber()}">Hausnummer</td>
-							
+							<td> Hier kommt die Zeit hin </td>
 							<td sec:authorize="hasRole('ROLE_ADMIN')">
 								<form method="post" action="/editCustomer" sec:authorize="hasRole('ROLE_ADMIN')">
 									<input type="hidden" name="cid" id="cid" th:value= "${customer.getId()}"/>

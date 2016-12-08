@@ -17,6 +17,11 @@ import org.salespointframework.time.BusinessTime;
 @Entity
 public class Cutlery extends Item {
 
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8724080983798476354L;
 	/**
 	 * Date till Cutlery has to be returned
 	 */

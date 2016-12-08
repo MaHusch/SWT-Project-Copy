@@ -181,7 +181,11 @@ public class StoreController {
 	public String customer_display(Model model) {
 
 		model.addAttribute("customer", customerRepository.findAll());
-
+		
+		/*for(Customer c : customerRepository.findAll())
+		{
+			System.out.println(c.getCutlery().getDate());
+		}*/
 		return "customer_display";
 	}
 
