@@ -23,10 +23,12 @@ import groovyjarjarantlr.collections.List;
 import pizzaShop.model.catalog_item.Ingredient;
 import pizzaShop.model.catalog_item.Item;
 import pizzaShop.model.catalog_item.ItemType;
+import pizzaShop.model.catalog_item.NameComparator;
 import pizzaShop.model.catalog_item.Pizza;
 import pizzaShop.model.catalog_item.PriceComparator;
 import pizzaShop.model.store.ErrorClass;
 import pizzaShop.model.store.ItemCatalog;
+import pizzaShop.model.store.Store;
 
 /**
  * Controller to create the Catalog View
@@ -39,17 +41,19 @@ import pizzaShop.model.store.ItemCatalog;
 public class CatalogController {
 	
 	private final ItemCatalog itemCatalog;
+	private final Store store;
 	private ErrorClass error = new ErrorClass(false);
 	private Iterable<Item> items;
-	
+	private ArrayList<Item> filteredItems;
 	/**
 	 * on creation spring searches the itemCatalog and allocates it to the local variabel
 	 * @param itemCatalog the itemCatalog of the shop
 	 */
 	@Autowired
-	public CatalogController(ItemCatalog itemCatalog)
+	public CatalogController(ItemCatalog itemCatalog, Store store)
 	{
 		this.itemCatalog = itemCatalog;
+		this.store = store;
 	}
 	
 	
@@ -62,18 +66,8 @@ public class CatalogController {
 	public String showCatalog(Model model)
 	{
 		items = itemCatalog.findAll();
-		ArrayList<Item> filteredItems = new ArrayList<Item>();
 		
-		for(Item i : items)
-		{
-			ItemType type = i.getType();
-			if(!(type.equals(ItemType.FREEDRINK) || type.equals(ItemType.INGREDIENT)))
-				filteredItems.add(i); 
-		}
-		
-		Collections.sort(filteredItems, new PriceComparator()); 
-		
-		model.addAttribute("items", filteredItems);
+		model.addAttribute("items", items);
 		model.addAttribute("ItemType",ItemType.values());
 		return "catalog";
 	}
@@ -107,46 +101,38 @@ public class CatalogController {
 	{
 		Item i = itemCatalog.findOne(id).orElse(null);
 		ItemType ityp;
-		// TODO: check Arguments
 		
+		System.out.println("bearbeiten" + i.getName());
 		
-		switch(type)
-		{
-		default:
-			ityp = ItemType.FREEDRINK;
-			break;
-		case "DRINK":
-			ityp = ItemType.DRINK;
-			break;
-		case "INGREDIENT":
-			ityp = ItemType.INGREDIENT;
-			break;
-		case "PIZZA":
-			ityp = ItemType.PIZZA;
-			break;
-		case "SALAD":
-			ityp = ItemType.SALAD;
-			break;
+		try {
+			store.saveEditedItem(i, name, type, price);
+		} catch (Exception e) {
+			// TODO hand over arguments with error on template
+			error.setError(true);
+			e.printStackTrace(); //setErrorMessage
+			return "redirect:addItem";
 		}
 		
-		if(!i.equals(null))
+		
+		/*if(!i.equals(null))
 		{
 			if(i.getType().equals(ityp))
 			{
+			itemCatalog.delete(i); //altes Element rauslöschen
 			i.setName(name);
+			System.out.println(i.getName());
 			i.setPrice(Money.of(price, EURO));
 			itemCatalog.save(i); // sonst wirds nicht auf den Catalog übertragen :O
 			
 			}
 			else
 			{
+				System.out.println("anderer Itemtyp --> neues Item");
 				itemCatalog.delete(i);
 				this.createItem(name, price, type);
 			}
-		}
-		System.out.println(ityp.name());
-		System.out.println(i.getName());
-		System.out.println(i.getPrice());
+		}*/
+		
 		return "redirect:catalog";
 	}
 	
@@ -157,7 +143,7 @@ public class CatalogController {
 	 * @return directs to the addItem template
 	 */
 	@RequestMapping("/editItem") 
-	public String editItem(Model model,@RequestParam("pid") ProductIdentifier id) {
+	public String directToEditItem(Model model,@RequestParam("pid") ProductIdentifier id) {
 		
 		Optional<Item> i = itemCatalog.findOne(id);
 		model.addAttribute("item",i.get());
@@ -173,7 +159,7 @@ public class CatalogController {
 	 * @return directs to the addItem template
 	 */
 	@RequestMapping("addItem")
-	public String addItem(Model model)
+	public String directToAddItem(Model model)
 	{
 		model.addAttribute("error",error);
 		return "addItem";
@@ -191,8 +177,16 @@ public class CatalogController {
 							 @RequestParam("itemprice") Number price,
 							 @RequestParam("itemtype") String type)
 	{
-		Item neu;
-		if(name.isEmpty() || price.floatValue() < 0) 
+		System.out.println("erstellen");
+		try {
+			store.createNewItem(name, type, price);
+		} catch (Exception e) {
+			error.setError(true);
+			e.printStackTrace(); //setErrorMessage
+			return "redirect:addItem";
+		}
+		
+		/*if(name.isEmpty() || price.floatValue() < 0) 
 			{
 			//TODO: interact with frontend
 			System.out.println("fehler");
@@ -219,27 +213,50 @@ public class CatalogController {
 			neu = new Item(name,Money.of(price, EURO),t);
 		}
 		
-		itemCatalog.save(neu);
+		itemCatalog.save(neu); */
 		
 		return "redirect:catalog";
 	}
 	
 	@RequestMapping("/filterCatalog")
-	public String filterCatalog(Model model, String filter)
+	public String filterCatalog(Model model, @RequestParam("selection") String selection,
+								@RequestParam("filter") String filter)
 	{
-		switch(filter)
+		filteredItems = new ArrayList<Item>();
+		System.out.println(filter + ' ' + selection);
+		
+		
+		switch(selection)
 		{
 		case "Getränke":
-			items = itemCatalog.findByType(ItemType.DRINK);
+			for(Item i : itemCatalog.findByType(ItemType.DRINK)) filteredItems.add(i);
 			break;
 		case "Essen":
-			items = itemCatalog.findByType(ItemType.PIZZA);
-			// add salad
-		default:	
-			items = itemCatalog.findAll();
+			for(Item i : itemCatalog.findByType(ItemType.PIZZA)) filteredItems.add(i);
+			for(Item i : itemCatalog.findByType(ItemType.SALAD)) filteredItems.add(i);
+			
+		default: // alles ist default	
+			for(Item i : itemCatalog.findAll()) filteredItems.add(i);
 		}
-		model.addAttribute("items",items);
-		return "redirect:catalog";
+		
+		switch(filter)
+		{
+		case "hoechster Preis zuerst":
+			Collections.sort(filteredItems, new PriceComparator(false));
+			break;
+		case "niedrigster Preis zuerst":
+			Collections.sort(filteredItems, new PriceComparator(true));
+			break;
+		case "von A bis Z":
+			Collections.sort(filteredItems, new NameComparator(true));
+			break;
+		case "von Z bis A":
+			Collections.sort(filteredItems, new NameComparator(false));
+		}
+		
+		model.addAttribute("items",filteredItems);
+		model.addAttribute("ItemType",ItemType.values());
+		return "catalog";
 	}
 
 }

@@ -8,6 +8,7 @@ import org.salespointframework.payment.Cash;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
 
+import pizzaShop.model.actor.Customer;
 import pizzaShop.model.store.PizzaOrder;
 import pizzaShop.model.store.PizzaOrderStatus;
 import pizzaShop.model.tan_management.Tan;
@@ -19,14 +20,16 @@ public class PizzaOrderTest {
 	UserAccount ua1;
 	Tan t1;
 	UserAccountManager uam;
+	Customer c1;
 	
 	@Before
 	public void setUp()  
 	{
 		//uam = new UserAccountManager();
+		c1 = new Customer();
 		ua1 = new UserAccount();
 		t1 = new Tan("11293", TanStatus.VALID);
-		po1 = new PizzaOrder(ua1, Cash.CASH, t1, false);
+		po1 = new PizzaOrder(ua1, Cash.CASH, t1, false,c1); //TODO: add customer
 	}
 	
 	@Test

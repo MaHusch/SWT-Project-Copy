@@ -2,15 +2,32 @@ package pizzaShop.model.catalog_item;
 
 import java.util.Comparator;
 
+/**
+ * NameComparatorClass for comparing 2 {@link Item} based on their name
+ * @author Florentin Dörre
+ *
+ */
 public class NameComparator implements Comparator<Item> {
-
-	public NameComparator() {
-		// TODO Auto-generated constructor stub
+	int ascending;
+	
+	/**
+	 * Constructor
+	 * @param ascending to decide whether the items are compared ascending or descending
+	 */
+	public NameComparator(boolean ascending) {
+		if(ascending)
+		this.ascending = 1;
+		else
+		this.ascending = -1;
 	}
 
+	/**
+	 * main comparefunction
+	 */
 	@Override
 	public int compare(Item o1, Item o2) {
-		return o1.getName().compareToIgnoreCase(o2.getName());
+		return ascending * o1.getName().compareToIgnoreCase(o2.getName());
+		
 	}
 
 }

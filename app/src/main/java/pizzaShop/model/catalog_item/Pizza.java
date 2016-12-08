@@ -1,6 +1,7 @@
 package pizzaShop.model.catalog_item;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,8 +14,8 @@ import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.order.OrderIdentifier;
 
 /**
- * class to represent pizzas
- * @author Florentin
+ * PiizaClass for represesenting a Pizza of the PizzaShop
+ * @author Florentin Dörre
  */
 @Entity
 public class Pizza extends Item {
@@ -69,6 +70,7 @@ public class Pizza extends Item {
 		if(ingredients.contains(i.getName())) return false;
 		
 		ingredients.add(i.getName());
+		Collections.sort(ingredients);
 		this.setPrice(getPrice().add(i.getPrice()));
 		return true;
 	}

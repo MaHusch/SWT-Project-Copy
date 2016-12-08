@@ -8,6 +8,12 @@ import org.salespointframework.useraccount.*;
 
 import pizzaShop.model.store.Store;
 
+/**
+ * abstract StaffMemberClass for representing the StaffMembers of the PizzaShop
+ * 
+ * @author Martin Huschenbett
+ *
+ */
 @Entity
 public abstract class StaffMember extends Person {
 
@@ -20,6 +26,14 @@ public abstract class StaffMember extends Person {
 	private UserAccount userAccount;
 	private Role role;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param surname
+	 * @param forename
+	 * @param telephoneNumber
+	 */
+
 	public StaffMember(String surname, String forename, String telephoneNumber) {
 
 		super(surname, forename, telephoneNumber);
@@ -28,47 +42,97 @@ public abstract class StaffMember extends Person {
 
 	}
 
+	/**
+	 * getter for Username
+	 * 
+	 * @return username
+	 */
 	public String getUsername() {
 
 		return this.username;
 	}
 
-	public void updateUserAccount(String username, String password, Role role) {
+	/*
+	 * public void updateUserAccount(String username, String password, Role
+	 * role) {
+	 * 
+	 * if (this.userAccount == null) { setUsername(username);
+	 * setPassword(password); setRole(role);
+	 * 
+	 * setUserAccount(Store.employeeAccountManager.create(this.username,
+	 * this.password, this.role));
+	 * Store.employeeAccountManager.save(this.userAccount); } else { //
+	 * updateUserAccount
+	 * 
+	 * }
+	 * 
+	 * }
+	 */
 
-		if (this.userAccount == null) {
-			setUsername(username);
-			setPassword(password);
-			setRole(role);
-
-			setUserAccount(Store.employeeAccountManager.create(this.username, this.password, this.role));
-			Store.employeeAccountManager.save(this.userAccount);
-		} else {
-			// updateUserAccount
-
-		}
-
-	}
-
+	/**
+	 * setter for UserAccount
+	 * 
+	 * @param userAccount
+	 */
 	public void setUserAccount(UserAccount userAccount) {
 		this.userAccount = userAccount;
 	}
 
+	/**
+	 * setter for Username
+	 * 
+	 * @param username
+	 */
 	public void setUsername(String username) {
 		this.username = username;
 	}
 
+	/**
+	 * setter for password
+	 * 
+	 * @param password
+	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public String getPassword() {
+		return this.password;
+	}
 
+	/**
+	 * setter for the Role
+	 * 
+	 * @param role
+	 */
 	public void setRole(Role role) {
 		this.role = role;
 	}
 
+	/**
+	 * getter for the Role
+	 * 
+	 * @return role
+	 */
 	public Role getRole() {
 		return this.role;
 	}
 
+	/**
+	 * getter for the EmployeeID
+	 * 
+	 * @return employeeID
+	 */
+	public long getId() {
+		System.out.println(this.employeeID);
+		return employeeID;
+	}
+
+	/**
+	 * getter for the UserAccount
+	 * 
+	 * @return userAccount
+	 */
 	public UserAccount getUserAccount() {
 		return this.userAccount;
 	}

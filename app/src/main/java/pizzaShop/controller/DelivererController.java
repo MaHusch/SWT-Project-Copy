@@ -11,7 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import pizzaShop.model.actor.Baker;
+import pizzaShop.model.actor.Customer;
 import pizzaShop.model.actor.Deliverer;
+import pizzaShop.model.store.CustomerRepository;
 import pizzaShop.model.store.PizzaOrder;
 import pizzaShop.model.store.PizzaOrderRepository;
 import pizzaShop.model.store.Store;
@@ -24,93 +26,90 @@ public class DelivererController {
 	String username;
 	private final PizzaOrderRepository pizzaOrderRepository;
 	private final TanManagement tanManagement;
-	
+	private final Store store;
+
 	@Autowired
-	public DelivererController(PizzaOrderRepository pizzaOrderRepository,TanManagement tanManagement)
-	{
+	public DelivererController(PizzaOrderRepository pizzaOrderRepository, TanManagement tanManagement, Store store) {
 		this.pizzaOrderRepository = pizzaOrderRepository;
 		this.tanManagement = tanManagement;
+		this.store = store;
+	
+
 	}
-	
-	
-	@RequestMapping("/getDelivererOrders")
-	public String getDelivererOrders(Model model, Principal principal)
-	{
+
+	@RequestMapping("/sDeliverer")
+	public String sDeliverer(Principal prinicpal, Model model) {
+
+		// TODO: what if not deliverer? (maybe check Class before
+		currentDeliverer = (Deliverer) store.getStaffMemberByName(prinicpal.getName());
+		
+		model.addAttribute("available", currentDeliverer.getAvailable());
+
 		ArrayList<PizzaOrder> delivererOrders = new ArrayList<PizzaOrder>();
-		
-		for(OrderIdentifier oId : currentDeliverer.getOrders())
-		{
+
+		for (OrderIdentifier oId : currentDeliverer.getOrders()) {
 			PizzaOrder pO = pizzaOrderRepository.findOne(oId);
-			System.out.println(pO.toString());
-			if(!pO.equals(null)) delivererOrders.add(pO);
-			
+			if (!pO.equals(null))
+				delivererOrders.add(pO);
+
 		}
-		
-		model.addAttribute("orders",delivererOrders);
-		return "redirect:sDeliverer";
+
+		model.addAttribute("orders", delivererOrders);
+
+		return "sDeliverer";
 	}
-	//TODO: remove redundancy
+
+	// TODO: remove redundancy
 	@RequestMapping("/checkOut")
-	public String checkOut(Model model,Principal principal)
-	{
-		username = principal.getName();
-		System.out.println(username);
-		// startpage for deliverer as extra template ?!
-		currentDeliverer = (Deliverer) Store.getInstance().getStaffMemberByName(username);
-		
+	public String checkOut(Model model, Principal principal) {
+
 		currentDeliverer.checkOut();
 		System.out.println(currentDeliverer.getAvailable());
-		
-		//TODO: remove redundancy
-		Iterator<OrderIdentifier> i = currentDeliverer.getOrders().iterator();
-		
-		while(i.hasNext())
-		{
-			OrderIdentifier deliveredOrder = i.next();
-			
-			
-			for(PizzaOrder p : pizzaOrderRepository.findAll())
-			{
-				if(p.getId().equals(deliveredOrder))
-				{
+		System.out.println(currentDeliverer.getOrders());
+		// TODO: remove redundancy
+		for (OrderIdentifier oi : currentDeliverer.getOrders()) {
+
+			for (PizzaOrder p : pizzaOrderRepository.findAll()) {
+				if (oi.equals(p.getId())) {
+					System.out.println(p.getOrderStatus());
 					p.deliverOrder();
+					pizzaOrderRepository.save(p);
+					System.out.println(p.getOrderStatus());
 				}
 			}
+
 		}
-		
-		//model.addAttribute("available",currentDeliverer.getAvailable());
+
 		return "redirect:sDeliverer";
 	}
-	
+
 	@RequestMapping("/checkIn")
-	public String checkIn(Model model,Principal principal) //TODO: check OrderStatus change
+	public String checkIn(Model model, Principal principal) // TODO: check
+															// OrderStatus
+															// change
 	{
 		username = principal.getName();
 		System.out.println(username);
 		// startpage for deliverer as extra template ?!
-		currentDeliverer = (Deliverer) Store.getInstance().getStaffMemberByName(username);
-		
+		currentDeliverer = (Deliverer) store.getStaffMemberByName(username);
+
 		currentDeliverer.checkIn();
 		System.out.println(currentDeliverer.getAvailable());
+
 		
-		// when deliverer returns , every order he delivered is delivered --> change OrderStatus
-		Iterator<OrderIdentifier> i = currentDeliverer.getOrders().iterator();
-		
-		while(i.hasNext())
-		{
-			OrderIdentifier deliveredOrder = i.next();
-			
-			
-			for(PizzaOrder p : pizzaOrderRepository.findAll())
-			{
-				if(p.getId().equals(deliveredOrder))
-				{
-					tanManagement.confirmTan( p.getTan()); //TODO: assign new TAN?
+		for (OrderIdentifier oi : currentDeliverer.getOrders()) {
+
+			for (PizzaOrder p : pizzaOrderRepository.findAll()) {
+				if (oi.equals(p.getId())) {
+					tanManagement.confirmTan(p.getTan()); // TODO: assign new
+					// TAN?
 					p.completeOrder();
+					pizzaOrderRepository.save(p);
 				}
 			}
+
 		}
-		
+
 		currentDeliverer.clearOrders();
 		return "redirect:sDeliverer";
 	}

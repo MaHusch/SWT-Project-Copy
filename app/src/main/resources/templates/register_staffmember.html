@@ -7,9 +7,30 @@
 <link rel="stylesheet" type="text/css"
 	th:href="@{/resources/css/style.css}" />
 <title>Welcome</title>
+
+
+<script type="text/javascript">
+	//<![CDATA[
+
+	// checks if there are already values in the configuration list in case a preconfiguration as been selected
+
+	function checkExistingStaffMember() {
+		var value = document.getElementById('existingStaffMember').getAttribute('value');
+		// if an item is already present, change the form so it calls the function to overwrite,update and save the item's information
+		if (value == "true") {
+			var form = document.getElementById("registerForm");
+			form.action = "/updateStaffMember";
+		}
+
+	}
+
+	//]]>
+</script>
+
+
 </head>
 
-<body>
+<body onLoad="checkExistingStaffMember();">
 	<!-- Navbar -->
 	<header>
 		<nav class="navbar navbar-default">
@@ -42,7 +63,7 @@
 									href="ovens.html">Öfen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_DELIVERER')"
 									href="index.html">Deliverer Dashboard</a></li>
-								<li><a sec:authorize="hasRole('ROLE_SELLER')"
+								<li><a sec:authorize="hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')"
 									href="orders.html">Bestellungen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_SELLER')"
 									href="register_customer.html">Kunden registrieren</a></li>
@@ -54,7 +75,7 @@
 									href="addItem.html">Item hinzufügen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
 									href="catalog.html">Katalog bearbeiten</a></li>
-								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+								<li><a sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER')"
 									href="customer_display.html">Kunden anzeigen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
 									href="staffmember_display.html">Mitarbeiter anzeigen</a></li>
@@ -78,36 +99,43 @@
 			<!-- /.container-fluid -->
 		</nav>
 	</header>
+	
+	
+	<div th:if="${staffMember}" value = "true" id="existingStaffMember"></div>
+	
 	<!-- panel for customer_registration -->
 	<div sec:authorize="hasRole('ROLE_ADMIN')" class="container col-md-6">
 		<div class="panel panel-primary">
 			<div class="panel-heading">Neuen Mitarbeiter registrieren</div>
 			<div class="panel-body">
 				<p>Felder mit (*) müssen befüllt werden!</p>
-				<form th:action="registerEmployee" method="post">
+				<form th:action="registerEmployee" method="post" id = "registerForm">
 					<table>
 						<tr>
 							<td><label for="surname">Name*</label>:</td>
-							<td><input type="text" id="surname" name="surname" /></td>
-
+							<td th:if = "${staffMember}"><input type="text" id="surname" name="surname" th:value="${staffMember.getSurname()}"/></td>
+							<td th:if = "${staffMember} == null"><input type="text" id="surname" name="surname"/></td>
 						</tr>
 						<tr>
 							<td><label for="forename">Vorname*</label>:</td>
-							<td><input type="text" id="forename" name="forename" /></td>
+							<td th:if = "${staffMember}"><input type="text" id="forename" name="forename" th:value="${staffMember.getForename()}"/></td>
+							<td th:if = "${staffMember} == null"><input type="text" id="forename" name="forename" /></td>
 						</tr>
 						<tr>
 							<td><label for="telnumber">Tel*</label>:</td>
-							<td><input type="text" id="telnumber" name="telnumber" /></td>
+							<td th:if = "${staffMember}"><input type="text" id="telnumber" name="telnumber" th:value="${staffMember.getTelephoneNumber()}"/></td>
+							<td th:if = "${staffMember} == null"><input type="text" id="telnumber" name="telnumber" /></td>
 						</tr>
-						<tr>
+						<tr th:if = "${staffMember} == null">
 							<td><label for="username">Benutzername*</label>:</td>
-							<td><input type="text" id="username" name="username" /></td>
+							<td th:if = "${staffMember} == null"><input type="text" id="username" name="username" /></td>
 						</tr>
 						<tr>
 							<td><label for="password">Passwort*</label>:</td>
-							<td><input type="password" id="password" name="password" /></td>
+							<td th:if = "${staffMember}"><input type="password" id="password" name="password" th:value="${staffMember.getPassword()}"/></td>
+							<td th:if = "${staffMember} == null"><input type="password" id="password" name="password" /></td>
 						</tr>
-						<tr>
+						<tr th:if = "${staffMember == null}" >
 							<td><label for="role">Rolle*</label>:</td>
 							<td><select name="role" id="role" size="1">
 									<option selected="selected">Verkäufer</option>
@@ -116,8 +144,10 @@
 							</select></td>
 						</tr>
 						<tr>
-							<td><input class="btn btn-primary" type="submit"
-								value="Registeren" /></td>
+							<td>
+							<input th:if = "${staffMember}" type="hidden" id="username" name="username" th:value="${staffMember.getUsername()}"/>
+							<input th:if = "${staffMember == null}" class="btn btn-primary" type="submit" value="Registrieren" />
+							<input th:if = "${staffMember}" class="btn btn-primary" type="submit" value="Bestätigen" /></td>
 						</tr>
 					</table>
 				</form>

@@ -14,11 +14,9 @@
 	// checks if there are already values in the configuration list in case a preconfiguration as been selected
 
 	function checkExistingItem() {
-		var value = document.getElementById('existingItem').getAttribute(
-				'value');
-
+		var value = document.getElementById('existingItem').getAttribute('value');
 		// if an item is already present, change the form so it calls the function to overwrite,update and save the item's information
-		if (value === "true") {
+		if (value == "true") {
 			var form = document.getElementById("itemForm");
 			form.action = "/saveItem";
 		}
@@ -65,7 +63,7 @@
 									href="ovens.html">Öfen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_DELIVERER')"
 									href="index.html">Deliverer Dashboard</a></li>
-								<li><a sec:authorize="hasRole('ROLE_SELLER')"
+								<li><a sec:authorize="hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')"
 									href="orders.html">Bestellungen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_SELLER')"
 									href="register_customer.html">Kunden registrieren</a></li>
@@ -77,7 +75,7 @@
 									href="addItem.html">Item hinzufügen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
 									href="catalog.html">Katalog bearbeiten</a></li>
-								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+								<li><a sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER')"
 									href="customer_display.html">Kunden anzeigen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
 									href="staffmember_display.html">Mitarbeiter anzeigen</a></li>
@@ -102,12 +100,14 @@
 		</nav>
 	</header>
 	
+	<div th:if="${item}" value = "true" id="existingItem"></div>
+	
 	<!-- Item panel -->
 	<div sec:authorize="hasRole('ROLE_ADMIN')" class="container col-md-4">
 		<div class="panel panel-primary">
 			<div class="panel-heading">Neues Katalogitem erstellen/bearbeiten</div>
 			<div class="panel-body">
-				<form th:action="createItem" method="post" id="itemForm">
+				<form action="createItem" method="post" id="itemForm">
 					<!-- Pizza Zutaten werden hinzugefügt bei edit Item -->
 					<label for="itemtype">Itemtyp</label>:
 

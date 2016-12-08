@@ -1,6 +1,7 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css"
@@ -8,23 +9,23 @@
 <title>Bestellungen</title>
 
 
-<script type="text/javascript">//<![CDATA[
-	
-function assignDeliverer(){
-	// get the selected deliverer from the list
-	var delivererList = document.getElementById("delivererList");
-	var index = delivererList.selectedIndex;
-	var deliverer = delivererList[index].value;
-	
-	//assign the value to the hidden input field
-	var delivererName = document.getElementById("delivererName");
-	delivererName.value = deliverer;
-	
-	//alert(deliverer);
-}
+<script type="text/javascript">
+	//<![CDATA[
 
-	
-//]]>
+	function assignDeliverer() {
+		// get the selected deliverer from the list
+		var delivererList = document.getElementById("delivererList");
+		var index = delivererList.selectedIndex;
+		var deliverer = delivererList[index].value;
+
+		//assign the value to the hidden input field
+		var delivererName = document.getElementById("delivererName");
+		delivererName.value = deliverer;
+
+		//alert(deliverer);
+	}
+
+	//]]>
 </script>
 
 
@@ -63,7 +64,8 @@ function assignDeliverer(){
 									href="ovens.html">Öfen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_DELIVERER')"
 									href="index.html">Deliverer Dashboard</a></li>
-								<li><a sec:authorize="hasRole('ROLE_SELLER')"
+								<li><a
+									sec:authorize="hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')"
 									href="orders.html">Bestellungen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_SELLER')"
 									href="register_customer.html">Kunden registrieren</a></li>
@@ -75,7 +77,8 @@ function assignDeliverer(){
 									href="addItem.html">Item hinzufügen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
 									href="catalog.html">Katalog bearbeiten</a></li>
-								<li><a sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER')"
+								<li><a
+									sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER')"
 									href="customer_display.html">Kunden anzeigen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
 									href="staffmember_display.html">Mitarbeiter anzeigen</a></li>
@@ -102,9 +105,63 @@ function assignDeliverer(){
 	<h1>Bestellungen</h1>
 
 
-	<div sec:authorize="hasRole('ROLE_SELLER') || hasRole('ROLE_ADMIN')" class="container col-md-8">
+	<div sec:authorize="hasRole('ROLE_SELLER') || hasRole('ROLE_ADMIN')"
+		class="container col-md-8">
 		<div class="panel panel-primary">
 			<div class="panel-heading">Übersicht der aktiven Bestellungen</div>
+			<div class="panel-body">
+				<table class="table table-striped table-bordered">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Preis</th>
+							<th>Status</th>
+							<th>Unbaked</th>
+							<th sec:authorize="hasRole('ROLE_SELLER')">Lieferant</th>
+						</tr>
+					</thead>
+					<tbody>
+						<div th:each="order : ${uncompletedOrders}">
+							<tr>
+								<td th:text="${order.getId() }">arg</td>
+								<td th:text="${{order.getTotalPrice()}}">arg</td>
+								<td th:text="${order.getOrderStatus() }">arg</td>
+								<td th:text="${order.getUnbakedPizzas() }">arg</td>
+
+								<td sec:authorize="hasRole('ROLE_SELLER')"
+									th:if="${order.getPickUp()}">
+									<form method="post" action="/confirmCollection">
+										<input type="hidden" value="0" name="orderID"
+											th:value="${order.getId()}" /> <input type="submit"
+											value="Abholung bestätigen" />
+									</form>
+								</td>
+
+								<td sec:authorize="hasRole('ROLE_SELLER')"
+									th:unless="${order.getPickUp()}">
+									<form method="post" action="/assignDeliverer">
+										<select name="delivererList" id="delivererList" size="1">
+											<option th:each=" deliverer : ${deliverers}"
+												th:text="${deliverer.getForename()}">eddy</option>
+										</select> <input type="hidden" value="0" id="delivererName"
+											name="delivererName" th:value="${deliverer}" /> <input
+											type="hidden" value="0" name="orderID"
+											th:value="${order.getId()}" /> <input
+											class="btn btn-primary" type="submit"
+											value="Lieferant schicken" onclick="assignDeliverer();" />
+									</form>
+								</td>
+							</tr>
+						</div>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<div sec:authorize="hasRole('ROLE_ADMIN')" class="container col-md-8">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Übersicht aller Bestellungen</div>
 			<div class="panel-body">
 				<table class="table table-striped table-bordered">
 					<thead>
@@ -117,48 +174,22 @@ function assignDeliverer(){
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="order : ${orders} ">
-							<td th:text="${order.getId() }">arg</td>
-							<td th:text="${{order.getTotalPrice()}}">arg</td>
-							<td th:text="${order.getOrderStatus() }">arg</td>
-							<td th:text="${order.getUnbakedPizzas() }">arg</td>
-							
-							<td th:if="${order.getPickUp()}">
-							<form method="post" action="/confirmCollection">
-								<input type="hidden" value="0" name="orderID" th:value="${order.getId()}" /> 
-								<input type="submit" value="Abholung bestätigen"/>
-							</form>
-							</td>
-							
-							<td th:unless="${order.getPickUp()}">
-							<form method="post" action="/assignDeliverer">
-								<select name="delivererList" id="delivererList" size="1">
-										<option th:each=" deliverer : ${deliverers}"
-											th:text="${deliverer.getForename()}">eddy</option>
-								</select>
-								
-								<input type="hidden" value="0" id="delivererName" name="delivererName" th:value="${deliverer}" /> 
-								<input type="hidden" value="0" name="orderID" th:value="${order.getId()}" /> 
-								<input type="submit" value="Lieferant schicken" onclick = "assignDeliverer();" />
-							</form>
-							</td>
-						</tr>
+						<div th:each="order : ${completedOrders}">
+							<tr>
+								<td th:text="${order.getId() }">arg</td>
+								<td th:text="${{order.getTotalPrice()}}">arg</td>
+								<td th:text="${order.getOrderStatus() }">arg</td>
+								<td th:text="${order.getUnbakedPizzas() }">arg</td>
+							</tr>
+						</div>
 					</tbody>
 				</table>
 			</div>
 		</div>
 	</div>
-	
-	<div sec:authorize="hasRole('ROLE_ADMIN')" class="container col-md-6">
-	<div class="panel panel-primary">
-	<div class="panel-heading">Übersicht aller Bestellungen</div>
-	<div class="panel-body">
-	
-	<!-- insert table of all orders here -->
-	</div>
-	</div>
-	
-	</div>
+
+	<p th:if="${error.getError() == true}">Fehler</p>
+
 
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

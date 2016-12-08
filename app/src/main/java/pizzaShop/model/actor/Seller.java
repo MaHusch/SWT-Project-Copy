@@ -9,18 +9,28 @@ import org.salespointframework.useraccount.UserAccount;
 
 import pizzaShop.model.store.Store;
 
+/**
+ * SellerClass for representing a Seller of the PizzaShop
+ * 
+ * @author Martin Huschenbett
+ *
+ */
 @Entity
-public class Seller extends StaffMember{
-	
-	@Id @GeneratedValue private long employeeID;
-	
-	public Seller(String surname, String forename,String telephoneNumber, String username, String password){
-		super(surname,forename,telephoneNumber);
-		this.updateUserAccount(username, password, Role.of("ROLE_SELLER"));
-	} 
-	
-	public Seller(String surname, String forename,String telephoneNumber){
-		super(surname,forename,telephoneNumber);
+public class Seller extends StaffMember {
+
+	@Id
+	@GeneratedValue
+	private long employeeID;
+
+	/**
+	 * Constructor
+	 * 
+	 * @param surname
+	 * @param forename
+	 * @param telephoneNumber
+	 */
+	public Seller(String surname, String forename, String telephoneNumber) {
+		super(surname, forename, telephoneNumber);
 	}
-	
+
 }

@@ -1,10 +1,12 @@
 package pizzaShop.controller;
 
+import static org.salespointframework.core.Currencies.EURO;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Optional;
 
+import org.javamoney.moneta.Money;
 import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.Order;
@@ -12,6 +14,7 @@ import org.salespointframework.order.OrderIdentifier;
 import org.salespointframework.order.OrderManager;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.quantity.Quantity;
+import org.salespointframework.time.BusinessTime;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.web.LoggedIn;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +30,13 @@ import junit.framework.Assert;
 import pizzaShop.model.actor.Customer;
 import pizzaShop.model.actor.Deliverer;
 import pizzaShop.model.actor.StaffMember;
+import pizzaShop.model.catalog_item.Cutlery;
 import pizzaShop.model.store.CustomerRepository;
+import pizzaShop.model.store.ErrorClass;
 import pizzaShop.model.store.ItemCatalog;
 import pizzaShop.model.store.PizzaOrder;
 import pizzaShop.model.store.PizzaOrderRepository;
+import pizzaShop.model.store.PizzaOrderStatus;
 import pizzaShop.model.store.StaffMemberRepository;
 import pizzaShop.model.store.Store;
 import pizzaShop.model.tan_management.Tan;
@@ -46,18 +52,24 @@ public class CartController {
 	private final CustomerRepository customerRepository;
 	private final PizzaOrderRepository pizzaOrderRepository;
 	private final StaffMemberRepository staffMemberRepository;
+	private final BusinessTime businesstime;
 	private Optional<Customer> customer = Optional.empty();
+	private final Store store;
+	private ErrorClass error;
 
 	@Autowired
 	public CartController(OrderManager<Order> orderManager, ItemCatalog itemCatalog, TanManagement tanManagement,
 			CustomerRepository customerRepository, PizzaOrderRepository pizzaOrderRepository,
-			StaffMemberRepository staffMemberRepository) {
+			StaffMemberRepository staffMemberRepository, Store store, BusinessTime businesstime) {
 		this.orderManager = orderManager;
 		this.itemCatalog = itemCatalog;
 		this.tanManagement = tanManagement;
 		this.customerRepository = customerRepository;
 		this.pizzaOrderRepository = pizzaOrderRepository;
 		this.staffMemberRepository = staffMemberRepository;
+		this.store = store;
+		this.businesstime = businesstime;
+		error = new ErrorClass(false);
 	}
 
 	@ModelAttribute("cart")
@@ -68,26 +80,17 @@ public class CartController {
 	@RequestMapping("/cart")
 	public String pizzaCart(Model model) {
 		model.addAttribute("items", itemCatalog.findAll());
-
+		model.addAttribute("error", error);
 		model.addAttribute("customer", customer);
 		return "cart";
 	}
 
 	@RequestMapping("/orders")
 	public String pizzaOrder(Model model) {
-		/*
-		 * for(Customer ca : customerRepository.findAll()){
-		 * System.out.println("ID: "+ca.getId()+" tel: "+ca.getTelephoneNumber()
-		 * +" Name: "+ca.getForename()); }
-		 */
-		// System.out.println("test"+customerRepository.findOne((long)
-		// 1).getTelephoneNumber());
-
-		model.addAttribute("orders", pizzaOrderRepository.findAll());
 
 		ArrayList<StaffMember> deliverers = new ArrayList<StaffMember>();
 
-		for (StaffMember staff : Store.staffMemberList) {
+		for (StaffMember staff : store.getStaffMemberList()) {
 			if (staff.getRole().getName().contains("DELIVERER")) {
 				Deliverer deliverer = (Deliverer) staff;
 				if (deliverer.getAvailable()) {
@@ -96,7 +99,21 @@ public class CartController {
 			}
 		}
 
+		ArrayList<PizzaOrder> uncompletedOrders = new ArrayList<PizzaOrder>();
+		ArrayList<PizzaOrder> completedOrders = new ArrayList<PizzaOrder>();
+
+		for (PizzaOrder po : pizzaOrderRepository.findAll()) {
+			if (po.getOrderStatus().equals(PizzaOrderStatus.COMPLETED)) {
+				completedOrders.add(po);
+			} else {
+				uncompletedOrders.add(po);
+			}
+		}
+
+		model.addAttribute("uncompletedOrders", uncompletedOrders);
+		model.addAttribute("completedOrders", completedOrders);
 		model.addAttribute("deliverers", deliverers);
+		model.addAttribute("error", error);
 
 		return "orders";
 	}
@@ -127,6 +144,7 @@ public class CartController {
 
 		Tan tan = tanManagement.getTan(telephoneNumber);
 		if (tan.getTanNumber().equals(tanValue)) {
+			error.setError(false);
 			for (Customer c : customerRepository.findAll()) {
 				System.out.println("test" + c.getTelephoneNumber());
 				if (telephoneNumber.equals(c.getTelephoneNumber())) {
@@ -135,6 +153,7 @@ public class CartController {
 				}
 			}
 		} else {
+			error.setError(true);
 			System.out.println("fail");
 		}
 
@@ -143,22 +162,34 @@ public class CartController {
 	}
 
 	@RequestMapping(value = "/checkout", method = RequestMethod.POST)
-	public String buy(@ModelAttribute Cart cart, @RequestParam("onSite") String onSiteStr,  @LoggedIn Optional<UserAccount> userAccount) {
+	public String buy(@ModelAttribute Cart cart, @RequestParam("onSite") String onSiteStr,
+			@RequestParam("cutlery") String cutleryStr,@LoggedIn Optional<UserAccount> userAccount) {
 		if (!userAccount.isPresent()) {
 			return "redirect:login";
 		}
-		assertTrue("Checkbox liefert anderen Wert als 0 oder 1! nämlich"+onSiteStr, onSiteStr.equals("0,1") | onSiteStr.equals("0"));
+		assertTrue("Checkbox liefert anderen Wert als 0 oder 1! nämlich" + onSiteStr,
+				onSiteStr.equals("0,1") | onSiteStr.equals("0"));
+		System.out.println("cutler ist:" + cutleryStr);
 		if (customer.isPresent()) {
 			boolean onSite = false;
+			boolean cutlery = true;
 			System.out.println(onSiteStr + " onSite");
-			if(onSiteStr.equals("0,1")){
+			if (onSiteStr.equals("0,1")) {
 				onSite = true;
 			}
+			if(cutleryStr.equals("0")) cutlery = false;
 			
+			//TODO: check if customer already has a cutlery --> throw error
+			if(cutlery) { 
+				//customerRepository.delete(customer.get());
+				customer.get().setCutlery(new Cutlery("Essgarnitur",Money.of(15.0, EURO),businesstime.getTime()));	
+				//customerRepository.save(customer.get());
+			}
+
 			PizzaOrder pizzaOrder = new PizzaOrder(userAccount.get(), Cash.CASH,
-					tanManagement.generateNewTan(customer.get().getTelephoneNumber()), onSite);// tanManagement.getTan(customer.getTelephoneNumber()));
+					tanManagement.generateNewTan(customer.get().getTelephoneNumber()), onSite, customer.get());// tanManagement.getTan(customer.getTelephoneNumber()));
 			cart.addItemsTo(orderManager.save(pizzaOrder.getOrder()));
-			Store.getInstance().analyzeOrder(pizzaOrderRepository.save(pizzaOrder));
+			store.analyzeOrder(pizzaOrderRepository.save(pizzaOrder));
 			cart.clear();
 			// customer = Optional.empty(); disabled for testing purposes
 		}
@@ -170,15 +201,13 @@ public class CartController {
 	public String assignDeliverer(Model model, @RequestParam("delivererName") String name,
 			@RequestParam("orderID") OrderIdentifier orderID) {// @RequestParam
 																// OrderIdentifier
-																// orderId){
+		if (name == null || name.equals("")) {
+			error.setError(true);
+		} else {
+			Deliverer deliverer = (Deliverer) store.getStaffMemberByForename(name);
 
-		System.out.println(name);
-		System.out.println(orderID);
-
-		Deliverer deliverer = (Deliverer) Store.getInstance().getStaffMemberByForename(name);
-
-		deliverer.addOrder(orderID);
-
+			deliverer.addOrder(orderID);
+		}
 		return "redirect:orders";
 	}
 }

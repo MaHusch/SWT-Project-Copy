@@ -1,6 +1,7 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css"
@@ -40,7 +41,8 @@
 									href="ovens.html">Öfen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_DELIVERER')"
 									href="sDeliverer.html">Deliverer Dashboard</a></li>
-								<li><a sec:authorize="hasRole('ROLE_SELLER')"
+								<li><a
+									sec:authorize="hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')"
 									href="orders.html">Bestellungen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_SELLER')"
 									href="register_customer.html">Kunden registrieren</a></li>
@@ -52,7 +54,8 @@
 									href="addItem.html">Item hinzufügen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
 									href="catalog.html">Katalog bearbeiten</a></li>
-								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+								<li><a
+									sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER')"
 									href="customer_display.html">Kunden anzeigen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
 									href="staffmember_display.html">Mitarbeiter anzeigen</a></li>
@@ -125,10 +128,10 @@
 							<td th:text="${item.quantity}">10</td>
 							<td th:text="${item.price}">10 Euro</td>
 							<td>
-							<form method="post" action="/removeCartItem">
-								<input type="hidden" name="ciid" th:value="${item.getId()}" />
-								<input class="btn btn-primary" type="submit" value="Entfernen" />
-							</form>
+								<form method="post" action="/removeCartItem">
+									<input type="hidden" name="ciid" th:value="${item.getId()}" />
+									<input class="btn btn-primary" type="submit" value="Entfernen" />
+								</form>
 							</td>
 						</tr>
 					</tbody>
@@ -137,18 +140,27 @@
 
 				<form sec:authorize="hasRole('ROLE_SELLER')" method="post"
 					action="/checkout">
-					<label for="onSite">Abholung vor Ort</label>:
-					<input type="hidden" name="onSite" value="0" />
-					<input type="checkbox"  name="onSite" value="1"/>
+					<label for="onSite">Abholung vor Ort</label>: 
+					<input type="hidden" name="onSite" value="0" /> 
+					<input type="checkbox" name="onSite" value="1" />
+					<label for="cutlery"> Essgarnitur </label>:
+					<input type="hidden" name="cutlery" value="0"/>
+					<input type="checkbox" name="cutlery" value="1" /> 
 					<input class="btn btn-primary" type="submit" value="Kaufen" />
 				</form>
 			</div>
 		</div>
 	</div>
-	
-	
-	
-	
+
+	<div th:if="${error.getError() == true}" class="container col-md-6">
+		<div class="panel panel-danger">
+			<div class="panel-heading">Fehler!</div>
+			<div class="panel-body">Fehler bei TAN-Überprüfung! Erneut
+				eingeben!</div>
+		</div>
+	</div>
+
+
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<!-- Latest compiled and minified JavaScript -->

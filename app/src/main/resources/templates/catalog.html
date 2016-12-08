@@ -4,7 +4,8 @@
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css"
-	th:href="@{/resources/css/style.css}" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"/>
+	th:href="@{/resources/css/style.css}"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" />
 <title>Items</title>
 </head>
 <body>
@@ -40,7 +41,8 @@
 									href="ovens.html">Öfen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_DELIVERER')"
 									href="sDeliverer.html">Deliverer Dashboard</a></li>
-								<li><a sec:authorize="hasRole('ROLE_SELLER')"
+								<li><a
+									sec:authorize="hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')"
 									href="orders.html">Bestellungen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_SELLER')"
 									href="register_customer.html">Kunden registrieren</a></li>
@@ -52,7 +54,8 @@
 									href="addItem.html">Item hinzufügen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
 									href="catalog.html">Katalog bearbeiten</a></li>
-								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+								<li><a
+									sec:authorize="hasRole('ROLE_ADMIN')  or hasRole('ROLE_SELLER')"
 									href="customer_display.html">Kunden anzeigen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
 									href="staffmember_display.html">Mitarbeiter anzeigen</a></li>
@@ -78,15 +81,28 @@
 	</header>
 
 	<!-- panel with CatalogTable -->
-	<div class="container col-md-8">
+	<div class="container col-md-12">
 		<div class="panel panel-primary">
 			<!-- Default panel contents -->
 			<div class="panel-heading">Unser Angebot</div>
 			<div class="panel-body">
 				<p>Werfen Sie einen Blick auf unser ausgewähtes Angebot an
 					Pizzen, Salaten und Getränken.</p>
+				<form method="post" action="/filterCatalog">
+					<select name="selection" id="selection" class="selectpicker">
+						<option>Alles</option>
+						<option>Getränke</option>
+						<option>Essen</option>
+					</select> <select name="filter" id="filter" class="selectpicker">
+						<option>hoechster Preis zuerst</option>
+						<option>niedrigster Preis zuerst</option>
+						<option>von A bis Z</option>
+						<option>von Z bis A</option>
+					</select> <input class="btn btn-primary" type="submit" value="Filtern" />
+				</form>
 				<!-- Table -->
-				<table class="table table-striped table-bordered">
+				<table sec:authorize="isAuthenticated()"
+					class="table table-striped table-bordered">
 					<tr>
 						<th>Name</th>
 						<th>Price</th>
@@ -138,14 +154,31 @@
 			</div>
 		</div>
 	</div>
-	
-	<!-- for each item extra panel, works fine!
-	<div th:each="item : ${items}" class="container col-sm-1">
-		<div class="panel panel-primary">
+
+	<div sec:authorize="!isAuthenticated()" th:each="item : ${items}" th:unless="${item.getType().equals(ItemType[3]) or item.getType().equals(ItemType[4])}"
+		class="container col-sm-3">
+		<div  class="panel panel-primary">
 			<div class="panel-heading" th:text="${item.getName()}">Itemname</div>
-			<div class="panel-body" th:text="${'Preis: ' + item.getPrice()}"></div>
+			<div class="panel-body">
+				<p th:text="${'Preis: ' + item.getPrice()}" />
+				<table>
+					<tr>
+						<td><form method="post" action="/addCartItem">
+								<input type="hidden" name="pid" value="0" th:value="${item.id}" />
+								<input type="hidden" name="number" value="1" /> <input
+									class="btn btn-primary" type="submit" value="Hinzufügen" />
+							</form></td>
+					<td th:if="${item.getType().equals(ItemType[1])}">
+						<form method="post" action="/configurePizza">
+								<input type="hidden" name="pid" value="0" th:value="${item.id}" />
+								<input type="hidden" name="number" value="1" /> <input
+									class="btn btn-primary" type="submit" value="Verfeinern" />
+							</form></td>
+					</tr>
+				</table>
+			</div>
 		</div>
-	</div> -->
+	</div>
 
 
 

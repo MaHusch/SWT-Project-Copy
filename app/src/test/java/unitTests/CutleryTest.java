@@ -24,7 +24,7 @@ public class CutleryTest {
 
 	@Test
 	public void testgetDate() {
-		assertEquals(c.getDate(),time);
+		assertEquals(c.getDate(),time.plusDays(28));
 		
 	}
 	
