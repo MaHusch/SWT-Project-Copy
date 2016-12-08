@@ -1,6 +1,5 @@
 package pizzaShop.model.store;
 
-
 import java.util.Timer;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,85 +13,73 @@ public class Oven {
 	private Pizza currentPizza = null;
 	private Timer myTimer;
 	private boolean empty = true;
-	
+
 	private final Store store;
-	
+
 	@Autowired
-	public Oven(Store store){
+	public Oven(Store store) {
 		this.store = store;
-		this.ovenID = this.ID++;	
-		
-		
+		this.ovenID = this.ID++;
+
 	}
-	
-	
-	
-	
-	public int getId(){
+
+	public int getId() {
 		return this.ovenID;
 	}
-	
-	public void resetTime(){
+
+	public void resetTime() {
 		myTimer.cancel();
 	}
-	
-	public boolean isEmpty(){
+
+	public boolean isEmpty() {
 		return empty;
 	}
-		
-	public boolean notifyObservers(Pizza pizza){
-		if(!pizza.equals(null)){
+
+	public boolean notifyObservers(Pizza pizza) {
+		if (!pizza.equals(null)) {
 			store.updatePizzaOrder(pizza);
 			return true;
-		}
-		else{
+		} else {
 			System.out.println("pizza ist null");
 			return false;
 		}
 	}
-		
-	public boolean fill(Pizza pizza){
-		if(!pizza.equals(null)){
+
+	public boolean fill(Pizza pizza) {
+		if (!pizza.equals(null)) {
 			currentPizza = pizza;
 			empty = false;
 			myTimer = new Timer();
-			myTimer.schedule(new MyTimerTask(myTimer, pizza, this), 0);		
+			myTimer.schedule(new MyTimerTask(myTimer, pizza, this), 0);
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
-	
-	public void clear(){
+
+	public void clear() {
 		currentPizza = null;
 		empty = true;
 	}
-	
-	public Pizza getPizza(){
-		try{
-			if(!currentPizza.equals(null)){
+
+	public Pizza getPizza() {
+		try {
+			if (!currentPizza.equals(null)) {
 				return currentPizza;
-			}
-			else{
+			} else {
 				return null;
 			}
-		}
-		catch (Exception e){
+		} catch (Exception e) {
 			return null;
 		}
 	}
-	
-	public String getPizzaName(){
-		if(!this.isEmpty()){
+
+	public String getPizzaName() {
+		if (!this.isEmpty()) {
 			return currentPizza.getName();
-		}
-		else{ 
+		} else {
 			return null;
 		}
 	}
-	
+
 }
-
-
-
