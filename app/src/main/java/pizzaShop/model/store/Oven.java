@@ -11,7 +11,7 @@ public class Oven {
 	private static int ID = 1;
 	private int ovenID;
 	private Pizza currentPizza = null;
-	private Timer myTimer;
+	private BakerTimer myTimer;
 	private boolean empty = true;
 
 	private final Store store;
@@ -49,8 +49,8 @@ public class Oven {
 		if (!pizza.equals(null)) {
 			currentPizza = pizza;
 			empty = false;
-			myTimer = new Timer();
-			myTimer.schedule(new MyTimerTask(myTimer, pizza, this), 0);
+			myTimer = new BakerTimer();
+			myTimer.scheduleAtFixedRate(new BakerTask(myTimer, pizza, this), 0, 1000);
 			return true;
 		} else {
 			return false;
@@ -80,6 +80,10 @@ public class Oven {
 		} else {
 			return null;
 		}
+	}
+	
+	public BakerTimer getBakerTimer(){
+		return myTimer;
 	}
 
 }

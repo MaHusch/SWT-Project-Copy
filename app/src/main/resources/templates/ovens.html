@@ -10,80 +10,83 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <title>Öfen</title>
 
 <script type="text/javascript">
-//<![CDATA[
+	//<![CDATA[
 
-var ovens = [];
-	
-var clicked = false;
+	var ovens = [];
 
-var bakeTime = 10;
+	var clicked = false;
 
-function addOvens(){
-	var table = document.getElementById("ovenTable");
-	
-	for (var i = 0, row; row = table.rows[i]; i++) {
-		   //iterate through rows
-		   for (var j = 0, col; col = row.cells[j]; j++) {
-		     //iterate through columns
-			 var ovenID = col.id;
-			 if(isNumber(ovenID) == true){
-				ovens[ovenID] = [false,bakeTime];
-			 	//alert(ovenID);
-			 }
-		 }  
-	}
-	
-}
+	var bakeTime = 10;
 
-// regex taken from "http://stackoverflow.com/questions/1303646/check-whether-variable-is-number-or-string-in-javascript"
-function isNumber(n){
-	return /^-?[\d.]+(?:e-?\d+)?$/.test(n);
-}
+	function addOvens() {
+		var table = document.getElementById("ovenTable");
 
-function setOvenTimer(id,started){
-	ovens[id][0] = started;
-}
-
-function startTimer(id) {
-	
-	var ovenID = id.replace("timer","");
-	setOvenTimer(ovenID,true);
-	
-	if (clicked === false) {
-		clock = setInterval("timer()", 1000);
-		clicked = true;
-	}
-	else if (clicked === true) {
-	}
-}
-function timer() {
-	for(var i = 1; i <= Object.keys(ovens).length; i++){
-		if (ovens[i][0] == true){
-			var seconds = ovens[i][1] - 1;
-			if (seconds == 0){ stopTimer(i); break;}
-			ovens[i][1] = seconds;
-			
-			document.getElementById(i).innerHTML = "Timer: " + seconds + " sekunden";
+		for (var i = 0, row; row = table.rows[i]; i++) {
+			//iterate through rows
+			for (var j = 0, col; col = row.cells[j]; j++) {
+				//iterate through columns
+				var ovenID = col.id;
+				if (isNumber(ovenID) == true) {
+					ovens[ovenID] = [ false, bakeTime ];
+					//alert(ovenID);
+				}
+			}
 		}
-		
-	}
-	
-}
-function stopTimer(id) {
-	window.clearInterval(clock);
-	clock = setInterval("timer()", 1000);
-	
-	ovens[id][1] = bakeTime;
-	ovens[id][0] = false;
-	
-	document.getElementById(id).innerHTML = "fertig";
-	clicked = false;
-}
 
-//]]>
+	}
+
+	// regex taken from "http://stackoverflow.com/questions/1303646/check-whether-variable-is-number-or-string-in-javascript"
+	function isNumber(n) {
+		return /^-?[\d.]+(?:e-?\d+)?$/.test(n);
+	}
+
+	function setOvenTimer(id, started) {
+		ovens[id][0] = started;
+	}
+
+	function startTimer(id) {
+
+		var ovenID = id.replace("timer", "");
+		setOvenTimer(ovenID, true);
+
+		if (clicked === false) {
+			clock = setInterval("timer()", 1000);
+			clicked = true;
+		} else if (clicked === true) {
+		}
+	}
+	function timer() {
+		for (var i = 1; i <= Object.keys(ovens).length; i++) {
+			if (ovens[i][0] == true) {
+				var seconds = ovens[i][1] - 1;
+				if (seconds == 0) {
+					stopTimer(i);
+					break;
+				}
+				ovens[i][1] = seconds;
+
+				document.getElementById(i).innerHTML = "Timer: " + seconds
+						+ " sekunden";
+			}
+
+		}
+
+	}
+	function stopTimer(id) {
+		window.clearInterval(clock);
+		clock = setInterval("timer()", 1000);
+
+		ovens[id][1] = bakeTime;
+		ovens[id][0] = false;
+
+		document.getElementById(id).innerHTML = "fertig";
+		clicked = false;
+	}
+
+	//]]>
 </script>
 
-		
+
 </head>
 
 <body onLoad="addOvens();">
@@ -120,7 +123,8 @@ function stopTimer(id) {
 									href="ovens.html">Öfen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_DELIVERER')"
 									href="index.html">Deliverer Dashboard</a></li>
-								<li><a sec:authorize="hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')"
+								<li><a
+									sec:authorize="hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')"
 									href="orders.html">Bestellungen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_SELLER')"
 									href="register_customer.html">Kunden registrieren</a></li>
@@ -132,7 +136,8 @@ function stopTimer(id) {
 									href="addItem.html">Item hinzufügen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
 									href="catalog.html">Katalog bearbeiten</a></li>
-								<li><a sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER')"
+								<li><a
+									sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER')"
 									href="customer_display.html">Kunden anzeigen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
 									href="staffmember_display.html">Mitarbeiter anzeigen</a></li>
@@ -159,7 +164,8 @@ function stopTimer(id) {
 
 
 
-	<div sec:authorize="hasRole('ROLE_BAKER') || hasRole('ROLE_ADMIN')" class="container col-md-6">
+	<div sec:authorize="hasRole('ROLE_BAKER') || hasRole('ROLE_ADMIN')"
+		class="container col-md-6">
 		<div class="panel panel-primary">
 			<div class="panel-heading">Ofenliste</div>
 			<div class="panel-body">
@@ -167,17 +173,19 @@ function stopTimer(id) {
 					<tr th:each=" oven : ${ovens}">
 						<td th:text="${'Oven ID: ' + oven.getId()}">Oven ID:</td>
 						<td th:text="${'Oven content: ' + oven.getPizzaName()}">Content:</td>
-						<td th:id="${oven.getId()}">Time left: xx:yy</td>
+						<td th:if="${oven.getBakerTimer() == null}">Ofen ist leer!</td>
+						<td th:if="${oven.getBakerTimer() != null}"
+							th:text="${oven.getBakerTimer().getCounter()}">time left</td> 	
 						<td sec:authorize="hasRole('ROLE_BAKER')">
-							
-							<input type="submit" th:id="timer + ${oven.getId()}" value="Click here to start timer" name="submit" onClick="startTimer(this.id)"/>
-							<form  method="post" action="/getNextPizza">
-								<input type="hidden" name="ovenID" value="0"
-									th:value="${oven.getId()}" /> <input class="btn btn-primary"
-									type="submit" value="Auswählen" onclick="startClock()" />
-							</form>
-						</td>
-					</tr>
+					<input type="submit" th:id="timer + ${oven.getId()}"
+							value="Click here to start timer" name="submit"
+							onClick="startTimer(this.id)" />
+						<form method="post" action="/getNextPizza">
+							<input type="hidden" name="ovenID" value="0"
+								th:value="${oven.getId()}" /> <input class="btn btn-primary"
+								type="submit" value="Auswählen" onclick="startClock()" />
+						</form>
+						</td></tr>
 				</table>
 				<form sec:authorize="hasRole('ROLE_ADMIN')" method="post"
 					action="/addOven">
@@ -192,6 +200,7 @@ function stopTimer(id) {
 		<div class="panel panel-primary">
 			<div class="panel-heading">Pizzaqueue</div>
 			<div class="panel-body">
+			<p th:if="${queue.size() == 0}">PizzaQueue ist leer!</p>
 				<table class="table table-striped">
 					<tbody th:remove="all-but-first">
 						<tr th:each="pizza : ${queue}">
@@ -203,7 +212,7 @@ function stopTimer(id) {
 		</div>
 	</div>
 
-	<div th:if="${error.getError() == false}" class="container col-md-4">
+	<div th:if="${error.getError() == true}" class="container col-md-4">
 		<div class="panel panel-danger">
 			<div class="panel-heading">Fehler!</div>
 			<div class="panel-body">
