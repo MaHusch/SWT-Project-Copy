@@ -21,6 +21,7 @@ public class Ingredient extends Item {
 
 	/**
 	 * Constructor
+	 * 
 	 * @param name
 	 * @param price
 	 */

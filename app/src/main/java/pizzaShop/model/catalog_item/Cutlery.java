@@ -17,7 +17,6 @@ import org.salespointframework.time.BusinessTime;
 @Entity
 public class Cutlery extends Item {
 
-	
 	/**
 	 * 
 	 */
