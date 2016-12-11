@@ -80,8 +80,24 @@ public class CatalogController {
 	@RequestMapping("/removeItem")
 	public String removeItem(@RequestParam("pid") ProductIdentifier id) {
 		if(!itemCatalog.findOne(id).get().getType().equals(ItemType.INGREDIENT))
-				itemCatalog.delete(id);
-		// um Ingredients zu löschen muss noch durch Pizzen interiert werden.
+			itemCatalog.delete(id);
+		
+		Ingredient i = (Ingredient) itemCatalog.findOne(id).orElse(null);
+		
+		Pizza p1;
+		for(Item x : itemCatalog.findAll())
+		{
+			if(x.getType().equals(ItemType.PIZZA)) 
+			{
+			p1 = (Pizza) x;
+			if(p1.getIngredients().contains(i.getName())) 
+				{
+					p1.removeIngredient(i);
+					itemCatalog.save(p1);
+				}
+			}
+		}
+		
 		// was wenn noch im cart?
 		return "redirect:catalog";
 
