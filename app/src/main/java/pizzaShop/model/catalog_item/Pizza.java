@@ -14,7 +14,7 @@ import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.order.OrderIdentifier;
 
 /**
- * PiizaClass for represesenting a Pizza of the PizzaShop
+ * PizzaClass for representing a pizza of the PizzaShop
  * @author Florentin Dörre
  */
 @Entity

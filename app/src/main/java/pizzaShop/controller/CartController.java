@@ -169,7 +169,7 @@ public class CartController {
 		}
 		assertTrue("Checkbox liefert anderen Wert als 0 oder 1! nämlich" + onSiteStr,
 				onSiteStr.equals("0,1") | onSiteStr.equals("0"));
-		System.out.println("cutler ist:" + cutleryStr);
+		System.out.println("cutlery ist:" + cutleryStr);
 		if (customer.isPresent()) {
 			boolean onSite = false;
 			boolean cutlery = true;
@@ -181,9 +181,8 @@ public class CartController {
 			
 			//TODO: check if customer already has a cutlery --> throw error
 			if(cutlery) { 
-				//customerRepository.delete(customer.get());
-				customer.get().setCutlery(new Cutlery("Essgarnitur",Money.of(15.0, EURO),businesstime.getTime()));	
-				//customerRepository.save(customer.get());
+				// if false --> return error
+				store.lentCutlery(customer.get(), businesstime.getTime());
 			}
 
 			PizzaOrder pizzaOrder = new PizzaOrder(userAccount.get(), Cash.CASH,

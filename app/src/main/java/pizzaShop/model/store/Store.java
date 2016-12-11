@@ -2,6 +2,7 @@ package pizzaShop.model.store;
 
 import static org.salespointframework.core.Currencies.EURO;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,9 @@ import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import pizzaShop.model.actor.Customer;
 import pizzaShop.model.actor.StaffMember;
+import pizzaShop.model.catalog_item.Cutlery;
 import pizzaShop.model.catalog_item.Ingredient;
 import pizzaShop.model.catalog_item.Item;
 import pizzaShop.model.catalog_item.ItemType;
@@ -25,21 +28,23 @@ public class Store {
 	private final ItemCatalog itemCatalog;
 	private final PizzaOrderRepository pizzaOrderRepo;
 	private final StaffMemberRepository staffMemberRepository;
-
-	private List<StaffMember> staffMemberList;
+	private final CustomerRepository customerRepository;
+	
+	private List<StaffMember> staffMemberList; // why List and Repository for StaffMember?
 	private ArrayList<Oven> ovenList;
 	private Pizza nextPizza;
 
 	private Pizzaqueue pizzaQueue = Pizzaqueue.getInstance();
 
 	@Autowired
-	public Store(UserAccountManager employeeAccountManager, ItemCatalog itemCatalog, PizzaOrderRepository pizzaOrderRepo, StaffMemberRepository staffMemberRepository) {
+	public Store(UserAccountManager employeeAccountManager, ItemCatalog itemCatalog, 
+			PizzaOrderRepository pizzaOrderRepo, StaffMemberRepository staffMemberRepository,CustomerRepository customerRepository) {
 
 		this.employeeAccountManager = employeeAccountManager;
 		this.itemCatalog = itemCatalog;
 		this.pizzaOrderRepo = pizzaOrderRepo;
 		this.staffMemberRepository = staffMemberRepository;
-
+		this.customerRepository = customerRepository;
 		this.staffMemberList = new ArrayList<StaffMember>();
 		this.ovenList = new ArrayList<Oven>();
 
@@ -276,6 +281,39 @@ public class Store {
 			}
 		}
 		return false;
+	}
+	
+	public boolean lentCutlery(Customer customer, LocalDateTime time)
+	{
+		Cutlery cutlery = new Cutlery("Essgarnitur",Money.of(15.0, EURO),time);
+		if(customer.equals(null)) return false;
+		//if(!customer.getCutlery().equals(null)) return false; // has to return his lent cutlery before
+		
+
+		customer.setCutlery(cutlery);
+		
+		this.customerRepository.save(customer);
+		
+		return true;
+	}
+	
+	/**
+	 * Function for returning a cutlery lent by a customer
+	 * @param lost <code> true </code> if customer lost his {@link catalog_item.Cutlery}, <code> false </code> if he returns it properly
+	 * @param customer customer who wants to return his {@link catalog_item.Cutlery}
+	 * @throws Exception when customer hasn't lent a {@link catalog_item.Cutlery} beforehand
+	 */
+	public void returnCutlery(boolean lost, Customer customer) throws Exception
+	{
+		if(customer.getCutlery().equals(null)) 
+			throw new NullPointerException("Kunde hatte keine Essgarnitur ausgeliehen bzw ist schon verfallen");
+		
+		if(lost)
+		{
+			//TODO: accountancy entry
+			
+		}
+		customer.setCutlery(null);
 	}
 	 
 }
