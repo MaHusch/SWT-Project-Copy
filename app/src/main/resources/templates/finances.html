@@ -98,12 +98,12 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 							<tr th:each="AccountancyEntry : ${entries} ">
 								<td
 									th:text="${#temporals.format(AccountancyEntry.date.get(), 'dd.MM.yyyy HH:mm')}"></td>
-								<td th:text="${AccountancyEntry.getValue()}"></td>
+								<td th:text="${{AccountancyEntry.getValue()}}"></td>
 								<td th:text="${AccountancyEntry.getDescription()}"></td>
 							</tr>
 							<tr>
 								<th>Bilanz:</th>
-								<td th:text="${totalGain}">EUR 9001</td>
+								<td th:text="${{totalGain}}">EUR 9001</td>
 								<td></td>
 							</tr>
 						</tbody>
@@ -155,7 +155,7 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 		</div>
 	</div>
 
-	<div sec:authorize="hasRole('ROLE_ADMIN')" class="container col-md-4">
+	<!--  <div sec:authorize="hasRole('ROLE_ADMIN')" class="container col-md-4">
 		<div class="panel panel-primary">
 			<div class="panel-heading">Neue Bestellung manuell hinzufügen</div>
 			<div class="panel-body">
@@ -167,7 +167,7 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 				</form>
 			</div>
 		</div>
-	</div>
+	</div> -->
 
 	<div sec:authorize="hasRole('ROLE_ADMIN')" class="container col-md-4">
 		<div class="panel panel-primary">

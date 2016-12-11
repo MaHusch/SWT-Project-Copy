@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.javamoney.moneta.Money;
+import org.salespointframework.accountancy.Accountancy;
+import org.salespointframework.accountancy.AccountancyEntry;
+import org.salespointframework.accountancy.ProductPaymentEntry;
 import org.salespointframework.order.OrderLine;
 import org.salespointframework.useraccount.Role;
 import org.salespointframework.useraccount.UserAccountManager;
@@ -29,6 +32,8 @@ public class Store {
 	private final PizzaOrderRepository pizzaOrderRepo;
 	private final StaffMemberRepository staffMemberRepository;
 	private final CustomerRepository customerRepository;
+	private final Accountancy accountancy;
+	
 	
 	private List<StaffMember> staffMemberList; // why List and Repository for StaffMember?
 	private ArrayList<Oven> ovenList;
@@ -38,7 +43,7 @@ public class Store {
 
 	@Autowired
 	public Store(UserAccountManager employeeAccountManager, ItemCatalog itemCatalog, 
-			PizzaOrderRepository pizzaOrderRepo, StaffMemberRepository staffMemberRepository,CustomerRepository customerRepository) {
+			PizzaOrderRepository pizzaOrderRepo, StaffMemberRepository staffMemberRepository,CustomerRepository customerRepository, Accountancy accountancy) {
 
 		this.employeeAccountManager = employeeAccountManager;
 		this.itemCatalog = itemCatalog;
@@ -47,6 +52,7 @@ public class Store {
 		this.customerRepository = customerRepository;
 		this.staffMemberList = new ArrayList<StaffMember>();
 		this.ovenList = new ArrayList<Oven>();
+		this.accountancy = accountancy;
 
 		ovenList.add(new Oven(this));
 		ovenList.add(new Oven(this));
@@ -122,6 +128,43 @@ public class Store {
 		System.out.println(pizzaQueue);
 		return order;
 
+	}
+	
+	public void updatePizzaOrder(Pizza pizza) {
+
+		if (pizza.equals(null)) {
+			return;
+		} else {
+
+			Iterable<PizzaOrder> pizzaOrders = pizzaOrderRepo.findAll();
+
+			for (PizzaOrder order : pizzaOrders) {
+
+				System.out.println("Order ID: " + order.getId());
+				System.out.println("Pizza ID: " + pizza.getFirstOrder());
+
+				if (order.getId().toString().equals(pizza.getFirstOrder())) {
+					order.markAsBaked();
+					try {
+						pizza.removeFirstOrder();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					pizzaOrderRepo.save(order);
+					return;
+				}
+			}
+		}
+	}
+	
+	public void completeOrder(PizzaOrder p, String msg){
+		p.completeOrder();
+		pizzaOrderRepo.save(p);
+		/* Probleme mit dem totalPrice, deshalb erstmal ein Workaround
+		ProductPaymentEntry a = ProductPaymentEntry.of(p.getOrder(), "Order über Account " + p.getOrder().getUserAccount().getUsername() + " "+msg);*/
+		AccountancyEntry a = new AccountancyEntry(p.getTotalPrice(), "Order über Account " + p.getOrder().getUserAccount().getUsername() + " "+msg);
+		accountancy.add(a);
 	}
 
 	public Item findItemByIdentifier(String identifier, ItemType filter) {
@@ -233,33 +276,7 @@ public class Store {
 		}
 	}
 
-	public void updatePizzaOrder(Pizza pizza) {
-
-		if (pizza.equals(null)) {
-			return;
-		} else {
-
-			Iterable<PizzaOrder> pizzaOrders = pizzaOrderRepo.findAll();
-
-			for (PizzaOrder order : pizzaOrders) {
-
-				System.out.println("Order ID: " + order.getId());
-				System.out.println("Pizza ID: " + pizza.getFirstOrder());
-
-				if (order.getId().toString().equals(pizza.getFirstOrder())) {
-					order.markAsBaked();
-					try {
-						pizza.removeFirstOrder();
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					pizzaOrderRepo.save(order);
-					return;
-				}
-			}
-		}
-	}
+	
 
 	public void getNextPizza() throws Exception {
 

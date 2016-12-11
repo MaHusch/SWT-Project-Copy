@@ -103,8 +103,8 @@ public class DelivererController {
 				if (oi.equals(p.getId())) {
 					tanManagement.confirmTan(p.getTan()); // TODO: assign new
 					// TAN?
-					p.completeOrder();
-					pizzaOrderRepository.save(p);
+					store.completeOrder(p, "ausgeliefert");
+					
 				}
 			}
 

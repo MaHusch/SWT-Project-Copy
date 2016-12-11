@@ -2,7 +2,9 @@ package pizzaShop;
 
 import static org.salespointframework.core.Currencies.EURO;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import org.javamoney.moneta.Money;
 import org.salespointframework.accountancy.Accountancy;
@@ -100,7 +102,7 @@ public class ApplicationDataInitializer implements DataInitializer {
 		Seller Seller_Hans_Bergstein = new Seller("Bergstein", "Hans", "492161268");
 		store.updateUserAccount(Seller_Hans_Bergstein, "hans123", "qwe", Role.of("ROLE_SELLER"));
 		
-		store.getStaffMemberList().addAll(Arrays.asList(Seller_Hans_Bergstein, Deliverer_Florentin_Doerre, Deliverer_Martin_Huschenbett, Baker_Eduardo_Pienso));
+		store.getStaffMemberList().addAll(Arrays.asList(admin, Seller_Hans_Bergstein, Deliverer_Florentin_Doerre, Deliverer_Martin_Huschenbett, Baker_Eduardo_Pienso));
 	}
 	
 	/**
@@ -170,8 +172,14 @@ public class ApplicationDataInitializer implements DataInitializer {
 		accountancy.add(ace1);
 		accountancy.add(ace2);
 		accountancy.add(ace3);
-
-		(new Thread(new SalaryThread(accountancy, businessTime))).start();
+		
+		HashMap<Role, Integer> incomeMap = new HashMap<Role, Integer>();
+		incomeMap.put(Role.of("ROLE_ADMIN"), 400);
+		incomeMap.put(Role.of("ROLE_BAKER"), 250);
+		incomeMap.put(Role.of("ROLE_SELLER"), 300);
+		incomeMap.put(Role.of("ROLE_DELIVERER"), 200);
+		
+		(new Thread(new SalaryThread(accountancy, businessTime, store, incomeMap))).start();
 		
 	}
 	

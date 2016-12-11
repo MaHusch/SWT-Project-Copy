@@ -33,7 +33,7 @@ public class PizzaOrder {
 
 	private PizzaOrderStatus pizzaOrderStatus = PizzaOrderStatus.OPEN;
 
-	@OneToOne
+	@OneToOne(cascade = { CascadeType.ALL })
 	private Order order;
 
 	private int unbakedPizzas = 0;

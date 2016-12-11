@@ -118,6 +118,12 @@ public class CartController {
 		return "orders";
 	}
 
+	@RequestMapping(value = "/confirmCollection", method = RequestMethod.POST)
+	public String cofirmLocalOrder(@RequestParam("orderID") OrderIdentifier id){
+		store.completeOrder(pizzaOrderRepository.findOne(id), "mitgenommen");
+		return "redirect:orders";
+	}
+	
 	@RequestMapping(value = "/addCartItem", method = RequestMethod.POST)
 	public String addItem(@RequestParam("pid") ProductIdentifier id, @RequestParam("number") int number,
 			@ModelAttribute Cart cart) {
