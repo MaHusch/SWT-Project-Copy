@@ -300,17 +300,17 @@ public class Store {
 		return false;
 	}
 	
-	public boolean lentCutlery(Customer customer, LocalDateTime time)
-	{
-		Cutlery cutlery = new Cutlery("Essgarnitur",Money.of(15.0, EURO),time);
-		if(customer.equals(null)) return false;
-		//if(!customer.getCutlery().equals(null)) return false; // has to return his lent cutlery before
-		
+	public boolean lentCutlery(Customer customer, LocalDateTime time) {
+		Cutlery cutlery = new Cutlery("Essgarnitur", Money.of(15.0, EURO), time);
+		if (customer.equals(null))
+			return false;
+		if (customer.getCutlery() != null)
+			return false; // has to return his lent cutlery before
 
 		customer.setCutlery(cutlery);
-		
+
 		this.customerRepository.save(customer);
-		
+
 		return true;
 	}
 	

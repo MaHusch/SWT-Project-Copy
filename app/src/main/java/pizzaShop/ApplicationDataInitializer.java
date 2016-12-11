@@ -189,8 +189,12 @@ public class ApplicationDataInitializer implements DataInitializer {
 	public void initializeCustomers() 
 	{	
 		Customer cu1 = new Customer("Jürgens", "Dieter", "12345", "Dresden", "01324", "Müllerstraße", "5b");
+		Customer cu2 = new Customer("Skywalker","Luke","23456","Dresden","01218","Sackgasse","42a");
 		tanManagement.confirmTan(tanManagement.generateNewTan(cu1.getTelephoneNumber()));
+		tanManagement.confirmTan(tanManagement.generateNewTan(cu2.getTelephoneNumber()));
+		cu2.setCutlery(new Cutlery("Essgarnitur",Money.of(15.0,EURO),businessTime.getTime()));
 		customerRepository.save(cu1);
+		customerRepository.save(cu2);
 		System.out.println(tanManagement.getTan(customerRepository.save(cu1).getTelephoneNumber()).getTanNumber());
 	}
 }

@@ -1,6 +1,7 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css"
@@ -103,7 +104,12 @@
 							<td th:text="${customer.getAddress().getPostcode()}">Postleitzahl</td>
 							<td th:text="${customer.getAddress().getStreet()}">Straßenname</td>
 							<td th:text="${customer.getAddress().getHousenumber()}">Hausnummer</td>
-							<td> Hier kommt die Zeit hin </td>
+							<td>
+								<div th:switch="${customer.getCutlery() == null}">
+								<p th:case="${true}" th:text="---">keine Essgarnitur</p>
+								<p th:case="${false}" th:text="${customer.getCutlery().getDate().toString()}"> EssgarniturZeit</p>
+								</div>
+							</td>
 							<td sec:authorize="hasRole('ROLE_ADMIN')">
 								<form method="post" action="/editCustomer" sec:authorize="hasRole('ROLE_ADMIN')">
 									<input type="hidden" name="cid" id="cid" th:value= "${customer.getId()}"/>
