@@ -1,12 +1,10 @@
 package pizzaShop.controller;
 
-import static org.salespointframework.core.Currencies.EURO;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Optional;
 
-import org.javamoney.moneta.Money;
 import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.Order;
@@ -26,11 +24,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import junit.framework.Assert;
 import pizzaShop.model.actor.Customer;
 import pizzaShop.model.actor.Deliverer;
 import pizzaShop.model.actor.StaffMember;
-import pizzaShop.model.catalog_item.Cutlery;
+import pizzaShop.model.catalog_item.Item;
+import pizzaShop.model.catalog_item.ItemType;
 import pizzaShop.model.store.CustomerRepository;
 import pizzaShop.model.store.ErrorClass;
 import pizzaShop.model.store.ItemCatalog;
@@ -56,6 +54,7 @@ public class CartController {
 	private Optional<Customer> customer = Optional.empty();
 	private final Store store;
 	private ErrorClass error;
+	private boolean freeDrink = false;
 
 	@Autowired
 	public CartController(OrderManager<Order> orderManager, ItemCatalog itemCatalog, TanManagement tanManagement,
@@ -78,11 +77,21 @@ public class CartController {
 	}
 
 	@RequestMapping("/cart")
-	public String pizzaCart(Model model) {
+	public String pizzaCart(Model model, @ModelAttribute Cart cart) {
 		model.addAttribute("items", itemCatalog.findAll());
+		
+		ArrayList<Item> freeDrinks = new ArrayList<Item>();
+		for(Item i : itemCatalog.findAll()){
+			if(i.getType().equals(ItemType.FREEDRINK))
+				freeDrinks.add(i);
+		}
+		model.addAttribute("freeDrinks", freeDrinks);
 		model.addAttribute("error", error);
 		model.addAttribute("customer", customer);
+		model.addAttribute("freeDrink", freeDrink);
+		//model.addAttribute("cPrice", (int) (cart.getPrice().getNumber().longValueExact())*100);
 		return "cart";
+		
 	}
 
 	@RequestMapping("/orders")
@@ -139,10 +148,19 @@ public class CartController {
 
 	@RequestMapping(value = "/removeCartItem", method = RequestMethod.POST)
 	public String addItem(@RequestParam("ciid") String cartId, @ModelAttribute Cart cart) {
-
+		if(cart.getItem(cartId).get().getPrice().isZero())
+			freeDrink = false;
 		cart.removeItem(cartId);
+		
 		return "redirect:cart";
 
+	}
+	
+	@RequestMapping(value = "/addFreeDrink", method = RequestMethod.POST)
+	public String addFreeDrink(@RequestParam("iid") ProductIdentifier id, @ModelAttribute Cart cart){
+		cart.addOrUpdateItem(itemCatalog.findOne(id).get(), Quantity.of(1));
+		freeDrink=true;
+		return "redirect:cart";
 	}
 
 	@RequestMapping(value = "/checkTan", method = RequestMethod.POST)
