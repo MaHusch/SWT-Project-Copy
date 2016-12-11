@@ -100,38 +100,17 @@ public class CatalogController {
 			 @RequestParam("itemprice") Number price, @RequestParam("itemtype") String type)
 	{
 		Item i = itemCatalog.findOne(id).orElse(null);
-		ItemType ityp;
 		
-		System.out.println("bearbeiten" + i.getName());
+		//System.out.println("bearbeiten" + i.getName());
 		
 		try {
 			store.saveEditedItem(i, name, type, price);
 		} catch (Exception e) {
 			// TODO hand over arguments with error on template
 			error.setError(true);
-			e.printStackTrace(); //setErrorMessage
+			error.setMessage(e.getMessage());
 			return "redirect:addItem";
 		}
-		
-		
-		/*if(!i.equals(null))
-		{
-			if(i.getType().equals(ityp))
-			{
-			itemCatalog.delete(i); //altes Element rauslöschen
-			i.setName(name);
-			System.out.println(i.getName());
-			i.setPrice(Money.of(price, EURO));
-			itemCatalog.save(i); // sonst wirds nicht auf den Catalog übertragen :O
-			
-			}
-			else
-			{
-				System.out.println("anderer Itemtyp --> neues Item");
-				itemCatalog.delete(i);
-				this.createItem(name, price, type);
-			}
-		}*/
 		
 		return "redirect:catalog";
 	}
@@ -182,39 +161,10 @@ public class CatalogController {
 			store.createNewItem(name, type, price);
 		} catch (Exception e) {
 			error.setError(true);
-			e.printStackTrace(); //setErrorMessage
+			error.setMessage(e.getMessage()); 
 			return "redirect:addItem";
 		}
-		
-		/*if(name.isEmpty() || price.floatValue() < 0) 
-			{
-			//TODO: interact with frontend
-			System.out.println("fehler");
-			error.setError(true);
-			return "redirect:addItem";
-			}
-	
-		if(type.equals("PIZZA"))
-		{
-			neu = new Pizza(name,Money.of(price, EURO));
 			
-		}
-		else if(type.equals("INGREDIENT"))
-		{
-			neu = new Ingredient(name,Money.of(price, EURO));
-		}
-		else
-		{
-			ItemType t = ItemType.SALAD;
-			if(type.equals("DRINK")) t = ItemType.DRINK;
-			if(type.equals("FREEDRINK")) t = ItemType.FREEDRINK;
-			if(type.equals("SALAD")) t = ItemType.SALAD;
-			
-			neu = new Item(name,Money.of(price, EURO),t);
-		}
-		
-		itemCatalog.save(neu); */
-		
 		return "redirect:catalog";
 	}
 	
@@ -234,7 +184,7 @@ public class CatalogController {
 		case "Essen":
 			for(Item i : itemCatalog.findByType(ItemType.PIZZA)) filteredItems.add(i);
 			for(Item i : itemCatalog.findByType(ItemType.SALAD)) filteredItems.add(i);
-			
+			break;
 		default: // alles ist default	
 			for(Item i : itemCatalog.findAll()) filteredItems.add(i);
 		}

@@ -101,7 +101,7 @@
 					</select> <input class="btn btn-primary" type="submit" value="Filtern" />
 				</form>
 				<!-- Table -->
-				<table sec:authorize="isAuthenticated()"
+				<table sec:authorize="hasRole('ROLE_ADMIN')"
 					class="table table-striped table-bordered">
 					<tr>
 						<th>Name</th>
@@ -155,7 +155,7 @@
 		</div>
 	</div>
 
-	<div sec:authorize="!isAuthenticated()" th:each="item : ${items}" th:unless="${item.getType().equals(ItemType[3]) or item.getType().equals(ItemType[4])}"
+	<div sec:authorize="!hasRole('ROLE_ADMIN')" th:each="item : ${items}" th:unless="${item.getType().equals(ItemType[3]) or item.getType().equals(ItemType[4])}"
 		class="container col-sm-3">
 		<div  class="panel panel-primary">
 			<div class="panel-heading" th:text="${item.getName()}">Itemname</div>
