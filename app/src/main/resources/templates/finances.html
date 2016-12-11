@@ -83,6 +83,51 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 
 	<div sec:authorize="hasRole	('ROLE_ADMIN')" class="container col-md-12">
 		<div class="panel panel-primary">
+			<div class="panel-heading">Überblick der Finanzen (Monat)</div>
+			<div class="panel-body">
+				<div class="container">
+					
+					<div id="frm">
+						<!-- <p th:text="${#temporals.format(displayTime, 'dd.MM.yyyy HH:mm')}">11.10.2002</p> -->
+						
+						<form method="post" action="/decreaseMonth">
+							<input class="btn btn-primary" type="submit" value='←' />
+						</form>
+						<b th:text="${displayTime}">11.10.2002</b>
+						<form method="post" action="/increaseMonth">
+							<input class="btn btn-primary" type="submit" value='→' />
+						</form>
+					</div>
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>Datum</th>
+								<th>Wert</th>
+								<th>Beschreibung</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="AccountancyEntry : ${currentDisplay} ">
+								<td
+									th:text="${#temporals.format(AccountancyEntry.date.get(), 'dd.MM.yyyy HH:mm')}"></td>
+								<td th:text="${{AccountancyEntry.getValue()}}"></td>
+								<td th:text="${AccountancyEntry.getDescription()}"></td>
+							</tr>
+							<tr>
+								<th>Bilanz:</th>
+								<td th:text="${{monthlyGain}}">EUR 9001</td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	
+	<div sec:authorize="hasRole	('ROLE_ADMIN')" class="container col-md-12">
+		<div class="panel panel-primary">
 			<div class="panel-heading">Überblick der Finanzen</div>
 			<div class="panel-body">
 				<div class="container">
@@ -173,7 +218,7 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 		<div class="panel panel-primary">
 			<div class="panel-heading">Zeit vorspulen</div>
 			<div class="panel-body">
-
+				<p th:text="${#temporals.format(currentTime, 'dd.MM.yyyy HH:mm')}">11.10.2002</p>
 				<form method="post" action="/forward">
 					<label for="days">Anzahl an Tagen</label> <input id="days"
 						type="number" name="days" /> <input type="submit" value="Forward" />

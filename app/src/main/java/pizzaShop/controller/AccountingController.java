@@ -1,6 +1,9 @@
 package pizzaShop.controller;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.TextStyle;
+import java.util.Locale;
 import java.util.Optional;
 
 import org.javamoney.moneta.Money;
@@ -13,6 +16,7 @@ import org.salespointframework.order.OrderLine;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.time.BusinessTime;
+import org.salespointframework.time.Interval;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
 import org.salespointframework.useraccount.web.LoggedIn;
@@ -31,6 +35,8 @@ public class AccountingController {
 	private final Accountancy accountancy;
 	private final AccountingMethods accountingMethods;
 	private final BusinessTime businessTime;
+	private int offsetM = 0;
+	private int offsetY = 0;
 
 	@Autowired
 	public AccountingController(Accountancy accountancy, AccountingMethods accountingMethods, BusinessTime businessTime) {
@@ -41,11 +47,32 @@ public class AccountingController {
 
 	@RequestMapping("/finances")
 	public String finances(Model model) {
+		LocalDateTime displayTime = businessTime.getTime().plusMonths(offsetM);
+		displayTime = displayTime.minusDays(displayTime.getDayOfMonth()-1);
+		Interval i = Interval.from(displayTime.minusDays(1)).to(displayTime.plusMonths(1));
 		model.addAttribute("entries", accountancy.findAll());
+		model.addAttribute("currentDisplay", accountancy.find(i));	
+		model.addAttribute("displayTime", displayTime.getMonth().getDisplayName(TextStyle.FULL, Locale.GERMAN)+" "+displayTime.getYear());
+		model.addAttribute("currentTime", businessTime.getTime());
 		model.addAttribute("totalGain", accountingMethods.total());
-
+		model.addAttribute("monthlyGain", accountingMethods.monthlyTotal(i)); 
 		return "finances";
 	}
+	
+	@RequestMapping(value = "/decreaseMonth", method = RequestMethod.POST)
+	public String decreaseMonth() {
+		offsetM -= 1;
+		return "redirect:finances";
+	}
+	
+	
+	@RequestMapping(value = "/increaseMonth", method = RequestMethod.POST)
+	public String increaseMonth() {
+		offsetM += 1;
+		return "redirect:finances";
+	}
+	
+	
 
 	@RequestMapping(value = "/createAccountancyEntry", method = RequestMethod.POST)
 	public String createEntry(@RequestParam("value") Integer value, @RequestParam("description") String description) {
