@@ -242,7 +242,7 @@ public class StoreController {
 		//System.out.println("i am here");
 		//System.out.println(cutlery);
 		
-		if(!oldCutlery.equals(null))
+		if(oldCutlery != null)
 		{
 			updatedCustomer.setCutlery(oldCutlery);
 		}
