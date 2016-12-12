@@ -89,7 +89,6 @@ public class CartController {
 		model.addAttribute("error", error);
 		model.addAttribute("customer", customer);
 		model.addAttribute("freeDrink", freeDrink);
-		//model.addAttribute("cPrice", (int) (cart.getPrice().getNumber().longValueExact())*100);
 		return "cart";
 		
 	}
@@ -129,7 +128,13 @@ public class CartController {
 
 	@RequestMapping(value = "/confirmCollection", method = RequestMethod.POST)
 	public String cofirmLocalOrder(@RequestParam("orderID") OrderIdentifier id){
-		store.completeOrder(pizzaOrderRepository.findOne(id), "mitgenommen");
+		PizzaOrder p = pizzaOrderRepository.findOne(id);
+		if(p.getOrderStatus().equals(PizzaOrderStatus.READY)){
+			error.setError(false);
+			store.completeOrder(pizzaOrderRepository.findOne(id), "mitgenommen");
+		}else{
+			error.setError(true);
+		}
 		return "redirect:orders";
 	}
 	
