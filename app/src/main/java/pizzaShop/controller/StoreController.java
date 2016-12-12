@@ -31,6 +31,7 @@ import pizzaShop.model.actor.Address;
 import pizzaShop.model.actor.Customer;
 import pizzaShop.model.actor.Deliverer;
 import pizzaShop.model.actor.StaffMember;
+import pizzaShop.model.catalog_item.Cutlery;
 import pizzaShop.model.catalog_item.Ingredient;
 import pizzaShop.model.catalog_item.Item;
 import pizzaShop.model.catalog_item.ItemType;
@@ -227,13 +228,28 @@ public class StoreController {
 	public String updateStaffMember(@RequestParam("surname") String surname, @RequestParam("forename") String forename,
 			@RequestParam("telnumber") String telephonenumber, @RequestParam("local") String local,
 			@RequestParam("postcode") String postcode, @RequestParam("street") String street,
-			@RequestParam("housenumber") String housenumber, @RequestParam("cid") long id)
+			@RequestParam("housenumber") String housenumber, @RequestParam("cid") long id,  @RequestParam(value = "cutlery", required = false) Cutlery cutlery)
 	{
-		customerRepository.delete(id);
+		
+		Customer oldCustomer = customerRepository.findOne(id);
+		Cutlery oldCutlery = oldCustomer.getCutlery();
+		//System.out.println(oldCustomer.getCutlery());
+		
+		//System.out.println(oldCustomer);
 		
 		Customer updatedCustomer = new Customer(surname,forename, telephonenumber, local, postcode, street, housenumber);
 		
+		//System.out.println("i am here");
+		//System.out.println(cutlery);
+		
+		if(!oldCutlery.equals(null))
+		{
+			updatedCustomer.setCutlery(oldCutlery);
+		}
+		
 		customerRepository.save(updatedCustomer);
+		
+		customerRepository.delete(id);
 		
 		return "redirect:customer_display";
 	}

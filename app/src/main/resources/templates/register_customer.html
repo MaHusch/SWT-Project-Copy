@@ -141,12 +141,16 @@
 							<td th:if = "${existingCustomer} == null"><input type="text" id="street" name="street" /></td>
 						</tr>
 						<tr>
-							<td><label for="housenumber">Hausnummber*</label>:</td>
+							<td><label for="housenumber">Hausnummer*</label>:</td>
 							<td th:if = "${existingCustomer}"><input type="text" id="housenumber" name="housenumber" th:value="${existingCustomer.getAddress().getHousenumber()}"/></td>
 							<td th:if = "${existingCustomer} == null"><input type="text" id="housenumber" name="housenumber" /></td>
 						</tr>
 						<tr>
+							<td><p th:text="${existingCustomer.getCutlery().getDateString()}"></p></td>
+						</tr>
+						<tr>
 							<td>
+							<input th:if = "${existingCustomer}" type="hidden" id="cutlery" name="cutlery" th:value="${existingCustomer.getCutlery()}"/>
 							<input th:if = "${existingCustomer}" type="hidden" id="cid" name="cid" th:value="${existingCustomer.getId()}"/>
 							<input th:if = "${existingCustomer == null}" class="btn btn-primary" type="submit" value="Registrieren" />
 							<input th:if = "${existingCustomer}" class="btn btn-primary" type="submit" value="Bestätigen" /></td>
