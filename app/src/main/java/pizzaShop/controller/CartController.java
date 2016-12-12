@@ -216,7 +216,7 @@ public class CartController {
 		System.out.println("cutlery ist:" + cutleryStr);
 		if (customer.isPresent()) {
 			boolean onSite = false;
-			boolean cutlery = true;´
+			boolean cutlery = true;
 			System.out.println(onSiteStr + " onSite");
 			if (onSiteStr.equals("0,1")) {
 				onSite = true;
