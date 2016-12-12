@@ -79,7 +79,7 @@
 	</header>
 	
 	<!-- customer list panel -->
-	<div sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER')" class="container col-md-8">
+	<div sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER') or hasRole('ROLE_DELIVERER')" class="container col-md-8">
 		<div class="panel panel-primary">
 			<div class="panel-heading">Kunden Anzeige</div>
 			<div class="panel-body">
@@ -116,6 +116,26 @@
 									<input class="btn btn-primary" type="submit" value="Entfernen" />
 								</form>
 							</td>
+							
+							<td sec:authorize="hasRole('ROLE_SELLER') or hasRole('ROLE_DELIVERER')">
+							<div th:if="${customer.getCutlery() != null}">
+								<form method="post" action="returnCutlery">
+									<input type="hidden" name="cid" id="cid" th:value= "${customer.getId()}"/>
+									<input type="hidden" name="lost" id="lost" value="0"/>
+									<input class="btn btn-primary" type="submit" value="Essgarnitur empfangen" />
+								</form>
+							</div>
+							</td>
+							<td sec:authorize="hasRole('ROLE_SELLER') or hasRole('ROLE_DELIVERER')">
+								<div th:if="${customer.getCutlery() != null}">
+								<form method="post" action="returnCutlery">
+									<input type="hidden" name="cid" id="cid" th:value= "${customer.getId()}"/>
+									<input type="hidden" name="lost" id="lost" value="1"/>
+									<input class="btn btn-primary" type="submit" value="Essgarnitur verloren" />
+								</form>
+								</div>
+							</td>
+							
 						</tr>
 					</tbody>
 				</table>

@@ -18,7 +18,7 @@ public class CutleryTest {
 	@Before
 	public void setUp() throws Exception {
 		time = LocalDateTime.now();
-		c = new Cutlery("test",Money.of(15.0, EURO),time);
+		c = new Cutlery(Money.of(15.0, EURO),time);
 		c.getDate();
 	}
 

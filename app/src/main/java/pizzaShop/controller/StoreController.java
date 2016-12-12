@@ -73,7 +73,7 @@ public class StoreController {
 	@RequestMapping("/sBaker")
 	public String sBaker() // direct to baker dashboard(after login)
 	{
-		return "sBaker";
+		return "ovens";
 	}
 
 	@RequestMapping("/sAdmin")
@@ -182,10 +182,6 @@ public class StoreController {
 
 		model.addAttribute("customer", customerRepository.findAll());
 		
-		/*for(Customer c : customerRepository.findAll())
-		{
-			System.out.println(c.getCutlery().getDate());
-		}*/
 		return "customer_display";
 	}
 
@@ -238,6 +234,20 @@ public class StoreController {
 		return "redirect:customer_display";
 	}
 	
+	@RequestMapping("returnCutlery")
+	public String returnCutlery(@RequestParam("lost") String lostStr, @RequestParam("cid") long id)
+	{
+		boolean lost = true;
+		if(lostStr.equals("0")) lost = false;
 	
+		try {
+			store.returnCutlery(lost,this.customerRepository.findOne(id));
+		} catch (Exception e) {
+			error.setError(true);
+			error.setMessage(e.getMessage());;
+		}
+		
+		return "redirect:customer_display";
+	}
 
 }
