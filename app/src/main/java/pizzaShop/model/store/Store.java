@@ -301,7 +301,7 @@ public class Store {
 	}
 	
 	public boolean lentCutlery(Customer customer, LocalDateTime time) {
-		Cutlery cutlery = new Cutlery("Essgarnitur", Money.of(15.0, EURO), time);
+		Cutlery cutlery = new Cutlery(Money.of(15.0, EURO), time);
 		if (customer.equals(null))
 			return false;
 		if (customer.getCutlery() != null)
@@ -322,15 +322,19 @@ public class Store {
 	 */
 	public void returnCutlery(boolean lost, Customer customer) throws Exception
 	{
-		if(customer.getCutlery().equals(null)) 
+		if(customer == null)
+			throw new NullPointerException("Welcher Kunde?");
+		if(customer.getCutlery() == (null)) 
 			throw new NullPointerException("Kunde hatte keine Essgarnitur ausgeliehen bzw ist schon verfallen");
 		
 		if(lost)
 		{
-			//TODO: accountancy entry
-			
+			accountancy.add(new AccountancyEntry(Money.of(customer.getCutlery().getPrice().getNumber(),EURO), customer.getForename() + " " 
+												+ customer.getSurname() + " hat seine Essgarnitur verloren"));	
 		}
 		customer.setCutlery(null);
+		
+		this.customerRepository.save(customer);
 	}
 	 
 }

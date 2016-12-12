@@ -15,16 +15,21 @@ import org.salespointframework.time.BusinessTime;
  */
 
 @Entity
-public class Cutlery extends Item {
+public class Cutlery extends Item{
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 8724080983798476354L;
+	private static final long serialVersionUID = 3835581467490627776L;
+	/**
+	 * 
+	 */
+	
 	/**
 	 * Date till Cutlery has to be returned
 	 */
 	private LocalDateTime returnTill;
+	private static String name = "Essgarnitur";
 	public Integer loanPeriod;
 
 	/**
@@ -42,11 +47,11 @@ public class Cutlery extends Item {
 	 * @param time
 	 */
 
-	public Cutlery(String name, MonetaryAmount price, LocalDateTime time) {
-		super(name, price, ItemType.CUTLERY);
+	public Cutlery(MonetaryAmount price, LocalDateTime time) {
+		super(name,price,ItemType.CUTLERY);
 		this.loanPeriod = 28; // according to task --> 4 weeks
 		this.setDate(time);
-
+		
 	}
 
 	/**
@@ -58,8 +63,8 @@ public class Cutlery extends Item {
 	 * @param loanPeriod
 	 */
 
-	public Cutlery(String name, MonetaryAmount price, LocalDateTime time, Integer loanPeriod) {
-		super(name, price, ItemType.CUTLERY);
+	public Cutlery(MonetaryAmount price, LocalDateTime time, Integer loanPeriod) {
+		super(name,price,ItemType.CUTLERY);
 		this.loanPeriod = loanPeriod;
 		this.setDate(time);
 	}
@@ -94,4 +99,5 @@ public class Cutlery extends Item {
 		LocalDateTime t1 = this.getDate();
 		return t1.getDayOfMonth() + "." + t1.getMonthValue() + "." + t1.getYear();
 	}
+
 }
