@@ -1,0 +1,3 @@
+= Crosstesting
+
+Der Ordner beinhaltet das Pflichtenheft, den GUI-Ordner mit den entsprechenden Bildern für den GUI-Prototyp, das Analyse-Diagramm sowie die JAR.
