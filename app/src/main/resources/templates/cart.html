@@ -98,13 +98,22 @@
 						</tr>
 					</table>
 				</form>
+				
+				<p></p>
 
 				<div th:switch="${customer.isPresent()}">
-					<p th:case="true"
-						th:text="'Kunde ist: '+${customer.get().getForename()}+' '+${customer.get().getSurname()}+' tel: '+${customer.get().getTelephoneNumber()}">User
+					<div th:case="true">
+						<p th:text="'Kunde ist: '+${customer.get().getForename()}+' '+${customer.get().getSurname()}+' tel: '+${customer.get().getTelephoneNumber()}">User
 						is present</p>
-					<p th:case="false" th:text="'Kein Kunde vorhanden'">User isn't
-						present</p>
+						<form method="post" action="/logoutCustomer">
+							<input class="btn btn-primary" type="submit"
+								value="Ausloggen" />
+						</form>
+						
+					</div>
+					<div th:case="false"> 
+						<p th:text="'Kein Kunde vorhanden'">User isn'tpresent</p>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -156,11 +165,26 @@
 							<td th:text="${item.quantity}">10</td>
 							<td th:text="${{item.price}}">10 Euro</td>
 							<td>
+								<div id="frm">
+								<form method="post" action="/changeQuantity">
+									<input type="hidden" name="amount" value="1"/>
+									<input type="hidden" name="quantity" th:value="${item.getQuantity()}"/>
+									<input type="hidden" name="ciid" th:value="${item.getProduct().getId()}" />
+									<input class="btn btn-primary" type="submit" value='+1' />
+								</form>
+								<form method="post" action="/changeQuantity">
+									<input type="hidden" name="amount" value="-1"/>
+									<input type="hidden" name="quantity" th:value="${item.getQuantity()}"/>
+									<input type="hidden" name="ciid" th:value="${item.getProduct().getId()}" />
+									<input class="btn btn-primary" type="submit" value='-1' />
+								</form>
 								<form method="post" action="/removeCartItem">
 									<input type="hidden" name="ciid" th:value="${item.getId()}" />
 									<input class="btn btn-primary" type="submit" value="Entfernen" />
 								</form>
+								</div>
 							</td>
+							
 						</tr>
 					</tbody>
 				</table>
@@ -175,6 +199,7 @@
 					<input type="hidden" name="cutlery" value="0"/>
 					<input type="checkbox" name="cutlery" value="1" /> 
 					<input class="btn btn-primary" type="submit" value="Kaufen" />
+					
 				</form>
 			</div>
 		</div>

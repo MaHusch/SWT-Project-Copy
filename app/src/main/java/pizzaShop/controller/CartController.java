@@ -156,9 +156,18 @@ public class CartController {
 		if(cart.getItem(cartId).get().getPrice().isZero())
 			freeDrink = false;
 		cart.removeItem(cartId);
-		
+	
 		return "redirect:cart";
 
+	}
+	
+	@RequestMapping(value = "/changeQuantity", method = RequestMethod.POST)
+	public String changeQuantity(@RequestParam("amount") int amount, @RequestParam("quantity") int
+			quantity, @RequestParam("ciid") ProductIdentifier id, @ModelAttribute Cart cart){
+		Optional<Item> item = itemCatalog.findOne(id); 
+		assertTrue("Product must not be emtpy!", item.isPresent());
+		cart.addOrUpdateItem(item.get(), Quantity.of(amount));
+		return "redirect:cart";
 	}
 	
 	@RequestMapping(value = "/addFreeDrink", method = RequestMethod.POST)
@@ -188,6 +197,12 @@ public class CartController {
 
 		return "redirect:cart";
 
+	}
+	
+	@RequestMapping(value = "/logoutCustomer", method = RequestMethod.POST)
+	public String logoutCustomer(){
+		customer = Optional.empty();
+		return "redirect:cart";
 	}
 
 	@RequestMapping(value = "/checkout", method = RequestMethod.POST)
