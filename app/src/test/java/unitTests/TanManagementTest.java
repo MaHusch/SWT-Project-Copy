@@ -2,6 +2,8 @@ package unitTests;
 
 import static org.junit.Assert.*;
 
+import java.util.Map.Entry;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -64,22 +66,63 @@ public class TanManagementTest {
 		
 		Tan newTan = TanMan.generateNewTan(testTelephoneNumber);
 		
+		Iterable<Entry<Tan,String>> test = TanMan.getAllNotConfirmedTans();
+		
+		for(Entry<Tan, String> entry : test)
+		{
+			System.out.println(entry.getValue());
+			System.out.println(entry.getKey().getTanNumber());
+			System.out.println(entry.getKey().getStatus());
+		}
+		
+		System.out.println("end");
+		
 		TanMan.confirmTan(newTan);
 		
-		TanMan.invalidateTan(newTan);
+		Iterable<Entry<Tan,String>> test3 = TanMan.getAllTans();
+		
+		for(Entry<Tan, String> entry : test3)
+		{
+			System.out.println(entry.getValue());
+			System.out.println(entry.getKey().getTanNumber());
+			System.out.println(entry.getKey().getStatus());
+		}
+		
+		System.out.println("end");
+		
+		//TanMan.invalidateTan(newTan);
+		
+		Tan newTan2 = TanMan.generateNewTan(testTelephoneNumber);
+		
+		TanMan.confirmTan(newTan2);
+		
+		Iterable<Entry<Tan,String>> test2 = TanMan.getAllTans();
+		
+		for(Entry<Tan, String> entry : test2)
+		{
+			System.out.println(entry.getValue());
+			System.out.println(entry.getKey().getTanNumber());
+			System.out.println(entry.getKey().getStatus());
+		}
+		
+		System.out.println("end");
 		
 		assertEquals(TanStatus.USED,newTan.getStatus());
 				
 	}
 	
+	@Test
 	public void deleteNotConfirmedTanTest() {
 		
 		String testTelephoneNumber = "123456";
 		
-		Tan newTan = TanMan.generateNewTan(testTelephoneNumber);		
+		Tan newTan = TanMan.generateNewTan(testTelephoneNumber);
 		
 		assertTrue(TanMan.deleteNotConfirmedTan(newTan));
+		
 				
 	}
+	
+	
 
 }
