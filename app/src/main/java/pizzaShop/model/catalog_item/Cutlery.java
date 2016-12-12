@@ -44,7 +44,6 @@ public class Cutlery extends Item {
 
 	public Cutlery(String name, MonetaryAmount price, LocalDateTime time) {
 		super(name, price, ItemType.CUTLERY);
-		System.out.println("aktuelle Zeit" + time.toString());
 		this.loanPeriod = 28; // according to task --> 4 weeks
 		this.setDate(time);
 

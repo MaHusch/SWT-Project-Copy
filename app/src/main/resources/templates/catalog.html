@@ -160,6 +160,7 @@
 		<div  class="panel panel-primary">
 			<div class="panel-heading" th:text="${item.getName()}">Itemname</div>
 			<div class="panel-body">
+			<p th:text="${item.toString()}" />
 				<p th:text="${'Preis: ' + item.getPrice()}" />
 				<table>
 					<tr>
