@@ -101,7 +101,7 @@
 							<td>
 								<div th:switch="${customer.getCutlery() == null}">
 								<p th:case="${true}" th:text="---">keine Essgarnitur</p>
-								<p th:case="${false}" th:text="${customer.getCutlery().getDate().toString()}"> EssgarniturZeit</p>
+								<p th:case="${false}" th:text="${customer.getCutlery().getDateString()}"> EssgarniturZeit</p>
 								</div>
 							</td>
 							<td sec:authorize="hasRole('ROLE_ADMIN')">

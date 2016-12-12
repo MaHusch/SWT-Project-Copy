@@ -84,5 +84,14 @@ public class Cutlery extends Item {
 	public void setDate(LocalDateTime time) {
 		this.returnTill = time.plusDays(loanPeriod);
 	}
-
+	
+	/**
+	 * 
+	 * @return returns the just the Date
+	 */
+	public String getDateString()
+	{
+		LocalDateTime t1 = this.getDate();
+		return t1.getDayOfMonth() + "." + t1.getMonthValue() + "." + t1.getYear();
+	}
 }

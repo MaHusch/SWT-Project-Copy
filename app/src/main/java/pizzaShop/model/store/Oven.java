@@ -50,7 +50,7 @@ public class Oven {
 			currentPizza = pizza;
 			empty = false;
 			myTimer = new BakerTimer();
-			myTimer.scheduleAtFixedRate(new BakerTask(myTimer, pizza, this), 0, 1000);
+			myTimer.scheduleAtFixedRate(new BakerTask(myTimer, pizza, this,null), 0, 1000);
 			return true;
 		} else {
 			return false;
