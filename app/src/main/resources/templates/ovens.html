@@ -30,8 +30,7 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 			//if (element != null) { alert(element.id);}
 			
 			var remainingTime = element.value;
-			
-			if (remainingTime == "null"){
+			if (remainingTime === "null" || remainingTime == 0 ){
 				ovens[ovenID] = [ false, bakeTime];
 			}else{
 				ovens[ovenID] = [ false, parseInt(remainingTime) ];
@@ -83,12 +82,13 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 	function stopTimer(id) {
 		window.clearInterval(clock);
 		clock = setInterval("timer()", 1000);
-
+		//alert("I am here");
 		ovens[id][1] = bakeTime;
 		ovens[id][0] = false;
 
 		document.getElementById(id).innerHTML = "Ofen ist leer!";
 		clicked = false;
+		location.reload();
 	}
 
 	//]]>
@@ -127,7 +127,7 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 								<span class="caret"></span>
 						</a>
 							<ul class="dropdown-menu">
-								<li><a sec:authorize="hasRole('ROLE_BAKER')"
+								<li><a sec:authorize="hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')"
 									href="ovens.html">Öfen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_DELIVERER')"
 									href="index.html">Deliverer Dashboard</a></li>
@@ -184,7 +184,7 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 						<td th:if="${oven.getBakerTimer() == null}">Ofen ist leer!</td>
 						<td th:if="${oven.getBakerTimer() != null}" th:id="${oven.getId()}" >Ofen ist leer!</td> 	
 						<td sec:authorize="hasRole('ROLE_BAKER')">
-						<input  th:if="${oven.getBakerTimer() == null}" type="hidden" th:id="${oven.getId()} + timer " th:value="null"/>
+						<input  th:if="${oven.getBakerTimer() == null}" type="hidden" th:id="${oven.getId()} + timer " value="null"/>
 						<input  th:if="${oven.getBakerTimer() != null}" type="hidden" th:id="${oven.getId()} + timer " th:value="${oven.getBakerTimer().getCounter()}"/>	
 						
 						<form method="post" action="/getNextPizza">
