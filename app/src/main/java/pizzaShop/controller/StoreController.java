@@ -210,6 +210,13 @@ public class StoreController {
 	public String deleteCustomer(Model model,@RequestParam("cid") long id) {
 		model.addAttribute("error",error);
 		
+		Tan foundTan = tanManagement.getTan(customerRepository.findOne(id).getTelephoneNumber());
+		
+		if(!foundTan.getStatus().equals(TanStatus.NOT_FOUND))
+		{
+			tanManagement.invalidateTan(foundTan) ;
+		}
+
 		customerRepository.delete(id);
 		
 		return "redirect:customer_display";
