@@ -10,13 +10,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import pizzaShop.model.actor.Baker;
+import pizzaShop.model.actor.StaffMember;
 import pizzaShop.model.store.ErrorClass;
 import pizzaShop.model.store.Store;
 
 @Controller
 public class BakerController {
 	
-	private Baker currentBaker;
+	//private Baker currentBaker;
 	private ErrorClass error = new ErrorClass(false);
 	
 	private final Store store;
@@ -29,7 +30,7 @@ public class BakerController {
 	@RequestMapping("/ovens")
 	public String ovenView(Model model, Principal principal){
 			
-			currentBaker = (Baker) store.getStaffMemberByName(principal.getName());
+			//currentBaker = (Baker) store.getStaffMemberByName(principal.getName());
 			
 			model.addAttribute("ovens",store.getOvens());
 			model.addAttribute("queue", store.getPizzaQueue());

@@ -1,5 +1,7 @@
 package pizzaShop.controller;
 
+import static org.salespointframework.core.Currencies.EURO;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.TextStyle;
@@ -18,7 +20,6 @@ import org.salespointframework.quantity.Quantity;
 import org.salespointframework.time.BusinessTime;
 import org.salespointframework.time.Interval;
 import org.salespointframework.useraccount.UserAccount;
-import org.salespointframework.useraccount.UserAccountManager;
 import org.salespointframework.useraccount.web.LoggedIn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -77,7 +78,7 @@ public class AccountingController {
 	@RequestMapping(value = "/createAccountancyEntry", method = RequestMethod.POST)
 	public String createEntry(@RequestParam("value") Integer value, @RequestParam("description") String description) {
 
-		accountancy.add(new AccountancyEntry(Money.of(value, "EUR"), description));
+		accountancy.add(new AccountancyEntry(Money.of(value, EURO), description));
 		return "redirect:finances";
 	}
 
@@ -88,7 +89,7 @@ public class AccountingController {
 		if (!userAccount.isPresent())
 			return "redirect:login";
 		Order order = new Order(userAccount.get(), Cash.CASH);
-		order.add(new OrderLine(new Product("test", Money.of(value, "EUR")), Quantity.of(1)));
+		order.add(new OrderLine(new Product("test", Money.of(value, EURO)), Quantity.of(1)));
 		accountancy.add(ProductPaymentEntry.of(order, "Order by " + userAccount.get().getId() + ": " + order.getId()));
 		return "redirect:finances";
 	}
