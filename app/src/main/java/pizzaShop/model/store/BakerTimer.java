@@ -14,7 +14,7 @@ public class BakerTimer extends Timer {
 	//private BusinessTime date;
 
 	public BakerTimer(BusinessTime date) {
-		endDate = date.getTime().plusMinutes(1);
+		endDate = date.getTime().plusMinutes(5);
 		counter = (endDate.getMinute() - date.getTime().getMinute()) * 60;
 		System.out.println(date.getTime());
 		System.out.println(counter);

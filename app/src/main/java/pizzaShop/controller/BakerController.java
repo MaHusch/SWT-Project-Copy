@@ -1,7 +1,9 @@
 package pizzaShop.controller;
 
 import java.security.Principal;
+import java.time.Duration;
 
+import org.salespointframework.time.BusinessTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,10 +20,12 @@ public class BakerController {
 	private ErrorClass error = new ErrorClass(false);
 
 	private final Store store;
+	private final BusinessTime businessTime;
 
 	@Autowired
-	public BakerController(Store store) {
+	public BakerController(Store store, BusinessTime businessTime) {
 		this.store = store;
+		this.businessTime = businessTime;
 	}
 
 	@RequestMapping("/ovens")
@@ -55,6 +59,15 @@ public class BakerController {
 			}
 		}
 
+		return "redirect:ovens";
+	}
+	
+	@RequestMapping(value ="/forward2", method = RequestMethod.POST)
+	public String forward(@RequestParam("minutes") Integer minutes){
+		
+		businessTime.forward(Duration.ofMinutes(minutes));
+		
+		
 		return "redirect:ovens";
 	}
 
