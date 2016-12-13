@@ -1,10 +1,11 @@
 = Cross-Testing Feedback
 
-__Durchführende Gruppe:__
-__Anwendung von Gruppe:__
+__Durchführende Gruppe: swt16w16__
+__Anwendung von Gruppe: swt16w30__
 
 == Getestetes System
-Welche Aufgabe/Problemstellung löst die Anwendung.
+//Welche Aufgabe/Problemstellung löst die Anwendung.
+= Erfüllte Muss-Kriterien
 
 == Fehler-Report
 // See http://asciidoctor.org/docs/user-manual/#tables
