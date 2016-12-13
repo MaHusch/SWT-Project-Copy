@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import org.springframework.stereotype.Component;
 
@@ -313,6 +314,30 @@ public class TanManagement {
 		}
 		
 		return allEntrys;
+	}
+	
+	public void updateTelephoneNumber(String oldTelephoneNumber, String newTelephoneNumber)
+	{
+		Iterable<Map.Entry<Tan, String>> allTans = getAllTans();
+		
+		Iterable<Map.Entry<Tan, String>> allNotConfirmedTans = getAllNotConfirmedTans();
+		
+		for(Entry<Tan, String> entry : allTans)
+		{
+			if(entry.getValue().equals(oldTelephoneNumber))
+			{
+				tanHashMap.replace(entry.getKey(), oldTelephoneNumber, newTelephoneNumber);
+			}
+		}
+		
+		for(Entry<Tan, String> entry : allNotConfirmedTans)
+		{
+			if(entry.getValue().equals(oldTelephoneNumber))
+			{
+				tanHashMap.replace(entry.getKey(), oldTelephoneNumber, newTelephoneNumber);
+			}
+		}
+		
 	}
 
 }

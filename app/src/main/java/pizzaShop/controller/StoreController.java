@@ -231,6 +231,14 @@ public class StoreController {
 		Cutlery oldCutlery = oldCustomer.getCutlery();
 		//System.out.println(oldCustomer.getCutlery());
 		
+		String oldTelephoneNumber = oldCustomer.getTelephoneNumber();
+		
+		if(!oldTelephoneNumber.equals(telephonenumber))
+		{
+			
+			tanManagement.updateTelephoneNumber(oldTelephoneNumber, telephonenumber);
+		}
+		
 		//System.out.println(oldCustomer);
 		
 		Customer updatedCustomer = new Customer(surname,forename, telephonenumber, local, postcode, street, housenumber);
