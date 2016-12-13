@@ -5,7 +5,7 @@ __Anwendung von Gruppe: swt16w30__
 
 == Getestetes System
 //Welche Aufgabe/Problemstellung löst die Anwendung.
-= Erfüllte Muss-Kriterien
+=== Erfüllte Muss-Kriterien
 
 == Fehler-Report
 // See http://asciidoctor.org/docs/user-manual/#tables
