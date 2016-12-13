@@ -11,6 +11,7 @@ import org.salespointframework.accountancy.Accountancy;
 import org.salespointframework.accountancy.AccountancyEntry;
 import org.salespointframework.accountancy.ProductPaymentEntry;
 import org.salespointframework.order.OrderLine;
+import org.salespointframework.time.BusinessTime;
 import org.salespointframework.useraccount.Role;
 import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,17 +34,19 @@ public class Store {
 	private final StaffMemberRepository staffMemberRepository;
 	private final CustomerRepository customerRepository;
 	private final Accountancy accountancy;
-	
-	
-	private List<StaffMember> staffMemberList; // why List and Repository for StaffMember?
+	private final BusinessTime businessTime;
+
+	private List<StaffMember> staffMemberList; // why List and Repository for
+												// StaffMember?
 	private ArrayList<Oven> ovenList;
 	private Pizza nextPizza;
 
 	private Pizzaqueue pizzaQueue = Pizzaqueue.getInstance();
 
 	@Autowired
-	public Store(UserAccountManager employeeAccountManager, ItemCatalog itemCatalog, 
-			PizzaOrderRepository pizzaOrderRepo, StaffMemberRepository staffMemberRepository,CustomerRepository customerRepository, Accountancy accountancy) {
+	public Store(UserAccountManager employeeAccountManager, ItemCatalog itemCatalog,
+			PizzaOrderRepository pizzaOrderRepo, StaffMemberRepository staffMemberRepository,
+			CustomerRepository customerRepository, Accountancy accountancy, BusinessTime businessTime) {
 
 		this.employeeAccountManager = employeeAccountManager;
 		this.itemCatalog = itemCatalog;
@@ -53,6 +56,7 @@ public class Store {
 		this.staffMemberList = new ArrayList<StaffMember>();
 		this.ovenList = new ArrayList<Oven>();
 		this.accountancy = accountancy;
+		this.businessTime = businessTime;
 
 		ovenList.add(new Oven(this));
 		ovenList.add(new Oven(this));
@@ -74,15 +78,15 @@ public class Store {
 		return staffMemberList;
 	}
 
-	public void updateUserAccount(StaffMember member, String username, String password, Role role) {		
-		
+	public void updateUserAccount(StaffMember member, String username, String password, Role role) {
+
 		if (member.getUserAccount() == null) {
 			member.setUsername(username);
 			member.setPassword(password);
 			member.setRole(role);
 
 			member.setUserAccount(employeeAccountManager.create(username, password, role));
-			
+
 		} else {
 
 		}
@@ -129,7 +133,7 @@ public class Store {
 		return order;
 
 	}
-	
+
 	public void updatePizzaOrder(Pizza pizza) {
 
 		if (pizza.equals(null)) {
@@ -157,13 +161,18 @@ public class Store {
 			}
 		}
 	}
-	
-	public void completeOrder(PizzaOrder p, String msg){
+
+	public void completeOrder(PizzaOrder p, String msg) {
 		p.completeOrder();
 		pizzaOrderRepo.save(p);
-		/* Probleme mit dem totalPrice, deshalb erstmal ein Workaround
-		ProductPaymentEntry a = ProductPaymentEntry.of(p.getOrder(), "Order über Account " + p.getOrder().getUserAccount().getUsername() + " "+msg);*/
-		AccountancyEntry a = new AccountancyEntry(p.getTotalPrice(), "Order über Account " + p.getOrder().getUserAccount().getUsername() + " "+msg);
+		/*
+		 * Probleme mit dem totalPrice, deshalb erstmal ein Workaround
+		 * ProductPaymentEntry a = ProductPaymentEntry.of(p.getOrder(),
+		 * "Order über Account " + p.getOrder().getUserAccount().getUsername() +
+		 * " "+msg);
+		 */
+		AccountancyEntry a = new AccountancyEntry(p.getTotalPrice(),
+				"Order über Account " + p.getOrder().getUserAccount().getUsername() + " " + msg);
 		accountancy.add(a);
 	}
 
@@ -203,66 +212,57 @@ public class Store {
 			return ItemType.CUTLERY;
 		}
 	}
-	
-	public void createNewItem(String name, String type, Number price) throws Exception
-	{
+
+	public void createNewItem(String name, String type, Number price) throws Exception {
 		Item newItem;
-		
+
 		ItemType itype = Store.StringtoItemtype(type);
-		
-		if(name.isEmpty()) 
-		{
+
+		if (name.isEmpty()) {
 			throw new IllegalArgumentException("Name darf nicht leer sein");
 		}
-		
-		if(price.floatValue() < 0)
-		{
+
+		if (price.floatValue() < 0) {
 			throw new IllegalArgumentException("Preis darf nicht negativ sein");
 		}
-		
-		if(itype.equals(ItemType.PIZZA))
-		{
-			newItem = new Pizza(name,Money.of(price, EURO));	
+
+		if (itype.equals(ItemType.PIZZA)) {
+			newItem = new Pizza(name, Money.of(price, EURO));
+		} else if (type.equals(ItemType.CUTLERY)) {
+			newItem = new Ingredient(name, Money.of(price, EURO));
+		} else {
+			newItem = new Item(name, Money.of(price, EURO), itype);
 		}
-		else if(type.equals(ItemType.CUTLERY))
-		{
-			newItem = new Ingredient(name,Money.of(price, EURO));
-		}
-		else
-		{	
-			newItem = new Item(name,Money.of(price, EURO),itype);
-		}
-		
+
 		itemCatalog.save(newItem);
-	
+
 	}
 
-	public void saveEditedItem(Item editedItem, String name, String type , Number price) throws Exception
-	{
-		if(editedItem.equals(null)) throw new NullPointerException("zu editierendes Item existiert nicht");
-		if(name.isEmpty()) throw new IllegalArgumentException("Name darf nicht leer sein");
-		if(price.floatValue() < 0) throw new IllegalArgumentException("Preis darf nicht negativ sein");
-		
+	public void saveEditedItem(Item editedItem, String name, String type, Number price) throws Exception {
+		if (editedItem.equals(null))
+			throw new NullPointerException("zu editierendes Item existiert nicht");
+		if (name.isEmpty())
+			throw new IllegalArgumentException("Name darf nicht leer sein");
+		if (price.floatValue() < 0)
+			throw new IllegalArgumentException("Preis darf nicht negativ sein");
+
 		ItemType newType = Store.StringtoItemtype(type);
-		
-		if(editedItem.getType().equals(newType))
-		{
-		itemCatalog.delete(editedItem); //altes Element rauslöschen
-		editedItem.setName(name);
-		System.out.println(editedItem.getName());
-		editedItem.setPrice(Money.of(price, EURO));
-		itemCatalog.save(editedItem); 
-		
-		}
-		else
-		{
+
+		if (editedItem.getType().equals(newType)) {
+			itemCatalog.delete(editedItem); // altes Element rauslöschen
+			editedItem.setName(name);
+			System.out.println(editedItem.getName());
+			editedItem.setPrice(Money.of(price, EURO));
+			itemCatalog.save(editedItem);
+
+		} else {
 			System.out.println("anderer Itemtyp --> neues Item");
 			itemCatalog.delete(editedItem);
 			this.createNewItem(name, type, price);
 		}
 
 	}
-	
+
 	public void cleanUpItemCatalog() { // unused?
 		Iterable<Item> items1 = itemCatalog.findAll();
 		Iterable<Item> items2 = itemCatalog.findAll();
@@ -275,8 +275,6 @@ public class Store {
 
 		}
 	}
-
-	
 
 	public void getNextPizza() throws Exception {
 
@@ -291,7 +289,7 @@ public class Store {
 
 		for (int i = 0; i < ovenList.size(); i++) {
 			if (ovenList.get(i).getId() == oven.getId() && ovenList.get(i).isEmpty()) {
-				ovenList.get(i).fill(nextPizza);
+				ovenList.get(i).fill(nextPizza, businessTime);
 				System.out.println(ovenList.get(i).getPizza());
 
 				return true;
@@ -299,7 +297,7 @@ public class Store {
 		}
 		return false;
 	}
-	
+
 	public boolean lentCutlery(Customer customer, LocalDateTime time) {
 		Cutlery cutlery = new Cutlery(Money.of(15.0, EURO), time);
 		if (customer.equals(null))
@@ -313,28 +311,33 @@ public class Store {
 
 		return true;
 	}
-	
+
 	/**
 	 * Function for returning a cutlery lent by a customer
-	 * @param lost <code> true </code> if customer lost his {@link catalog_item.Cutlery}, <code> false </code> if he returns it properly
-	 * @param customer customer who wants to return his {@link catalog_item.Cutlery}
-	 * @throws Exception when customer hasn't lent a {@link catalog_item.Cutlery} beforehand
+	 * 
+	 * @param lost
+	 *            <code> true </code> if customer lost his
+	 *            {@link catalog_item.Cutlery}, <code> false </code> if he
+	 *            returns it properly
+	 * @param customer
+	 *            customer who wants to return his {@link catalog_item.Cutlery}
+	 * @throws Exception
+	 *             when customer hasn't lent a {@link catalog_item.Cutlery}
+	 *             beforehand
 	 */
-	public void returnCutlery(boolean lost, Customer customer) throws Exception
-	{
-		if(customer == null)
+	public void returnCutlery(boolean lost, Customer customer) throws Exception {
+		if (customer == null)
 			throw new NullPointerException("Welcher Kunde?");
-		if(customer.getCutlery() == (null)) 
+		if (customer.getCutlery() == (null))
 			throw new NullPointerException("Kunde hatte keine Essgarnitur ausgeliehen bzw ist schon verfallen");
-		
-		if(lost)
-		{
-			accountancy.add(new AccountancyEntry(Money.of(customer.getCutlery().getPrice().getNumber(),EURO), customer.getForename() + " " 
-												+ customer.getSurname() + " hat seine Essgarnitur verloren"));	
+
+		if (lost) {
+			accountancy.add(new AccountancyEntry(Money.of(customer.getCutlery().getPrice().getNumber(), EURO),
+					customer.getForename() + " " + customer.getSurname() + " hat seine Essgarnitur verloren"));
 		}
 		customer.setCutlery(null);
-		
+
 		this.customerRepository.save(customer);
 	}
-	 
+
 }

@@ -1,7 +1,7 @@
 package pizzaShop.model.store;
 
-import java.util.Timer;
 
+import org.salespointframework.time.BusinessTime;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import pizzaShop.model.catalog_item.Pizza;
@@ -45,12 +45,12 @@ public class Oven {
 		}
 	}
 
-	public boolean fill(Pizza pizza) {
+	public boolean fill(Pizza pizza, BusinessTime businessTime) {
 		if (!pizza.equals(null)) {
 			currentPizza = pizza;
 			empty = false;
-			myTimer = new BakerTimer();
-			myTimer.scheduleAtFixedRate(new BakerTask(myTimer, pizza, this,null), 0, 1000);
+			myTimer = new BakerTimer(businessTime);
+			myTimer.scheduleAtFixedRate(new BakerTask(myTimer, pizza, this, businessTime), 0, 1000);
 			return true;
 		} else {
 			return false;

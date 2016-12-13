@@ -1,7 +1,10 @@
 package pizzaShop.model.store;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
+
+import org.salespointframework.time.BusinessTime;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import pizzaShop.model.catalog_item.Pizza;
 
@@ -12,26 +15,30 @@ public class BakerTask extends TimerTask {
 	private BakerTimer myTimer;
 	private Pizza myPizza;
 	private Oven myOven;
-	private LocalDate date;
+	private LocalDateTime endDate;
+	private final BusinessTime businessTime;
 
-	public BakerTask(BakerTimer timer, Pizza pizza, Oven oven, LocalDate date) {
+
+	public BakerTask(BakerTimer timer, Pizza pizza, Oven oven, BusinessTime businessTime) {
 
 		myTimer = timer;
 		myPizza = pizza;
 		myOven = oven;
-		this.date = date;
+		endDate = myTimer.getEndDate();
+		this.businessTime = businessTime;
+
 	}
 
 	@Override
 	public void run() {
-		// System.out.println("baking....");
-		
-		
-		
-		
-		
-		
-		
+
+		if (businessTime.getTime().isEqual(endDate) || businessTime.getTime().isAfter(endDate)) {
+			myTimer.cancel();
+			myPizza.setStatus(true);
+			myOven.notifyObservers(myPizza);
+			myOven.clear();
+		}
+
 		int i = myTimer.getCounter();
 		System.out.println(i);
 		i--;
