@@ -11,22 +11,10 @@
 
 Eine Software entwickeln für einen Pizzaservice.
 
-== Definition der Basisfunktionalität
-
-* Bestellung registrieren
-* Kunde hinzufügen
-* TAN-Anzeige
-* keine Rabattaktionen
-* Pizza zusammenstellen
-* keine Lieferzeitberechnung
-* Deliverer CheckIn/Out
-* Mitarbeiter hinzufügen
-* keine Katalogfilterung
-* keine Bestellfilterung
-
-
 == Wichtige Links
 
+* link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/crosstesting/cross_testing_report_f%C3%BCr_swt16w30.adoc[crosstesting]
+  
 * link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/organisation/pflichtenheft%20versionen/pflichtenheft_v1.adoc[Pflichtenheft]
 
 * link:https://github.com/st-tu-dresden-praktikum/swt16w16/tree/master/organisation/protokolls[Protokolle]
@@ -45,5 +33,5 @@ Eine Software entwickeln für einen Pizzaservice.
 
 * link:https://github.com/st-tu-dresden-praktikum/swt16w16/tree/master/artefacts/Entwurf[Entwurfsdiagramme]
  
-*link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/organisation/test_plan.adoc[Testplan]
+* link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/organisation/test_plan.adoc[Testplan]
                   
