@@ -6,19 +6,30 @@ __Anwendung von Gruppe: swt16w30__
 == Getestetes System
 //Welche Aufgabe/Problemstellung löst die Anwendung.
 === Erfüllte Muss-Kriterien
+* Artikel können vom Admin hinzugefügt werden (bei richtigen Eingaben)
+* Artikel können gelöscht werden (wenn keine DIY-Pizza)
 
 == Fehler-Report
 // See http://asciidoctor.org/docs/user-manual/#tables
 [options="header"]
 |===
 |Pfad |Parameter |Beschreibung |Rückgabe
-| … | … | … | … |
+| ../ingridients/addNew oder ../simpleProduct/addNew | ""(Name) oder ""als Preis | fehlerhafte Eingaben werden nicht abgefangen  | Weiterleitung zu WhitelabelError("empty String") |
+| ../pizza/delete/CustomPizza | --- | Pizza kann nicht gelöscht werden | WhiteLabelError("no message available") |
+
 |===
 
 == Sonstiges
+* Wenn eine Zutat gelöscht wird, kann sie immernoch auf Pizzen zu finden sein
+* Artikel können nicht bearbeitet werden
+* Essgarniturverleih fehlt komplett
+* Liefergebiet ist nicht beschränkt (PLZ von Orten außerhalb von Dresden werden bei einer Bestellung akzeptiert)
+* Freigetränk bei einer Bestellung über 30€ fehlt ebenfalls 
+
 * Optik der Anwendung
 * Fehlende Features
 * Interaktion mit der Anwendung (Usability)
 
 == Verbesserungsvorschläge
+* bessere Fehlerbehandlung (WhiteLabelError umgehen z.b. per "redirect:catalog")
 * Was kann noch weiter verbessert werden?
