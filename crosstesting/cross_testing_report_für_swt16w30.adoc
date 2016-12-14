@@ -14,8 +14,8 @@ __Anwendung von Gruppe: swt16w30__
 [options="header"]
 |===
 |Pfad |Parameter |Beschreibung |Rückgabe
-| ../ingridients/addNew oder ../simpleProduct/addNew | ""(Name) oder ""als Preis | fehlerhafte Eingaben werden nicht abgefangen  | Weiterleitung zu WhitelabelError("empty String") |
-| ../pizza/delete/CustomPizza | --- | Pizza kann nicht gelöscht werden | WhiteLabelError("no message available") |
+| ../ingridients/addNew oder ../simpleProduct/addNew | ""(Name) oder ""als Preis | fehlerhafte Eingaben werden nicht abgefangen  | Weiterleitung zu WhitelabelError("empty String") 
+| ../pizza/delete/CustomPizza | --- | Pizza kann nicht gelöscht werden | WhiteLabelError("no message available") 
 
 |===
 
