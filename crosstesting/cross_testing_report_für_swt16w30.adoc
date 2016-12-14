@@ -25,6 +25,7 @@ __Anwendung von Gruppe: swt16w30__
 * Essgarniturverleih fehlt komplett
 * Liefergebiet ist nicht beschränkt (PLZ von Orten außerhalb von Dresden werden bei einer Bestellung akzeptiert)
 * Freigetränk bei einer Bestellung über 30€ fehlt ebenfalls 
+* runde Artikelpreise wie z.B. 2€ werden zu 1,99€ gemacht (witzig aber eig. vom Kunden nicht explizit gefordert)
 
 * Optik der Anwendung
 * Fehlende Features
