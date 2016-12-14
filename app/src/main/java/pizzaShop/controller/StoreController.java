@@ -229,22 +229,15 @@ public class StoreController {
 		
 		Customer oldCustomer = customerRepository.findOne(id);
 		Cutlery oldCutlery = oldCustomer.getCutlery();
-		//System.out.println(oldCustomer.getCutlery());
 		
 		String oldTelephoneNumber = oldCustomer.getTelephoneNumber();
 		
 		if(!oldTelephoneNumber.equals(telephonenumber))
-		{
-			
+		{	
 			tanManagement.updateTelephoneNumber(oldTelephoneNumber, telephonenumber);
 		}
-		
-		//System.out.println(oldCustomer);
-		
+			
 		Customer updatedCustomer = new Customer(surname,forename, telephonenumber, local, postcode, street, housenumber);
-		
-		//System.out.println("i am here");
-		//System.out.println(cutlery);
 		
 		if(oldCutlery != null)
 		{

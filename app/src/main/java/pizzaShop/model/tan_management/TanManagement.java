@@ -212,8 +212,8 @@ public class TanManagement {
 				
 				notConfirmedTans.put(newlyCreatedTan, telephoneNumber);
 				
-				System.out.println("new Tan added");
-				System.out.println(newlyCreatedTan.getTanNumber());
+				//System.out.println("new Tan added");
+				//System.out.println(newlyCreatedTan.getTanNumber());
 				
 				return newlyCreatedTan;
 				
@@ -227,7 +227,8 @@ public class TanManagement {
 	
 	/**
 	 * This method confirms a Tan by setting its status to VALID and putting it into the tanHashMap.
-	 * 
+	 * If there already exists an entry with the same TelephoneNumber the status of the tan in this entry is set to USED.
+	 * The entry of this Tan in the notConfirmedTans HashMap gets deleted.
 	 * 
 	 * @param tan	The Tan you want to confirm
 	 */
@@ -240,7 +241,7 @@ public class TanManagement {
 		
 		if(oldTan.getStatus() != TanStatus.NOT_FOUND)
 		{
-			System.out.println("found old tan");
+			//System.out.println("found old tan");
 			this.invalidateTan(oldTan);
 					
 		}
