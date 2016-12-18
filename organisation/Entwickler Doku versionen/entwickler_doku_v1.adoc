@@ -62,6 +62,8 @@ und des laufenden Sortiments (dessen Zusammenstellung und Preise sich kontinuier
 == Lösungsstrategie
 Kurzer Überblick über Ihre grundlegenden Entscheidungen und Lösungsansätze, die jeder, der mit der Architektur zu tun hat, verstanden haben sollte.
 
+Die grundlegende Idee zum Lösen der Aufgabe besteht daraus, eine Web-Applikation mittels Spring in Verbindung mit Spring-Salespoint zu erstellen. Das heißt, es wird ein MVC-Pattern genutzt, welches größtenteils durch Spring vorgegeben ist. Die Controller interagieren dabei mit unserem Backend und laden die Models für unsere View.
+
 == Bausteinsicht
 * link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/artefacts/Entwurf/package__Package_Diagramm.jpg[Package-Diagramme]
 
@@ -81,3 +83,7 @@ Kurzer Überblick über Ihre grundlegenden Entscheidungen und Lösungsansätze, 
 
 [appendix]
 == Glossar
+
+* link:http://getbootstrap.com/[Bootstrap für die Webgestaltung]
+
+* link:https://spring.io/[Spring für das MVC-Pattern]
