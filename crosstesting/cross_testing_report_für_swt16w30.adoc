@@ -9,6 +9,8 @@ __Anwendung von Gruppe: swt16w30__
 * Artikel können vom Admin hinzugefügt werden (bei richtigen Eingaben)
 * Artikel können gelöscht werden (wenn keine DIY-Pizza)
 * Getrennte  views zwischen Kunden und Mitarbeiter sind vorhanden. Die bereitgestellten Funktionalitäten für die Mitarbeiter sind gegenüber dem Admin limitiert, und sind von dem Kunden nicht einzusehen.
+* Für jeden neu angelegten Kunden wird eine neue eineindeutige Tan generiert.
+Durch den Button „Neue Tan“ kann dem Kunden in der Kundenübersicht durch den Admin eine neue Tan zugewiesen werden. Die Möglichkeit die Tan zu ändern existiert somit.
 
 == Fehler-Report
 // See http://asciidoctor.org/docs/user-manual/#tables
@@ -21,6 +23,11 @@ __Anwendung von Gruppe: swt16w30__
 (Das gleiche Gilt für die Pfade: „customerSalads?“, „customerDrinks?“, 
 „customerIngredients?“,„customerPasta?“)
  | WhiteLabelError("no message available") 
+ | ../order/neworder | Kundendaten (TAN) und Lieferadresse(Straße, Hausnummer, Postleitzahl) wurden aus der Kundenübersicht übernommen und in die Formularfelder übertragen. | Nach dem Drücken des Buttons „Bestellung aufnehmen“ wird die Bestellung zwar aufgenommen und erscheint auch in der Bestellübersicht, jedoch wird keine neue TAN für den Kunden generiert oder diese wird nicht korrekt in der Kundenübersicht angezeigt.| ---
+ | --- | --- | Es besteht keine Möglichkeit die Bestellung abzuschließen bzw. auszuliefern, somit kann auch nicht getestet werden, ob auf der Rechnung die korrekte neue TAN für den Kunden angegeben ist.| ---
+ | ../order/neworder | --- | Es war keine Möglichkeit vorhanden zu markieren, dass die Bestellung vor Ort abgeholt werden soll. 
+| ---
+ | ../order/orderoverview | --- | Auch in der Bestellungsübersicht gab es keine Möglichkeit anzugeben, dass die Bestellung abgeholt wird.| ---
 |===
 
 == Sonstiges
@@ -31,6 +38,7 @@ __Anwendung von Gruppe: swt16w30__
 * Freigetränk bei einer Bestellung über 30€ fehlt ebenfalls 
 * runde Artikelpreise wie z.B. 2€ werden zu 1,99€ gemacht (witzig aber eig. vom Kunden nicht explizit gefordert)
 * Es ist nicht möglich eine eine druckbare Version der abgeschlossenen Bestellung zu generieren/drucken
+* Die jetzige Seite für den Deliverer auf der die Lieferungen angezeigt werden, ist bis jetzt nur ein einfaches HTML-Seite ohne Funktionen, somit können keine Funktionen des Deliveres, wie z.B. abschließen von  Aufträgen getesten werden.
 
 * Optik der Anwendung
 * Fehlende Features
@@ -40,3 +48,4 @@ __Anwendung von Gruppe: swt16w30__
 * bessere Fehlerbehandlung (WhiteLabelError umgehen z.b. per "redirect:catalog")
 * Was kann noch weiter verbessert werden?
 * Die Bausteine für eine druckbare Rechnung sind schon in der Bestellungsübersicht vorhanden, und müssen nur richtig formatiert werden.
+* Möglicherweise einen Zufallsgenerator für die Erstellung der TAN implementieren. Jetziges System der Generierung durch die Subtraktion von 3 von der zuletzt generierten TAN funktioniert dennoch.
