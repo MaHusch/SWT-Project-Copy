@@ -29,6 +29,7 @@ import pizzaShop.model.actor.Deliverer;
 import pizzaShop.model.actor.StaffMember;
 import pizzaShop.model.catalog_item.Item;
 import pizzaShop.model.catalog_item.ItemType;
+import pizzaShop.model.store.Bill;
 import pizzaShop.model.store.CustomerRepository;
 import pizzaShop.model.store.ErrorClass;
 import pizzaShop.model.store.ItemCatalog;
@@ -234,6 +235,8 @@ public class CartController {
 			cart.addItemsTo(orderManager.save(pizzaOrder.getOrder()));
 			store.analyzeOrder(pizzaOrderRepository.save(pizzaOrder));
 			cart.clear();
+			
+			//Bill bill = new Bill(customer.get(), pizzaOrder);
 			// customer = Optional.empty(); disabled for testing purposes
 		}
 		return "redirect:cart";
