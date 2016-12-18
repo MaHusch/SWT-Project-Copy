@@ -38,7 +38,8 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 								<span class="caret"></span>
 						</a>
 							<ul class="dropdown-menu">
-								<li><a sec:authorize="hasRole('ROLE_BAKER') or hasRole('ROLE_ADMIN')"
+								<li><a
+									sec:authorize="hasRole('ROLE_BAKER') or hasRole('ROLE_ADMIN')"
 									href="ovens.html">Öfen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_DELIVERER')"
 									href="index.html">Deliverer Dashboard</a></li>
@@ -60,6 +61,8 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 									href="staffmember_display.html">Mitarbeiter anzeigen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
 									href="tan.html">TAN-Liste</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="orders.html">Bestellungen</a></li>
 							</ul></li>
 					</ul>
 					<p class="navbar-text navbar-right"
@@ -77,24 +80,40 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 	</header>
 
 	<div class="container col-md-6">
-		<a href="finances.html"><img src="resources/img/finances.jpg"
+		<a href="finances.html"><img src="resources/img/Finanzen.jpg"
 			style="border: 5px solid red" width="100%" /></a>
 	</div>
-
-
 	<div class="container col-md-6">
-		<a href="display_staffmember.html"><img
-			src="resources/img/mitarbeiter.jpg" style="border: 5px solid red"
+		<a href="customer_display.html"><img
+			src="resources/img/Kundenauswahl.jpg" style="border: 5px solid red"
+			width="100%" height="100%" /></a>
+	</div>
+	<div class="container col-md-12">
+		<br />
+	</div>
+
+	<div class="container col-md-4">
+		<a href="staffmember_display.html"><img
+			src="resources/img/Mitarbeiter.jpg" style="border: 5px solid red"
 			width="100%" height="100%" /></a>
 	</div>
 
-	<div class="container col-md 4">
-		<a href=""></a>
+
+	<div class="container col-md-4">
+		<a href="orders.html"><img src="resources/img/Bestellungen.jpg"
+			style="border: 5px solid red" width="100%" height="100%" /></a>
 	</div>
-	
-	
-	
-	
+
+	<div class="container col-md-4">
+		<a href="ovens.html"><img src="resources/img/Oefen.jpg"
+			style="border: 5px solid red" width="100%" height="100%" /></a>
+	</div>
+
+
+
+
+
+
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<!-- Latest compiled and minified JavaScript -->
