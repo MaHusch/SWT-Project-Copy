@@ -16,7 +16,10 @@ __Anwendung von Gruppe: swt16w30__
 |Pfad |Parameter |Beschreibung |Rückgabe
 | ../ingridients/addNew oder ../simpleProduct/addNew | ""(Name) oder ""als Preis | fehlerhafte Eingaben werden nicht abgefangen  | Weiterleitung zu WhitelabelError("empty String") 
 | ../pizza/delete/CustomPizza | --- | Pizza kann nicht gelöscht werden | WhiteLabelError("no message available") 
-
+| ../pizza/delete/CustomPizza | --- | Die Links unter „Unser Angebot“ führen zu einer „Whitelabel Error Page“ und einem 404 Server Fehler. Aufgrund dieses Verhaltens kann der Kunden nicht das komplette(bzw kein)Angebot wahrnehmen.
+(Das gleiche Gilt für die Pfade: „customerSalads?“, „customerDrinks?“, 
+„customerIngredients?“,„customerPasta?“)
+ | WhiteLabelError("no message available") 
 |===
 
 == Sonstiges
@@ -26,6 +29,7 @@ __Anwendung von Gruppe: swt16w30__
 * Liefergebiet ist nicht beschränkt (PLZ von Orten außerhalb von Dresden werden bei einer Bestellung akzeptiert)
 * Freigetränk bei einer Bestellung über 30€ fehlt ebenfalls 
 * runde Artikelpreise wie z.B. 2€ werden zu 1,99€ gemacht (witzig aber eig. vom Kunden nicht explizit gefordert)
+* Es ist nicht möglich eine eine druckbare Version der abgeschlossenen Bestellung zu generieren/drucken
 
 * Optik der Anwendung
 * Fehlende Features
@@ -34,3 +38,4 @@ __Anwendung von Gruppe: swt16w30__
 == Verbesserungsvorschläge
 * bessere Fehlerbehandlung (WhiteLabelError umgehen z.b. per "redirect:catalog")
 * Was kann noch weiter verbessert werden?
+* Die Bausteine für eine druckbare Rechnung sind schon in der Bestellungsübersicht vorhanden, und müssen nur richtig formatiert werden.
