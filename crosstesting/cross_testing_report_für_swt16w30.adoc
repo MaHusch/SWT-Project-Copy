@@ -8,7 +8,7 @@ __Anwendung von Gruppe: swt16w30__
 === Erfüllte Muss-Kriterien
 * Artikel können vom Admin hinzugefügt werden (bei richtigen Eingaben)
 * Artikel können gelöscht werden (wenn keine DIY-Pizza)
-* Getrennte  views zwischen Kunden und Mitarbeiter sind vorhanden.  Die bereitgestellten Funktionalitäten für die Mitarbeiter sind gegenüber dem Admin limitiert.
+* Getrennte  views zwischen Kunden und Mitarbeiter sind vorhanden. Die bereitgestellten Funktionalitäten für die Mitarbeiter sind gegenüber dem Admin limitiert, und sind von dem Kunden nicht einzusehen.
 
 == Fehler-Report
 // See http://asciidoctor.org/docs/user-manual/#tables
