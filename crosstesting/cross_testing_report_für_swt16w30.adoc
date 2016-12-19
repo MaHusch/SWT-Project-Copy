@@ -21,7 +21,7 @@ Durch den Button „Neue Tan“ kann dem Kunden in der Kundenübersicht durch de
 |Pfad |Parameter |Beschreibung |Rückgabe
 | ../ingridients/addNew oder ../simpleProduct/addNew | ""(Name) oder ""als Preis | fehlerhafte Eingaben werden nicht abgefangen  | Weiterleitung zu WhitelabelError("empty String") 
 | ../pizza/delete/CustomPizza | --- | Pizza kann nicht gelöscht werden | WhiteLabelError("no message available") 
-| ../pizza/delete/CustomPizza | --- | Die Links unter „Unser Angebot“ führen zu einer „Whitelabel Error Page“ und einem 404 Server Fehler. Aufgrund dieses Verhaltens kann der Kunden nicht das komplette(bzw kein)Angebot wahrnehmen.
+| ../index | --- | Die Links unter „Unser Angebot“ führen zu einer „Whitelabel Error Page“ und einem 404 Server Fehler. Aufgrund dieses Verhaltens kann der Kunden nicht das komplette(bzw kein)Angebot wahrnehmen.
 (Das gleiche Gilt für die Pfade: „customerSalads?“, „customerDrinks?“, 
 „customerIngredients?“,„customerPasta?“)
  | WhiteLabelError("no message available") 
