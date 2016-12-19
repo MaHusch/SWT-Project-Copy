@@ -15,7 +15,7 @@ Eine Software entwickeln für einen Pizzaservice.
 
 * link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/crosstesting/cross_testing_report_f%C3%BCr_swt16w30.adoc[crosstesting]
   
-* link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/organisation/pflichtenheft%20versionen/pflichtenheft_v1.adoc[Pflichtenheft]
+* link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/organisation/pflichtenheft%20versionen/pflichtenheft_v1_2.adoc[Pflichtenheft]
 
 * link:https://github.com/st-tu-dresden-praktikum/swt16w16/tree/master/organisation/protokolls[Protokolle]
 
