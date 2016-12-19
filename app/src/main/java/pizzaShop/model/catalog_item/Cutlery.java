@@ -29,7 +29,6 @@ public class Cutlery extends Item{
 	 * Date till Cutlery has to be returned
 	 */
 	private LocalDateTime returnTill;
-	private static String name = "Essgarnitur";
 	public Integer loanPeriod;
 
 	/**
@@ -48,7 +47,7 @@ public class Cutlery extends Item{
 	 */
 
 	public Cutlery(MonetaryAmount price, LocalDateTime time) {
-		super(name,price,ItemType.CUTLERY);
+		super("Essgarnitur",price,ItemType.CUTLERY);
 		this.loanPeriod = 28; // according to task --> 4 weeks
 		this.setDate(time);
 		
@@ -64,7 +63,7 @@ public class Cutlery extends Item{
 	 */
 
 	public Cutlery(MonetaryAmount price, LocalDateTime time, Integer loanPeriod) {
-		super(name,price,ItemType.CUTLERY);
+		super("Essgarnitur",price,ItemType.CUTLERY);
 		this.loanPeriod = loanPeriod;
 		this.setDate(time);
 	}

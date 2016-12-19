@@ -30,7 +30,8 @@ public class NameComparator implements Comparator<Item> {
 	 */
 	@Override
 	public int compare(Item o1, Item o2) {
-		return ascending * o1.getName().compareToIgnoreCase(o2.getName());
+		if( (o1.getName() == null) || (o2.getName() == null) ) return 0;
+		return  ascending * o1.getName().compareToIgnoreCase(o2.getName());
 
 	}
 
