@@ -125,6 +125,7 @@ public class CatalogController {
 		
 		try {
 			store.saveEditedItem(i, name, type, price);
+			error.setError(false);
 		} catch (Exception e) {
 			// TODO hand over arguments with error on template
 			error.setError(true);
@@ -132,6 +133,8 @@ public class CatalogController {
 			return "redirect:addItem";
 		}
 		
+		
+	
 		return "redirect:catalog";
 	}
 	
@@ -179,6 +182,7 @@ public class CatalogController {
 		System.out.println("erstellen");
 		try {
 			store.createNewItem(name, type, price);
+			error.setError(false);
 		} catch (Exception e) {
 			error.setError(true);
 			error.setMessage(e.getMessage()); 

@@ -128,18 +128,14 @@ public class ApplicationDataInitializer implements DataInitializer {
 		
 		Pizza custom = new Pizza("Basis",Money.of(2.00, EURO));
 		Pizza pizza1 = new Pizza("Barbecue", Money.of(2.00, EURO));
-		pizza1.addIngredient(bacon);
-		pizza1.addIngredient(onions);
-		pizza1.addIngredient(paprika);
-		pizza1.addIngredient(cheese);
+		pizza1.addIngredient(Arrays.asList(bacon,onions,paprika,cheese));
+	
 		Pizza pizza2 = new Pizza("BigApple", Money.of(2.00, EURO));
-		pizza2.addIngredient(chicken_stripes);
-		pizza2.addIngredient(spinach);
-		pizza2.addIngredient(cheese);
+		pizza2.addIngredient(Arrays.asList(chicken_stripes,spinach,cheese));
+	
 		Pizza pizza3 = new Pizza("Mediteran", Money.of(2.00, EURO));
-		pizza3.addIngredient(chicken_stripes);
-		pizza3.addIngredient(olive);
-		pizza3.addIngredient(cheese);
+		pizza3.addIngredient(Arrays.asList(chicken_stripes,olive,cheese));
+		
 		
 		Item beer = new Item("Desperados", Money.of(1.60, EURO), ItemType.DRINK);
 		Item cola = new Item("Coca Cola", Money.of(2.50, EURO), ItemType.DRINK);
@@ -155,7 +151,9 @@ public class ApplicationDataInitializer implements DataInitializer {
 		
 		
 
-		itemCatalog.save(Arrays.asList(pizza2,pizza3,spinach,wine,freewine,apple_spritzer,water,cola,cheese, mushroom,chicken_stripes,bacon,paprika, pizza1, beer, freebeer, salat1,salat2, pineapple, onions, custom, olive));
+		itemCatalog.save(Arrays.asList(pizza1,pizza2,pizza3,spinach,wine,freewine,apple_spritzer,water,cola,
+						cheese, mushroom,chicken_stripes,bacon,paprika, 
+						beer, freebeer, salat1,salat2, pineapple, onions, custom, olive));
 		
 		
 	}

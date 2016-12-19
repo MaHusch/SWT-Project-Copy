@@ -141,17 +141,17 @@
 							th:value="${item.getName()}" /> <br />
 					</div>
 					<div th:if="${item == null}">
-						<input type="text" id="itemname" name="itemname" /> <br />
+						<input type="text" required="required" id="itemname" name="itemname"  /> <br />
 					</div>
 
 					<label for="itemprice">Preis </label>:
 					<div th:if="${item}">
-						<input type="number" step="0.1" id="itemprice" name="itemprice"
+						<input type="number" step="0.01" id="itemprice" name="itemprice"
 							value="" th:value="${item.getPrice().getNumber().floatValue()}" />
 						<br />
 					</div>
 					<div th:if="${item == null}">
-						<input type="number" step="0.1" id="itemprice" name="itemprice" />
+						<input type="number" required="required" step="0.01" id="itemprice" name="itemprice" value="1.01"/>
 						<br />
 					</div>
 
@@ -173,7 +173,7 @@
 		<div class="panel panel-danger">
 			<div class="panel-heading">Fehler!</div>
 			<div class="panel-body">
-				<p>Felder mit (*) dürfen nicht leer sein!</p>
+				<p th:text="${error.getMessage()}">Felder mit (*) dürfen nicht leer sein!</p>
 			</div>
 		</div>
 	</div>
