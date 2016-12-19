@@ -30,6 +30,15 @@ Durch den Button „Neue Tan“ kann dem Kunden in der Kundenübersicht durch de
  | ../order/neworder | --- | Es war keine Möglichkeit vorhanden zu markieren, dass die Bestellung vor Ort abgeholt werden soll. 
 | ---
  | ../order/orderoverview | --- | Auch in der Bestellungsübersicht gab es keine Möglichkeit anzugeben, dass die Bestellung abgeholt wird.| ---
+|index |--- | der Kunde hat keine Möglichkeit auf den Katalog zuzugreifen, ohne per hand "/catalog" einzugeben | whitelabel error wenn man die icons auf der Startseite benutzt
+| /"item"/edit | --- | Items (Salate, Pasten, etc.) können nicht bearbeitet werden | WhiteLabelError
+|/pizza | DIY Pizza erstellt | Bearbeiten einer DIY Pizza hat keinen Effekt | ---
+|/pizza |DIY Pizza erstellt | Delete einer DIY Pizza geht nicht | WhiteLabelError
+|/"item" | --- | wenn der Kunde per manueller Eingabe zum Katalog kommt, sieht er alle Buttons der Mitarbeiter | ---
+|/customer/delete/1 | erster Kunde in der Liste sollte gelöscht werden (da er doppelt in der Liste steht) | erster Kunde kann nicht gelöscht werden | WhiteLabelError
+|/customer/add | Kunde mit leeren Inputs erstellt | fehlerhafte Eingaben werden nicht gefangen | WhiteLabelError
+|/customer/edit | Kunde bearbeiten | es wird ein neuer Kunde erstellt und nicht der alte überschrieben | ---
+
 |===
 
 == Sonstiges
