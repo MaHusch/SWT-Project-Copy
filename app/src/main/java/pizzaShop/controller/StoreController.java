@@ -266,5 +266,10 @@ public class StoreController {
 		
 		return "redirect:customer_display";
 	}
+	
+	@RequestMapping("/login")
+	public String login(){
+		return "login";
+	}
 
 }

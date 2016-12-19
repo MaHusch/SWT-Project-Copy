@@ -43,7 +43,7 @@ public class Application {
             http.csrf().disable();
 
             http.authorizeRequests().antMatchers("/**").permitAll().and().//
-            formLogin().loginProcessingUrl("/login").successHandler(new AuthSuccessHandler()).and(). //
+            formLogin().loginPage("/login").loginProcessingUrl("/login").successHandler(new AuthSuccessHandler()).and(). //
             logout().logoutUrl("/logout").logoutSuccessUrl("/");
         }
 	}
