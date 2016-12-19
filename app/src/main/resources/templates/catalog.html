@@ -133,7 +133,7 @@
 						</td>
 						<td sec:authorize="hasRole('ROLE_ADMIN')">
 							<form method="post" action="/editItem">
-								<input type="hidden" name="pid" value="0" th:value="${item.id}" />
+								<input type="hidden" name="pid" value="0" th:value="${item.getId()}" />
 								<input type="hidden" name="number" value="1" /> <input
 									class="btn btn-primary" type="submit" value="Bearbeiten" />
 							</form>
