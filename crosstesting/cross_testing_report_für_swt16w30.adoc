@@ -11,6 +11,8 @@ __Anwendung von Gruppe: swt16w30__
 * Getrennte  views zwischen Kunden und Mitarbeiter sind vorhanden. Die bereitgestellten Funktionalitäten für die Mitarbeiter sind gegenüber dem Admin limitiert, und sind von dem Kunden nicht einzusehen.
 * Für jeden neu angelegten Kunden wird eine neue eineindeutige Tan generiert.
 Durch den Button „Neue Tan“ kann dem Kunden in der Kundenübersicht durch den Admin eine neue Tan zugewiesen werden. Die Möglichkeit die Tan zu ändern existiert somit.
+* Admin kann Mitarbeiter hinzufügen, bearbeiten und löschen
+* Wöchentliche / Vierteljährliche / Jährliche Abrechnung ist vorhanden
 
 == Fehler-Report
 // See http://asciidoctor.org/docs/user-manual/#tables
@@ -39,6 +41,15 @@ Durch den Button „Neue Tan“ kann dem Kunden in der Kundenübersicht durch de
 * runde Artikelpreise wie z.B. 2€ werden zu 1,99€ gemacht (witzig aber eig. vom Kunden nicht explizit gefordert)
 * Es ist nicht möglich eine eine druckbare Version der abgeschlossenen Bestellung zu generieren/drucken
 * Die jetzige Seite für den Deliverer auf der die Lieferungen angezeigt werden, ist bis jetzt nur ein einfaches HTML-Seite ohne Funktionen, somit können keine Funktionen des Deliveres, wie z.B. abschließen von  Aufträgen getesten werden.
+* Beim Hinzufügen/Bearbeiten eines Mitarbeiters werden fehlerhafte Eingaben akzeptiert (Nicht-numerische Postleitzahl/Telefonnummer, nicht vorhandene Rolle)
+** Rolle ist ein Textfeld (-> beliebige Eingabe)
+* Die Back-Logik fehlt komplett
+** keine Möglichkeit Pizzen zu backen
+** keine vierteljährliche Anpassung
+* Lieferungsübersicht ist nicht funktionsfähig (nur HTML)
+* Keine Möglichkeit vorhanden neue Einträge in der Abrechnung zu machen / Zeit vorzuspulen
+** Funktionalität der Abrechnung kann nicht getestet werden
+
 
 * Optik der Anwendung
 * Fehlende Features
