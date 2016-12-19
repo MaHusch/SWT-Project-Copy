@@ -166,7 +166,9 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 					<option th:each="item : ${items}"
 						th:text="${item.getName()} + ' ' + ${item.getPrice()}" id="0"
 						th:id="${item.getId()}">Cheese</option>
-				</select> <input class="btn btn-primary" id="addIngredient" type="button"
+				</select>
+				<br />
+				 <input class="btn btn-primary" id="addIngredient" type="button"
 					value="add ingredient" onclick="addIngredient();" />
 			</div>
 		</div>
