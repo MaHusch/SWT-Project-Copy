@@ -176,7 +176,14 @@ public class Store {
 		accountancy.add(a);
 	}
 
-	public Item findItemByIdentifier(String identifier, ItemType filter) {
+	public Item findItemByIdentifier(String identifier, ItemType filter) { // TODO:
+																			// check
+																			// if
+																			// needed,
+																			// why
+																			// string
+																			// as
+																			// parameter
 		Iterable<Item> items;
 
 		if (filter == null) {
@@ -194,6 +201,14 @@ public class Store {
 		return null;
 	}
 
+	/**
+	 * ConverterClass String -> {@link ItemType}
+	 * 
+	 * @param type
+	 *            {@link ItemType} given as a String
+	 * @return type as an {@link ItemType} (by default FREEDRINK (could be
+	 *         error)
+	 */
 	public static ItemType StringtoItemtype(String type) // use to remove
 															// redundancy?!
 	{
@@ -213,6 +228,18 @@ public class Store {
 		}
 	}
 
+	/**
+	 * Creates a new {@link Item}
+	 * 
+	 * @param name
+	 *            name of the new {@link Item}
+	 * @param type
+	 *            {@link ItemType} as a String
+	 * @param price
+	 *            price of the new {@link Item}
+	 * @throws Exception
+	 *             when inputs are invalid
+	 */
 	public void createNewItem(String name, String type, Number price) throws Exception {
 		Item newItem;
 
@@ -238,6 +265,16 @@ public class Store {
 
 	}
 
+	/**
+	 * function to save an edited {@link Item} in the itemCatalog
+	 * 
+	 * @param editedItem
+	 * @param name
+	 * @param type
+	 * @param price
+	 * @throws Exception
+	 *             if inputs are invalid
+	 */
 	public void saveEditedItem(Item editedItem, String name, String type, Number price) throws Exception {
 		if (editedItem.equals(null))
 			throw new NullPointerException("zu editierendes Item existiert nicht");
@@ -298,12 +335,18 @@ public class Store {
 		return false;
 	}
 
+	/**
+	 * function to simulate the case "customer lent a {@link Cutlery}" (no inventory needed thus only created on lending)
+	 * @param customer lending customer
+	 * @param time current time when borrowed
+	 * @return
+	 */
 	public boolean lentCutlery(Customer customer, LocalDateTime time) {
 		Cutlery cutlery = new Cutlery(Money.of(15.0, EURO), time);
 		if (customer.equals(null))
 			return false;
 		if (customer.getCutlery() != null)
-			return false; // has to return his lent cutlery before
+			return false; // has to return his lent cutlery before TODO: error on cart template
 
 		customer.setCutlery(cutlery);
 
@@ -313,7 +356,7 @@ public class Store {
 	}
 
 	/**
-	 * Function for returning a cutlery lent by a customer
+	 * Function for returning a {@link Cutlery} lent by a customer
 	 * 
 	 * @param lost
 	 *            <code> true </code> if customer lost his
@@ -326,6 +369,7 @@ public class Store {
 	 *             beforehand
 	 */
 	public void returnCutlery(boolean lost, Customer customer) throws Exception {
+		// TODO: decayed not equals lost --> other Accountancymessage
 		if (customer == null)
 			throw new NullPointerException("Welcher Kunde?");
 		if (customer.getCutlery() == (null))
