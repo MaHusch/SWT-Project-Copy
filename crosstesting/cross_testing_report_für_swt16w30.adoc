@@ -52,11 +52,18 @@ Durch den Button „Neue Tan“ kann dem Kunden in der Kundenübersicht durch de
 
 
 * Optik der Anwendung
-* Fehlende Features
+** übersichtlich und schlicht (ansprechend)
+** teilweise redundant (unser Angebot einmal im Bild und darunter stehend der gleiche Text)
+** DIY-Pizza Template 
+** Kommentarbereich ist endlos vergrößerbar (gewollt?)
+
 * Interaktion mit der Anwendung (Usability)
+** viele Buttons führen zu Fehlermeldungen
+** 
 
 == Verbesserungsvorschläge
-* bessere Fehlerbehandlung (WhiteLabelError umgehen z.b. per "redirect:catalog")
+
 * Was kann noch weiter verbessert werden?
-* Die Bausteine für eine druckbare Rechnung sind schon in der Bestellungsübersicht vorhanden, und müssen nur richtig formatiert werden.
-* Möglicherweise einen Zufallsgenerator für die Erstellung der TAN implementieren. Jetziges System der Generierung durch die Subtraktion von 3 von der zuletzt generierten TAN funktioniert dennoch.
+** Die Bausteine für eine druckbare Rechnung sind schon in der Bestellungsübersicht vorhanden, und müssen nur richtig formatiert werden.
+** Möglicherweise einen Zufallsgenerator für die Erstellung der TAN implementieren. Jetziges System der Generierung durch die Subtraktion von 3 von der zuletzt generierten TAN funktioniert dennoch.
+** bessere Fehlerbehandlung (WhiteLabelError umgehen z.b. per "redirect:catalog")
