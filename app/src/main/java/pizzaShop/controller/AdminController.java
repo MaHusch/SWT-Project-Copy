@@ -36,28 +36,29 @@ public class AdminController {
 	private final Accountancy accountancy;
 
 	private final Store store;
-	
+
 	@Autowired
-	public AdminController(Store store, StaffMemberRepository staffMemberRepository, UserAccountManager employeeAccountManager, Accountancy accountancy) {
+	public AdminController(Store store, StaffMemberRepository staffMemberRepository,
+			UserAccountManager employeeAccountManager, Accountancy accountancy) {
 		this.store = store;
 		this.staffMemberRepository = staffMemberRepository;
 		this.employeeAccountManager = employeeAccountManager;
 		this.accountancy = accountancy;
-		
-		
+
 	}
 
 	@RequestMapping("/register_staffmember")
 	public String registrationIndex(Model model, @RequestParam(value = "name", required = false) String name) {
-		
-		StaffMember member = store.getStaffMemberByName(name);
-		//System.out.println(member.getUsername());
-		model.addAttribute("staffMember",member);
-		
-		//ArrayList<StaffMember> staffMemberList = (ArrayList<StaffMember>) store.getStaffMemberList();
-		//StaffMember updatedMember = staffMemberList.get(staffMemberList.indexOf(member));
 
-		
+		StaffMember member = store.getStaffMemberByName(name);
+		// System.out.println(member.getUsername());
+		model.addAttribute("staffMember", member);
+
+		// ArrayList<StaffMember> staffMemberList = (ArrayList<StaffMember>)
+		// store.getStaffMemberList();
+		// StaffMember updatedMember =
+		// staffMemberList.get(staffMemberList.indexOf(member));
+
 		model.addAttribute("error", error);
 		return "register_staffmember";
 	}
@@ -94,61 +95,61 @@ public class AdminController {
 		}
 
 		store.getStaffMemberList().add(staffMember);
-		
+
 		/*
-		Optional<UserAccount> userAccount = employeeAccountManager.findByUsername(username);
-		
-		if(userAccount.isPresent()){
-			employeeAccountManager.disable(userAccount.get().getId());
-		}
-		
-		Optional<UserAccount> userAccount = employeeAccountManager.findByUsername(username);
-		
-		if (employeeAccountManager.contains(userAccount.get().getId())) {
-		
-		} else {
-			
-		}
-		*/
-		
+		 * Optional<UserAccount> userAccount =
+		 * employeeAccountManager.findByUsername(username);
+		 * 
+		 * if(userAccount.isPresent()){
+		 * employeeAccountManager.disable(userAccount.get().getId()); }
+		 * 
+		 * Optional<UserAccount> userAccount =
+		 * employeeAccountManager.findByUsername(username);
+		 * 
+		 * if (employeeAccountManager.contains(userAccount.get().getId())) {
+		 * 
+		 * } else {
+		 * 
+		 * }
+		 */
+
 		store.updateUserAccount(staffMember, username, password, Role.of("ROLE_" + role));
 
 		return "redirect:staffmember_display";
 	}
-	
+
 	@RequestMapping(value = "/updateStaffMember")
 	public String updateStaffMember(Model model, @RequestParam("surname") String surname,
-			@RequestParam("forename") String forename, @RequestParam("telnumber") String telephonenumber, @RequestParam("username") String username, @RequestParam("password") String password)
-	{
+			@RequestParam("forename") String forename, @RequestParam("telnumber") String telephonenumber,
+			@RequestParam("username") String username, @RequestParam("password") String password) {
 		StaffMember member = store.getStaffMemberByName(username);
-		
+
 		member.setForename(forename);
 		member.setSurname(surname);
 		member.setTelephoneNumber(telephonenumber);
-		
+
 		Optional<UserAccount> userAccount = employeeAccountManager.findByUsername(username);
-		
-		if(userAccount.isPresent()){
+
+		if (userAccount.isPresent()) {
 			employeeAccountManager.changePassword(userAccount.get(), password);
 		}
-		
+
 		return "redirect:staffmember_display";
 	}
-	
+
 	@RequestMapping(value = "/deleteStaffMember")
-	public String updateStaffMember(Model model, @RequestParam("StaffMemberName") String username)
-	{
+	public String updateStaffMember(Model model, @RequestParam("StaffMemberName") String username) {
 		StaffMember member = store.getStaffMemberByName(username);
-		
+
 		Optional<UserAccount> userAccount = employeeAccountManager.findByUsername(username);
-		
-		if(userAccount.isPresent()){
+
+		if (userAccount.isPresent()) {
 			employeeAccountManager.disable(userAccount.get().getId());
 		}
-		
+
 		ArrayList<StaffMember> staffMemberList = (ArrayList<StaffMember>) store.getStaffMemberList();
 		staffMemberList.remove(member);
-	
+
 		return "redirect:staffmember_display";
 	}
 
@@ -162,17 +163,12 @@ public class AdminController {
 		return "redirect:ovens";
 
 	}
-	
-	@RequestMapping(value="/deleteOven", method = RequestMethod.POST)
-	public String deleteOVen(@RequestParam("ovenID") int id){
-		
-		for(int i = 0; i < store.getOvens().size(); i++){
-			if(store.getOvens().get(i).getId() == id){
-				store.getOvens().remove(i);
-			}
-		}
-		
-		
+
+	@RequestMapping(value = "/deleteOven", method = RequestMethod.POST)
+	public String deleteOVen(@RequestParam("ovenID") int id) {
+
+		store.deleteOven(id);
+
 		return "redirect:ovens";
 	}
 

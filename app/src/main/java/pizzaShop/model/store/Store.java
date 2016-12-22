@@ -311,7 +311,6 @@ public class Store {
 			}
 
 		}
-		
 
 	}
 
@@ -338,9 +337,13 @@ public class Store {
 	}
 
 	/**
-	 * function to simulate the case "customer lent a {@link Cutlery}" (no inventory needed thus only created on lending)
-	 * @param customer lending customer
-	 * @param time current time when borrowed
+	 * function to simulate the case "customer lent a {@link Cutlery}" (no
+	 * inventory needed thus only created on lending)
+	 * 
+	 * @param customer
+	 *            lending customer
+	 * @param time
+	 *            current time when borrowed
 	 * @return
 	 */
 	public boolean lentCutlery(Customer customer, LocalDateTime time) {
@@ -348,7 +351,8 @@ public class Store {
 		if (customer.equals(null))
 			return false;
 		if (customer.getCutlery() != null)
-			return false; // has to return his lent cutlery before TODO: error on cart template
+			return false; // has to return his lent cutlery before TODO: error
+							// on cart template
 
 		customer.setCutlery(cutlery);
 
@@ -379,30 +383,39 @@ public class Store {
 			throw new NullPointerException("Kunde hatte keine Essgarnitur ausgeliehen bzw ist schon verfallen");
 
 		if (status.equals("lost") || status.equals("decayed")) {
-			if(status.equals("decayed")) message = "hat seine Essgarnitur nicht zurückgegeben";
+			if (status.equals("decayed"))
+				message = "hat seine Essgarnitur nicht zurückgegeben";
 			accountancy.add(new AccountancyEntry(Money.of(customer.getCutlery().getPrice().getNumber(), EURO),
 					customer.getForename() + " " + customer.getSurname() + message));
 		}
-		
+
 		customer.setCutlery(null);
 
 		this.customerRepository.save(customer);
 	}
-	
-	public void checkCutleries()
-	{
-		for(Customer c : this.customerRepository.findAll())
-		{
-			if(c.getCutlery() != null && c.getCutlery().getDate().isBefore(businessTime.getTime()))
-			{
-				/*System.out.println(c.getCutlery().getDateString() + "rückgabedatum \n");
-				System.out.println(busi);*/
+
+	public void checkCutleries() {
+		for (Customer c : this.customerRepository.findAll()) {
+			if (c.getCutlery() != null && c.getCutlery().getDate().isBefore(businessTime.getTime())) {
+				/*
+				 * System.out.println(c.getCutlery().getDateString() +
+				 * "rückgabedatum \n"); System.out.println(busi);
+				 */
 				try {
 					this.returnCutlery("decayed", c);
 				} catch (Exception e) {
 					System.out.println("if statement geht nicht");
-				
+
 				}
+			}
+		}
+	}
+
+	public void deleteOven(int Id) {
+
+		for (int i = 0; i < ovenList.size(); i++) {
+			if (ovenList.get(i).getId() == Id) {
+				ovenList.remove(i);
 			}
 		}
 	}
