@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import javax.money.MonetaryAmount;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 import org.salespointframework.time.BusinessTime;
 
@@ -15,21 +17,17 @@ import org.salespointframework.time.BusinessTime;
  */
 
 @Entity
-public class Cutlery extends Item{
+public class Cutlery{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3835581467490627776L;
-	/**
-	 * 
-	 */
+
+	@Id @GeneratedValue private long CutleryID;
 	
 	/**
 	 * Date till Cutlery has to be returned
 	 */
 	private LocalDateTime returnTill;
 	public Integer loanPeriod;
+	private MonetaryAmount price;
 
 	/**
 	 * unused Constructor for Spring
@@ -47,7 +45,8 @@ public class Cutlery extends Item{
 	 */
 
 	public Cutlery(MonetaryAmount price, LocalDateTime time) {
-		super("Essgarnitur",price,ItemType.CUTLERY);
+		//super("Essgarnitur",price,ItemType.CUTLERY);
+		this.setPrice(price);
 		this.loanPeriod = 28; // according to task --> 4 weeks
 		this.setDate(time);
 		
@@ -63,7 +62,8 @@ public class Cutlery extends Item{
 	 */
 
 	public Cutlery(MonetaryAmount price, LocalDateTime time, Integer loanPeriod) {
-		super("Essgarnitur",price,ItemType.CUTLERY);
+		//super("Essgarnitur",price,ItemType.CUTLERY);
+		this.setPrice(price);
 		this.loanPeriod = loanPeriod;
 		this.setDate(time);
 	}
@@ -97,6 +97,14 @@ public class Cutlery extends Item{
 	{
 		LocalDateTime t1 = this.getDate();
 		return t1.getDayOfMonth() + "." + t1.getMonthValue() + "." + t1.getYear();
+	}
+
+	public MonetaryAmount getPrice() {
+		return price;
+	}
+
+	public void setPrice(MonetaryAmount price) {
+		this.price = price;
 	}
 
 }
