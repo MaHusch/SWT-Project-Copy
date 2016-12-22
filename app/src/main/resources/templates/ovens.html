@@ -30,7 +30,8 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 			//if (element != null) { alert(element.id);}
 
 			var remainingTime = element.value;
-			if (remainingTime === "null" || remainingTime == 0 || remainingTime === "0") {
+			if (remainingTime === "null" || remainingTime == 0
+					|| remainingTime === "0") {
 				ovens[ovenID] = [ false, bakeTime ];
 			} else {
 				ovens[ovenID] = [ false, parseInt(remainingTime) ];
@@ -185,14 +186,24 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 						<td th:if="${oven.getBakerTimer() == null}">Ofen ist leer!</td>
 						<td th:if="${oven.getBakerTimer() != null}"
 							th:id="${oven.getId()}">Ofen ist leer!</td>
-						<td sec:authorize="hasRole('ROLE_BAKER')">
-						<input th:if="${oven.getBakerTimer() == null}" type="hidden" th:id="${oven.getId()} + timer " value="null" /> 
-						<input th:if="${oven.getBakerTimer() != null}" type="hidden" th:id="${oven.getId()} + timer " th:value="${oven.getBakerTimer().getCounter()}" />
+						<td sec:authorize="hasRole('ROLE_BAKER')"><input
+							th:if="${oven.getBakerTimer() == null}" type="hidden"
+							th:id="${oven.getId()} + timer " value="null" /> <input
+							th:if="${oven.getBakerTimer() != null}" type="hidden"
+							th:id="${oven.getId()} + timer "
+							th:value="${oven.getBakerTimer().getCounter()}" />
 							<form method="post" action="/getNextPizza">
 								<input type="hidden" name="ovenID" value="0"
 									th:value="${oven.getId()}" /> <input class="btn btn-primary"
 									type="submit" value="Auswählen" onclick="startClock()" />
 							</form></td>
+						<td sec:authorize="hasRole('ROLE_ADMIN')">
+							<form method="post" action="/deleteOven">
+								<input type="hidden" name="ovenID" value="0"
+									th:value="${oven.getId()}" /> <input class="btn btn-primary"
+									type="submit" value="Ofen löschen" />
+							</form>
+						</td>
 					</tr>
 				</table>
 				<form sec:authorize="hasRole('ROLE_ADMIN')" method="post"
@@ -236,7 +247,8 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 			<div class="panel-body">
 				<form method="post" action="/forward2">
 					<label for="days">Anzahl an Minuten</label> <input id="minutes"
-						type="number" name="minutes" /> <input class="btn btn-primary" type="submit" value="Forward" />
+						type="number" name="minutes" /> <input class="btn btn-primary"
+						type="submit" value="Forward" />
 				</form>
 			</div>
 		</div>

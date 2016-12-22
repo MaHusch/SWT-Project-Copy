@@ -162,5 +162,18 @@ public class AdminController {
 		return "redirect:ovens";
 
 	}
+	
+	@RequestMapping(value="/deleteOven", method = RequestMethod.POST)
+	public String deleteOVen(@RequestParam("ovenID") int id){
+		
+		for(int i = 0; i < store.getOvens().size(); i++){
+			if(store.getOvens().get(i).getId() == id){
+				store.getOvens().remove(i);
+			}
+		}
+		
+		
+		return "redirect:ovens";
+	}
 
 }
