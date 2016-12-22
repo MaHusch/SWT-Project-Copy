@@ -311,6 +311,8 @@ public class Store {
 			}
 
 		}
+		
+
 	}
 
 	public void getNextPizza() throws Exception {
@@ -368,20 +370,40 @@ public class Store {
 	 *             when customer hasn't lent a {@link catalog_item.Cutlery}
 	 *             beforehand
 	 */
-	public void returnCutlery(boolean lost, Customer customer) throws Exception {
+	public void returnCutlery(String status, Customer customer) throws Exception {
 		// TODO: decayed not equals lost --> other Accountancymessage
+		String message = " hat seine Essgarnitur verloren";
 		if (customer == null)
 			throw new NullPointerException("Welcher Kunde?");
 		if (customer.getCutlery() == (null))
 			throw new NullPointerException("Kunde hatte keine Essgarnitur ausgeliehen bzw ist schon verfallen");
 
-		if (lost) {
+		if (status.equals("lost") || status.equals("decayed")) {
+			if(status.equals("decayed")) message = "hat seine Essgarnitur nicht zurückgegeben";
 			accountancy.add(new AccountancyEntry(Money.of(customer.getCutlery().getPrice().getNumber(), EURO),
-					customer.getForename() + " " + customer.getSurname() + " hat seine Essgarnitur verloren"));
+					customer.getForename() + " " + customer.getSurname() + message));
 		}
+		
 		customer.setCutlery(null);
 
 		this.customerRepository.save(customer);
 	}
-
+	
+	public void checkCutleries()
+	{
+		for(Customer c : this.customerRepository.findAll())
+		{
+			if(c.getCutlery() != null && c.getCutlery().getDate().isBefore(businessTime.getTime()))
+			{
+				/*System.out.println(c.getCutlery().getDateString() + "rückgabedatum \n");
+				System.out.println(busi);*/
+				try {
+					this.returnCutlery("decayed", c);
+				} catch (Exception e) {
+					System.out.println("if statement geht nicht");
+				
+				}
+			}
+		}
+	}
 }

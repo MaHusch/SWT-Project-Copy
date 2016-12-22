@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import pizzaShop.model.store.AccountingMethods;
+import pizzaShop.model.store.Store;
 
 @Controller
 public class AccountingController {
@@ -36,14 +37,16 @@ public class AccountingController {
 	private final Accountancy accountancy;
 	private final AccountingMethods accountingMethods;
 	private final BusinessTime businessTime;
+	private final Store store;
 	private int offsetM = 0;
 	private int offsetY = 0;
 
 	@Autowired
-	public AccountingController(Accountancy accountancy, AccountingMethods accountingMethods, BusinessTime businessTime) {
+	public AccountingController(Store store,Accountancy accountancy, AccountingMethods accountingMethods, BusinessTime businessTime) {
 		this.accountancy = accountancy;
 		this.accountingMethods = accountingMethods;
 		this.businessTime = businessTime;
+		this.store = store;
 	}
 
 	@RequestMapping("/finances")
@@ -57,6 +60,7 @@ public class AccountingController {
 		model.addAttribute("currentTime", businessTime.getTime());
 		model.addAttribute("totalGain", accountingMethods.total());
 		model.addAttribute("monthlyGain", accountingMethods.monthlyTotal(i)); 
+		store.checkCutleries();
 		return "finances";
 	}
 	

@@ -180,7 +180,8 @@ public class StoreController {
 
 	@RequestMapping("/customer_display")
 	public String customer_display(Model model) {
-
+		
+		store.checkCutleries();
 		model.addAttribute("customer", customerRepository.findAll());
 		
 		return "customer_display";
@@ -254,11 +255,11 @@ public class StoreController {
 	@RequestMapping("returnCutlery")
 	public String returnCutlery(@RequestParam("lost") String lostStr, @RequestParam("cid") long id)
 	{
-		boolean lost = true;
-		if(lostStr.equals("0")) lost = false;
+		String  cutleryStatus = "lost";
+		if(lostStr.equals("0")) cutleryStatus = "returned";
 	
 		try {
-			store.returnCutlery(lost,this.customerRepository.findOne(id));
+			store.returnCutlery(cutleryStatus,this.customerRepository.findOne(id));
 		} catch (Exception e) {
 			error.setError(true);
 			error.setMessage(e.getMessage());;
