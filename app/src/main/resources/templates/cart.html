@@ -172,10 +172,12 @@
 						Gesamtpreis)</label>: <input type="hidden" name="onSite" value="0" /> <input
 						type="checkbox" name="onSite" value="1" /> <br> </br> <label
 						for="cutlery"> Essgarnitur(15€ Pfand) </label>: <input
-						type="hidden" name="cutlery" value="0" /> <input type="checkbox"
-						name="cutlery" value="1" /> <br> </br> <input
-						class="btn btn-primary" type="submit" value="Kaufen" />
-
+						type="hidden" name="cutlery" value="0" /> 
+						<input type="checkbox" name="cutlery" value="1" /> <br> </br> 
+						<div th:switch="${customer.isPresent()}">
+						<input th:case="true" class="btn btn-primary" type="submit" value="Kaufen" />
+						<p th:case= "false"> Kein Kunde eingeloggt </p>
+						</div>
 				</form>
 			</div>
 		</div>
