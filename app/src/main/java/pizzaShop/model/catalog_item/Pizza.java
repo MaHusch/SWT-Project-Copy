@@ -83,7 +83,7 @@ public class Pizza extends Item {
 
 	public void addIngredient(List<Ingredient> newIngredients) {
 		for (Ingredient i : newIngredients) {
-			ingredients.add(i.getName());
+			this.addIngredient(i);
 		}
 	}
 
