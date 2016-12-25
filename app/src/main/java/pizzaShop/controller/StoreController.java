@@ -13,6 +13,7 @@ import org.salespointframework.catalog.Product;
 import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.OrderIdentifier;
+import org.salespointframework.order.OrderStatus;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.Password;
 import org.salespointframework.useraccount.UserAccount;
@@ -41,6 +42,7 @@ import pizzaShop.model.store.ErrorClass;
 import pizzaShop.model.store.ItemCatalog;
 import pizzaShop.model.store.PizzaOrder;
 import pizzaShop.model.store.PizzaOrderRepository;
+import pizzaShop.model.store.PizzaOrderStatus;
 import pizzaShop.model.store.StaffMemberRepository;
 import pizzaShop.model.store.Store;
 import pizzaShop.model.tan_management.Tan;
@@ -214,6 +216,24 @@ public class StoreController {
 		{
 			tanManagement.invalidateTan(foundTan) ;
 		}
+		
+		Iterable<PizzaOrder> allPizzaOrders = pizzaOrderRepository.findAll();
+		
+		for(PizzaOrder pizzaOrder : allPizzaOrders)
+		{
+			
+			Customer customer = pizzaOrder.getCustomer();
+			
+			if(customer != null)
+			{
+				if(customer.getId() == id)
+				{
+					pizzaOrder.setCustomer(null);
+					pizzaOrder.cancelOrder();
+				}		
+			}
+			
+		}
 
 		customerRepository.delete(id);
 		
@@ -225,7 +245,7 @@ public class StoreController {
 	public String updateStaffMember(@RequestParam("surname") String surname, @RequestParam("forename") String forename,
 			@RequestParam("telnumber") String telephonenumber, @RequestParam("local") String local,
 			@RequestParam("postcode") String postcode, @RequestParam("street") String street,
-			@RequestParam("housenumber") String housenumber, @RequestParam("cid") long id,  @RequestParam(value = "cutlery", required = false) Cutlery cutlery)
+			@RequestParam("housenumber") String housenumber, @RequestParam("cid") long id)
 	{
 		
 		Customer oldCustomer = customerRepository.findOne(id);
@@ -244,6 +264,25 @@ public class StoreController {
 		{
 			updatedCustomer.setCutlery(oldCutlery);
 		}
+		
+		
+		Iterable<PizzaOrder> allPizzaOrders = pizzaOrderRepository.findAll();
+		
+		for(PizzaOrder pizzaOrder : allPizzaOrders)
+		{
+			
+			Customer customer = pizzaOrder.getCustomer();
+			
+			if(customer != null)
+			{
+				if(customer.getId() == id)
+				{
+					pizzaOrder.setCustomer(updatedCustomer);
+				}		
+			}
+		
+		}
+		
 		
 		customerRepository.save(updatedCustomer);
 		
