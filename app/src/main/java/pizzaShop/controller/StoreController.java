@@ -131,8 +131,8 @@ public class StoreController {
 	}
 
 	@RequestMapping(value = "/finishPizza", method = RequestMethod.POST)
-	public String addIngredientsToPizza(@RequestParam("id_transmit") String ids[], @ModelAttribute Cart cart) {
-
+	public String addIngredientsToPizza(@RequestParam("id_transmit") String ids[],@RequestParam("pizza_name") String pizzaName, @ModelAttribute Cart cart) {
+		System.out.println("Custom pizza name " + pizzaName );
 		Pizza newPizza;
 
 		if (ids == null || ids.length == 0) {
@@ -152,13 +152,20 @@ public class StoreController {
 
 				Ingredient newIngredient = new Ingredient(itemName, itemPrice);
 				newPizza.addIngredient(newIngredient);
+				
+				if ( pizzaName.equals("") || (pizzaName == null) ) { 
+					newPizza.setName( "custom" ); 
+				}else{ 
+					newPizza.setName( pizzaName );
+				}
+			
 			}
 
 		}
 
 		Pizza savedPizza = itemCatalog.save(newPizza);
 		cart.addOrUpdateItem(savedPizza, Quantity.of(1));
-
+		
 		return "redirect:catalog";
 	}
 
