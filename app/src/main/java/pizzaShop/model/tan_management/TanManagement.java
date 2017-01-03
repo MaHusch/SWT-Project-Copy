@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import org.springframework.stereotype.Component;
 
@@ -113,6 +114,44 @@ public class TanManagement {
 		
 	}
 	
+	public Tan getTanByTanNumber(String tanNumber)
+	{
+		Iterator<Map.Entry<Tan, String>> hashMapIterator = tanHashMap.entrySet().iterator();
+		
+		while(hashMapIterator.hasNext())
+			{
+				Map.Entry<Tan, String> entry = (Map.Entry<Tan, String>)hashMapIterator.next();
+				
+				Tan tanEntry = entry.getKey();
+				
+				if(tanEntry.getTanNumber().equals(tanNumber)) return tanEntry;
+
+			
+			}
+		
+		return NOT_FOUND_TAN;
+		
+	}
+	
+	public Tan getNotConfirmedTanByTanNumber(String tanNumber)
+	{
+		Iterator<Map.Entry<Tan, String>> hashMapIterator = notConfirmedTans.entrySet().iterator();
+		
+		while(hashMapIterator.hasNext())
+			{
+				Map.Entry<Tan, String> entry = (Map.Entry<Tan, String>)hashMapIterator.next();
+				
+				Tan tanEntry = entry.getKey();
+				
+				if(tanEntry.getTanNumber().equals(tanNumber)) return tanEntry;
+
+			
+			}
+		
+		return NOT_FOUND_TAN;
+		
+	}
+	
 	/**
 	 * Generates a new TAN for the given TelephoneNumber. 
 	 * To confirm the newly generated TAN after the order has been complete use confirmTan(tan)
@@ -172,14 +211,47 @@ public class TanManagement {
 				Tan newlyCreatedTan = new Tan(newTanString, TanStatus.NOT_CONFIRMED);
 				
 				notConfirmedTans.put(newlyCreatedTan, telephoneNumber);
-						
+				
+				//System.out.println("new Tan added");
+				//System.out.println(newlyCreatedTan.getTanNumber());
+				
 				return newlyCreatedTan;
+				
 			}
 			
 		}
 		
 		return NOT_FOUND_TAN;
 			
+	}
+	
+	/**
+	 * This method confirms a Tan by setting its status to VALID and putting it into the tanHashMap.
+	 * If there already exists an entry with the same TelephoneNumber the status of the tan in this entry is set to USED.
+	 * The entry of this Tan in the notConfirmedTans HashMap gets deleted.
+	 * 
+	 * @param tan	The Tan you want to confirm
+	 */
+	
+	public void confirmTan(Tan tan)
+	{
+		String telephoneNumber = this.notConfirmedTans.get(tan);
+		
+		Tan oldTan = this.getTan(telephoneNumber);
+		
+		if(oldTan.getStatus() != TanStatus.NOT_FOUND)
+		{
+			//System.out.println("found old tan");
+			this.invalidateTan(oldTan);
+					
+		}
+		
+		deleteNotConfirmedTan(tan);
+		
+		tan.setStatus(TanStatus.VALID);
+		
+		tanHashMap.put(tan, telephoneNumber);
+				
 	}
 	
 	/**
@@ -201,6 +273,17 @@ public class TanManagement {
 		
 		
 	}
+		
+	
+	public boolean deleteNotConfirmedTan(Tan tan)
+	{
+		String telephoneNumber = this.notConfirmedTans.get(tan);
+		
+		return notConfirmedTans.remove(tan, telephoneNumber);
+		
+	}
+	
+	
 	
 	public Iterable<Map.Entry<Tan, String>> getAllTans()
 	{
@@ -234,46 +317,28 @@ public class TanManagement {
 		return allEntrys;
 	}
 	
-	/**
-	 * This method confirms a Tan by setting its status to VALID and putting it into the tanHashMap.
-	 * 
-	 * @param tan	The Tan you want to confirm
-	 */
-	
-	public void confirmTan(Tan tan)
+	public void updateTelephoneNumber(String oldTelephoneNumber, String newTelephoneNumber)
 	{
-		String telephoneNumber = this.notConfirmedTans.get(tan);
+		Iterable<Map.Entry<Tan, String>> allTans = getAllTans();
 		
-		Tan oldTan = this.getTan(telephoneNumber);
+		Iterable<Map.Entry<Tan, String>> allNotConfirmedTans = getAllNotConfirmedTans();
 		
-		if(oldTan.getStatus() != TanStatus.NOT_FOUND)
+		for(Entry<Tan, String> entry : allTans)
 		{
-			
-			this.invalidateTan(oldTan);
-			
-			tanHashMap.replace(oldTan, telephoneNumber, EMPTY_STRING);
-					
+			if(entry.getValue().equals(oldTelephoneNumber))
+			{
+				tanHashMap.replace(entry.getKey(), oldTelephoneNumber, newTelephoneNumber);
+			}
 		}
-
-		System.out.println("new tan added");
 		
-		tan.setStatus(TanStatus.VALID);
-		
-		tanHashMap.put(tan, telephoneNumber);
-		
-		deleteNotConfirmedTan(tan);
-		
-	}
-		
-	
-	public boolean deleteNotConfirmedTan(Tan tan)
-	{
-		String telephoneNumber = this.notConfirmedTans.get(tan);
-		
-		return notConfirmedTans.remove(tan, telephoneNumber);
+		for(Entry<Tan, String> entry : allNotConfirmedTans)
+		{
+			if(entry.getValue().equals(oldTelephoneNumber))
+			{
+				tanHashMap.replace(entry.getKey(), oldTelephoneNumber, newTelephoneNumber);
+			}
+		}
 		
 	}
-
-
 
 }

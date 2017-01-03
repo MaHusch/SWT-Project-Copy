@@ -1,6 +1,11 @@
 package pizzaShop.controller;
 
+import static org.salespointframework.core.Currencies.EURO;
+
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.TextStyle;
+import java.util.Locale;
 import java.util.Optional;
 
 import org.javamoney.moneta.Money;
@@ -13,8 +18,8 @@ import org.salespointframework.order.OrderLine;
 import org.salespointframework.payment.Cash;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.time.BusinessTime;
+import org.salespointframework.time.Interval;
 import org.salespointframework.useraccount.UserAccount;
-import org.salespointframework.useraccount.UserAccountManager;
 import org.salespointframework.useraccount.web.LoggedIn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import pizzaShop.model.store.AccountingMethods;
+import pizzaShop.model.store.Store;
 
 @Controller
 public class AccountingController {
@@ -31,26 +37,52 @@ public class AccountingController {
 	private final Accountancy accountancy;
 	private final AccountingMethods accountingMethods;
 	private final BusinessTime businessTime;
+	private final Store store;
+	private int offsetM = 0;
+	private int offsetY = 0;
 
 	@Autowired
-	public AccountingController(Accountancy accountancy, AccountingMethods accountingMethods, BusinessTime businessTime) {
+	public AccountingController(Store store,Accountancy accountancy, AccountingMethods accountingMethods, BusinessTime businessTime) {
 		this.accountancy = accountancy;
 		this.accountingMethods = accountingMethods;
 		this.businessTime = businessTime;
+		this.store = store;
 	}
 
 	@RequestMapping("/finances")
 	public String finances(Model model) {
+		LocalDateTime displayTime = businessTime.getTime().plusMonths(offsetM);
+		displayTime = displayTime.minusDays(displayTime.getDayOfMonth()-1);
+		Interval i = Interval.from(displayTime.minusDays(1)).to(displayTime.plusMonths(1));
 		model.addAttribute("entries", accountancy.findAll());
+		model.addAttribute("currentDisplay", accountancy.find(i));	
+		model.addAttribute("displayTime", displayTime.getMonth().getDisplayName(TextStyle.FULL, Locale.GERMAN)+" "+displayTime.getYear());
+		model.addAttribute("currentTime", businessTime.getTime());
 		model.addAttribute("totalGain", accountingMethods.total());
-
+		model.addAttribute("monthlyGain", accountingMethods.monthlyTotal(i)); 
+		store.checkCutleries();
 		return "finances";
 	}
+	
+	@RequestMapping(value = "/decreaseMonth", method = RequestMethod.POST)
+	public String decreaseMonth() {
+		offsetM -= 1;
+		return "redirect:finances";
+	}
+	
+	
+	@RequestMapping(value = "/increaseMonth", method = RequestMethod.POST)
+	public String increaseMonth() {
+		offsetM += 1;
+		return "redirect:finances";
+	}
+	
+	
 
 	@RequestMapping(value = "/createAccountancyEntry", method = RequestMethod.POST)
 	public String createEntry(@RequestParam("value") Integer value, @RequestParam("description") String description) {
 
-		accountancy.add(new AccountancyEntry(Money.of(value, "EUR"), description));
+		accountancy.add(new AccountancyEntry(Money.of(value, EURO), description));
 		return "redirect:finances";
 	}
 
@@ -61,7 +93,7 @@ public class AccountingController {
 		if (!userAccount.isPresent())
 			return "redirect:login";
 		Order order = new Order(userAccount.get(), Cash.CASH);
-		order.add(new OrderLine(new Product("test", Money.of(value, "EUR")), Quantity.of(1)));
+		order.add(new OrderLine(new Product("test", Money.of(value, EURO)), Quantity.of(1)));
 		accountancy.add(ProductPaymentEntry.of(order, "Order by " + userAccount.get().getId() + ": " + order.getId()));
 		return "redirect:finances";
 	}

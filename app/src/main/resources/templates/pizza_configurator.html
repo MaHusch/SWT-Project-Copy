@@ -117,7 +117,7 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 								<span class="caret"></span>
 						</a>
 							<ul class="dropdown-menu">
-								<li><a sec:authorize="hasRole('ROLE_BAKER')"
+								<li><a sec:authorize="hasRole('ROLE_BAKER') or hasRole('ROLE_ADMIN')"
 									href="ovens.html">Öfen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_DELIVERER')"
 									href="sDeliverer.html">Deliverer Dashboard</a></li>
@@ -162,16 +162,18 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 		<div class="panel panel-primary">
 			<div class="panel-heading">Treffen Sie Ihre Auswahl!</div>
 			<div class="panel-body">
-				<select id="ingredient_list" name="ingredient List" size="5">
+				<select id="ingredient_list" name="ingredient List" size="1">
 					<option th:each="item : ${items}"
 						th:text="${item.getName()} + ' ' + ${item.getPrice()}" id="0"
 						th:id="${item.getId()}">Cheese</option>
-				</select> <input class="btn btn-primary" id="addIngredient" type="button"
+				</select>
+				<br />
+				 <input class="btn btn-primary" id="addIngredient" type="button"
 					value="add ingredient" onclick="addIngredient();" />
 			</div>
 		</div>
 	</div>
-
+	
 	<!-- Panel for current pizza -->
 	<div class="container col-md-4">
 		<div class="panel panel-primary">
@@ -185,11 +187,10 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 					type="button" value="remove ingredient"
 					onclick="removeIngredient();" />
 				<form method="post" action="/finishPizza">
-					<input class="btn btn-primary" type="submit" name="id"
-						value="Pizza fertigstellen" /> <input type="hidden"
-						name="id_transmit" id="id_transmit" value="" />
+					Name: <input type="text" name="pizza_name" id="pizza_name" value="custom" />
+					<input class="btn btn-primary" type="submit" name="id" value="Pizza fertigstellen" />
+					<input type="hidden" name="id_transmit" id="id_transmit" value="" />
 				</form>
-
 			</div>
 		</div>
 	</div>

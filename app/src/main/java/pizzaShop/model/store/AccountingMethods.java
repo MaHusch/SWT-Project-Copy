@@ -6,6 +6,7 @@ import org.javamoney.moneta.Money;
 import org.salespointframework.accountancy.Accountancy;
 import org.salespointframework.accountancy.AccountancyEntry;
 import org.salespointframework.time.BusinessTime;
+import org.salespointframework.time.Interval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +26,15 @@ public class AccountingMethods {
 		MonetaryAmount total = Money.of(0, "EUR");
 		
 		for (AccountancyEntry a : accountancy.findAll())
+		        total = total.add(a.getValue());
+		
+		return total;
+	}
+	
+	public MonetaryAmount monthlyTotal(Interval i){
+		MonetaryAmount total = Money.of(0, "EUR");
+		
+		for (AccountancyEntry a : accountancy.find(i))
 		        total = total.add(a.getValue());
 		
 		return total;

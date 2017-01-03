@@ -7,6 +7,7 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css"
 	th:href="@{/resources/css/style.css}" />
+
 <title>Öfen</title>
 
 <script type="text/javascript">
@@ -16,21 +17,30 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 
 	var clicked = false;
 
-	var bakeTime = 10;
+	var bakeTime = 100;
 
 	function addOvens() {
 		var table = document.getElementById("ovenTable");
 
+		// rows correspond to the oven ids
 		for (var i = 0, row; row = table.rows[i]; i++) {
-			//iterate through rows
-			for (var j = 0, col; col = row.cells[j]; j++) {
-				//iterate through columns
-				var ovenID = col.id;
-				if (isNumber(ovenID) == true) {
-					ovens[ovenID] = [ false, bakeTime ];
-					//alert(ovenID);
-				}
+
+			var ovenID = i + 1;
+			var element = document.getElementById(String(ovenID)
+					.concat("timer"));
+			//if (element != null) { alert(element.id);}
+
+			var remainingTime = element.value;
+			if (remainingTime === "null" || remainingTime == 0
+					|| remainingTime === "0") {
+				ovens[ovenID] = [ false, bakeTime ];
+			} else {
+				ovens[ovenID] = [ false, parseInt(remainingTime) ];
+				startTimer(ovenID);
 			}
+
+			//iterate through rows
+			//for (var j = 0, col; col = row.cells[j]; j++) {}
 		}
 
 	}
@@ -45,8 +55,8 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 	}
 
 	function startTimer(id) {
-
-		var ovenID = id.replace("timer", "");
+		var ovenID = id;
+		//var ovenID = id.replace("timer", "");
 		setOvenTimer(ovenID, true);
 
 		if (clicked === false) {
@@ -59,12 +69,11 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 		for (var i = 1; i <= Object.keys(ovens).length; i++) {
 			if (ovens[i][0] == true) {
 				var seconds = ovens[i][1] - 1;
-				if (seconds == 0) {
+				if (seconds <= 0) {
 					stopTimer(i);
 					break;
 				}
 				ovens[i][1] = seconds;
-
 				document.getElementById(i).innerHTML = "Timer: " + seconds
 						+ " sekunden";
 			}
@@ -75,12 +84,13 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 	function stopTimer(id) {
 		window.clearInterval(clock);
 		clock = setInterval("timer()", 1000);
-
+		//alert("I am here");
 		ovens[id][1] = bakeTime;
 		ovens[id][0] = false;
 
-		document.getElementById(id).innerHTML = "fertig";
+		document.getElementById(id).innerHTML = "Ofen ist leer!";
 		clicked = false;
+		location.reload();
 	}
 
 	//]]>
@@ -119,7 +129,8 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 								<span class="caret"></span>
 						</a>
 							<ul class="dropdown-menu">
-								<li><a sec:authorize="hasRole('ROLE_BAKER')"
+								<li><a
+									sec:authorize="hasRole('ROLE_BAKER') or hasRole('ROLE_ADMIN')"
 									href="ovens.html">Öfen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_DELIVERER')"
 									href="index.html">Deliverer Dashboard</a></li>
@@ -175,17 +186,26 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 						<td th:text="${'Oven content: ' + oven.getPizzaName()}">Content:</td>
 						<td th:if="${oven.getBakerTimer() == null}">Ofen ist leer!</td>
 						<td th:if="${oven.getBakerTimer() != null}"
-							th:text="${oven.getBakerTimer().getCounter()}">time left</td> 	
-						<td sec:authorize="hasRole('ROLE_BAKER')">
-					<input type="submit" th:id="timer + ${oven.getId()}"
-							value="Click here to start timer" name="submit"
-							onClick="startTimer(this.id)" />
-						<form method="post" action="/getNextPizza">
-							<input type="hidden" name="ovenID" value="0"
-								th:value="${oven.getId()}" /> <input class="btn btn-primary"
-								type="submit" value="Auswählen" onclick="startClock()" />
-						</form>
-						</td></tr>
+							th:id="${oven.getId()}">Ofen ist leer!</td>
+						<td sec:authorize="hasRole('ROLE_BAKER')"><input
+							th:if="${oven.getBakerTimer() == null}" type="hidden"
+							th:id="${oven.getId()} + timer " value="null" /> <input
+							th:if="${oven.getBakerTimer() != null}" type="hidden"
+							th:id="${oven.getId()} + timer "
+							th:value="${oven.getBakerTimer().getCounter()}" />
+							<form method="post" action="/getNextPizza">
+								<input type="hidden" name="ovenID" value="0"
+									th:value="${oven.getId()}" /> <input class="btn btn-primary"
+									type="submit" value="Auswählen" onclick="startClock()" />
+							</form></td>
+						<td sec:authorize="hasRole('ROLE_ADMIN')">
+							<form method="post" action="/deleteOven">
+								<input type="hidden" name="ovenID" value="0"
+									th:value="${oven.getId()}" /> <input class="btn btn-primary"
+									type="submit" value="Ofen löschen" />
+							</form>
+						</td>
+					</tr>
 				</table>
 				<form sec:authorize="hasRole('ROLE_ADMIN')" method="post"
 					action="/addOven">
@@ -200,7 +220,7 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 		<div class="panel panel-primary">
 			<div class="panel-heading">Pizzaqueue</div>
 			<div class="panel-body">
-			<p th:if="${queue.size() == 0}">PizzaQueue ist leer!</p>
+				<p th:if="${queue.size() == 0}">PizzaQueue ist leer!</p>
 				<table class="table table-striped">
 					<tbody th:remove="all-but-first">
 						<tr th:each="pizza : ${queue}">
@@ -217,6 +237,20 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 			<div class="panel-heading">Fehler!</div>
 			<div class="panel-body">
 				<p>PizzaQueue ist leer! Ofen kann nicht befüllt werden!</p>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="container col-md-4">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Zeit vorspulen</div>
+			<div class="panel-body">
+				<form method="post" action="/forward2">
+					<label for="days">Anzahl an Minuten</label> <input id="minutes"
+						type="number" name="minutes" /> <input class="btn btn-primary"
+						type="submit" value="Forward" />
+				</form>
 			</div>
 		</div>
 	</div>

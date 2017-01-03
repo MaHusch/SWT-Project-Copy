@@ -1,6 +1,5 @@
 package pizzaShop.controller;
 
-
 import static org.salespointframework.core.Currencies.EURO;
 
 import java.util.ArrayList;
@@ -32,215 +31,210 @@ import pizzaShop.model.store.Store;
 
 /**
  * Controller to create the Catalog View
+ * 
  * @author Florentin
  *
  */
 
-
 @Controller
 public class CatalogController {
-	
+
 	private final ItemCatalog itemCatalog;
 	private final Store store;
 	private ErrorClass error = new ErrorClass(false);
 	private Iterable<Item> items;
 	private ArrayList<Item> filteredItems;
+
 	/**
-	 * on creation spring searches the itemCatalog and allocates it to the local variabel
-	 * @param itemCatalog the itemCatalog of the shop
+	 * on creation spring searches the itemCatalog and allocates it to the local
+	 * variabel
+	 * 
+	 * @param itemCatalog
+	 *            the itemCatalog of the shop
 	 */
 	@Autowired
-	public CatalogController(ItemCatalog itemCatalog, Store store)
-	{
+	public CatalogController(ItemCatalog itemCatalog, Store store) {
 		this.itemCatalog = itemCatalog;
 		this.store = store;
 	}
-	
-	
+
 	/**
 	 * on /catalog the itemCatalog is shown
-	 * @param model for the html view
+	 * 
+	 * @param model
+	 *            for the html view
 	 * @return redirects to the catalog template
 	 */
 	@RequestMapping("/catalog")
-	public String showCatalog(Model model)
-	{
+	public String showCatalog(Model model) {
 		items = itemCatalog.findAll();
-		
+
 		model.addAttribute("items", items);
-		model.addAttribute("ItemType",ItemType.values());
+		model.addAttribute("ItemType", ItemType.values());
 		return "catalog";
 	}
-	
+
 	/**
-	 * on /remove a given item will be removed from the catalog
-	 * @param id the productidentifier of the item which will be removed
+	 * on /remove a given {@link Item} will be removed from the catalog
+	 * 
+	 * @param id
+	 *            the productidentifier of the {@link Item} which will be
+	 *            removed
 	 * @return redirects to the catalog template
 	 */
 	@RequestMapping("/removeItem")
 	public String removeItem(@RequestParam("pid") ProductIdentifier id) {
-		if(!itemCatalog.findOne(id).get().getType().equals(ItemType.INGREDIENT))
-				itemCatalog.delete(id);
-		// um Ingredients zu löschen muss noch durch Pizzen interiert werden.
-		// was wenn noch im cart?
-		return "redirect:catalog";
+		// ToDo: check if item in cart
+		Item item = itemCatalog.findOne(id).orElse(null);
+		if (item == null) {
+			System.out.println("item nicht gefunden");
+			return "redirect:catalog";
+		}
 
+		itemCatalog.delete(id);
+		if (item.getType().equals(ItemType.INGREDIENT)) {
+			Pizza p1;
+			for (Item x : itemCatalog.findByType(ItemType.PIZZA)) {
+				p1 = (Pizza) x;
+				if (p1.getIngredients().contains(item.getName())) {
+					p1.getIngredients().remove(item.getName());
+					itemCatalog.save(p1);
+				}
+			}
+
+		}
+
+		return "redirect:catalog";
 	}
-	
+
 	/**
-	 * after a item is edited the new item will be saved in the itemCatalog
-	 * @param id productidentifier of item which shall be altered
-	 * @param name new name of the item (not empty)  
-	 * @param price new price of the item (greater or equal 0)
-	 * @param type new type of the item
+	 * after a item is edited the new {@link Item} will be saved in the
+	 * itemCatalog
+	 * 
+	 * @param id
+	 *            productidentifier of {@link Item} which shall be altered
+	 * @param name
+	 *            new name of the {@link Item} (not empty)
+	 * @param price
+	 *            new price of the {@link Item} (greater or equal 0)
+	 * @param type
+	 *            new type of the {@link Item}
 	 * @return redirects to the catalog page
 	 */
 	@RequestMapping("/saveItem")
-	public String saveItem(@RequestParam("pid") ProductIdentifier id, @RequestParam("itemname") String name, 
-			 @RequestParam("itemprice") Number price, @RequestParam("itemtype") String type)
-	{
+	public String saveItem(@RequestParam("pid") ProductIdentifier id, @RequestParam("itemname") String name,
+			@RequestParam("itemprice") Number price, @RequestParam("itemtype") String type) {
 		Item i = itemCatalog.findOne(id).orElse(null);
-		ItemType ityp;
-		
-		System.out.println("bearbeiten" + i.getName());
-		
+
 		try {
 			store.saveEditedItem(i, name, type, price);
+			error.setError(false);
 		} catch (Exception e) {
-			// TODO hand over arguments with error on template
 			error.setError(true);
-			e.printStackTrace(); //setErrorMessage
+			error.setMessage(e.getMessage());
 			return "redirect:addItem";
 		}
-		
-		
-		/*if(!i.equals(null))
-		{
-			if(i.getType().equals(ityp))
-			{
-			itemCatalog.delete(i); //altes Element rauslöschen
-			i.setName(name);
-			System.out.println(i.getName());
-			i.setPrice(Money.of(price, EURO));
-			itemCatalog.save(i); // sonst wirds nicht auf den Catalog übertragen :O
-			
-			}
-			else
-			{
-				System.out.println("anderer Itemtyp --> neues Item");
-				itemCatalog.delete(i);
-				this.createItem(name, price, type);
-			}
-		}*/
-		
+
 		return "redirect:catalog";
 	}
-	
+
 	/**
-	 * directs to the addItem template with an optional Item searched by the parameter id
-	 * @param model model for the addItem template
-	 * @param id the id of the item to be edited
+	 * directs to the addItem template with an optional {@link Item} searched by
+	 * the parameter id
+	 * 
+	 * @param model
+	 *            model for the addItem template
+	 * @param id
+	 *            the id of the {@link Item} to be edited
 	 * @return directs to the addItem template
 	 */
-	@RequestMapping("/editItem") 
-	public String directToEditItem(Model model,@RequestParam("pid") ProductIdentifier id) {
-		
+	@RequestMapping("/editItem")
+	public String directToEditItem(Model model, @RequestParam("pid") ProductIdentifier id) {
+
 		Optional<Item> i = itemCatalog.findOne(id);
-		model.addAttribute("item",i.get());
-		model.addAttribute("ItemTypes",ItemType.values());
-		model.addAttribute("error",error);
+		model.addAttribute("item", i.get());
+		model.addAttribute("ItemTypes", ItemType.values());
+		model.addAttribute("error", error);
 		return "addItem";
 
 	}
-	
+
 	/**
-	 * adds an error variable to the model (to catch errors)
-	 * @param model for generating the addItem template
+	 * adds an {@link ErrorClass} variable to the model (to catch errors)
+	 * 
+	 * @param model
+	 *            for generating the addItem template
 	 * @return directs to the addItem template
 	 */
 	@RequestMapping("addItem")
-	public String directToAddItem(Model model)
-	{
-		model.addAttribute("error",error);
+	public String directToAddItem(Model model) {
+		model.addAttribute("error", error);
 		return "addItem";
 	}
-	
+
 	/**
-	 * checks if the inputs are valid and creates an new item and adds it the itemCatalog
-	 * @param name name of the new item (not empty)
-	 * @param price price of the new item (greater or equal 0)
-	 * @param type ItemType of the new item
-	 * @return redirects to the catalog template if successful otherwise to the addItem template with error description
+	 * checks if the inputs are valid and creates an new {@link Item} and adds
+	 * it the itemCatalog
+	 * 
+	 * @param name
+	 *            name of the new {@link Item} (not empty)
+	 * @param price
+	 *            price of the new {@link Item} (greater or equal 0)
+	 * @param type
+	 *            {@link ItemType} of the new {@link Item}
+	 * @return redirects to the catalog template if successful otherwise to the
+	 *         addItem template with error description
 	 */
 	@RequestMapping("/createItem")
-	public String createItem(@RequestParam("itemname") String name, 
-							 @RequestParam("itemprice") Number price,
-							 @RequestParam("itemtype") String type)
-	{
+	public String createItem(@RequestParam("itemname") String name, @RequestParam("itemprice") Number price,
+			@RequestParam("itemtype") String type) {
 		System.out.println("erstellen");
 		try {
 			store.createNewItem(name, type, price);
+			error.setError(false);
 		} catch (Exception e) {
 			error.setError(true);
-			e.printStackTrace(); //setErrorMessage
+			error.setMessage(e.getMessage());
 			return "redirect:addItem";
 		}
-		
-		/*if(name.isEmpty() || price.floatValue() < 0) 
-			{
-			//TODO: interact with frontend
-			System.out.println("fehler");
-			error.setError(true);
-			return "redirect:addItem";
-			}
-	
-		if(type.equals("PIZZA"))
-		{
-			neu = new Pizza(name,Money.of(price, EURO));
-			
-		}
-		else if(type.equals("INGREDIENT"))
-		{
-			neu = new Ingredient(name,Money.of(price, EURO));
-		}
-		else
-		{
-			ItemType t = ItemType.SALAD;
-			if(type.equals("DRINK")) t = ItemType.DRINK;
-			if(type.equals("FREEDRINK")) t = ItemType.FREEDRINK;
-			if(type.equals("SALAD")) t = ItemType.SALAD;
-			
-			neu = new Item(name,Money.of(price, EURO),t);
-		}
-		
-		itemCatalog.save(neu); */
-		
+
 		return "redirect:catalog";
 	}
-	
+
+	/**
+	 * filters the Catalogs shown on the template
+	 * 
+	 * @param model
+	 *            model given to the template
+	 * @param selection
+	 *            which kind of {@link Item}s shall be shown
+	 * @param filter
+	 *            how they shall be sorted (f.i. highest price first)
+	 * @return
+	 */
 	@RequestMapping("/filterCatalog")
 	public String filterCatalog(Model model, @RequestParam("selection") String selection,
-								@RequestParam("filter") String filter)
-	{
+			@RequestParam("filter") String filter) {
 		filteredItems = new ArrayList<Item>();
 		System.out.println(filter + ' ' + selection);
-		
-		
-		switch(selection)
-		{
+
+		switch (selection) {
 		case "Getränke":
-			for(Item i : itemCatalog.findByType(ItemType.DRINK)) filteredItems.add(i);
+			for (Item i : itemCatalog.findByType(ItemType.DRINK))
+				filteredItems.add(i);
 			break;
 		case "Essen":
-			for(Item i : itemCatalog.findByType(ItemType.PIZZA)) filteredItems.add(i);
-			for(Item i : itemCatalog.findByType(ItemType.SALAD)) filteredItems.add(i);
-			
-		default: // alles ist default	
-			for(Item i : itemCatalog.findAll()) filteredItems.add(i);
+			for (Item i : itemCatalog.findByType(ItemType.PIZZA))
+				filteredItems.add(i);
+			for (Item i : itemCatalog.findByType(ItemType.SALAD))
+				filteredItems.add(i);
+			break;
+		default: // alles ist default
+			for (Item i : itemCatalog.findAll())
+				filteredItems.add(i);
 		}
-		
-		switch(filter)
-		{
+
+		switch (filter) {
 		case "hoechster Preis zuerst":
 			Collections.sort(filteredItems, new PriceComparator(false));
 			break;
@@ -253,9 +247,9 @@ public class CatalogController {
 		case "von Z bis A":
 			Collections.sort(filteredItems, new NameComparator(false));
 		}
-		
-		model.addAttribute("items",filteredItems);
-		model.addAttribute("ItemType",ItemType.values());
+
+		model.addAttribute("items", filteredItems);
+		model.addAttribute("ItemType", ItemType.values());
 		return "catalog";
 	}
 

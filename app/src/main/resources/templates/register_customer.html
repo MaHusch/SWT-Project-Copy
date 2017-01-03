@@ -19,7 +19,7 @@
 		// if an item is already present, change the form so it calls the function to overwrite,update and save the item's information
 		if (value == "true") {
 			var form = document.getElementById("registerForm");
-			alert("moin");
+			//alert("moin");
 			form.action = "/updateCustomer";
 		}
 
@@ -59,7 +59,7 @@
 								<span class="caret"></span>
 						</a>
 							<ul class="dropdown-menu">
-								<li><a sec:authorize="hasRole('ROLE_BAKER')"
+								<li><a sec:authorize="hasRole('ROLE_BAKER') or hasRole('ROLE_ADMIN')"
 									href="ovens.html">Öfen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_DELIVERER')"
 									href="index.html">Deliverer Dashboard</a></li>
@@ -141,12 +141,13 @@
 							<td th:if = "${existingCustomer} == null"><input type="text" id="street" name="street" /></td>
 						</tr>
 						<tr>
-							<td><label for="housenumber">Hausnummber*</label>:</td>
+							<td><label for="housenumber">Hausnummer*</label>:</td>
 							<td th:if = "${existingCustomer}"><input type="text" id="housenumber" name="housenumber" th:value="${existingCustomer.getAddress().getHousenumber()}"/></td>
 							<td th:if = "${existingCustomer} == null"><input type="text" id="housenumber" name="housenumber" /></td>
 						</tr>
 						<tr>
 							<td>
+							<input th:if = "${existingCustomer}" type="hidden" id="cutlery" name="cutlery" th:value="${existingCustomer.getCutlery()}"/>
 							<input th:if = "${existingCustomer}" type="hidden" id="cid" name="cid" th:value="${existingCustomer.getId()}"/>
 							<input th:if = "${existingCustomer == null}" class="btn btn-primary" type="submit" value="Registrieren" />
 							<input th:if = "${existingCustomer}" class="btn btn-primary" type="submit" value="Bestätigen" /></td>

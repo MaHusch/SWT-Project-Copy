@@ -21,7 +21,7 @@ public class Customer extends Person {
 	/**
 	 * Cutlery of the Customer
 	 */
-	@OneToOne private Cutlery myCutlery = null;
+	@OneToOne(cascade = CascadeType.ALL) private Cutlery myCutlery = null;
 
 	private @Id @GeneratedValue long customerID;
 

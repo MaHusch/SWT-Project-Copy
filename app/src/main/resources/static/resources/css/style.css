@@ -10,6 +10,10 @@ html {
 	-ms-text-size-adjust: 100%
 }
 
+div#frm *{display:inline}
+
+p#bld *{font-size: 2em}
+
 body {
 	margin: 0
 }
@@ -1348,7 +1352,7 @@ body {
 	font-size: 14px;
 	line-height: 1.42857143;
 	color: #333;
-	background-color: #fff
+	background-color: #890234;
 }
 
 button, input, select, textarea {
@@ -7499,4 +7503,6 @@ button.close {
     color: #ffbbbc;
     background-color: #c0392b;
   }
+  
+  
 }

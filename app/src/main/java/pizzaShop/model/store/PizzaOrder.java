@@ -33,7 +33,7 @@ public class PizzaOrder {
 
 	private PizzaOrderStatus pizzaOrderStatus = PizzaOrderStatus.OPEN;
 
-	@OneToOne
+	@OneToOne(cascade = { CascadeType.ALL })
 	private Order order;
 
 	private int unbakedPizzas = 0;
@@ -121,6 +121,10 @@ public class PizzaOrder {
 	public void readyOrder() {
 		this.setOrderStatus(PizzaOrderStatus.READY);
 	}
+	
+	public void cancelOrder() {
+		this.setOrderStatus(PizzaOrderStatus.CANCELLED);
+	}
 
 	public boolean getPickUp() {
 		return pickUp;
@@ -136,6 +140,10 @@ public class PizzaOrder {
 	
 	public Customer getCustomer(){
 		return customer;
+	}
+	
+	public void setCustomer(Customer newCustomer){
+		customer = newCustomer;
 	}
 	
 	@Override

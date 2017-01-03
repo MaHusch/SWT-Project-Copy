@@ -37,7 +37,8 @@
 								<span class="caret"></span>
 						</a>
 							<ul class="dropdown-menu">
-								<li><a sec:authorize="hasRole('ROLE_BAKER')"
+								<li><a
+									sec:authorize="hasRole('ROLE_BAKER') or hasRole('ROLE_ADMIN')"
 									href="ovens.html">Öfen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_DELIVERER')"
 									href="sDeliverer.html">Deliverer Dashboard</a></li>
@@ -99,12 +100,22 @@
 					</table>
 				</form>
 
+				<p></p>
+
 				<div th:switch="${customer.isPresent()}">
-					<p th:case="true"
-						th:text="'Kunde ist: '+${customer.get().getForename()}+' '+${customer.get().getSurname()}+' tel: '+${customer.get().getTelephoneNumber()}">User
-						is present</p>
-					<p th:case="false" th:text="'Kein Kunde vorhanden'">User isn't
-						present</p>
+					<div th:case="true">
+						<p
+							th:text="'Kunde ist: '+${customer.get().getForename()}+' '+${customer.get().getSurname()}+' tel: '+${customer.get().getTelephoneNumber()}">User
+							is present</p>
+						<form method="post" action="/logoutCustomer">
+							<input class="btn btn-primary" type="submit" value="Ausloggen" />
+						</form>
+
+					</div>
+					<div th:case="false">
+						<p th:text="'Kein Kunde vorhanden'">User isn'tpresent</p>
+					</div>
+					<a href="customer_display.html">Cutlery zurückgeben</a>
 				</div>
 			</div>
 		</div>
@@ -126,28 +137,78 @@
 						<tr th:each="item : ${cart} ">
 							<td th:text="${item.productName}">Gemüse</td>
 							<td th:text="${item.quantity}">10</td>
-							<td th:text="${item.price}">10 Euro</td>
+							<td th:text="${{item.price}}">10 Euro</td>
 							<td>
-								<form method="post" action="/removeCartItem">
-									<input type="hidden" name="ciid" th:value="${item.getId()}" />
-									<input class="btn btn-primary" type="submit" value="Entfernen" />
-								</form>
+								<div id="frm">
+									<form method="post" action="/changeQuantity">
+										<input type="hidden" name="amount" value="1" /> <input
+											type="hidden" name="quantity"
+											th:value="${item.getQuantity()}" /> <input type="hidden"
+											name="ciid" th:value="${item.getProduct().getId()}" /> <input
+											class="btn btn-primary" type="submit" value='+1' />
+									</form>
+									<form method="post" action="/changeQuantity">
+										<input type="hidden" name="amount" value="-1" /> <input
+											type="hidden" name="quantity"
+											th:value="${item.getQuantity()}" /> <input type="hidden"
+											name="ciid" th:value="${item.getProduct().getId()}" /> <input
+											class="btn btn-primary" type="submit" value='-1' />
+									</form>
+									<form method="post" action="/removeCartItem">
+										<input type="hidden" name="ciid" th:value="${item.getId()}" />
+										<input class="btn btn-primary" type="submit" value="Entfernen" />
+									</form>
+								</div>
 							</td>
+
 						</tr>
 					</tbody>
 				</table>
-				<p th:text="'Gesamt: ' + ${cart.price}">Summe: 100 Euro</p>
+				<p th:text="'Gesamt: ' + ${{cart.price}}">Summe: 100 Euro</p>
 
 				<form sec:authorize="hasRole('ROLE_SELLER')" method="post"
 					action="/checkout">
-					<label for="onSite">Abholung vor Ort</label>: 
-					<input type="hidden" name="onSite" value="0" /> 
-					<input type="checkbox" name="onSite" value="1" />
-					<label for="cutlery"> Essgarnitur </label>:
-					<input type="hidden" name="cutlery" value="0"/>
-					<input type="checkbox" name="cutlery" value="1" /> 
-					<input class="btn btn-primary" type="submit" value="Kaufen" />
+					<label for="onSite">Abholung vor Ort(10% Rabatt auf den
+						Gesamtpreis)</label>: <input type="hidden" name="onSite" value="0" /> <input
+						type="checkbox" name="onSite" value="1" /> <br> </br> <label
+						for="cutlery"> Essgarnitur(15€ Pfand) </label>: <input
+						type="hidden" name="cutlery" value="0" /> 
+						<input type="checkbox" name="cutlery" value="1" /> <br> </br> 
+						<div th:switch="${customer.isPresent()}">
+						<input th:case="true" class="btn btn-primary" type="submit" value="Kaufen" />
+						<p th:case= "false"> Kein Kunde eingeloggt </p>
+						</div>
 				</form>
+			</div>
+		</div>
+	</div>
+
+	<!-- Panel for Freigetränk  -->
+	<div
+		th:if="(${cart.getPrice().getNumber().floatValue()*100}) > 3000 and ${freeDrink}==false">
+		<div sec:authorize="hasRole('ROLE_SELLER')" class="container col-md-4">
+			<div class="panel panel-primary">
+				<div class="panel-heading">Freigetränk</div>
+				<div class="panel-body">
+					<table class="table table-striped table-bordered" border="1">
+						<tr>
+							<th>Name</th>
+							<th>Hinzufügen</th>
+						</tr>
+						<tbody>
+							<tr th:each="item : ${freeDrinks} ">
+								<td th:text="${item.getName()}">Freigetränk</td>
+								<td>
+									<form method="post" action="/addFreeDrink">
+										<input type="hidden" name="iid" th:value="${item.getId()}" />
+										<input class="btn btn-primary" type="submit"
+											value="Hinzufügen" />
+									</form>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</div>

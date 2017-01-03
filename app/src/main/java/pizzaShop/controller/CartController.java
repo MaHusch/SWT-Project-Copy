@@ -1,12 +1,10 @@
 package pizzaShop.controller;
 
-import static org.salespointframework.core.Currencies.EURO;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Optional;
 
-import org.javamoney.moneta.Money;
 import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.Order;
@@ -26,11 +24,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import junit.framework.Assert;
 import pizzaShop.model.actor.Customer;
 import pizzaShop.model.actor.Deliverer;
 import pizzaShop.model.actor.StaffMember;
-import pizzaShop.model.catalog_item.Cutlery;
+import pizzaShop.model.catalog_item.Item;
+import pizzaShop.model.catalog_item.ItemType;
+import pizzaShop.model.store.Bill;
 import pizzaShop.model.store.CustomerRepository;
 import pizzaShop.model.store.ErrorClass;
 import pizzaShop.model.store.ItemCatalog;
@@ -56,6 +55,7 @@ public class CartController {
 	private Optional<Customer> customer = Optional.empty();
 	private final Store store;
 	private ErrorClass error;
+	private boolean freeDrink = false;
 
 	@Autowired
 	public CartController(OrderManager<Order> orderManager, ItemCatalog itemCatalog, TanManagement tanManagement,
@@ -78,11 +78,20 @@ public class CartController {
 	}
 
 	@RequestMapping("/cart")
-	public String pizzaCart(Model model) {
+	public String pizzaCart(Model model, @ModelAttribute Cart cart) {
 		model.addAttribute("items", itemCatalog.findAll());
+		
+		ArrayList<Item> freeDrinks = new ArrayList<Item>();
+		for(Item i : itemCatalog.findAll()){
+			if(i.getType().equals(ItemType.FREEDRINK))
+				freeDrinks.add(i);
+		}
+		model.addAttribute("freeDrinks", freeDrinks);
 		model.addAttribute("error", error);
 		model.addAttribute("customer", customer);
+		model.addAttribute("freeDrink", freeDrink);
 		return "cart";
+		
 	}
 
 	@RequestMapping("/orders")
@@ -118,6 +127,18 @@ public class CartController {
 		return "orders";
 	}
 
+	@RequestMapping(value = "/confirmCollection", method = RequestMethod.POST)
+	public String cofirmLocalOrder(@RequestParam("orderID") OrderIdentifier id){
+		PizzaOrder p = pizzaOrderRepository.findOne(id);
+		if(p.getOrderStatus().equals(PizzaOrderStatus.READY)){
+			error.setError(false);
+			store.completeOrder(pizzaOrderRepository.findOne(id), "mitgenommen");
+		}else{
+			error.setError(true);
+		}
+		return "redirect:orders";
+	}
+	
 	@RequestMapping(value = "/addCartItem", method = RequestMethod.POST)
 	public String addItem(@RequestParam("pid") ProductIdentifier id, @RequestParam("number") int number,
 			@ModelAttribute Cart cart) {
@@ -133,10 +154,28 @@ public class CartController {
 
 	@RequestMapping(value = "/removeCartItem", method = RequestMethod.POST)
 	public String addItem(@RequestParam("ciid") String cartId, @ModelAttribute Cart cart) {
-
+		if(cart.getItem(cartId).get().getPrice().isZero())
+			freeDrink = false;
 		cart.removeItem(cartId);
+	
 		return "redirect:cart";
 
+	}
+	
+	@RequestMapping(value = "/changeQuantity", method = RequestMethod.POST)
+	public String changeQuantity(@RequestParam("amount") int amount, @RequestParam("quantity") int
+			quantity, @RequestParam("ciid") ProductIdentifier id, @ModelAttribute Cart cart){
+		Optional<Item> item = itemCatalog.findOne(id); 
+		assertTrue("Product must not be emtpy!", item.isPresent());
+		cart.addOrUpdateItem(item.get(), Quantity.of(amount));
+		return "redirect:cart";
+	}
+	
+	@RequestMapping(value = "/addFreeDrink", method = RequestMethod.POST)
+	public String addFreeDrink(@RequestParam("iid") ProductIdentifier id, @ModelAttribute Cart cart){
+		cart.addOrUpdateItem(itemCatalog.findOne(id).get(), Quantity.of(1));
+		freeDrink=true;
+		return "redirect:cart";
 	}
 
 	@RequestMapping(value = "/checkTan", method = RequestMethod.POST)
@@ -160,6 +199,12 @@ public class CartController {
 		return "redirect:cart";
 
 	}
+	
+	@RequestMapping(value = "/logoutCustomer", method = RequestMethod.POST)
+	public String logoutCustomer(){
+		customer = Optional.empty();
+		return "redirect:cart";
+	}
 
 	@RequestMapping(value = "/checkout", method = RequestMethod.POST)
 	public String buy(@ModelAttribute Cart cart, @RequestParam("onSite") String onSiteStr,
@@ -169,7 +214,7 @@ public class CartController {
 		}
 		assertTrue("Checkbox liefert anderen Wert als 0 oder 1! nämlich" + onSiteStr,
 				onSiteStr.equals("0,1") | onSiteStr.equals("0"));
-		System.out.println("cutler ist:" + cutleryStr);
+		System.out.println("cutlery ist:" + cutleryStr);
 		if (customer.isPresent()) {
 			boolean onSite = false;
 			boolean cutlery = true;
@@ -181,9 +226,8 @@ public class CartController {
 			
 			//TODO: check if customer already has a cutlery --> throw error
 			if(cutlery) { 
-				//customerRepository.delete(customer.get());
-				customer.get().setCutlery(new Cutlery("Essgarnitur",Money.of(15.0, EURO),businesstime.getTime()));	
-				//customerRepository.save(customer.get());
+				// if false --> return error
+				store.lentCutlery(customer.get(), businesstime.getTime());
 			}
 
 			PizzaOrder pizzaOrder = new PizzaOrder(userAccount.get(), Cash.CASH,
@@ -191,6 +235,8 @@ public class CartController {
 			cart.addItemsTo(orderManager.save(pizzaOrder.getOrder()));
 			store.analyzeOrder(pizzaOrderRepository.save(pizzaOrder));
 			cart.clear();
+			
+			//Bill bill = new Bill(customer.get(), pizzaOrder);
 			// customer = Optional.empty(); disabled for testing purposes
 		}
 		return "redirect:cart";

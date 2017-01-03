@@ -17,6 +17,7 @@ import pizzaShop.model.store.CustomerRepository;
 import pizzaShop.model.store.PizzaOrder;
 import pizzaShop.model.store.PizzaOrderRepository;
 import pizzaShop.model.store.Store;
+import pizzaShop.model.tan_management.Tan;
 import pizzaShop.model.tan_management.TanManagement;
 
 @Controller
@@ -101,10 +102,19 @@ public class DelivererController {
 
 			for (PizzaOrder p : pizzaOrderRepository.findAll()) {
 				if (oi.equals(p.getId())) {
-					tanManagement.confirmTan(p.getTan()); // TODO: assign new
-					// TAN?
-					p.completeOrder();
-					pizzaOrderRepository.save(p);
+										
+					Tan toOrderAsignedTan = p.getTan();
+					
+					// this might seem redundant but needs to be done because the Tan object
+					// saved in the PizzaOrder gets changed by saving it in the Repository so 
+					// we need to get the original Tan object.
+					
+					Tan foundTan = tanManagement.getNotConfirmedTanByTanNumber(toOrderAsignedTan.getTanNumber());
+										
+					tanManagement.confirmTan(foundTan);
+					
+					store.completeOrder(p, "ausgeliefert");
+					
 				}
 			}
 

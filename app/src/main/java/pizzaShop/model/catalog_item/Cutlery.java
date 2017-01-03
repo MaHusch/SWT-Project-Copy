@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import javax.money.MonetaryAmount;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 import org.salespointframework.time.BusinessTime;
 
@@ -15,18 +17,17 @@ import org.salespointframework.time.BusinessTime;
  */
 
 @Entity
-public class Cutlery extends Item {
+public class Cutlery{
 
+
+	@Id @GeneratedValue private long CutleryID;
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 8724080983798476354L;
 	/**
 	 * Date till Cutlery has to be returned
 	 */
 	private LocalDateTime returnTill;
 	public Integer loanPeriod;
+	private MonetaryAmount price;
 
 	/**
 	 * unused Constructor for Spring
@@ -43,12 +44,12 @@ public class Cutlery extends Item {
 	 * @param time
 	 */
 
-	public Cutlery(String name, MonetaryAmount price, LocalDateTime time) {
-		super(name, price, ItemType.CUTLERY);
-		System.out.println("aktuelle Zeit" + time.toString());
+	public Cutlery(MonetaryAmount price, LocalDateTime time) {
+		//super("Essgarnitur",price,ItemType.CUTLERY);
+		this.setPrice(price);
 		this.loanPeriod = 28; // according to task --> 4 weeks
 		this.setDate(time);
-
+		
 	}
 
 	/**
@@ -60,8 +61,9 @@ public class Cutlery extends Item {
 	 * @param loanPeriod
 	 */
 
-	public Cutlery(String name, MonetaryAmount price, LocalDateTime time, Integer loanPeriod) {
-		super(name, price, ItemType.CUTLERY);
+	public Cutlery(MonetaryAmount price, LocalDateTime time, Integer loanPeriod) {
+		//super("Essgarnitur",price,ItemType.CUTLERY);
+		this.setPrice(price);
 		this.loanPeriod = loanPeriod;
 		this.setDate(time);
 	}
@@ -85,6 +87,24 @@ public class Cutlery extends Item {
 	 */
 	public void setDate(LocalDateTime time) {
 		this.returnTill = time.plusDays(loanPeriod);
+	}
+	
+	/**
+	 * 
+	 * @return returns the just the Date
+	 */
+	public String getDateString()
+	{
+		LocalDateTime t1 = this.getDate();
+		return t1.getDayOfMonth() + "." + t1.getMonthValue() + "." + t1.getYear();
+	}
+
+	public MonetaryAmount getPrice() {
+		return price;
+	}
+
+	public void setPrice(MonetaryAmount price) {
+		this.price = price;
 	}
 
 }

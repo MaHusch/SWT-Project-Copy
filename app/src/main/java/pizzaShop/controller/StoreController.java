@@ -13,6 +13,7 @@ import org.salespointframework.catalog.Product;
 import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.OrderIdentifier;
+import org.salespointframework.order.OrderStatus;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.useraccount.Password;
 import org.salespointframework.useraccount.UserAccount;
@@ -31,6 +32,7 @@ import pizzaShop.model.actor.Address;
 import pizzaShop.model.actor.Customer;
 import pizzaShop.model.actor.Deliverer;
 import pizzaShop.model.actor.StaffMember;
+import pizzaShop.model.catalog_item.Cutlery;
 import pizzaShop.model.catalog_item.Ingredient;
 import pizzaShop.model.catalog_item.Item;
 import pizzaShop.model.catalog_item.ItemType;
@@ -40,6 +42,7 @@ import pizzaShop.model.store.ErrorClass;
 import pizzaShop.model.store.ItemCatalog;
 import pizzaShop.model.store.PizzaOrder;
 import pizzaShop.model.store.PizzaOrderRepository;
+import pizzaShop.model.store.PizzaOrderStatus;
 import pizzaShop.model.store.StaffMemberRepository;
 import pizzaShop.model.store.Store;
 import pizzaShop.model.tan_management.Tan;
@@ -73,7 +76,7 @@ public class StoreController {
 	@RequestMapping("/sBaker")
 	public String sBaker() // direct to baker dashboard(after login)
 	{
-		return "sBaker";
+		return "ovens";
 	}
 
 	@RequestMapping("/sAdmin")
@@ -128,8 +131,8 @@ public class StoreController {
 	}
 
 	@RequestMapping(value = "/finishPizza", method = RequestMethod.POST)
-	public String addIngredientsToPizza(@RequestParam("id_transmit") String ids[], @ModelAttribute Cart cart) {
-
+	public String addIngredientsToPizza(@RequestParam("id_transmit") String ids[],@RequestParam("pizza_name") String pizzaName, @ModelAttribute Cart cart) {
+		System.out.println("Custom pizza name " + pizzaName );
 		Pizza newPizza;
 
 		if (ids == null || ids.length == 0) {
@@ -149,13 +152,20 @@ public class StoreController {
 
 				Ingredient newIngredient = new Ingredient(itemName, itemPrice);
 				newPizza.addIngredient(newIngredient);
+				
+				if ( pizzaName.equals("") || (pizzaName == null) ) { 
+					newPizza.setName( "custom" ); 
+				}else{ 
+					newPizza.setName( pizzaName );
+				}
+			
 			}
 
 		}
 
 		Pizza savedPizza = itemCatalog.save(newPizza);
 		cart.addOrUpdateItem(savedPizza, Quantity.of(1));
-
+		
 		return "redirect:catalog";
 	}
 
@@ -179,13 +189,10 @@ public class StoreController {
 
 	@RequestMapping("/customer_display")
 	public String customer_display(Model model) {
-
+		
+		store.checkCutleries();
 		model.addAttribute("customer", customerRepository.findAll());
 		
-		/*for(Customer c : customerRepository.findAll())
-		{
-			System.out.println(c.getCutlery().getDate());
-		}*/
 		return "customer_display";
 	}
 
@@ -210,6 +217,31 @@ public class StoreController {
 	public String deleteCustomer(Model model,@RequestParam("cid") long id) {
 		model.addAttribute("error",error);
 		
+		Tan foundTan = tanManagement.getTan(customerRepository.findOne(id).getTelephoneNumber());
+		
+		if(!foundTan.getStatus().equals(TanStatus.NOT_FOUND))
+		{
+			tanManagement.invalidateTan(foundTan) ;
+		}
+		
+		Iterable<PizzaOrder> allPizzaOrders = pizzaOrderRepository.findAll();
+		
+		for(PizzaOrder pizzaOrder : allPizzaOrders)
+		{
+			
+			Customer customer = pizzaOrder.getCustomer();
+			
+			if(customer != null)
+			{
+				if(customer.getId() == id)
+				{
+					pizzaOrder.setCustomer(null);
+					pizzaOrder.cancelOrder();
+				}		
+			}
+			
+		}
+
 		customerRepository.delete(id);
 		
 		return "redirect:customer_display";
@@ -222,15 +254,69 @@ public class StoreController {
 			@RequestParam("postcode") String postcode, @RequestParam("street") String street,
 			@RequestParam("housenumber") String housenumber, @RequestParam("cid") long id)
 	{
-		customerRepository.delete(id);
 		
+		Customer oldCustomer = customerRepository.findOne(id);
+		Cutlery oldCutlery = oldCustomer.getCutlery();
+		
+		String oldTelephoneNumber = oldCustomer.getTelephoneNumber();
+		
+		if(!oldTelephoneNumber.equals(telephonenumber))
+		{	
+			tanManagement.updateTelephoneNumber(oldTelephoneNumber, telephonenumber);
+		}
+			
 		Customer updatedCustomer = new Customer(surname,forename, telephonenumber, local, postcode, street, housenumber);
 		
+		if(oldCutlery != null)
+		{
+			updatedCustomer.setCutlery(oldCutlery);
+		}
+		
+		
+		Iterable<PizzaOrder> allPizzaOrders = pizzaOrderRepository.findAll();
+		
+		for(PizzaOrder pizzaOrder : allPizzaOrders)
+		{
+			
+			Customer customer = pizzaOrder.getCustomer();
+			
+			if(customer != null)
+			{
+				if(customer.getId() == id)
+				{
+					pizzaOrder.setCustomer(updatedCustomer);
+				}		
+			}
+		
+		}
+		
+		
 		customerRepository.save(updatedCustomer);
+		
+		customerRepository.delete(id);
 		
 		return "redirect:customer_display";
 	}
 	
+	@RequestMapping("returnCutlery")
+	public String returnCutlery(@RequestParam("lost") String lostStr, @RequestParam("cid") long id)
+	{
+		String  cutleryStatus = "lost";
+		if(lostStr.equals("0")) cutleryStatus = "returned";
 	
+		try {
+			store.returnCutlery(cutleryStatus,this.customerRepository.findOne(id));
+		} catch (Exception e) {
+			error.setError(true);
+			error.setMessage(e.getMessage());;
+		}
+		
+		return "redirect:customer_display";
+	}
+	
+	@RequestMapping("/login")
+	public String login(){
+		return "login";
+	}
 
 }

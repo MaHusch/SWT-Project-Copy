@@ -19,25 +19,37 @@ import org.salespointframework.EnableSalespoint;
 import org.salespointframework.SalespointSecurityConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
+@EnableScheduling
 @EnableSalespoint
 public class Application {
+	
+	
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
 
-	@Configuration
-	static class WebSecurityConfiguration extends SalespointSecurityConfiguration {
 
-		@Override
-		protected void configure(HttpSecurity http) throws Exception {
-			//TODO: register AuthSuccessHandler
-			http.csrf().disable();
-			
-			http.authorizeRequests().antMatchers("/**").permitAll().and().formLogin().loginProcessingUrl("/login").and()
-					.logout().logoutUrl("/logout").logoutSuccessUrl("/");
-		}
+    @Configuration
+    static class WebSecurityConfiguration extends SalespointSecurityConfiguration {
+
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+
+            http.csrf().disable();
+
+            http.authorizeRequests().antMatchers("/**").permitAll().and().//
+            formLogin().loginPage("/login").loginProcessingUrl("/login").successHandler(new AuthSuccessHandler()).and(). //
+            logout().logoutUrl("/logout").logoutSuccessUrl("/");
+        }
 	}
 }
+
+/*http.authorizeRequests().antMatchers("/**").permitAll().and().
+formLogin().loginProcessingUrl("/login").and().
+successHandler(new AuthSuccessHandler()).and(). //
+logout().logoutUrl("/logout").logoutSuccessUrl("/");*/

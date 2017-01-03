@@ -2,7 +2,9 @@ package pizzaShop;
 
 import static org.salespointframework.core.Currencies.EURO;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import org.javamoney.moneta.Money;
 import org.salespointframework.accountancy.Accountancy;
@@ -93,14 +95,14 @@ public class ApplicationDataInitializer implements DataInitializer {
 		
 		Baker Baker_Eduardo_Pienso = new Baker("Pienso", "Eduardo", "2341241212");
 		store.updateUserAccount(Baker_Eduardo_Pienso, "eddy", "pass", Role.of("ROLE_BAKER"));
-		Deliverer Deliverer_Florentin_Doerre = new Deliverer("Doerre", "Florentin", "015123456");
+		Deliverer Deliverer_Florentin_Doerre = new Deliverer("Pepper", "Roni", "015123456");
 		store.updateUserAccount(Deliverer_Florentin_Doerre, "flo", "123", Role.of("ROLE_DELIVERER"));
 		Deliverer Deliverer_Martin_Huschenbett = new Deliverer("Huschenbett", "Martin", "40918310");
 		store.updateUserAccount(Deliverer_Martin_Huschenbett, "maddin", "qwe", Role.of("ROLE_DELIVERER"));
 		Seller Seller_Hans_Bergstein = new Seller("Bergstein", "Hans", "492161268");
 		store.updateUserAccount(Seller_Hans_Bergstein, "hans123", "qwe", Role.of("ROLE_SELLER"));
 		
-		store.getStaffMemberList().addAll(Arrays.asList(Seller_Hans_Bergstein, Deliverer_Florentin_Doerre, Deliverer_Martin_Huschenbett, Baker_Eduardo_Pienso));
+		store.getStaffMemberList().addAll(Arrays.asList(admin, Seller_Hans_Bergstein, Deliverer_Florentin_Doerre, Deliverer_Martin_Huschenbett, Baker_Eduardo_Pienso));
 	}
 	
 	/**
@@ -121,25 +123,37 @@ public class ApplicationDataInitializer implements DataInitializer {
 		Ingredient paprika = new Ingredient("Paprika", Money.of(0.50, EURO));
 		Ingredient bacon = new Ingredient("Bacon", Money.of(0.50, EURO));
 		Ingredient chicken_stripes = new Ingredient("Hähnchenstreifen",Money.of(1.50, EURO));
+		Ingredient spinach = new Ingredient("Spinat",Money.of(0.60, EURO));
+		Ingredient olive = new Ingredient("Oliven",Money.of(0.90, EURO));
 		
-		Pizza pizza1 = new Pizza("pizza1", Money.of(2.50, EURO));
-		Pizza pizza2 = new Pizza("pizza2", Money.of(2.50, EURO));
-		Pizza pizza3 = new Pizza("pizza3", Money.of(2.50, EURO));
-		Pizza custom = new Pizza("Basis",Money.of(2.0, EURO));
+		Pizza custom = new Pizza("Basis",Money.of(2.00, EURO));
+		Pizza pizza1 = new Pizza("Barbecue", Money.of(2.00, EURO));
+		pizza1.addIngredient(Arrays.asList(bacon,onions,paprika,cheese));
+	
+		Pizza pizza2 = new Pizza("BigApple", Money.of(2.00, EURO));
+		pizza2.addIngredient(Arrays.asList(chicken_stripes,spinach,cheese));
+	
+		Pizza pizza3 = new Pizza("Mediteran", Money.of(2.00, EURO));
+		pizza3.addIngredient(Arrays.asList(chicken_stripes,olive,cheese));
+		
+		
 		Item beer = new Item("Desperados", Money.of(1.60, EURO), ItemType.DRINK);
 		Item cola = new Item("Coca Cola", Money.of(2.50, EURO), ItemType.DRINK);
 		Item water = new Item("BonAqua", Money.of(1.50, EURO), ItemType.DRINK);
-		Item freebeer = new Item("Sternburg", Money.of(0.0, EURO), ItemType.FREEDRINK); // extra
-		//Cutlery cutlery1 = new Cutlery("PapasBesteck",Money.of(15.0, EURO), businessTime.getTime());																			// FreeDrink
-																					// class?
+		Item wine = new Item("Spätlese", Money.of(5.00, EURO),ItemType.DRINK);
+		Item apple_spritzer = new Item("Lift-Apfelschorle",Money.of(1.50, EURO), ItemType.DRINK);
+		Item freebeer = new Item("Sternburg", Money.of(0.0, EURO), ItemType.FREEDRINK); 
+		Item freewine = new Item("Aldi-Wein", Money.of(0.0, EURO),ItemType.FREEDRINK);
+		
+																					
 		Item salat1 = new Item("Ceasar-Salat", Money.of(2.0, EURO), ItemType.SALAD);
 		Item salat2 = new Item("Chef-Salat",Money.of(3.0, EURO),ItemType.SALAD);
-		pizza1.addIngredient(mushroom);
-		pizza1.addIngredient(cheese);
 		
 		
 
-		itemCatalog.save(Arrays.asList(water,cola,cheese, mushroom,chicken_stripes,bacon,paprika, pizza1, beer, freebeer, salat1,salat2, pineapple, onions, custom));
+		itemCatalog.save(Arrays.asList(pizza1,pizza2,pizza3,spinach,wine,freewine,apple_spritzer,water,cola,
+						cheese, mushroom,chicken_stripes,bacon,paprika, 
+						beer, freebeer, salat1,salat2, pineapple, onions, custom, olive));
 		
 		
 	}
@@ -156,8 +170,14 @@ public class ApplicationDataInitializer implements DataInitializer {
 		accountancy.add(ace1);
 		accountancy.add(ace2);
 		accountancy.add(ace3);
-
-		(new Thread(new SalaryThread(accountancy, businessTime))).start();
+		
+		HashMap<Role, Integer> incomeMap = new HashMap<Role, Integer>();
+		incomeMap.put(Role.of("ROLE_ADMIN"), 400);
+		incomeMap.put(Role.of("ROLE_BAKER"), 250);
+		incomeMap.put(Role.of("ROLE_SELLER"), 300);
+		incomeMap.put(Role.of("ROLE_DELIVERER"), 200);
+		
+		(new Thread(new SalaryThread(accountancy, businessTime, store, incomeMap))).start();
 		
 	}
 	
@@ -167,8 +187,12 @@ public class ApplicationDataInitializer implements DataInitializer {
 	public void initializeCustomers() 
 	{	
 		Customer cu1 = new Customer("Jürgens", "Dieter", "12345", "Dresden", "01324", "Müllerstraße", "5b");
+		Customer cu2 = new Customer("Skywalker","Luke","23456","Dresden","01218","Sackgasse","42a");
 		tanManagement.confirmTan(tanManagement.generateNewTan(cu1.getTelephoneNumber()));
+		tanManagement.confirmTan(tanManagement.generateNewTan(cu2.getTelephoneNumber()));
+		cu2.setCutlery(new Cutlery(Money.of(15.0,EURO),businessTime.getTime()));
 		customerRepository.save(cu1);
+		customerRepository.save(cu2);
 		System.out.println(tanManagement.getTan(customerRepository.save(cu1).getTelephoneNumber()).getTanNumber());
 	}
 }
