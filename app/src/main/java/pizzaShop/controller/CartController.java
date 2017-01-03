@@ -236,7 +236,7 @@ public class CartController {
 			store.analyzeOrder(pizzaOrderRepository.save(pizzaOrder));
 			cart.clear();
 			
-			//Bill bill = new Bill(customer.get(), pizzaOrder);
+			//Bill bill = new Bill(customer.get(), pizzaOrder, businesstime.getTime());
 			// customer = Optional.empty(); disabled for testing purposes
 		}
 		return "redirect:cart";
