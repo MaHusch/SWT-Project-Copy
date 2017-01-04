@@ -1,5 +1,0 @@
-Rechnung vom: xxxx
-Kunde: Jürgens, Dieter
-Addresse: 01324 Dresden
-Müllerstraße 5b
-Bestellung:  Lift-Apfelschorle;
