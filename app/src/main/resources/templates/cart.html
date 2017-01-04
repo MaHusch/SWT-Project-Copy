@@ -1,0 +1,268 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/style.css}" />
+<title>Warenkorb</title>
+</head>
+<body>
+	<script>
+
+	 	function editPrice(){
+		  if(document.getElementById('cutleryCheckbox').checked == true)
+		  {
+		    document.getElementById('cutleryPrice').innerHTML = "+ 15€ Pfand";
+		    return false;
+		  }
+		  else
+			{
+		  	
+		  	document.getElementById('cutleryPrice').innerHTML = "";
+		    return true;
+			}
+		}
+	</script>
+	<!-- NavBar -->
+	<header>
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed"
+						data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+						aria-expanded="false">
+						<span class="sr-only">Toggle navigation</span> <span
+							class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="index.html">Papa Pizza</a>
+				</div>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse"
+					id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li><a href="catalog.html">Unser Angebot</a></li>
+						<li><a href="pizza_configurator.html">Pizza erstellen</a></li>
+						<li><a href="cart.html">Warenkorb</a></li>
+						<li sec:authorize="isAuthenticated()" class="dropdown"><a
+							href="#" class="dropdown-toggle" data-toggle="dropdown"
+							role="button" aria-haspopup="true" aria-expanded="false">Menü
+								<span class="caret"></span>
+						</a>
+							<ul class="dropdown-menu">
+								<li><a
+									sec:authorize="hasRole('ROLE_BAKER') or hasRole('ROLE_ADMIN')"
+									href="ovens.html">Öfen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_DELIVERER')"
+									href="sDeliverer.html">Deliverer Dashboard</a></li>
+								<li><a
+									sec:authorize="hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')"
+									href="orders.html">Bestellungen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_SELLER')"
+									href="register_customer.html">Kunden registrieren</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="register_staffmember.html">Mitarbeiter registieren</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="finances.html">Finanzen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="addItem.html">Item hinzufügen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="catalog.html">Katalog bearbeiten</a></li>
+								<li><a
+									sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER')"
+									href="customer_display.html">Kunden anzeigen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="staffmember_display.html">Mitarbeiter anzeigen</a></li>
+								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
+									href="tan.html">TAN-Liste</a></li>
+							</ul></li>
+					</ul>
+					<p class="navbar-text navbar-right"
+						sec:authorize="isAuthenticated()"
+						th:text="${'Eingeloggt als: ' + #authentication?.name}" />
+					<a sec:authorize="!isAuthenticated()"
+						class="navbar-text navbar-right" href="/login">Login</a> <a
+						sec:authorize="isAuthenticated()" class="navbar-text navbar-right"
+						href="/logout">Logout</a>
+				</div>
+				<!-- /.navbar-collapse -->
+			</div>
+			<!-- /.container-fluid -->
+		</nav>
+	</header>
+
+	<!-- Panel for CustomerCheck -->
+	<div sec:authorize="hasRole('ROLE_SELLER')" class="container col-md-4">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Kunden überprüfen</div>
+			<div class="panel-body">
+				<form method="post" action="/checkTan">
+					<table>
+						<tr>
+							<td><label for="surname">Telefonnummer</label>:</td>
+							<td><input type="text" id="tnumber" name="tnumber" /></td>
+						</tr>
+						<tr>
+							<td><label for="forename">TAN</label>:</td>
+							<td><input type="text" id="tan" name="tan" /></td>
+						</tr>
+						<tr>
+							<td><input class="btn btn-primary" type="submit"
+								value="Check" /></td>
+						</tr>
+					</table>
+				</form>
+
+				<p></p>
+
+				<div th:switch="${customer.isPresent()}">
+					<div th:case="true">
+						<p
+							th:text="'Kunde ist: '+${customer.get().getForename()}+' '+${customer.get().getSurname()}+' tel: '+${customer.get().getTelephoneNumber()}">User
+							is present</p>
+						<form method="post" action="/logoutCustomer">
+							<input class="btn btn-primary" type="submit" value="Ausloggen" />
+						</form>
+
+					</div>
+					<div th:case="false">
+						<p th:text="'Kein Kunde vorhanden'">Kein Kunde vorhanden</p>
+					</div>
+					<a href="customer_display.html">Cutlery zurückgeben</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Panel for Cart -->
+	<div class="container col-md-6">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Warenkorb</div>
+			<div class="panel-body">
+				<table class="table table-striped table-bordered" border="1">
+					<tr>
+						<th>Name</th>
+						<th>Anzahl</th>
+						<th>Preis</th>
+						<th>Entfernen</th>
+					</tr>
+					<tbody th:remove="all-but-first">
+						<tr th:each="item : ${cart} ">
+							<td th:text="${item.productName}">Gemüse</td>
+							<td th:text="${item.quantity}">10</td>
+							<td th:text="${{item.price}}">10 Euro</td>
+							<td>
+								<div id="frm">
+									<form
+										th:unless="${item.getPrice().getNumber().intValue().equals(0)}"
+										method="post" action="/changeQuantity">
+										<input type="hidden" name="amount" value="1" /> <input
+											type="hidden" name="quantity"
+											th:value="${item.getQuantity()}" /> <input type="hidden"
+											name="pid" th:value="${item.getProduct().getId()}" /> <input
+											type="hidden" name="ciid" th:value="${item.getId()}" /> <input
+											class="btn btn-primary" type="submit" value='+1' />
+									</form>
+									<form
+										th:unless="${item.getPrice().getNumber().intValue().equals(0)}"
+										method="post" action="/changeQuantity">
+										<input type="hidden" name="amount" value="-1" /> <input
+											type="hidden" name="quantity"
+											th:value="${item.getQuantity()}" /> <input type="hidden"
+											name="pid" th:value="${item.getProduct().getId()}" /> <input
+											type="hidden" name="ciid" th:value="${item.getId()}" /> <input
+											class="btn btn-primary" type="submit" value='-1' />
+									</form>
+									<form method="post" action="/removeCartItem">
+										<input type="hidden" name="ciid" th:value="${item.getId()}" />
+										<input class="btn btn-primary" type="submit" value="Entfernen" />
+									</form>
+								</div>
+							</td>
+
+						</tr>
+					</tbody>
+				</table>
+				<p th:text="'Gesamt: ' + ${{cart.price}}">Summe: 100 Euro</p>
+				<p id = "cutleryPrice"> </p>
+	
+				<form sec:authorize="hasRole('ROLE_SELLER')" method="post"
+					action="/checkout">
+					<label for="onSite">Abholung vor Ort(10% Rabatt auf den
+						Gesamtpreis)</label>: <input type="hidden" name="onSite" value="0" /> <input
+						type="checkbox" name="onSite" value="1" /> <br> </br> <label
+<<<<<<< HEAD
+						for="cutlery"> Essgarnitur(15€ Pfand) </label>: <input
+						type="hidden" name="cutlery" value="0" /> <input type="checkbox"
+						name="cutlery" value="1" /> <br> </br>
+					<div th:switch="${customer.isPresent()}">
+						<input th:case="true" class="btn btn-primary" type="submit"
+							value="Kaufen" />
+						<p th:case="false">Kein Kunde eingeloggt</p>
+					</div>
+=======
+						for="cutlery"> Essgarnitur</label>: <input
+						type="hidden" name="cutlery" value="0" /> 
+						<input type="checkbox" id="cutleryCheckbox" name="cutleryCheckbox" value="1" onclick="editPrice()" /> <br> </br> 
+						<div th:switch="${customer.isPresent()}">
+						<input th:case="true" class="btn btn-primary" type="submit" value="Kaufen" />
+						<p th:case= "false"> Kein Kunde eingeloggt </p>
+						</div>
+>>>>>>> 662bc8a6a75d72999c7bf6a818b733a22a078853
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<!-- Panel for Freigetränk  -->
+	<div
+		th:if="(${cart.getPrice().getNumber().floatValue()*100}) > 3000 and ${freeDrink}==false">
+		<div sec:authorize="hasRole('ROLE_SELLER')" class="container col-md-4">
+			<div class="panel panel-primary">
+				<div class="panel-heading">Freigetränk</div>
+				<div class="panel-body">
+					<table class="table table-striped table-bordered" border="1">
+						<tr>
+							<th>Name</th>
+							<th>Hinzufügen</th>
+						</tr>
+						<tbody>
+							<tr th:each="item : ${freeDrinks} ">
+								<td th:text="${item.getName()}">Freigetränk</td>
+								<td>
+									<form method="post" action="/addFreeDrink">
+										<input type="hidden" name="iid" th:value="${item.getId()}" />
+										<input class="btn btn-primary" type="submit"
+											value="Hinzufügen" />
+									</form>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div th:if="${error.getError() == true}" class="container col-md-6">
+		<div class="panel panel-danger">
+			<div class="panel-heading">Fehler!</div>
+			<div class="panel-body">
+				<p th:text="${error.getMessage()}">Fehler!</p>
+			</div>
+		</div>
+	</div>
+
+
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+		integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+		crossorigin="anonymous"></script>
+</body>
+</html>
