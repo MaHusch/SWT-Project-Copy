@@ -140,20 +140,25 @@
 							<td th:text="${{item.price}}">10 Euro</td>
 							<td>
 								<div id="frm">
-									<form th:unless="${item.getPrice().getNumber().intValue().equals(0)}" method="post" action="/changeQuantity">
+									<form
+										th:unless="${item.getPrice().getNumber().intValue().equals(0)}"
+										method="post" action="/changeQuantity">
 										<input type="hidden" name="amount" value="1" /> <input
 											type="hidden" name="quantity"
-											th:value="${item.getQuantity()}" /> 
-											<input type="hidden" name="pid" th:value="${item.getProduct().getId()}" /> 
-										<input type="hidden" name="ciid" th:value="${item.getId()}" /> <input
+											th:value="${item.getQuantity()}" /> <input type="hidden"
+											name="pid" th:value="${item.getProduct().getId()}" /> <input
+											type="hidden" name="ciid" th:value="${item.getId()}" /> <input
 											class="btn btn-primary" type="submit" value='+1' />
 									</form>
-									<form th:unless="${item.getPrice().getNumber().intValue().equals(0)}" method="post" action="/changeQuantity">
-										<input type="hidden" name="amount" value="-1" /> 
-										<input type="hidden" name="quantity" th:value="${item.getQuantity()}" /> 
-										<input type="hidden" name="pid" th:value="${item.getProduct().getId()}" /> 
-										<input type="hidden" name="ciid" th:value="${item.getId()}" />
-										<input class="btn btn-primary" type="submit" value='-1' />
+									<form
+										th:unless="${item.getPrice().getNumber().intValue().equals(0)}"
+										method="post" action="/changeQuantity">
+										<input type="hidden" name="amount" value="-1" /> <input
+											type="hidden" name="quantity"
+											th:value="${item.getQuantity()}" /> <input type="hidden"
+											name="pid" th:value="${item.getProduct().getId()}" /> <input
+											type="hidden" name="ciid" th:value="${item.getId()}" /> <input
+											class="btn btn-primary" type="submit" value='-1' />
 									</form>
 									<form method="post" action="/removeCartItem">
 										<input type="hidden" name="ciid" th:value="${item.getId()}" />
@@ -173,12 +178,13 @@
 						Gesamtpreis)</label>: <input type="hidden" name="onSite" value="0" /> <input
 						type="checkbox" name="onSite" value="1" /> <br> </br> <label
 						for="cutlery"> Essgarnitur(15€ Pfand) </label>: <input
-						type="hidden" name="cutlery" value="0" /> 
-						<input type="checkbox" name="cutlery" value="1" /> <br> </br> 
-						<div th:switch="${customer.isPresent()}">
-						<input th:case="true" class="btn btn-primary" type="submit" value="Kaufen" />
-						<p th:case= "false"> Kein Kunde eingeloggt </p>
-						</div>
+						type="hidden" name="cutlery" value="0" /> <input type="checkbox"
+						name="cutlery" value="1" /> <br> </br>
+					<div th:switch="${customer.isPresent()}">
+						<input th:case="true" class="btn btn-primary" type="submit"
+							value="Kaufen" />
+						<p th:case="false">Kein Kunde eingeloggt</p>
+					</div>
 				</form>
 			</div>
 		</div>
@@ -217,8 +223,9 @@
 	<div th:if="${error.getError() == true}" class="container col-md-6">
 		<div class="panel panel-danger">
 			<div class="panel-heading">Fehler!</div>
-			<div class="panel-body">Fehler bei TAN-Überprüfung! Erneut
-				eingeben!</div>
+			<div class="panel-body">
+				<p th:text="${error.getMessage()}">Fehler!</p>
+			</div>
 		</div>
 	</div>
 

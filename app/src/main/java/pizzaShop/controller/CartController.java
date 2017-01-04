@@ -31,6 +31,7 @@ import pizzaShop.model.actor.Deliverer;
 import pizzaShop.model.actor.StaffMember;
 import pizzaShop.model.catalog_item.Item;
 import pizzaShop.model.catalog_item.ItemType;
+import pizzaShop.model.store.Bill;
 import pizzaShop.model.store.CustomerRepository;
 import pizzaShop.model.store.ErrorClass;
 import pizzaShop.model.store.ItemCatalog;
@@ -210,6 +211,7 @@ public class CartController {
 			}
 		} else {
 			error.setError(true);
+			error.setMessage("Fehler bei der TAN-Überprüfung! Erneut eingeben!");
 			System.out.println("fail");
 		}
 
@@ -266,6 +268,7 @@ public class CartController {
 																// OrderIdentifier
 		if (name == null || name.equals("")) {
 			error.setError(true);
+			error.setMessage("Keinen Lieferanten ausgewählt!");
 		} else {
 			Deliverer deliverer = (Deliverer) store.getStaffMemberByForename(name);
 

@@ -49,6 +49,7 @@ public class SellerController {
 		if (surname == "" || forename == "" || telephonenumber == "" || local == "" || street == "" || housenumber == ""
 				|| postcode == "") {
 			error.setError(true);
+			error.setMessage("Eingabefelder überprüfen!");
 			return "redirect:register_customer";
 		} else {
 			error.setError(false);

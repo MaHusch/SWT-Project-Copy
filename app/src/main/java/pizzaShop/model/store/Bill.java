@@ -18,10 +18,18 @@ public class Bill {
 		System.out.println("in bill class");
 
 		FileWriter writer;
-		File bill = new File("Bills/" + ldt.toString() + ".txt");
+		File bill = new File("Bills/" + pizzaOrder.getId().getIdentifier() + ".txt");
 
 		try {
 			writer = new FileWriter(bill, true);
+			
+			writer.write("Pappa Pizza");
+			writer.write(System.getProperty("line.separator"));
+			writer.write("Nöthnitzer Straße 46");
+			writer.write(System.getProperty("line.separator"));
+			writer.write("01187 Dresden");
+			writer.write(System.getProperty("line.separator"));
+			writer.write(System.getProperty("line.separator"));
 			writer.write("Rechnung vom: " + ldt.toString());
 			writer.write(System.getProperty("line.separator"));
 			writer.write("Kunde: " + customer.getSurname() + ", " + customer.getForename());
@@ -29,6 +37,8 @@ public class Bill {
 			writer.write("Addresse: " + customer.getAddress().toString());
 			writer.write(System.getProperty("line.separator"));
 			writer.write("Bestellung: " + pizzaOrder.toString());
+			writer.write(System.getProperty("line.separator"));
+			writer.write("Neue TAN: " + pizzaOrder.getTan().getTanNumber());
 
 			writer.flush();
 			writer.close();

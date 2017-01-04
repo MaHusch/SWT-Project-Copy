@@ -60,7 +60,8 @@
 								<span class="caret"></span>
 						</a>
 							<ul class="dropdown-menu">
-								<li><a sec:authorize="hasRole('ROLE_BAKER') or hasRole('ROLE_ADMIN')"
+								<li><a
+									sec:authorize="hasRole('ROLE_BAKER') or hasRole('ROLE_ADMIN')"
 									href="ovens.html">Öfen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_DELIVERER')"
 									href="index.html">Deliverer Dashboard</a></li>
@@ -102,7 +103,7 @@
 			<!-- /.container-fluid -->
 		</nav>
 	</header>
-	<h1>Bestellungen</h1>
+	<h1 style="color: white;">Bestellungen</h1>
 
 
 	<div sec:authorize="hasRole('ROLE_SELLER') || hasRole('ROLE_ADMIN')"
@@ -113,21 +114,24 @@
 				<table class="table table-striped table-bordered">
 					<thead>
 						<tr>
-							<th>ID</th>
+							<th sec:authorize="hasRole('ROLE_ADMIN')">ID</th>
+							<th>Inhalt</th>
 							<th>Preis</th>
 							<th>Status</th>
-							<th>Unbaked</th>
+							<th>Ungebackene Pizzen</th>
 							<th sec:authorize="hasRole('ROLE_SELLER')">Lieferant</th>
 						</tr>
 					</thead>
 					<tbody>
 						<div th:each="order : ${uncompletedOrders}">
 							<tr>
-								<td th:text="${order.getId() }">arg</td>
-								<td th:text="${{order.getTotalPrice()}}">arg</td>
+								<td sec:authorize="hasRole('ROLE_ADMIN')"
+									th:text="${order.getId() }">arg</td>
+									<td sec:authorize="isAuthenticated()"
+									th:text="${order.toString()}">arg</td>
+									<td th:text="${order.getTotalPrice()}">arg</td>
 								<td th:text="${order.getOrderStatus() }">arg</td>
 								<td th:text="${order.getUnbakedPizzas() }">arg</td>
-
 								<td sec:authorize="hasRole('ROLE_SELLER')"
 									th:if="${order.getPickUp()}">
 									<form method="post" action="/confirmCollection">
@@ -178,6 +182,8 @@
 							<tr>
 								<td th:text="${order.getId() }">arg</td>
 								<td th:text="${{order.getTotalPrice()}}">arg</td>
+								
+								
 								<td th:text="${order.getOrderStatus() }">arg</td>
 								<td th:text="${order.getUnbakedPizzas() }">arg</td>
 							</tr>
@@ -188,7 +194,14 @@
 		</div>
 	</div>
 
-	<p th:if="${error.getError() == true}">Fehler</p>
+	<div th:if="${error.getError() == true}" class="container col-md-6">
+		<div sec:authorize="hasRole('ROLE_SELLER')" class="panel panel-danger">
+			<div class="panel-heading">Fehler!</div>
+			<div class="panel-body">
+			<p th:text="${error.getMessage()}">Fehler!</p>
+			</div>
+		</div>
+	</div>
 
 
 	<script
