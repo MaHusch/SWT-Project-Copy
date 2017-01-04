@@ -3,10 +3,12 @@ package pizzaShop.controller;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Optional;
 
 import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.order.Cart;
+import org.salespointframework.order.CartItem;
 import org.salespointframework.order.Order;
 import org.salespointframework.order.OrderIdentifier;
 import org.salespointframework.order.OrderManager;
@@ -29,7 +31,6 @@ import pizzaShop.model.actor.Deliverer;
 import pizzaShop.model.actor.StaffMember;
 import pizzaShop.model.catalog_item.Item;
 import pizzaShop.model.catalog_item.ItemType;
-import pizzaShop.model.store.Bill;
 import pizzaShop.model.store.CustomerRepository;
 import pizzaShop.model.store.ErrorClass;
 import pizzaShop.model.store.ItemCatalog;
@@ -157,6 +158,7 @@ public class CartController {
 		if(cart.getItem(cartId).get().getPrice().isZero())
 			freeDrink = false;
 		cart.removeItem(cartId);
+		
 	
 		return "redirect:cart";
 
@@ -169,9 +171,20 @@ public class CartController {
 		assertTrue("Product must not be emtpy!", item.isPresent());
 		if(quantity + amount == 0){
 			return removeItem(cartId, cart);
-			
+		}else{
+			cart.addOrUpdateItem(item.get(), Quantity.of(amount));
 		}
-		cart.addOrUpdateItem(item.get(), Quantity.of(amount));
+		if(cart.getPrice().getNumber().intValue() < 30){
+			Iterator<CartItem> ci = cart.iterator();
+			while(ci.hasNext()){
+				CartItem i = ci.next();
+				if(((Item) i.getProduct()).getType().equals(ItemType.FREEDRINK)){
+					cart.removeItem(i.getId());
+					break;
+				}
+			}
+			freeDrink=false;
+		}
 		return "redirect:cart";
 	}
 	

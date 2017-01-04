@@ -140,7 +140,7 @@
 							<td th:text="${{item.price}}">10 Euro</td>
 							<td>
 								<div id="frm">
-									<form method="post" action="/changeQuantity">
+									<form th:unless="${item.getPrice().getNumber().intValue().equals(0)}" method="post" action="/changeQuantity">
 										<input type="hidden" name="amount" value="1" /> <input
 											type="hidden" name="quantity"
 											th:value="${item.getQuantity()}" /> 
@@ -148,7 +148,7 @@
 										<input type="hidden" name="ciid" th:value="${item.getId()}" /> <input
 											class="btn btn-primary" type="submit" value='+1' />
 									</form>
-									<form method="post" action="/changeQuantity">
+									<form th:unless="${item.getPrice().getNumber().intValue().equals(0)}" method="post" action="/changeQuantity">
 										<input type="hidden" name="amount" value="-1" /> 
 										<input type="hidden" name="quantity" th:value="${item.getQuantity()}" /> 
 										<input type="hidden" name="pid" th:value="${item.getProduct().getId()}" /> 
