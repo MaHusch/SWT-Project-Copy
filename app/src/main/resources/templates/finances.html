@@ -11,6 +11,17 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <title>Finanzen</title>
 </head>
 <body>
+	 <script language="Javascript">
+
+	 function IsEmpty(){
+		  if(document.forms['forward'].days.value === "")
+		  {
+		    alert("Bitte Anzahl eintragen");
+		    return false;
+		  }
+		    return true;
+		}
+	</script>
 	<!-- Navbar -->
 	<header>
 		<nav class="navbar navbar-default">
@@ -222,9 +233,11 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 			<div class="panel-heading">Zeit vorspulen</div>
 			<div class="panel-body">
 				<p th:text="${#temporals.format(currentTime, 'dd.MM.yyyy HH:mm')}">11.10.2002</p>
-				<form method="post" action="/forward">
+				<form name="forward" method="post" action="/forward">
 					<label for="days">Anzahl an Tagen</label> <input id="days"
-						type="number" name="days" /> <input class="btn btn-primary" type="submit" value="Forward" />
+						type="number" name="days" /> 
+						
+						<input class="btn btn-primary" onclick="return IsEmpty();" type="submit" value="Forward" />
 				</form>
 			</div>
 		</div>

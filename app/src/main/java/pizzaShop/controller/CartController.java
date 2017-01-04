@@ -153,7 +153,7 @@ public class CartController {
 	}
 
 	@RequestMapping(value = "/removeCartItem", method = RequestMethod.POST)
-	public String addItem(@RequestParam("ciid") String cartId, @ModelAttribute Cart cart) {
+	public String removeItem(@RequestParam("ciid") String cartId, @ModelAttribute Cart cart) {
 		if(cart.getItem(cartId).get().getPrice().isZero())
 			freeDrink = false;
 		cart.removeItem(cartId);
@@ -163,10 +163,14 @@ public class CartController {
 	}
 	
 	@RequestMapping(value = "/changeQuantity", method = RequestMethod.POST)
-	public String changeQuantity(@RequestParam("amount") int amount, @RequestParam("quantity") int
-			quantity, @RequestParam("ciid") ProductIdentifier id, @ModelAttribute Cart cart){
+	public String changeQuantity(@RequestParam("ciid") String cartId, @RequestParam("amount") int amount, @RequestParam("quantity") int
+			quantity, @RequestParam("pid") ProductIdentifier id, @ModelAttribute Cart cart){
 		Optional<Item> item = itemCatalog.findOne(id); 
 		assertTrue("Product must not be emtpy!", item.isPresent());
+		if(quantity + amount == 0){
+			return removeItem(cartId, cart);
+			
+		}
 		cart.addOrUpdateItem(item.get(), Quantity.of(amount));
 		return "redirect:cart";
 	}

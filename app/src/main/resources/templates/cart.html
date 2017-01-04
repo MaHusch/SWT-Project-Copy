@@ -143,16 +143,17 @@
 									<form method="post" action="/changeQuantity">
 										<input type="hidden" name="amount" value="1" /> <input
 											type="hidden" name="quantity"
-											th:value="${item.getQuantity()}" /> <input type="hidden"
-											name="ciid" th:value="${item.getProduct().getId()}" /> <input
+											th:value="${item.getQuantity()}" /> 
+											<input type="hidden" name="pid" th:value="${item.getProduct().getId()}" /> 
+										<input type="hidden" name="ciid" th:value="${item.getId()}" /> <input
 											class="btn btn-primary" type="submit" value='+1' />
 									</form>
 									<form method="post" action="/changeQuantity">
-										<input type="hidden" name="amount" value="-1" /> <input
-											type="hidden" name="quantity"
-											th:value="${item.getQuantity()}" /> <input type="hidden"
-											name="ciid" th:value="${item.getProduct().getId()}" /> <input
-											class="btn btn-primary" type="submit" value='-1' />
+										<input type="hidden" name="amount" value="-1" /> 
+										<input type="hidden" name="quantity" th:value="${item.getQuantity()}" /> 
+										<input type="hidden" name="pid" th:value="${item.getProduct().getId()}" /> 
+										<input type="hidden" name="ciid" th:value="${item.getId()}" />
+										<input class="btn btn-primary" type="submit" value='-1' />
 									</form>
 									<form method="post" action="/removeCartItem">
 										<input type="hidden" name="ciid" th:value="${item.getId()}" />
