@@ -162,9 +162,20 @@ public class StoreController {
 			}
 
 		}
-
-		Pizza savedPizza = itemCatalog.save(newPizza);
-		cart.addOrUpdateItem(savedPizza, Quantity.of(1));
+		
+		boolean exist = false;
+		for(Item i : itemCatalog.findByType(ItemType.PIZZA))
+		{
+			
+			if(i.toString().equals(newPizza.toString())) exist = true;
+		}
+		
+		
+		if(!exist) {
+			Pizza savedPizza = itemCatalog.save(newPizza);
+			cart.addOrUpdateItem(savedPizza, Quantity.of(1));
+		}
+		
 		
 		return "redirect:catalog";
 	}
