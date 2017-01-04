@@ -186,32 +186,25 @@
 						</tr>
 					</tbody>
 				</table>
-				<p th:text="'Gesamt: ' + ${{cart.price}}">Summe: 100 Euro</p>
+				<p th:text="'Gesamt: ' + ${{cart.price}} ">Summe: 100 Euro</p>
 				<p id = "cutleryPrice"> </p>
 	
 				<form sec:authorize="hasRole('ROLE_SELLER')" method="post"
 					action="/checkout">
 					<label for="onSite">Abholung vor Ort(10% Rabatt auf den
 						Gesamtpreis)</label>: <input type="hidden" name="onSite" value="0" /> <input
-						type="checkbox" name="onSite" value="1" /> <br> </br> <label
-<<<<<<< HEAD
-						for="cutlery"> Essgarnitur(15€ Pfand) </label>: <input
-						type="hidden" name="cutlery" value="0" /> <input type="checkbox"
-						name="cutlery" value="1" /> <br> </br>
+						type="checkbox" name="onSite" value="1" /> <br> </br> 
+					
+
+						<label for="cutlery"> Essgarnitur</label>: <input
+						type="hidden" name="cutlery" value="0" /> 
+						<input type="checkbox" id="cutleryCheckbox" name="cutleryCheckbox" value="1" onclick="editPrice()" /> <br> </br> 
 					<div th:switch="${customer.isPresent()}">
 						<input th:case="true" class="btn btn-primary" type="submit"
 							value="Kaufen" />
 						<p th:case="false">Kein Kunde eingeloggt</p>
-					</div>
-=======
-						for="cutlery"> Essgarnitur</label>: <input
-						type="hidden" name="cutlery" value="0" /> 
-						<input type="checkbox" id="cutleryCheckbox" name="cutleryCheckbox" value="1" onclick="editPrice()" /> <br> </br> 
-						<div th:switch="${customer.isPresent()}">
-						<input th:case="true" class="btn btn-primary" type="submit" value="Kaufen" />
-						<p th:case= "false"> Kein Kunde eingeloggt </p>
-						</div>
->>>>>>> 662bc8a6a75d72999c7bf6a818b733a22a078853
+					</div>	
+						
 				</form>
 			</div>
 		</div>

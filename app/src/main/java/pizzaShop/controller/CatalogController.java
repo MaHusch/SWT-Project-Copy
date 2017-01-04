@@ -216,38 +216,50 @@ public class CatalogController {
 	public String filterCatalog(Model model, @RequestParam("selection") String selection,
 			@RequestParam("filter") String filter) {
 		filteredItems = new ArrayList<Item>();
+		
 		System.out.println(filter + ' ' + selection);
-
+		
 		switch (selection) {
 		case "Getränke":
 			for (Item i : itemCatalog.findByType(ItemType.DRINK))
 				filteredItems.add(i);
+			
 			break;
 		case "Essen":
 			for (Item i : itemCatalog.findByType(ItemType.PIZZA))
 				filteredItems.add(i);
 			for (Item i : itemCatalog.findByType(ItemType.SALAD))
 				filteredItems.add(i);
+			
 			break;
 		default: // alles ist default
 			for (Item i : itemCatalog.findAll())
 				filteredItems.add(i);
+			
 		}
 
 		switch (filter) {
-		case "hoechster Preis zuerst":
+		default : //"hoechster Preis zuerst"
 			Collections.sort(filteredItems, new PriceComparator(false));
+			
 			break;
 		case "niedrigster Preis zuerst":
 			Collections.sort(filteredItems, new PriceComparator(true));
+			
 			break;
 		case "von A bis Z":
+			
 			Collections.sort(filteredItems, new NameComparator(true));
 			break;
 		case "von Z bis A":
+			
 			Collections.sort(filteredItems, new NameComparator(false));
 		}
-
+		
+		
+		// TODO: JS in catalog.hmtl --> set select inputs 
+		model.addAttribute("lastfilter",filter);
+		model.addAttribute("lastselection",selection);
 		model.addAttribute("items", filteredItems);
 		model.addAttribute("ItemType", ItemType.values());
 		return "catalog";
