@@ -7,33 +7,33 @@
 	th:href="@{/resources/css/style.css}"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" />
 <title>Items</title>
-<script type="text/javascript">
+<script type="text/javascript"> 
+//<![CDATA[
     function CheckAuswahl () {
-    var lastfilter = document.getElementById("lastfilterText").value;
-    var lastselection = document.getElementById("lastselectionText").value;
-    
-    // for schleife wirft SAXParseException (Thymeleaf)
-    if (document.ItemfilterForm.filter.options[1].innerHTML == lastfilter) 
-       	 document.ItemfilterForm.filter.options[1].selected = true;
-    if (document.ItemfilterForm.filter.options[2].innerHTML == lastfilter) 
-      	 document.ItemfilterForm.filter.options[2].selected = true;
-    if (document.ItemfilterForm.filter.options[3].innerHTML == lastfilter) 
-     	 document.ItemfilterForm.filter.options[3].selected = true;
-    if (document.ItemfilterForm.filter.options[0].innerHTML == lastfilter) 
-    	 document.ItemfilterForm.filter.options[0].selected = true;
-	//}
-   
-    // gleiches Problem wie oben --> hardcode :/
-    if (document.ItemfilterForm.selection.options[1].innerHTML == lastselection) 
-      	 document.ItemfilterForm.selection.options[1].selected = true;
-   	if (document.ItemfilterForm.selection.options[2].innerHTML == lastselection) 
-     	 document.ItemfilterForm.selection.options[2].selected = true;
-   	if (document.ItemfilterForm.selection.options[0].innerHTML == lastselection) 
-   	 	document.ItemfilterForm.selection.options[0].selected = true;
-    
+	    var lastfilter 				= document.getElementById("lastfilterText").value;
+	    var lastselection 			= document.getElementById("lastselectionText").value;
+	    
+	    var filterOptionCount 		= 4;
+	    var selectionOptionCount 	= 3;
+	    
+	    // filter options
+	    for(int i = 0; i < filterOptionCount; i++){
+	    	if (document.ItemfilterForm.filter.options[i].innerHTML == lastfilter) 
+		       	 document.ItemfilterForm.filter.options[i].selected = true;
+	    }
+		
+	    // selection options
+	    for(int i = 0; i < selectionOptionCount; i++){
+		    if (document.ItemfilterForm.selection.options[i].innerHTML == lastselection) 
+		      	 document.ItemfilterForm.selection.options[i].selected = true;
+	    }
+	    
     }
+//]]> 
 </script>
+
 </head>
+
 <body onload="CheckAuswahl()">
 	<!-- NavBar -->
 	<header>
