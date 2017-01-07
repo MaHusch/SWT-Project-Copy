@@ -1,5 +1,7 @@
 package pizzaShop.controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -131,7 +133,7 @@ public class StoreController {
 	}
 
 	@RequestMapping(value = "/finishPizza", method = RequestMethod.POST)
-	public String addIngredientsToPizza(@RequestParam("id_transmit") String ids[],@RequestParam("pizza_name") String pizzaName, @ModelAttribute Cart cart) {
+	public String addIngredientsToPizza(Model model,@RequestParam("id_transmit") String ids[],@RequestParam("pizza_name") String pizzaName, @ModelAttribute Cart cart) {
 		System.out.println("Custom pizza name " + pizzaName );
 		Pizza newPizza;
 
@@ -164,10 +166,15 @@ public class StoreController {
 		}
 		
 		boolean exist = false;
+		Item existingPizza = null;
 		for(Item i : itemCatalog.findByType(ItemType.PIZZA))
 		{
 			
-			if(i.toString().equals(newPizza.toString())) exist = true;
+			if(i.toString().equals(newPizza.toString()))
+			{
+				exist = true;
+				existingPizza = i;
+			}
 		}
 		
 		
@@ -175,7 +182,12 @@ public class StoreController {
 			Pizza savedPizza = itemCatalog.save(newPizza);
 			cart.addOrUpdateItem(savedPizza, Quantity.of(1));
 		}
-		
+		else
+		{	
+			model.addAttribute("existingPizza",existingPizza.getName());
+			if(existingPizza != null) 
+				cart.addOrUpdateItem(existingPizza, Quantity.of(1));
+		}
 		
 		return "redirect:catalog";
 	}
