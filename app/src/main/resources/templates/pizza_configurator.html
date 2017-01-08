@@ -187,13 +187,18 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 					type="button" value="remove ingredient"
 					onclick="removeIngredient();" />
 				<form method="post" action="/finishPizza">
-					Name: <input type="text" name="pizza_name" id="pizza_name" value="custom" />
+					Name: <input type="text" name="pizza_name" id="pizza_name" th:value = "${pizzaName}" value="custom" />
+					<input type="hidden" name="id_transmit" id="id_transmit" value="" /> 
+					<div sec:authorize="hasRole('ROLE_ADMIN')" > 
+						<input type="hidden" name="admin_flag" id="admin_flag" th:value="true"/> 
+						<input type="hidden" name="pid" id="pid" th:value="${pid}"/>  
+					</div>
 					<input class="btn btn-primary" type="submit" name="id" value="Pizza fertigstellen" />
-					<input type="hidden" name="id_transmit" id="id_transmit" value="" />
 				</form>
 			</div>
 		</div>
 	</div>
+	
 
 	<div th:if="${error.getError() == true}" class="container col-md-6">
 		<div class="panel panel-danger">

@@ -120,7 +120,8 @@ public class StoreController {
 					}
 				}
 				model.addAttribute("ingredients", ingredients);
-
+				model.addAttribute("pizzaName",pizza.getName());
+				model.addAttribute("pid",itemID);
 			}
 		}
 		return "pizza_configurator";
@@ -133,7 +134,8 @@ public class StoreController {
 	}
 
 	@RequestMapping(value = "/finishPizza", method = RequestMethod.POST)
-	public String addIngredientsToPizza(Model model,@RequestParam("id_transmit") String ids[],@RequestParam("pizza_name") String pizzaName, @ModelAttribute Cart cart) {
+	public String addIngredientsToPizza(Model model,@RequestParam("id_transmit") String ids[],@RequestParam("pizza_name") String pizzaName,
+										@RequestParam(value = "admin_flag", required = false) String admin_flag,@RequestParam(value = "pid", required = false) String pizzaID,@ModelAttribute Cart cart) {
 		System.out.println("Custom pizza name " + pizzaName );
 		Pizza newPizza;
 
@@ -142,8 +144,10 @@ public class StoreController {
 			return "redirect:pizza_configurator";
 		} else
 			error.setError(false);
-			newPizza = new Pizza("custom", Money.of(2, "EUR"));
-
+		
+		
+		newPizza = new Pizza("custom", Money.of(2, "EUR"));
+		
 		for (int i = 0; i < ids.length; i++) {
 
 			Item foundItem = store.findItemByIdentifier(ids[i], ItemType.INGREDIENT);
@@ -160,9 +164,13 @@ public class StoreController {
 				}else{ 
 					newPizza.setName( pizzaName );
 				}
-			
 			}
-
+		}
+		
+		System.out.println(admin_flag + " " + pizzaID);
+		if ( (admin_flag != null && !admin_flag.equals("") ) &&  admin_flag.equals("true") && (pizzaID != null && !pizzaID.equals("") ) ){			
+			Pizza pizza = (Pizza)(store.findItemByIdentifier(pizzaID, null));
+			itemCatalog.delete(pizza);
 		}
 		
 		boolean exist = false;
@@ -180,7 +188,7 @@ public class StoreController {
 		
 		if(!exist) {
 			Pizza savedPizza = itemCatalog.save(newPizza);
-			cart.addOrUpdateItem(savedPizza, Quantity.of(1));
+			cart.addOrUpdateItem(savedPizza, Quantity.of(1));				
 		}
 		else
 		{	
