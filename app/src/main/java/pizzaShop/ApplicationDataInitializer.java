@@ -188,11 +188,11 @@ public class ApplicationDataInitializer implements DataInitializer {
 	{	
 		Customer cu1 = new Customer("Jürgens", "Dieter", "12345", "Dresden", "01324", "Müllerstraße", "5b");
 		Customer cu2 = new Customer("Skywalker","Luke","23456","Dresden","01218","Sackgasse","42a");
-		tanManagement.confirmTan(tanManagement.generateNewTan(cu1.getTelephoneNumber()));
-		tanManagement.confirmTan(tanManagement.generateNewTan(cu2.getTelephoneNumber()));
+		tanManagement.confirmTan(tanManagement.generateNewTan(cu1.getPerson().getTelephoneNumber()));
+		tanManagement.confirmTan(tanManagement.generateNewTan(cu2.getPerson().getTelephoneNumber()));
 		cu2.setCutlery(new Cutlery(Money.of(15.0,EURO),businessTime.getTime()));
 		customerRepository.save(cu1);
 		customerRepository.save(cu2);
-		System.out.println(tanManagement.getTan(customerRepository.save(cu1).getTelephoneNumber()).getTanNumber());
+		System.out.println(tanManagement.getTan(customerRepository.save(cu1).getPerson().getTelephoneNumber()).getTanNumber());
 	}
 }

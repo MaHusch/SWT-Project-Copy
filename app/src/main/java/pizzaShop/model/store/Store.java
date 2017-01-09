@@ -106,7 +106,7 @@ public class Store {
 	public StaffMember getStaffMemberByForename(String name) {
 
 		for (StaffMember staffMember : staffMemberList) {
-			if (staffMember.getForename().equals(name)) {
+			if (staffMember.getPerson().getForename().equals(name)) {
 				return staffMember;
 			}
 		}
@@ -223,8 +223,6 @@ public class Store {
 			return ItemType.PIZZA;
 		case "SALAD":
 			return ItemType.SALAD;
-		case "Cutlery":
-			return ItemType.CUTLERY;
 		}
 	}
 
@@ -255,7 +253,7 @@ public class Store {
 
 		if (itype.equals(ItemType.PIZZA)) {
 			newItem = new Pizza(name, Money.of(price, EURO));
-		} else if (type.equals(ItemType.CUTLERY)) {
+		} else if (type.equals(ItemType.INGREDIENT)) {
 			newItem = new Ingredient(name, Money.of(price, EURO));
 		} else {
 			newItem = new Item(name, Money.of(price, EURO), itype);
@@ -386,7 +384,7 @@ public class Store {
 			if (status.equals("decayed"))
 				message = "hat seine Essgarnitur nicht zurückgegeben";
 			accountancy.add(new AccountancyEntry(Money.of(customer.getCutlery().getPrice().getNumber(), EURO),
-					customer.getForename() + " " + customer.getSurname() + message));
+					customer.getPerson().getForename() + " " + customer.getPerson().getSurname() + message));
 		}
 
 		customer.setCutlery(null);

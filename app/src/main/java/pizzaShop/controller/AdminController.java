@@ -124,9 +124,9 @@ public class AdminController {
 			@RequestParam("username") String username, @RequestParam("password") String password) {
 		StaffMember member = store.getStaffMemberByName(username);
 
-		member.setForename(forename);
-		member.setSurname(surname);
-		member.setTelephoneNumber(telephonenumber);
+		member.getPerson().setForename(forename);
+		member.getPerson().setSurname(surname);
+		member.getPerson().setTelephoneNumber(telephonenumber);
 
 		Optional<UserAccount> userAccount = employeeAccountManager.findByUsername(username);
 

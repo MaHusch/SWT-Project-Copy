@@ -47,7 +47,7 @@ public class SalaryThread implements Runnable {
 					while(staffIterator.hasNext()){
 						currentStaff = staffIterator.next();
 						currentIncome = incomeMap.get(currentStaff.getRole());
-						accountancy.add(new AccountancyEntry(Money.of(currentIncome*-1, "EUR"), "Gehalt: "+currentStaff.getForename() +" ("+currentStaff.getRole().toString().substring(5)+") für " + Month.of((currentDate.getMonthValue() + i - 1) % 12 + 1).getDisplayName(TextStyle.FULL, Locale.GERMAN)));
+						accountancy.add(new AccountancyEntry(Money.of(currentIncome*-1, "EUR"), "Gehalt: "+currentStaff.getPerson().getForename() +" ("+currentStaff.getRole().toString().substring(5)+") für " + Month.of((currentDate.getMonthValue() + i - 1) % 12 + 1).getDisplayName(TextStyle.FULL, Locale.GERMAN)));
 					}
 					
 					

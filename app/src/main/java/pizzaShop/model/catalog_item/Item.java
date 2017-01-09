@@ -83,8 +83,6 @@ public class Item extends Product {
 			return "Salad";
 		case PIZZA:
 			return "Pizza";
-		case CUTLERY:
-			return "Essgarnitur";
 		}
 	}
 

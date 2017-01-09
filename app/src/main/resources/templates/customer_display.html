@@ -99,10 +99,10 @@
 					</tr>
 					<tbody>
 						<tr th:each=" customer : ${customer}">
-							<td th:text="${customer.getForename()}">Vorname</td>
-							<td th:text="${customer.getSurname()}">Nachname</td>
-							<td th:text="${customer.getTelephoneNumber()}">Telefonnummer</td>
-							<td th:text="${customer.getAddress().toString()}">Addresse</td>
+							<td th:text="${customer.getPerson().getForename()}">Vorname</td>
+							<td th:text="${customer.getPerson().getSurname()}">Nachname</td>
+							<td th:text="${customer.getPerson().getTelephoneNumber()}">Telefonnummer</td>
+							<td th:text="${customer.getPerson().getAddress().toString()}">Addresse</td>
 							<td>
 								<div th:switch="${customer.getCutlery() == null}">
 									<p th:case="${true}" th:text="---">keine Essgarnitur</p>

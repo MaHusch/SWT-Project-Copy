@@ -1,23 +1,33 @@
 package pizzaShop.model.actor;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+
 /**
- * abstract PersonClass for every Person who is represented in PizzaShop
+ * PersonClass for every Person (via Composite) who is represented in PizzaShop
  * 
  * @author Martin Huschenbett
  *
  */
 
-public abstract class Person {
+@Entity
+public class Person {
 
 	private String surname;
 	private String forename;
 	private String telephoneNumber;
-	private Address address;
+	@OneToOne(cascade = { CascadeType.ALL }) private Address address;
+	@Id @GeneratedValue private long PersonID;
 
 	/**
 	 * empty constructor for Spring
 	 */
-	protected Person() {
+	
+	@SuppressWarnings("unused")
+	public Person() {
 	};
 
 	/**
@@ -28,6 +38,19 @@ public abstract class Person {
 	 * @param telephoneNumber
 	 */
 
+	public Person(String surname, String forename, String telephoneNumber, Address address) {
+		this.surname = surname;
+		this.forename = forename;
+		this.telephoneNumber = telephoneNumber;
+		this.address = address;
+	}
+
+	/**
+	 * constructor for staffmember ... no address?! 
+	 * @param surname
+	 * @param forename
+	 * @param telephoneNumber
+	 */
 	public Person(String surname, String forename, String telephoneNumber) {
 		this.surname = surname;
 		this.forename = forename;

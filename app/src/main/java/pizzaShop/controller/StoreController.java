@@ -248,7 +248,7 @@ public class StoreController {
 	public String deleteCustomer(Model model,@RequestParam("cid") long id) {
 		model.addAttribute("error",error);
 		
-		Tan foundTan = tanManagement.getTan(customerRepository.findOne(id).getTelephoneNumber());
+		Tan foundTan = tanManagement.getTan(customerRepository.findOne(id).getPerson().getTelephoneNumber());
 		
 		if(!foundTan.getStatus().equals(TanStatus.NOT_FOUND))
 		{
@@ -289,7 +289,7 @@ public class StoreController {
 		Customer oldCustomer = customerRepository.findOne(id);
 		Cutlery oldCutlery = oldCustomer.getCutlery();
 		
-		String oldTelephoneNumber = oldCustomer.getTelephoneNumber();
+		String oldTelephoneNumber = oldCustomer.getPerson().getTelephoneNumber();
 		
 		if(!oldTelephoneNumber.equals(telephonenumber))
 		{	

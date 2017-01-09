@@ -1,8 +1,10 @@
 package pizzaShop.model.actor;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 import org.salespointframework.useraccount.*;
 
@@ -15,7 +17,7 @@ import pizzaShop.model.store.Store;
  *
  */
 @Entity
-public abstract class StaffMember extends Person {
+public abstract class StaffMember{
 
 	@Id
 	@GeneratedValue
@@ -25,6 +27,8 @@ public abstract class StaffMember extends Person {
 	private String password;
 	private UserAccount userAccount;
 	private Role role;
+	
+	@OneToOne(cascade = CascadeType.ALL) private Person myPerson = null;
 
 	/**
 	 * Constructor
@@ -36,7 +40,7 @@ public abstract class StaffMember extends Person {
 
 	public StaffMember(String surname, String forename, String telephoneNumber) {
 
-		super(surname, forename, telephoneNumber);
+		myPerson = new Person(surname,forename,telephoneNumber);
 
 		// Store.staffMemberList.add(this); now in Controller
 
@@ -50,6 +54,11 @@ public abstract class StaffMember extends Person {
 	public String getUsername() {
 
 		return this.username;
+	}
+	
+	public Person getPerson()
+	{
+		return this.myPerson;
 	}
 
 	/*

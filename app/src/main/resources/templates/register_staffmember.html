@@ -113,17 +113,17 @@
 					<table>
 						<tr>
 							<td><label for="surname">Name*</label>:</td>
-							<td th:if = "${staffMember}"><input type="text" id="surname" name="surname" th:value="${staffMember.getSurname()}"/></td>
+							<td th:if = "${staffMember}"><input type="text" id="surname" name="surname" th:value="${staffMember.getPerson().getSurname()}"/></td>
 							<td th:if = "${staffMember} == null"><input type="text" id="surname" name="surname"/></td>
 						</tr>
 						<tr>
 							<td><label for="forename">Vorname*</label>:</td>
-							<td th:if = "${staffMember}"><input type="text" id="forename" name="forename" th:value="${staffMember.getForename()}"/></td>
+							<td th:if = "${staffMember}"><input type="text" id="forename" name="forename" th:value="${staffMember.getPerson().getForename()}"/></td>
 							<td th:if = "${staffMember} == null"><input type="text" id="forename" name="forename" /></td>
 						</tr>
 						<tr>
 							<td><label for="telnumber">Tel*</label>:</td>
-							<td th:if = "${staffMember}"><input type="text" id="telnumber" name="telnumber" th:value="${staffMember.getTelephoneNumber()}"/></td>
+							<td th:if = "${staffMember}"><input type="text" id="telnumber" name="telnumber" th:value="${staffMember.getPerson().getTelephoneNumber()}"/></td>
 							<td th:if = "${staffMember} == null"><input type="text" id="telnumber" name="telnumber" /></td>
 						</tr>
 						<tr th:if = "${staffMember} == null">

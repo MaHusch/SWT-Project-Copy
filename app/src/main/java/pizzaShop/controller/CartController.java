@@ -203,10 +203,10 @@ public class CartController {
 		if (tan.getTanNumber().equals(tanValue)) {
 			error.setError(false);
 			for (Customer c : customerRepository.findAll()) {
-				System.out.println("test" + c.getTelephoneNumber());
-				if (telephoneNumber.equals(c.getTelephoneNumber())) {
+				System.out.println("test" + c.getPerson().getTelephoneNumber());
+				if (telephoneNumber.equals(c.getPerson().getTelephoneNumber())) {
 					customer = Optional.of(c);
-					System.out.println("valid: " + tanValue + " tel: " + customer.get().getTelephoneNumber());
+					System.out.println("valid: " + tanValue + " tel: " + customer.get().getPerson().getTelephoneNumber());
 				}
 			}
 		} else {
@@ -250,7 +250,7 @@ public class CartController {
 			}
 
 			PizzaOrder pizzaOrder = new PizzaOrder(userAccount.get(), Cash.CASH,
-					tanManagement.generateNewTan(customer.get().getTelephoneNumber()), onSite, customer.get());// tanManagement.getTan(customer.getTelephoneNumber()));
+					tanManagement.generateNewTan(customer.get().getPerson().getTelephoneNumber()), onSite, customer.get());// tanManagement.getTan(customer.getTelephoneNumber()));
 			cart.addItemsTo(orderManager.save(pizzaOrder.getOrder()));
 			store.analyzeOrder(pizzaOrderRepository.save(pizzaOrder));
 			cart.clear();

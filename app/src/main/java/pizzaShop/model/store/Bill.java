@@ -32,9 +32,9 @@ public class Bill {
 			writer.write(System.getProperty("line.separator"));
 			writer.write("Rechnung vom: " + ldt.toString());
 			writer.write(System.getProperty("line.separator"));
-			writer.write("Kunde: " + customer.getSurname() + ", " + customer.getForename());
+			writer.write("Kunde: " + customer.getPerson().getSurname() + ", " + customer.getPerson().getForename());
 			writer.write(System.getProperty("line.separator"));
-			writer.write("Addresse: " + customer.getAddress().toString());
+			writer.write("Addresse: " + customer.getPerson().getAddress().toString());
 			writer.write(System.getProperty("line.separator"));
 			writer.write("Bestellung: " + pizzaOrder.toString());
 			writer.write(System.getProperty("line.separator"));

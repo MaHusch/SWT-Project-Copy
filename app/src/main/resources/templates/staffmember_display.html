@@ -90,8 +90,8 @@
 						</tr>
 						<tbody>
 							<tr th:each=" staffmember : ${staffmember}">
-								<td th:text="${staffmember.getForename()}">Vorname</td>
-								<td th:text="${staffmember.getSurname()}">Nachname</td>
+								<td th:text="${staffmember.getPerson().getForename()}">Vorname</td>
+								<td th:text="${staffmember.getPerson().getSurname()}">Nachname</td>
 								<td th:text="${staffmember.getRole()}">Rolle</td>
 								
 								
