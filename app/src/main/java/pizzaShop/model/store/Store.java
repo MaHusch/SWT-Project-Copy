@@ -153,7 +153,7 @@ public class Store {
 						pizza.removeFirstOrder();
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						System.out.println("Fehler bei updatePizzaOrder");
 					}
 					pizzaOrderRepo.save(order);
 					return;
@@ -175,7 +175,6 @@ public class Store {
 				"Order über Account " + p.getOrder().getUserAccount().getUsername() + " " + msg);
 		accountancy.add(a);
 	}
-
 
 	public void getNextPizza() throws Exception {
 
@@ -260,10 +259,6 @@ public class Store {
 	public void checkCutleries() {
 		for (Customer c : this.customerRepository.findAll()) {
 			if (c.getCutlery() != null && c.getCutlery().getDate().isBefore(businessTime.getTime())) {
-				/*
-				 * System.out.println(c.getCutlery().getDateString() +
-				 * "rückgabedatum \n"); System.out.println(busi);
-				 */
 				try {
 					this.returnCutlery("decayed", c);
 				} catch (Exception e) {

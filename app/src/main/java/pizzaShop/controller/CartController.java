@@ -84,7 +84,8 @@ public class CartController {
 		model.addAttribute("items", itemCatalog.findAll());
 		
 		ArrayList<Item> freeDrinks = new ArrayList<Item>();
-		for(Item i : itemCatalog.findAll()){
+		//TODO: use itemCatalog.findByType(ItemType.FREEDRINK)
+		for(Item i : itemCatalog.findAll()){  
 			if(i.getType().equals(ItemType.FREEDRINK))
 				freeDrinks.add(i);
 		}
@@ -112,7 +113,7 @@ public class CartController {
 
 		ArrayList<PizzaOrder> uncompletedOrders = new ArrayList<PizzaOrder>();
 		ArrayList<PizzaOrder> completedOrders = new ArrayList<PizzaOrder>();
-
+		//TODO: pizzaOrderRepository can have a method ... findbyPizzaOrderStatus
 		for (PizzaOrder po : pizzaOrderRepository.findAll()) {
 			if (po.getOrderStatus().equals(PizzaOrderStatus.COMPLETED)) {
 				completedOrders.add(po);
