@@ -189,7 +189,7 @@
 				<p th:text="'Gesamt: ' + ${{cart.price}} ">Summe: 100 Euro</p>
 				<p id = "cutleryPrice"> </p>
 	
-				<form sec:authorize="hasRole('ROLE_SELLER')" method="post"
+				<form  method="post"
 					action="/checkout">
 					<label for="onSite">Abholung vor Ort(10% Rabatt auf den
 						Gesamtpreis)</label>: <input type="hidden" name="onSite" value="0" /> <input
@@ -200,7 +200,7 @@
 						type="hidden" name="cutlery" value="0" /> 
 						<input type="checkbox" id="cutleryCheckbox" name="cutleryCheckbox" value="1" onclick="editPrice()" /> <br> </br> 
 					<div th:switch="${customer.isPresent()}">
-						<input th:case="true" class="btn btn-primary" type="submit"
+						<input sec:authorize="hasRole('ROLE_SELLER')" th:case="true" class="btn btn-primary" type="submit"
 							value="Kaufen" />
 						<p th:case="false">Kein Kunde eingeloggt</p>
 					</div>	
@@ -213,7 +213,7 @@
 	<!-- Panel for Freigetränk  -->
 	<div
 		th:if="(${cart.getPrice().getNumber().floatValue()*100}) > 3000 and ${freeDrink}==false">
-		<div sec:authorize="hasRole('ROLE_SELLER')" class="container col-md-4">
+		<div class="container col-md-4">
 			<div class="panel panel-primary">
 				<div class="panel-heading">Freigetränk</div>
 				<div class="panel-body">
