@@ -2,11 +2,14 @@ package pizzaShop.model.catalog;
 
 import static org.salespointframework.core.Currencies.EURO;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.javamoney.moneta.Money;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import pizzaShop.model.store.ItemCatalog;
 import pizzaShop.model.store.Store;
 
 @Component
@@ -99,20 +102,57 @@ public class CatalogHelper {
 			throw new IllegalArgumentException("Preis darf nicht negativ sein");
 
 		ItemType newType = CatalogHelper.StringtoItemtype(type);
+		List<String> ingredients = new ArrayList();
 
 		if (editedItem.getType().equals(newType)) {
+			if (editedItem.getType().equals(ItemType.PIZZA))
+				ingredients.addAll(((Pizza) editedItem).getIngredients());
+
 			itemCatalog.delete(editedItem); // altes Element rauslöschen
 			editedItem.setName(name);
-			System.out.println(editedItem.getName());
+
+			// add ingredients to new Pizza
+			if (!ingredients.isEmpty()) {
+				for (String ing_name : ingredients) {
+					Item i = null;
+					Iterator<Item> it = itemCatalog.findByName(ing_name).iterator();
+					if (it.hasNext())
+						i = it.next();
+					if (i != null && i.getType().equals(ItemType.INGREDIENT))
+						((Pizza) editedItem).addIngredient((Ingredient) i);
+
+				}
+			}
+			
 			editedItem.setPrice(Money.of(price, EURO));
 			itemCatalog.save(editedItem);
 
 		} else {
 			System.out.println("anderer Itemtyp --> neues Item");
-			itemCatalog.delete(editedItem);
+			this.removeItem(editedItem);
 			this.createNewItem(name, type, price);
 		}
 
+	}
+	
+	/**
+	 * removes {@link Item} from catalog (if {@link Ingredient} --> remove from pizza too)
+	 * @param i {@link Item} to be deleted
+	 */
+	public void removeItem(Item i)
+	{
+		itemCatalog.delete(i.getId());
+		if (i.getType().equals(ItemType.INGREDIENT)) {
+			Pizza p1;
+			for (Item x : itemCatalog.findByType(ItemType.PIZZA)) {
+				p1 = (Pizza) x;
+				if (p1.getIngredients().contains(i.getName())) {
+					p1.getIngredients().remove(i.getName());
+					itemCatalog.save(p1);
+				}
+			}
+
+		}
 	}
 
 	public Item findItemByIdentifier(String identifier, ItemType filter) {
@@ -133,7 +173,7 @@ public class CatalogHelper {
 
 		return null;
 	}
-	
+
 	public void cleanUpItemCatalog() { // unused?
 		Iterable<Item> items1 = itemCatalog.findAll();
 		Iterable<Item> items2 = itemCatalog.findAll();

@@ -22,12 +22,12 @@ import groovyjarjarantlr.collections.List;
 import pizzaShop.model.catalog.CatalogHelper;
 import pizzaShop.model.catalog.Ingredient;
 import pizzaShop.model.catalog.Item;
+import pizzaShop.model.catalog.ItemCatalog;
 import pizzaShop.model.catalog.ItemType;
 import pizzaShop.model.catalog.NameComparator;
 import pizzaShop.model.catalog.Pizza;
 import pizzaShop.model.catalog.PriceComparator;
 import pizzaShop.model.store.ErrorClass;
-import pizzaShop.model.store.ItemCatalog;
 import pizzaShop.model.store.Store;
 
 /**

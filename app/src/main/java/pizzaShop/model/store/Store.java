@@ -22,6 +22,7 @@ import pizzaShop.model.actor.StaffMember;
 import pizzaShop.model.catalog.Cutlery;
 import pizzaShop.model.catalog.Ingredient;
 import pizzaShop.model.catalog.Item;
+import pizzaShop.model.catalog.ItemCatalog;
 import pizzaShop.model.catalog.ItemType;
 import pizzaShop.model.catalog.Pizza;
 

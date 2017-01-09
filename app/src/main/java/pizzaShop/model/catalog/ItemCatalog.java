@@ -1,10 +1,7 @@
-package pizzaShop.model.store;
+package pizzaShop.model.catalog;
 
 
 import org.salespointframework.catalog.Catalog;
-
-import pizzaShop.model.catalog.Item;
-import pizzaShop.model.catalog.ItemType;
 
 
 public interface ItemCatalog extends Catalog<Item> {
