@@ -97,7 +97,7 @@ public class Pizza extends Item {
 	public String removeIngredient(Ingredient i) {
 		if (ingredients.contains(i.getName())) {
 			ingredients.remove(i.getName());
-			this.setPrice(getPrice().subtract(i.getPrice()));
+			this.setPrice(this.getPrice().subtract(i.getPrice()));
 			return i.getName();
 		}
 
@@ -159,7 +159,7 @@ public class Pizza extends Item {
 		List<String> i = ingredients;
 
 		if (i.size() > 0) { 
-			result += "( " + i.get(0);
+			result += " (" + i.get(0);
 
 			for (int n = 1; n < i.size(); n++) {
 				result += "," + i.get(n);
@@ -167,7 +167,7 @@ public class Pizza extends Item {
 					result += System.getProperty("line.separator");
 			}
 
-			result += " )";
+			result += ") ";
 		}
 
 		return result;
