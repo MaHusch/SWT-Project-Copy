@@ -17,14 +17,14 @@
 	    var selectionOptionCount 	= 3;
 	    
 	    // filter options
-	    for(int i = 0; i < filterOptionCount; i++){
-	    	if (document.ItemfilterForm.filter.options[i].innerHTML == lastfilter) 
+	    for(var i = 0; i < filterOptionCount; i++){
+	    	if (document.ItemfilterForm.filter.options[i].innerHTML === lastfilter) 
 		       	 document.ItemfilterForm.filter.options[i].selected = true;
 	    }
 		
 	    // selection options
-	    for(int i = 0; i < selectionOptionCount; i++){
-		    if (document.ItemfilterForm.selection.options[i].innerHTML == lastselection) 
+	    for(var i = 0; i < selectionOptionCount; i++){
+		    if (document.ItemfilterForm.selection.options[i].innerHTML === lastselection) 
 		      	 document.ItemfilterForm.selection.options[i].selected = true;
 	    }
 	    
