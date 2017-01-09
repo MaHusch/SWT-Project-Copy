@@ -24,7 +24,13 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 		for (var i = 0; i < configuration.length; i++) {
 			var itemID = configuration[i].id;
 			transmitItems(itemID);
-			ingredientList.remove(itemID)
+			
+			for (var j = 0; j < ingredientList.length;j++){
+				var ingredientID = ingredientList[j].id;
+				if ( ingredientID === itemID ){
+					ingredientList.remove(j);
+				}
+			}
 		}
 	}
 
@@ -46,7 +52,6 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 
 		//remove the selected item from the ingredient list
 		ingredientList.remove(index)
-
 		//adds the selected item's id to the array and transmits the data to a hidden form value
 		transmitItems(itemID);
 
