@@ -8,8 +8,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import pizzaShop.AbstractIntegrationTests;
-import pizzaShop.model.catalog_item.Item;
-import pizzaShop.model.catalog_item.ItemType;
+import pizzaShop.model.catalog.Item;
+import pizzaShop.model.catalog.ItemType;
 import pizzaShop.model.store.ItemCatalog;
 
 

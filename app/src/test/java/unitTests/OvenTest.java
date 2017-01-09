@@ -8,7 +8,7 @@ import org.junit.*;
 import org.salespointframework.useraccount.Role;
 
 import pizzaShop.model.actor.Baker;
-import pizzaShop.model.catalog_item.Pizza;
+import pizzaShop.model.catalog.Pizza;
 import pizzaShop.model.store.Oven;
 import pizzaShop.model.store.Store;
 
