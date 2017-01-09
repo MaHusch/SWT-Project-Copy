@@ -8,7 +8,7 @@ import javax.persistence.Id;
 
 import org.salespointframework.useraccount.Role;
 
-import pizzaShop.model.catalog_item.Pizza;
+import pizzaShop.model.catalog.Pizza;
 import pizzaShop.model.store.Oven;
 import pizzaShop.model.store.Pizzaqueue;
 import pizzaShop.model.store.Store;

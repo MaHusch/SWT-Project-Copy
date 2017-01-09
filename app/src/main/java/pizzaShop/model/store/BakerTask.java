@@ -5,7 +5,7 @@ import java.util.*;
 
 import org.salespointframework.time.BusinessTime;
 
-import pizzaShop.model.catalog_item.Pizza;
+import pizzaShop.model.catalog.Pizza;
 
 public class BakerTask extends TimerTask {
 

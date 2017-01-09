@@ -1,4 +1,4 @@
-package pizzaShop.model.catalog_item;
+package pizzaShop.model.catalog;
 
 import java.util.Comparator;
 

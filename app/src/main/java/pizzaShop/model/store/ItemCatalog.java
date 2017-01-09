@@ -3,8 +3,8 @@ package pizzaShop.model.store;
 
 import org.salespointframework.catalog.Catalog;
 
-import pizzaShop.model.catalog_item.Item;
-import pizzaShop.model.catalog_item.ItemType;
+import pizzaShop.model.catalog.Item;
+import pizzaShop.model.catalog.ItemType;
 
 
 public interface ItemCatalog extends Catalog<Item> {

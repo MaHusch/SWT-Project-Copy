@@ -6,7 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
-import pizzaShop.model.catalog_item.Cutlery;
+import pizzaShop.model.catalog.Cutlery;
 
 /**
  * CustomerClass for representing a Customer of the PizzaShop

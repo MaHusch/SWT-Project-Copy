@@ -2,7 +2,7 @@ package pizzaShop.model.store;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
-import pizzaShop.model.catalog_item.Pizza;
+import pizzaShop.model.catalog.Pizza;
 
 public class Pizzaqueue extends LinkedBlockingQueue<Pizza> {
 

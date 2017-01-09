@@ -19,11 +19,11 @@ import org.springframework.stereotype.Component;
 
 import pizzaShop.model.actor.Customer;
 import pizzaShop.model.actor.StaffMember;
-import pizzaShop.model.catalog_item.Cutlery;
-import pizzaShop.model.catalog_item.Ingredient;
-import pizzaShop.model.catalog_item.Item;
-import pizzaShop.model.catalog_item.ItemType;
-import pizzaShop.model.catalog_item.Pizza;
+import pizzaShop.model.catalog.Cutlery;
+import pizzaShop.model.catalog.Ingredient;
+import pizzaShop.model.catalog.Item;
+import pizzaShop.model.catalog.ItemType;
+import pizzaShop.model.catalog.Pizza;
 
 @Component
 public class Store {
@@ -176,141 +176,6 @@ public class Store {
 		accountancy.add(a);
 	}
 
-	public Item findItemByIdentifier(String identifier, ItemType filter) { // TODO:
-																			// check
-																			// if
-																			// needed,
-																			// why
-																			// string
-																			// as
-																			// parameter
-		Iterable<Item> items;
-
-		if (filter == null) {
-			items = this.itemCatalog.findAll();
-		} else {
-			items = this.itemCatalog.findByType(filter);
-		}
-
-		for (Item item : items) {
-			if (item.getId().getIdentifier().equals(identifier)) {
-				return item;
-			}
-		}
-
-		return null;
-	}
-
-	/**
-	 * ConverterClass String -> {@link ItemType}
-	 * 
-	 * @param type
-	 *            {@link ItemType} given as a String
-	 * @return type as an {@link ItemType} (by default FREEDRINK (could be
-	 *         error)
-	 */
-	public static ItemType StringtoItemtype(String type) // use to remove
-															// redundancy?!
-	{
-		switch (type) {
-		default:
-			return ItemType.FREEDRINK;
-		case "DRINK":
-			return ItemType.DRINK;
-		case "INGREDIENT":
-			return ItemType.INGREDIENT;
-		case "PIZZA":
-			return ItemType.PIZZA;
-		case "SALAD":
-			return ItemType.SALAD;
-		}
-	}
-
-	/**
-	 * Creates a new {@link Item}
-	 * 
-	 * @param name
-	 *            name of the new {@link Item}
-	 * @param type
-	 *            {@link ItemType} as a String
-	 * @param price
-	 *            price of the new {@link Item}
-	 * @throws Exception
-	 *             when inputs are invalid
-	 */
-	public void createNewItem(String name, String type, Number price) throws Exception {
-		Item newItem;
-
-		ItemType itype = Store.StringtoItemtype(type);
-
-		if (name.isEmpty()) {
-			throw new IllegalArgumentException("Name darf nicht leer sein");
-		}
-
-		if (price.floatValue() < 0) {
-			throw new IllegalArgumentException("Preis darf nicht negativ sein");
-		}
-
-		if (itype.equals(ItemType.PIZZA)) {
-			newItem = new Pizza(name, Money.of(price, EURO));
-		} else if (type.equals(ItemType.INGREDIENT)) {
-			newItem = new Ingredient(name, Money.of(price, EURO));
-		} else {
-			newItem = new Item(name, Money.of(price, EURO), itype);
-		}
-
-		itemCatalog.save(newItem);
-
-	}
-
-	/**
-	 * function to save an edited {@link Item} in the itemCatalog
-	 * 
-	 * @param editedItem
-	 * @param name
-	 * @param type
-	 * @param price
-	 * @throws Exception
-	 *             if inputs are invalid
-	 */
-	public void saveEditedItem(Item editedItem, String name, String type, Number price) throws Exception {
-		if (editedItem.equals(null))
-			throw new NullPointerException("zu editierendes Item existiert nicht");
-		if (name.isEmpty())
-			throw new IllegalArgumentException("Name darf nicht leer sein");
-		if (price.floatValue() < 0)
-			throw new IllegalArgumentException("Preis darf nicht negativ sein");
-
-		ItemType newType = Store.StringtoItemtype(type);
-
-		if (editedItem.getType().equals(newType)) {
-			itemCatalog.delete(editedItem); // altes Element rauslöschen
-			editedItem.setName(name);
-			System.out.println(editedItem.getName());
-			editedItem.setPrice(Money.of(price, EURO));
-			itemCatalog.save(editedItem);
-
-		} else {
-			System.out.println("anderer Itemtyp --> neues Item");
-			itemCatalog.delete(editedItem);
-			this.createNewItem(name, type, price);
-		}
-
-	}
-
-	public void cleanUpItemCatalog() { // unused?
-		Iterable<Item> items1 = itemCatalog.findAll();
-		Iterable<Item> items2 = itemCatalog.findAll();
-
-		for (Item item1 : items1) {
-			for (Item item2 : items2) {
-				if (item1.getName().equals(item2.getName()))
-					itemCatalog.delete(item2);
-			}
-
-		}
-
-	}
 
 	public void getNextPizza() throws Exception {
 

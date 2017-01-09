@@ -1,4 +1,4 @@
-package pizzaShop.model.catalog_item;
+package pizzaShop.model.catalog;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -151,7 +151,7 @@ public class Pizza extends Item {
 
 	/**
 	 * @return returns the Pizza(ingriedientnames)
-	 * @see pizzaShop.model.catalog_item.Item#toString()
+	 * @see pizzaShop.model.catalog.Item#toString()
 	 */
 	public String toString() {
 		String result = super.toString();

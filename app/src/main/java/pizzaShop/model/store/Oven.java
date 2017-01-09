@@ -4,7 +4,7 @@ package pizzaShop.model.store;
 import org.salespointframework.time.BusinessTime;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import pizzaShop.model.catalog_item.Pizza;
+import pizzaShop.model.catalog.Pizza;
 
 public class Oven {
 

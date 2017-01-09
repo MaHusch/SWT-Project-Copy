@@ -19,12 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import groovyjarjarantlr.collections.List;
-import pizzaShop.model.catalog_item.Ingredient;
-import pizzaShop.model.catalog_item.Item;
-import pizzaShop.model.catalog_item.ItemType;
-import pizzaShop.model.catalog_item.NameComparator;
-import pizzaShop.model.catalog_item.Pizza;
-import pizzaShop.model.catalog_item.PriceComparator;
+import pizzaShop.model.catalog.CatalogHelper;
+import pizzaShop.model.catalog.Ingredient;
+import pizzaShop.model.catalog.Item;
+import pizzaShop.model.catalog.ItemType;
+import pizzaShop.model.catalog.NameComparator;
+import pizzaShop.model.catalog.Pizza;
+import pizzaShop.model.catalog.PriceComparator;
 import pizzaShop.model.store.ErrorClass;
 import pizzaShop.model.store.ItemCatalog;
 import pizzaShop.model.store.Store;
@@ -44,7 +45,7 @@ public class CatalogController {
 	private ErrorClass error = new ErrorClass(false);
 	private Iterable<Item> items;
 	private ArrayList<Item> filteredItems;
-
+	private final CatalogHelper catalogHelper;
 	/**
 	 * on creation spring searches the itemCatalog and allocates it to the local
 	 * variabel
@@ -53,9 +54,10 @@ public class CatalogController {
 	 *            the itemCatalog of the shop
 	 */
 	@Autowired
-	public CatalogController(ItemCatalog itemCatalog, Store store) {
+	public CatalogController(CatalogHelper catalogHelper,ItemCatalog itemCatalog, Store store) {
 		this.itemCatalog = itemCatalog;
 		this.store = store;
+		this.catalogHelper = catalogHelper;
 	}
 
 	/**
@@ -127,7 +129,7 @@ public class CatalogController {
 		Item i = itemCatalog.findOne(id).orElse(null);
 
 		try {
-			store.saveEditedItem(i, name, type, price);
+			catalogHelper.saveEditedItem(i, name, type, price);
 			error.setError(false);
 		} catch (Exception e) {
 			error.setError(true);
@@ -190,7 +192,7 @@ public class CatalogController {
 			@RequestParam("itemtype") String type) {
 		System.out.println("erstellen");
 		try {
-			store.createNewItem(name, type, price);
+			catalogHelper.createNewItem(name, type, price);
 			error.setError(false);
 		} catch (Exception e) {
 			error.setError(true);

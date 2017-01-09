@@ -34,11 +34,12 @@ import pizzaShop.model.actor.Address;
 import pizzaShop.model.actor.Customer;
 import pizzaShop.model.actor.Deliverer;
 import pizzaShop.model.actor.StaffMember;
-import pizzaShop.model.catalog_item.Cutlery;
-import pizzaShop.model.catalog_item.Ingredient;
-import pizzaShop.model.catalog_item.Item;
-import pizzaShop.model.catalog_item.ItemType;
-import pizzaShop.model.catalog_item.Pizza;
+import pizzaShop.model.catalog.Cutlery;
+import pizzaShop.model.catalog.Ingredient;
+import pizzaShop.model.catalog.Item;
+import pizzaShop.model.catalog.ItemType;
+import pizzaShop.model.catalog.Pizza;
+import pizzaShop.model.catalog.CatalogHelper;
 import pizzaShop.model.store.CustomerRepository;
 import pizzaShop.model.store.ErrorClass;
 import pizzaShop.model.store.ItemCatalog;
@@ -59,12 +60,13 @@ public class StoreController {
 	private final CustomerRepository customerRepository;
 	private final PizzaOrderRepository pizzaOrderRepository;
 	private final StaffMemberRepository staffMemberRepository;
+	private final CatalogHelper catalogHelper;
 	private final Store store;
 	private ErrorClass error;
 	
 	
 	@Autowired 
-	public StoreController(ItemCatalog itemCatalog, TanManagement tanManagement, CustomerRepository customerRepository, PizzaOrderRepository pOR, Store store, StaffMemberRepository staffMemberRepository) {
+	public StoreController(CatalogHelper catalogHelper,ItemCatalog itemCatalog, TanManagement tanManagement, CustomerRepository customerRepository, PizzaOrderRepository pOR, Store store, StaffMemberRepository staffMemberRepository) {
 
 		this.itemCatalog = itemCatalog;
 		this.tanManagement = tanManagement;
@@ -72,6 +74,7 @@ public class StoreController {
 		this.pizzaOrderRepository = pOR;
 		this.staffMemberRepository = staffMemberRepository;
 		this.store = store;
+		this.catalogHelper = catalogHelper;
 		error = new ErrorClass(false);
 	}
 
@@ -101,7 +104,7 @@ public class StoreController {
 		model.addAttribute("items", itemCatalog.findByType(ItemType.INGREDIENT));
 		model.addAttribute("error", error);
 		if (itemID != null) {
-			Pizza pizza = (Pizza) (store.findItemByIdentifier(itemID, null));
+			Pizza pizza = (Pizza) (catalogHelper.findItemByIdentifier(itemID, null));
 
 			if (pizza == null) {
 				return "redirect:pizza_configurator";
@@ -150,7 +153,7 @@ public class StoreController {
 		
 		for (int i = 0; i < ids.length; i++) {
 
-			Item foundItem = store.findItemByIdentifier(ids[i], ItemType.INGREDIENT);
+			Item foundItem = catalogHelper.findItemByIdentifier(ids[i], ItemType.INGREDIENT);
 
 			if (foundItem != null) {
 				MonetaryAmount itemPrice = foundItem.getPrice();
@@ -169,7 +172,7 @@ public class StoreController {
 		
 		System.out.println(admin_flag + " " + pizzaID);
 		if ( (admin_flag != null && !admin_flag.equals("") ) &&  admin_flag.equals("true") && (pizzaID != null && !pizzaID.equals("") ) ){			
-			Pizza pizza = (Pizza)(store.findItemByIdentifier(pizzaID, null));
+			Pizza pizza = (Pizza)(catalogHelper.findItemByIdentifier(pizzaID, null));
 			itemCatalog.delete(pizza);
 		}
 		
