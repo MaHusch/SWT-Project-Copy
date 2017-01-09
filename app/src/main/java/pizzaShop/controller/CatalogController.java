@@ -92,19 +92,8 @@ public class CatalogController {
 			System.out.println("item nicht gefunden");
 			return "redirect:catalog";
 		}
-
-		itemCatalog.delete(id);
-		if (item.getType().equals(ItemType.INGREDIENT)) {
-			Pizza p1;
-			for (Item x : itemCatalog.findByType(ItemType.PIZZA)) {
-				p1 = (Pizza) x;
-				if (p1.getIngredients().contains(item.getName())) {
-					p1.getIngredients().remove(item.getName());
-					itemCatalog.save(p1);
-				}
-			}
-
-		}
+		
+		this.catalogHelper.removeItem(item);
 
 		return "redirect:catalog";
 	}

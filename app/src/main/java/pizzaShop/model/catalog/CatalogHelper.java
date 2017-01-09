@@ -102,17 +102,20 @@ public class CatalogHelper {
 			throw new IllegalArgumentException("Preis darf nicht negativ sein");
 
 		ItemType newType = CatalogHelper.StringtoItemtype(type);
-		List<String> ingredients = new ArrayList();
+		List<String> ingredients = new ArrayList<String>();
 
 		if (editedItem.getType().equals(newType)) {
 			if (editedItem.getType().equals(ItemType.PIZZA))
 				ingredients.addAll(((Pizza) editedItem).getIngredients());
 
-			itemCatalog.delete(editedItem); // altes Element rauslöschen
+			Ingredient oldItem = new Ingredient(editedItem.getName(), editedItem.getPrice());
+
 			editedItem.setName(name);
+			editedItem.setPrice(Money.of(price, EURO));
 
 			// add ingredients to new Pizza
 			if (!ingredients.isEmpty()) {
+
 				for (String ing_name : ingredients) {
 					Item i = null;
 					Iterator<Item> it = itemCatalog.findByName(ing_name).iterator();
@@ -123,31 +126,49 @@ public class CatalogHelper {
 
 				}
 			}
-			
-			editedItem.setPrice(Money.of(price, EURO));
+
+			// add new ingredient price to pizza containing ingredient
+			if (newType.equals(ItemType.INGREDIENT)) {
+				for (Item i : itemCatalog.findByType(ItemType.PIZZA)) {
+					Pizza p = (Pizza) i;
+					if (p.getIngredients().contains(oldItem.getName())) {
+						itemCatalog.delete(p);
+						System.out.println("test");
+						p.removeIngredient(oldItem);
+						p.addIngredient((Ingredient) editedItem);
+						itemCatalog.save(p);
+					}
+				}
+
+			}
+
 			itemCatalog.save(editedItem);
 
-		} else {
+		}
+
+		else {
 			System.out.println("anderer Itemtyp --> neues Item");
 			this.removeItem(editedItem);
 			this.createNewItem(name, type, price);
 		}
 
 	}
-	
+
 	/**
-	 * removes {@link Item} from catalog (if {@link Ingredient} --> remove from pizza too)
-	 * @param i {@link Item} to be deleted
+	 * removes {@link Item} from catalog (if {@link Ingredient} --> remove from
+	 * pizza too)
+	 * 
+	 * @param i
+	 *            {@link Item} to be deleted
 	 */
-	public void removeItem(Item i)
-	{
+	public void removeItem(Item i) {
 		itemCatalog.delete(i.getId());
 		if (i.getType().equals(ItemType.INGREDIENT)) {
 			Pizza p1;
 			for (Item x : itemCatalog.findByType(ItemType.PIZZA)) {
 				p1 = (Pizza) x;
 				if (p1.getIngredients().contains(i.getName())) {
-					p1.getIngredients().remove(i.getName());
+					p1.removeIngredient((Ingredient) i);
 					itemCatalog.save(p1);
 				}
 			}
