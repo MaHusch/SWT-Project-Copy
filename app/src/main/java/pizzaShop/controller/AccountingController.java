@@ -2,6 +2,7 @@ package pizzaShop.controller;
 
 import static org.salespointframework.core.Currencies.EURO;
 
+import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.TextStyle;
@@ -38,8 +39,8 @@ public class AccountingController {
 	private final AccountingMethods accountingMethods;
 	private final BusinessTime businessTime;
 	private final Store store;
-	private int offsetM = 0;
-	private int offsetY = 0;
+	private int offsetW = 0;
+	private int currentW = 0;
 
 	@Autowired
 	public AccountingController(Store store,Accountancy accountancy, AccountingMethods accountingMethods, BusinessTime businessTime) {
@@ -51,29 +52,40 @@ public class AccountingController {
 
 	@RequestMapping("/finances")
 	public String finances(Model model) {
-		LocalDateTime displayTime = businessTime.getTime().plusMonths(offsetM);
-		displayTime = displayTime.minusDays(displayTime.getDayOfMonth()-1);
-		Interval i = Interval.from(displayTime.minusDays(1)).to(displayTime.plusMonths(1));
+		LocalDateTime frstMon = businessTime.getTime();
+		frstMon = frstMon.minusDays(frstMon.getDayOfYear()-1);
+		while(true){
+			if(frstMon.getDayOfWeek().equals(DayOfWeek.MONDAY))
+				break;
+			frstMon = frstMon.plusDays(1);
+		}
+		
+		LocalDateTime displayTime = businessTime.getTime().plusWeeks(offsetW);
+		displayTime = displayTime.minusDays(displayTime.getDayOfWeek().getValue()-1);
+		currentW = ((displayTime.getDayOfYear()-frstMon.getDayOfYear()+1) / 7)+1;
+		Interval i = Interval.from(displayTime.minusDays(1)).to(displayTime.minusDays(1).plusWeeks(1));
 		model.addAttribute("entries", accountancy.findAll());
 		model.addAttribute("currentDisplay", accountancy.find(i));	
-		model.addAttribute("displayTime", displayTime.getMonth().getDisplayName(TextStyle.FULL, Locale.GERMAN)+" "+displayTime.getYear());
+		model.addAttribute("displayInterval", i);//displayTime.getMonth().getDisplayName(TextStyle.FULL, Locale.GERMAN)+" "+displayTime.getYear());
+		model.addAttribute("currentWeek", currentW);
 		model.addAttribute("currentTime", businessTime.getTime());
 		model.addAttribute("totalGain", accountingMethods.total());
-		model.addAttribute("monthlyGain", accountingMethods.monthlyTotal(i)); 
+		model.addAttribute("weeklyGain", accountingMethods.intervalTotal(i)); 
 		store.checkCutleries();
+		
 		return "finances";
 	}
 	
-	@RequestMapping(value = "/decreaseMonth", method = RequestMethod.POST)
-	public String decreaseMonth() {
-		offsetM -= 1;
+	@RequestMapping(value = "/decreaseWeek", method = RequestMethod.POST)
+	public String decreaseWeek() {
+		offsetW -= 1;
 		return "redirect:finances";
 	}
 	
 	
-	@RequestMapping(value = "/increaseMonth", method = RequestMethod.POST)
-	public String increaseMonth() {
-		offsetM += 1;
+	@RequestMapping(value = "/increaseWeek", method = RequestMethod.POST)
+	public String increaseWeek() {
+		offsetW += 1;
 		return "redirect:finances";
 	}
 	

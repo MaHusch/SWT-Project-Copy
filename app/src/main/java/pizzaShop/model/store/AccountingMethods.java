@@ -31,7 +31,7 @@ public class AccountingMethods {
 		return total;
 	}
 	
-	public MonetaryAmount monthlyTotal(Interval i){
+	public MonetaryAmount intervalTotal(Interval i){
 		MonetaryAmount total = Money.of(0, "EUR");
 		
 		for (AccountancyEntry a : accountancy.find(i))
