@@ -155,16 +155,18 @@ public class Pizza extends Item {
 	 */
 	public String toString() {
 		String result = super.toString();
-		java.util.Iterator<String> i = ingredients.iterator();
+		List<String> i = ingredients;
 
-		if (i.hasNext()) {
-			result += "(" + i.next();
+		if (i.size() > 0) { 
+			result += "( " + i.get(0);
 
-			for (; i.hasNext();) {
-				result += "," + i.next();
+			for (int n = 1; n < i.size(); n++) {
+				result += "," + i.get(n);
+				if((i.size() > n+1) && ((n+1) % 3 == 0))
+					result += System.getProperty("line.separator");
 			}
 
-			result += ")";
+			result += " )";
 		}
 
 		return result;
