@@ -133,6 +133,7 @@ public class Pizza extends Item {
 	 * @return returns the first order as a String
 	 */
 	public String getFirstOrder() {
+		if(orderQueue.isEmpty()) System.out.println(this.getName() + " hat keine Bestellung");
 		return orderQueue.get(0);
 	}
 
