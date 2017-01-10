@@ -149,7 +149,7 @@ public class StoreController {
 			error.setError(false);
 		
 		
-		newPizza = new Pizza("custom", Money.of(2, "EUR"));
+		newPizza = new Pizza("custom", Money.of(0, "EUR"));
 		
 		for (int i = 0; i < ids.length; i++) {
 
