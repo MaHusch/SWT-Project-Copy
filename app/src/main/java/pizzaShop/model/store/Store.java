@@ -6,25 +6,36 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.money.MonetaryAmount;
+
 import org.javamoney.moneta.Money;
 import org.salespointframework.accountancy.Accountancy;
 import org.salespointframework.accountancy.AccountancyEntry;
 import org.salespointframework.accountancy.ProductPaymentEntry;
+import org.salespointframework.order.Cart;
 import org.salespointframework.order.OrderLine;
+import org.salespointframework.quantity.Quantity;
 import org.salespointframework.time.BusinessTime;
 import org.salespointframework.useraccount.Role;
 import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import pizzaShop.model.actor.Customer;
 import pizzaShop.model.actor.StaffMember;
+import pizzaShop.model.catalog.CatalogHelper;
 import pizzaShop.model.catalog.Cutlery;
 import pizzaShop.model.catalog.Ingredient;
 import pizzaShop.model.catalog.Item;
 import pizzaShop.model.catalog.ItemCatalog;
 import pizzaShop.model.catalog.ItemType;
 import pizzaShop.model.catalog.Pizza;
+import pizzaShop.model.tan_management.Tan;
+import pizzaShop.model.tan_management.TanManagement;
+import pizzaShop.model.tan_management.TanStatus;
 
 @Component
 public class Store {
@@ -36,18 +47,22 @@ public class Store {
 	private final CustomerRepository customerRepository;
 	private final Accountancy accountancy;
 	private final BusinessTime businessTime;
-
+	private final CatalogHelper catalogHelper;
+	private final TanManagement tanManagement;
 	private List<StaffMember> staffMemberList; // why List and Repository for
 												// StaffMember?
 	private ArrayList<Oven> ovenList;
 	private Pizza nextPizza;
-
+	
+	private ErrorClass error;
+	
 	private Pizzaqueue pizzaQueue = Pizzaqueue.getInstance();
 
 	@Autowired
 	public Store(UserAccountManager employeeAccountManager, ItemCatalog itemCatalog,
 			PizzaOrderRepository pizzaOrderRepo, StaffMemberRepository staffMemberRepository,
-			CustomerRepository customerRepository, Accountancy accountancy, BusinessTime businessTime) {
+			CustomerRepository customerRepository, Accountancy accountancy, BusinessTime businessTime,
+			CatalogHelper catalogHelper,TanManagement tanManagement) {
 
 		this.employeeAccountManager = employeeAccountManager;
 		this.itemCatalog = itemCatalog;
@@ -58,7 +73,10 @@ public class Store {
 		this.ovenList = new ArrayList<Oven>();
 		this.accountancy = accountancy;
 		this.businessTime = businessTime;
-
+		this.catalogHelper = catalogHelper;
+		this.tanManagement = tanManagement;
+		error = new ErrorClass(false);
+		
 		ovenList.add(new Oven(this));
 		ovenList.add(new Oven(this));
 		ovenList.add(new Oven(this));
@@ -162,6 +180,83 @@ public class Store {
 			}
 		}
 	}
+	
+	// deletes customer based on and ID, and cancles all his orders.
+	public void deleteCustomer(Model model, long id){
+		
+		Tan foundTan = tanManagement.getTan(customerRepository.findOne(id).getPerson().getTelephoneNumber());
+		
+		if(!foundTan.getStatus().equals(TanStatus.NOT_FOUND))
+		{
+			tanManagement.invalidateTan(foundTan) ;
+		}
+		
+		Iterable<PizzaOrder> allPizzaOrders = this.pizzaOrderRepo.findAll();
+		
+		for(PizzaOrder pizzaOrder : allPizzaOrders)
+		{
+			
+			Customer customer = pizzaOrder.getCustomer();
+			
+			if(customer != null)
+			{
+				if(customer.getId() == id)
+				{
+					pizzaOrder.setCustomer(null);
+					pizzaOrder.cancelOrder();
+				}		
+			}
+			
+		}
+
+		customerRepository.delete(id);
+	}
+	
+	// updates staff member information in the repositiory
+	public void updateStaffMember(String surname,String forename, String telephonenumber,String local,
+								  String postcode,String street,String housenumber,long id)
+	{
+		
+		Customer oldCustomer = customerRepository.findOne(id);
+		Cutlery oldCutlery = oldCustomer.getCutlery();
+		
+		String oldTelephoneNumber = oldCustomer.getPerson().getTelephoneNumber();
+		
+		if(!oldTelephoneNumber.equals(telephonenumber))
+		{	
+			tanManagement.updateTelephoneNumber(oldTelephoneNumber, telephonenumber);
+		}
+			
+		Customer updatedCustomer = new Customer(surname,forename, telephonenumber, local, postcode, street, housenumber);
+		
+		if(oldCutlery != null)
+		{
+			updatedCustomer.setCutlery(oldCutlery);
+		}
+		
+		
+		Iterable<PizzaOrder> allPizzaOrders = this.pizzaOrderRepo.findAll();
+		
+		for(PizzaOrder pizzaOrder : allPizzaOrders)
+		{
+			
+			Customer customer = pizzaOrder.getCustomer();
+			
+			if(customer != null)
+			{
+				if(customer.getId() == id)
+				{
+					pizzaOrder.setCustomer(updatedCustomer);
+				}		
+			}
+		
+		}
+		
+		
+		customerRepository.save(updatedCustomer);
+		
+		customerRepository.delete(id);
+	}
 
 	public void completeOrder(PizzaOrder p, String msg) {
 		p.completeOrder();
@@ -256,7 +351,63 @@ public class Store {
 
 		this.customerRepository.save(customer);
 	}
-
+	
+	public void configurePizza(Model model,String ids[],String pizzaName,String admin_flag,String pizzaID,Cart cart){
+		
+		Pizza newPizza;
+		
+		newPizza = new Pizza("custom", Money.of(0, "EUR"));
+		
+		for (int i = 0; i < ids.length; i++) {
+	
+			Item foundItem = catalogHelper.findItemByIdentifier(ids[i], ItemType.INGREDIENT);
+	
+			if (foundItem != null) {
+				MonetaryAmount itemPrice = foundItem.getPrice();
+				String itemName = foundItem.getName();
+	
+				Ingredient newIngredient = new Ingredient(itemName, itemPrice);
+				newPizza.addIngredient(newIngredient);
+				
+				if ( pizzaName.equals("") || (pizzaName == null) ) { 
+					newPizza.setName( "DIY Pizza" ); 
+				}else{ 
+					newPizza.setName( pizzaName );
+				}
+			}
+		}
+		
+		System.out.println(admin_flag + " " + pizzaID);
+		if ( (admin_flag != null && !admin_flag.equals("") ) &&  admin_flag.equals("true") && (pizzaID != null && !pizzaID.equals("") ) ){			
+			Pizza pizza = (Pizza)(catalogHelper.findItemByIdentifier(pizzaID, null));
+			itemCatalog.delete(pizza);
+		}
+		
+		boolean exist = false;
+		Item existingPizza = null;
+		for(Item i : itemCatalog.findByType(ItemType.PIZZA))
+		{
+			
+			if(i.toString().equals(newPizza.toString()))
+			{
+				exist = true;
+				existingPizza = i;
+			}
+		}
+		
+		
+		if(!exist) {
+			Pizza savedPizza = itemCatalog.save(newPizza);
+			cart.addOrUpdateItem(savedPizza, Quantity.of(1));				
+		}
+		else
+		{	
+			model.addAttribute("existingPizza",existingPizza.getName());
+			if(existingPizza != null) 
+				cart.addOrUpdateItem(existingPizza, Quantity.of(1));
+		}
+}
+	
 	public void checkCutleries() {
 		for (Customer c : this.customerRepository.findAll()) {
 			if (c.getCutlery() != null && c.getCutlery().getDate().isBefore(businessTime.getTime())) {

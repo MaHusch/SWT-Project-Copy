@@ -140,65 +140,14 @@ public class StoreController {
 	public String addIngredientsToPizza(Model model,@RequestParam("id_transmit") String ids[],@RequestParam("pizza_name") String pizzaName,
 										@RequestParam(value = "admin_flag", required = false) String admin_flag,@RequestParam(value = "pid", required = false) String pizzaID,@ModelAttribute Cart cart) {
 		System.out.println("Custom pizza name " + pizzaName );
-		Pizza newPizza;
-
+		
 		if (ids == null || ids.length == 0) {
 			error.setError(true);
 			return "redirect:pizza_configurator";
 		} else
 			error.setError(false);
 		
-		
-		newPizza = new Pizza("custom", Money.of(0, "EUR"));
-		
-		for (int i = 0; i < ids.length; i++) {
-
-			Item foundItem = catalogHelper.findItemByIdentifier(ids[i], ItemType.INGREDIENT);
-
-			if (foundItem != null) {
-				MonetaryAmount itemPrice = foundItem.getPrice();
-				String itemName = foundItem.getName();
-
-				Ingredient newIngredient = new Ingredient(itemName, itemPrice);
-				newPizza.addIngredient(newIngredient);
-				
-				if ( pizzaName.equals("") || (pizzaName == null) ) { 
-					newPizza.setName( "custom" ); 
-				}else{ 
-					newPizza.setName( pizzaName );
-				}
-			}
-		}
-		
-		System.out.println(admin_flag + " " + pizzaID);
-		if ( (admin_flag != null && !admin_flag.equals("") ) &&  admin_flag.equals("true") && (pizzaID != null && !pizzaID.equals("") ) ){			
-			Pizza pizza = (Pizza)(catalogHelper.findItemByIdentifier(pizzaID, null));
-			itemCatalog.delete(pizza);
-		}
-		
-		boolean exist = false;
-		Item existingPizza = null;
-		for(Item i : itemCatalog.findByType(ItemType.PIZZA))
-		{
-			
-			if(i.toString().equals(newPizza.toString()))
-			{
-				exist = true;
-				existingPizza = i;
-			}
-		}
-		
-		
-		if(!exist) {
-			Pizza savedPizza = itemCatalog.save(newPizza);
-			cart.addOrUpdateItem(savedPizza, Quantity.of(1));				
-		}
-		else
-		{	
-			model.addAttribute("existingPizza",existingPizza.getName());
-			if(existingPizza != null) 
-				cart.addOrUpdateItem(existingPizza, Quantity.of(1));
-		}
+		store.configurePizza(model, ids, pizzaName, admin_flag, pizzaID, cart);
 		
 		return "redirect:catalog";
 	}
@@ -251,32 +200,7 @@ public class StoreController {
 	public String deleteCustomer(Model model,@RequestParam("cid") long id) {
 		model.addAttribute("error",error);
 		
-		Tan foundTan = tanManagement.getTan(customerRepository.findOne(id).getPerson().getTelephoneNumber());
-		
-		if(!foundTan.getStatus().equals(TanStatus.NOT_FOUND))
-		{
-			tanManagement.invalidateTan(foundTan) ;
-		}
-		
-		Iterable<PizzaOrder> allPizzaOrders = pizzaOrderRepository.findAll();
-		
-		for(PizzaOrder pizzaOrder : allPizzaOrders)
-		{
-			
-			Customer customer = pizzaOrder.getCustomer();
-			
-			if(customer != null)
-			{
-				if(customer.getId() == id)
-				{
-					pizzaOrder.setCustomer(null);
-					pizzaOrder.cancelOrder();
-				}		
-			}
-			
-		}
-
-		customerRepository.delete(id);
+		store.deleteCustomer(model, id);
 		
 		return "redirect:customer_display";
 
@@ -289,45 +213,7 @@ public class StoreController {
 			@RequestParam("housenumber") String housenumber, @RequestParam("cid") long id)
 	{
 		
-		Customer oldCustomer = customerRepository.findOne(id);
-		Cutlery oldCutlery = oldCustomer.getCutlery();
-		
-		String oldTelephoneNumber = oldCustomer.getPerson().getTelephoneNumber();
-		
-		if(!oldTelephoneNumber.equals(telephonenumber))
-		{	
-			tanManagement.updateTelephoneNumber(oldTelephoneNumber, telephonenumber);
-		}
-			
-		Customer updatedCustomer = new Customer(surname,forename, telephonenumber, local, postcode, street, housenumber);
-		
-		if(oldCutlery != null)
-		{
-			updatedCustomer.setCutlery(oldCutlery);
-		}
-		
-		
-		Iterable<PizzaOrder> allPizzaOrders = pizzaOrderRepository.findAll();
-		
-		for(PizzaOrder pizzaOrder : allPizzaOrders)
-		{
-			
-			Customer customer = pizzaOrder.getCustomer();
-			
-			if(customer != null)
-			{
-				if(customer.getId() == id)
-				{
-					pizzaOrder.setCustomer(updatedCustomer);
-				}		
-			}
-		
-		}
-		
-		
-		customerRepository.save(updatedCustomer);
-		
-		customerRepository.delete(id);
+		store.updateStaffMember(surname, forename, telephonenumber, local, postcode, street, housenumber, id);
 		
 		return "redirect:customer_display";
 	}
