@@ -215,6 +215,8 @@ public class CatalogController {
 		case "Getränke":
 			for (Item i : itemCatalog.findByType(ItemType.DRINK))
 				filteredItems.add(i);
+			for (Item i : itemCatalog.findByType(ItemType.FREEDRINK))
+				filteredItems.add(i);
 			
 			break;
 		case "Essen":
@@ -222,6 +224,9 @@ public class CatalogController {
 				filteredItems.add(i);
 			for (Item i : itemCatalog.findByType(ItemType.SALAD))
 				filteredItems.add(i);
+			for (Item i : itemCatalog.findByType(ItemType.INGREDIENT))
+				filteredItems.add(i);
+			
 			
 			break;
 		default: // alles ist default
