@@ -135,7 +135,7 @@ public class CartController {
 		PizzaOrder p = pizzaOrderRepository.findOne(id);
 		if(p.getOrderStatus().equals(PizzaOrderStatus.READY)){
 			error.setError(false);
-			store.completeOrder(pizzaOrderRepository.findOne(id), "mitgenommen");
+			store.completeOrder(pizzaOrderRepository.findOne(id), "mitgenommen", null); //picked up order, no deliverer needed
 		}else{
 			error.setError(true);
 		}

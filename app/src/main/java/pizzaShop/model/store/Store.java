@@ -53,16 +53,16 @@ public class Store {
 												// StaffMember?
 	private ArrayList<Oven> ovenList;
 	private Pizza nextPizza;
-	
+
 	private ErrorClass error;
-	
+
 	private Pizzaqueue pizzaQueue = Pizzaqueue.getInstance();
 
 	@Autowired
 	public Store(UserAccountManager employeeAccountManager, ItemCatalog itemCatalog,
 			PizzaOrderRepository pizzaOrderRepo, StaffMemberRepository staffMemberRepository,
 			CustomerRepository customerRepository, Accountancy accountancy, BusinessTime businessTime,
-			CatalogHelper catalogHelper,TanManagement tanManagement) {
+			CatalogHelper catalogHelper, TanManagement tanManagement) {
 
 		this.employeeAccountManager = employeeAccountManager;
 		this.itemCatalog = itemCatalog;
@@ -76,7 +76,7 @@ public class Store {
 		this.catalogHelper = catalogHelper;
 		this.tanManagement = tanManagement;
 		error = new ErrorClass(false);
-		
+
 		ovenList.add(new Oven(this));
 		ovenList.add(new Oven(this));
 		ovenList.add(new Oven(this));
@@ -171,62 +171,65 @@ public class Store {
 				if (order.getId().toString().equals(pizza.getOrderId().toString())) {
 					order.markAsBaked();
 					System.out.println("updatePizzaOrder im if statement");
-					/*try {
-						pizza.removeFirstOrder();
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						System.out.println("Fehler bei updatePizzaOrder");
-					}*/
+					/*
+					 * try { pizza.removeFirstOrder(); } catch (Exception e) {
+					 * // TODO Auto-generated catch block
+					 * System.out.println("Fehler bei updatePizzaOrder"); }
+					 */
 					pizzaOrderRepo.save(order);
 					return;
 				}
 			}
 		}
 	}
-	
+
 	// deletes customer based on and ID, and cancles all his orders.
-	public void deleteCustomer(Model model, long id){
-		
+	public void deleteCustomer(Model model, long id) {
+
 		Tan foundTan = tanManagement.getTan(customerRepository.findOne(id).getPerson().getTelephoneNumber());
-		
-		if(!foundTan.getStatus().equals(TanStatus.NOT_FOUND))
-		{
-			tanManagement.invalidateTan(foundTan) ;
+
+		if (!foundTan.getStatus().equals(TanStatus.NOT_FOUND)) {
+			tanManagement.invalidateTan(foundTan);
 		}
-		
+
 		Iterable<PizzaOrder> allPizzaOrders = this.pizzaOrderRepo.findAll();
-		
-		for(PizzaOrder pizzaOrder : allPizzaOrders)
-		{
-			
+
+		for (PizzaOrder pizzaOrder : allPizzaOrders) {
+
 			Customer customer = pizzaOrder.getCustomer();
-			
-			if(customer != null)
-			{
-				if(customer.getId() == id)
-				{
+
+			if (customer != null) {
+				if (customer.getId() == id) {
 					pizzaOrder.setCustomer(null);
 					pizzaOrder.cancelOrder();
-				}		
+				}
 			}
-			
+
 		}
 
 		customerRepository.delete(id);
 	}
 
-	public void completeOrder(PizzaOrder p, String msg) {
+	public void completeOrder(PizzaOrder p, String msg, Deliverer del) {
 		p.completeOrder();
 		pizzaOrderRepo.save(p);
-		/*
-		 * Probleme mit dem totalPrice, deshalb erstmal ein Workaround
-		 * ProductPaymentEntry a = ProductPaymentEntry.of(p.getOrder(),
-		 * "Order über Account " + p.getOrder().getUserAccount().getUsername() +
-		 * " "+msg);
-		 */
-		AccountancyEntry a = new AccountancyEntry(p.getTotalPrice(),
-				"Order über Account " + p.getOrder().getUserAccount().getUsername() + " " + msg);
-		accountancy.add(a);
+		if (del == null) {
+			AccountancyEntry a = new AccountancyEntry(p.getTotalPrice(),
+					"Order über Account " + p.getOrder().getUserAccount().getUsername() + " " + msg);
+			accountancy.add(a);
+
+		} else {
+
+			/*
+			 * Probleme mit dem totalPrice, deshalb erstmal ein Workaround
+			 * ProductPaymentEntry a = ProductPaymentEntry.of(p.getOrder(),
+			 * "Order über Account " +
+			 * p.getOrder().getUserAccount().getUsername() + " "+msg);
+			 */
+			AccountancyEntry a = new AccountancyEntry(p.getTotalPrice(),
+					"Order über Account " + del.getUsername() + " " + msg);
+			accountancy.add(a);
+		}
 	}
 
 	public void getNextPizza() throws Exception {
@@ -243,7 +246,8 @@ public class Store {
 		for (int i = 0; i < ovenList.size(); i++) {
 			if (ovenList.get(i).getId() == oven.getId() && ovenList.get(i).isEmpty()) {
 				ovenList.get(i).fill(nextPizza, businessTime);
-				System.out.println("Pizza in Ofen Nummer: " + ovenList.get(i).getId() + " Pizza: " +ovenList.get(i).getPizza());
+				System.out.println(
+						"Pizza in Ofen Nummer: " + ovenList.get(i).getId() + " Pizza: " + ovenList.get(i).getPizza());
 
 				return true;
 			}
@@ -308,63 +312,60 @@ public class Store {
 
 		this.customerRepository.save(customer);
 	}
-	
-	public void configurePizza(Model model,String ids[],String pizzaName,String admin_flag,String pizzaID,Cart cart){
-		
+
+	public void configurePizza(Model model, String ids[], String pizzaName, String admin_flag, String pizzaID,
+			Cart cart) {
+
 		Pizza newPizza;
-		
+
 		newPizza = new Pizza("custom", Money.of(0, "EUR"));
-		
+
 		for (int i = 0; i < ids.length; i++) {
-	
+
 			Item foundItem = catalogHelper.findItemByIdentifier(ids[i], ItemType.INGREDIENT);
-	
+
 			if (foundItem != null) {
 				MonetaryAmount itemPrice = foundItem.getPrice();
 				String itemName = foundItem.getName();
-	
+
 				Ingredient newIngredient = new Ingredient(itemName, itemPrice);
 				newPizza.addIngredient(newIngredient);
-				
-				if ( pizzaName.equals("") || (pizzaName == null) ) { 
-					newPizza.setName( "DIY Pizza" ); 
-				}else{ 
-					newPizza.setName( pizzaName );
+
+				if (pizzaName.equals("") || (pizzaName == null)) {
+					newPizza.setName("DIY Pizza");
+				} else {
+					newPizza.setName(pizzaName);
 				}
 			}
 		}
-		
+
 		System.out.println(admin_flag + " " + pizzaID);
-		if ( (admin_flag != null && !admin_flag.equals("") ) &&  admin_flag.equals("true") && (pizzaID != null && !pizzaID.equals("") ) ){			
-			Pizza pizza = (Pizza)(catalogHelper.findItemByIdentifier(pizzaID, null));
+		if ((admin_flag != null && !admin_flag.equals("")) && admin_flag.equals("true")
+				&& (pizzaID != null && !pizzaID.equals(""))) {
+			Pizza pizza = (Pizza) (catalogHelper.findItemByIdentifier(pizzaID, null));
 			itemCatalog.delete(pizza);
 		}
-		
+
 		boolean exist = false;
 		Item existingPizza = null;
-		for(Item i : itemCatalog.findByType(ItemType.PIZZA))
-		{
-			
-			if(i.toString().equals(newPizza.toString()))
-			{
+		for (Item i : itemCatalog.findByType(ItemType.PIZZA)) {
+
+			if (i.toString().equals(newPizza.toString())) {
 				exist = true;
 				existingPizza = i;
 			}
 		}
-		
-		
-		if(!exist) {
+
+		if (!exist) {
 			Pizza savedPizza = itemCatalog.save(newPizza);
-			cart.addOrUpdateItem(savedPizza, Quantity.of(1));				
-		}
-		else
-		{	
-			model.addAttribute("existingPizza",existingPizza.getName());
-			if(existingPizza != null) 
+			cart.addOrUpdateItem(savedPizza, Quantity.of(1));
+		} else {
+			model.addAttribute("existingPizza", existingPizza.getName());
+			if (existingPizza != null)
 				cart.addOrUpdateItem(existingPizza, Quantity.of(1));
 		}
-}
-	
+	}
+
 	public void checkCutleries() {
 		for (Customer c : this.customerRepository.findAll()) {
 			if (c.getCutlery() != null && c.getCutlery().getDate().isBefore(businessTime.getTime())) {

@@ -91,7 +91,6 @@ public class DelivererController {
 	{
 		username = principal.getName();
 		System.out.println(username);
-		// startpage for deliverer as extra template ?!
 		currentDeliverer = (Deliverer) store.getStaffMemberByName(username);
 
 		currentDeliverer.checkIn();
@@ -113,7 +112,7 @@ public class DelivererController {
 										
 					tanManagement.confirmTan(foundTan);
 					
-					store.completeOrder(p, "ausgeliefert");
+					store.completeOrder(p, "ausgeliefert", currentDeliverer);
 					
 				}
 			}

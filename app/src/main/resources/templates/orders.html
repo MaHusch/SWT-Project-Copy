@@ -127,16 +127,17 @@
 							<tr>
 								<td sec:authorize="hasRole('ROLE_ADMIN')"
 									th:text="${order.getId() }">arg</td>
-									<td sec:authorize="isAuthenticated()"
+								<td sec:authorize="isAuthenticated()"
 									th:text="${order.toString()}">arg</td>
-									<td th:text="${order.getTotalPrice()}">arg</td>
+								<td th:text="${order.getTotalPrice()}">arg</td>
 								<td th:text="${order.getOrderStatus() }">arg</td>
 								<td th:text="${order.getUnbakedPizzas() }">arg</td>
 								<td sec:authorize="hasRole('ROLE_SELLER')"
 									th:if="${order.getPickUp()}">
 									<form method="post" action="/confirmCollection">
 										<input type="hidden" value="0" name="orderID"
-											th:value="${order.getId()}" /> <input type="submit"
+											th:value="${order.getId()}" /> <input
+											class="btn btn-primary" type="submit"
 											value="Abholung bestätigen" />
 									</form>
 								</td>
@@ -171,6 +172,7 @@
 					<thead>
 						<tr>
 							<th>ID</th>
+							<th>Inhalt</th>
 							<th>Preis</th>
 							<th>Status</th>
 							<th>Unbaked</th>
@@ -181,9 +183,10 @@
 						<div th:each="order : ${completedOrders}">
 							<tr>
 								<td th:text="${order.getId() }">arg</td>
+								<td th:text="${order.toString()}">arg</td>
 								<td th:text="${{order.getTotalPrice()}}">arg</td>
-								
-								
+
+
 								<td th:text="${order.getOrderStatus() }">arg</td>
 								<td th:text="${order.getUnbakedPizzas() }">arg</td>
 							</tr>
@@ -198,7 +201,7 @@
 		<div sec:authorize="hasRole('ROLE_SELLER')" class="panel panel-danger">
 			<div class="panel-heading">Fehler!</div>
 			<div class="panel-body">
-			<p th:text="${error.getMessage()}">Fehler!</p>
+				<p th:text="${error.getMessage()}">Fehler!</p>
 			</div>
 		</div>
 	</div>
