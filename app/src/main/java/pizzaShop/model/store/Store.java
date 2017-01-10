@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import pizzaShop.model.actor.Customer;
+import pizzaShop.model.actor.Deliverer;
 import pizzaShop.model.actor.StaffMember;
 import pizzaShop.model.catalog.CatalogHelper;
 import pizzaShop.model.catalog.Cutlery;
