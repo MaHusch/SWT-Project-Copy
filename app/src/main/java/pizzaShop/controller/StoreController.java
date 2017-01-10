@@ -316,5 +316,39 @@ public class StoreController {
 	public String login() {
 		return "login";
 	}
+	
+	@RequestMapping("/newsletter") 
+	public String newsletter() {
+		
+		return "newsletter";
+
+	}
+	
+	@RequestMapping("addEmail") 
+	public String addEmail(@RequestParam("email") String eMailAddress) {
+		
+		store.addEmailToMailingList(eMailAddress);
+		
+		return "newsletter";
+
+	}
+	
+	@RequestMapping("removeEmail") 
+	public String removeEmail(@RequestParam("email") String eMailAddress) {
+		
+		store.removeEmailFromMailingList(eMailAddress);
+		
+		return "newsletter";
+
+	}
+	
+	@RequestMapping("sendNewsletter") 
+	public String sendNewsletter(@RequestParam("newsletter_text") String newsletterText) {
+		
+		store.sendNewsletter(newsletterText);
+		
+		return "newsletter";
+
+	}
 
 }

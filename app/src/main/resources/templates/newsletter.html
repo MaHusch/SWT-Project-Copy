@@ -1,36 +1,13 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
-
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css"
 	th:href="@{/resources/css/style.css}" />
 <title>Welcome</title>
-
-
-<script type="text/javascript">
-	//<![CDATA[
-
-	// checks if there are already values in the configuration list in case a preconfiguration as been selected
-
-	function checkExistingStaffMember() {
-		var value = document.getElementById('existingStaffMember').getAttribute('value');
-		// if an item is already present, change the form so it calls the function to overwrite,update and save the item's information
-		if (value == "true") {
-			var form = document.getElementById("registerForm");
-			form.action = "/updateStaffMember";
-		}
-
-	}
-
-	//]]>
-</script>
-
-
 </head>
-
-<body onLoad="checkExistingStaffMember();">
+<body>
 	<!-- Navbar -->
 	<header>
 		<nav class="navbar navbar-default">
@@ -100,72 +77,25 @@
 			<!-- /.container-fluid -->
 		</nav>
 	</header>
+
+
+	<form>
+		<input type="email" id="email" name="email"></input> 
+			<br></br>
+		<input type="submit" value="Hinzufuegen" formaction="addEmail"></input>
+		<input type="submit" value="Entfernen" formaction="removeEmail"></input>
+	</form>
 	
+	<br></br>
 	
-	<div th:if="${staffMember}" value = "true" id="existingStaffMember"></div>
-	
-	<!-- panel for customer_registration -->
-	<div sec:authorize="hasRole('ROLE_ADMIN')" class="container col-md-6">
-		<div class="panel panel-primary">
-			<div class="panel-heading">Neuen Mitarbeiter registrieren</div>
-			<div class="panel-body">
-				<p>Felder mit (*) müssen befüllt werden!</p>
-				<form th:action="registerEmployee" method="post" id = "registerForm">
-					<table>
-						<tr>
-							<td><label for="surname">Name*</label>:</td>
-							<td th:if = "${staffMember}"><input type="text" id="surname" name="surname" th:value="${staffMember.getPerson().getSurname()}"/></td>
-							<td th:if = "${staffMember} == null"><input type="text" id="surname" name="surname"/></td>
-						</tr>
-						<tr>
-							<td><label for="forename">Vorname*</label>:</td>
-							<td th:if = "${staffMember}"><input type="text" id="forename" name="forename" th:value="${staffMember.getPerson().getForename()}"/></td>
-							<td th:if = "${staffMember} == null"><input type="text" id="forename" name="forename" /></td>
-						</tr>
-						<tr>
-							<td><label for="telnumber">Tel*</label>:</td>
-							<td th:if = "${staffMember}"><input type="text" id="telnumber" name="telnumber" th:value="${staffMember.getPerson().getTelephoneNumber()}"/></td>
-							<td th:if = "${staffMember} == null"><input type="text" id="telnumber" name="telnumber" /></td>
-						</tr>
-						<tr th:if = "${staffMember} == null">
-							<td><label for="username">Benutzername*</label>:</td>
-							<td th:if = "${staffMember} == null"><input type="text" id="username" name="username" /></td>
-						</tr>
-						<tr>
-							<td><label for="password">Passwort*</label>:</td>
-							<td th:if = "${staffMember}"><input type="password" id="password" name="password" th:value="${staffMember.getPassword()}"/></td>
-							<td th:if = "${staffMember} == null"><input type="password" id="password" name="password" /></td>
-						</tr>
-						<tr th:if = "${staffMember == null}" >
-							<td><label for="role">Rolle*</label>:</td>
-							<td><select name="role" id="role" size="1">
-									<option selected="selected">Verkäufer</option>
-									<option>Bäcker</option>
-									<option>Lieferant</option>
-							</select></td>
-						</tr>
-						<tr>
-							<td>
-							<input th:if = "${staffMember}" type="hidden" id="username" name="username" th:value="${staffMember.getUsername()}"/>
-							<input th:if = "${staffMember == null}" class="btn btn-primary" type="submit" value="Registrieren" />
-							<input th:if = "${staffMember}" class="btn btn-primary" type="submit" value="Bestätigen" /></td>
-						</tr>
-					</table>
-				</form>
-			</div>
-		</div>
+	<div sec:authorize="hasRole('ROLE_ADMIN')">
+		<form action="sendNewsletter">
+		<textarea rows="10" cols="100" id="newsletter_text" name="newsletter_text"></textarea>
+			<br></br>
+		<input type="submit" value="Newsletter verschicken"></input>
+	</form>
 	</div>
-
-	<div th:if="${error.getError() == true}" class="container col-md-4">
-		<div class="panel panel-danger">
-			<div class="panel-heading">Fehler!</div>
-			<div class="panel-body">
-				<p>Felder mit (*) dürfen nicht leer sein!</p>
-			</div>
-		</div>
-	</div>
-
-
+	
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<!-- Latest compiled and minified JavaScript -->

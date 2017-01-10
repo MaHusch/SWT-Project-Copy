@@ -19,10 +19,12 @@ import org.salespointframework.order.Cart;
 import org.salespointframework.order.OrderIdentifier;
 import org.salespointframework.order.OrderLine;
 import org.salespointframework.quantity.Quantity;
+import org.salespointframework.support.ConsoleWritingMailSender;
 import org.salespointframework.time.BusinessTime;
 import org.salespointframework.useraccount.Role;
 import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
@@ -57,6 +59,10 @@ public class Store {
 												// StaffMember?
 	private ArrayList<Oven> ovenList;
 	private Pizza nextPizza;
+	
+	private ArrayList<String> eMailList;
+	
+	private ConsoleWritingMailSender mailSender;
 
 	private ErrorClass error;
 
@@ -80,6 +86,8 @@ public class Store {
 		this.businessTime = businessTime;
 		this.catalogHelper = catalogHelper;
 		this.tanManagement = tanManagement;
+		this.eMailList = new ArrayList<String>();
+		this.mailSender = new ConsoleWritingMailSender();
 		error = new ErrorClass(false);
 		this.addressRepository = addressRepository;
 
@@ -89,6 +97,41 @@ public class Store {
 
 	}
 	
+	public ArrayList<String> getEMailList(){
+		return this.eMailList;
+	}
+	
+	public boolean addEmailToMailingList(String eMailAddress){
+		
+		if(!this.eMailList.contains(eMailAddress))
+		{
+			return this.eMailList.add(eMailAddress);
+		}
+		
+		return false;
+
+	}
+	
+	public boolean removeEmailFromMailingList(String eMailAddress){
+		return this.eMailList.remove(eMailAddress);
+	}
+	
+	public void sendNewsletter(String newsletterText){
+		
+		for(String eMailAddress : this.eMailList){
+			
+			SimpleMailMessage simpleMessage = new SimpleMailMessage();
+			
+			simpleMessage.setTo(eMailAddress);
+			simpleMessage.setSubject("Papa_Pizza_Newsletter");
+			simpleMessage.setText(newsletterText);
+			
+			this.mailSender.send(simpleMessage);
+		}
+
+	}
+	
+
 	public Pizzaqueue getPizzaQueue() {
 
 		return pizzaQueue;
