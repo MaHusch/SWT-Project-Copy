@@ -81,7 +81,7 @@ public class StoreController {
 	@RequestMapping("/sBaker")
 	public String sBaker() // direct to baker dashboard(after login)
 	{
-		return "ovens";
+		return "redirect:ovens";
 	}
 
 	@RequestMapping("/sAdmin")
