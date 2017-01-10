@@ -7,7 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import pizzaShop.model.actor.Address;
 import pizzaShop.model.actor.Customer;
+import pizzaShop.model.actor.Person;
+import pizzaShop.model.store.AddressRepository;
 import pizzaShop.model.store.CustomerRepository;
 import pizzaShop.model.store.ErrorClass;
 import pizzaShop.model.tan_management.TanManagement;
@@ -17,12 +20,14 @@ public class SellerController {
 
 	private final TanManagement tanManagement;
 	private final CustomerRepository customerRepository;
+	private final AddressRepository addressRepository;
 	private ErrorClass error;
 
 	@Autowired
-	public SellerController(TanManagement tanManagement, CustomerRepository customerRepository) {
+	public SellerController(TanManagement tanManagement, CustomerRepository customerRepository, AddressRepository addressRepository) {
 		this.tanManagement = tanManagement;
 		this.customerRepository = customerRepository;
+		this.addressRepository = addressRepository;
 		error = new ErrorClass(false);
 	}
 
@@ -55,8 +60,30 @@ public class SellerController {
 			return "register_customer";
 		} else {
 			error.setError(false);
-			customerRepository
-					.save(new Customer(surname, forename, telephonenumber, local, postcode, street, housenumber));
+				
+			Address newAddress = new Address(local, postcode, street, housenumber);
+			
+			boolean addressAlreadyExists = false;
+			
+			for(Address address : this.addressRepository.findAll())
+			{
+				if(address.equals(newAddress)){
+					newAddress = address;
+					addressAlreadyExists = true;
+					break;
+				}
+			}
+			
+			if(!addressAlreadyExists)
+			{
+				newAddress = this.addressRepository.save(newAddress);
+			}
+		
+			Person editedPerson = new Person(surname,forename, telephonenumber, newAddress);
+			
+			Customer editedCustomer= new Customer(editedPerson);
+			
+			customerRepository.save(editedCustomer);
 			tanManagement.generateNewTan(telephonenumber);
 			return "redirect:customer_display";
 		}

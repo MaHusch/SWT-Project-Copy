@@ -1,12 +1,18 @@
 package pizzaShop.model.actor;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 import pizzaShop.model.catalog.Cutlery;
+import pizzaShop.model.store.AddressRepository;
+
 
 /**
  * CustomerClass for representing a Customer of the PizzaShop
@@ -27,13 +33,15 @@ public class Customer {
 	@OneToOne(cascade = CascadeType.ALL)
 	private Person myPerson = null;
 
+	private ArrayList<Long> deliveryAddressesIDs = new ArrayList<Long>();
+	private ArrayList<String> deliveryAddressesStrings = new ArrayList<String>();
+
 	private @Id @GeneratedValue long customerID;
 
 	/**
 	 * unused constructor for Spring
 	 */
 	public Customer() {
-
 	}
 
 	/**
@@ -48,10 +56,13 @@ public class Customer {
 	 * @param housenumber
 	 */
 
-	public Customer(String surname, String forename, String telephoneNumber, String local, String postcode,
-			String street, String housenumber) {
-		this.myPerson = new Person(surname, forename, telephoneNumber,
-				new Address(local, postcode, street, housenumber));
+	
+	public Customer(Person person) {
+
+		this.myPerson = person;
+
+		this.deliveryAddressesIDs.add(this.myPerson.getAddress().getID());
+		this.deliveryAddressesStrings.add(this.myPerson.getAddress().toString());
 
 	}
 
@@ -86,5 +97,30 @@ public class Customer {
 	public Person getPerson() {
 		return this.myPerson;
 	}
-
+	
+	public ArrayList<Long> getDeliveryAddressesIDs() {
+		return this.deliveryAddressesIDs;
+	}
+	
+	public ArrayList<String> getDeliveryAddressesStrings() {
+		return this.deliveryAddressesStrings;
+	}
+	
+	public boolean addDeliveryAddress(Address newAddress) {
+		this.deliveryAddressesStrings.add(newAddress.toString());
+		return this.deliveryAddressesIDs.add(newAddress.getID());
+	}
+	
+	/*public String getDeliveryAddressesString() {
+		String completeString = "";
+		
+		Iterator<String> addresseIterator = this.deliveryAddressesStrings.iterator();
+		
+		while(addresseIterator.hasNext())
+		{
+				completeString += addresseIterator.next() + " / " +System.getProperty("line.separator");
+		}
+		
+		return completeString;
+	}*/
 }

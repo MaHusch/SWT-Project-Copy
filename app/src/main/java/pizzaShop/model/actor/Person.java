@@ -118,7 +118,7 @@ public class Person {
 	 * @return address
 	 */
 	public Address getAddress() {
-		return address;
+		return this.address;
 	}
 
 	/**

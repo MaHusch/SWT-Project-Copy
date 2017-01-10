@@ -94,6 +94,7 @@
 						<td>Nachname</td>
 						<td>Telefonnummer</td>
 						<td>Addresse</td>
+						<td>Lieferaddressen</td>
 						<td>Ablaufdatum der Essgarnitur</td>
 
 					</tr>
@@ -103,6 +104,14 @@
 							<td th:text="${customer.getPerson().getSurname()}">Nachname</td>
 							<td th:text="${customer.getPerson().getTelephoneNumber()}">Telefonnummer</td>
 							<td th:text="${customer.getPerson().getAddress().toString()}">Addresse</td>
+							<td> 
+								<div class="panel-body">
+									<select id="delivery_adresse" name="delivery_adresse" size="1">
+										<option th:each="address : ${customer.getDeliveryAddressesStrings()}"
+											th:text="${address}" id="0"
+											>Addresse</option>
+									</select>
+								</div></td>
 							<td>
 								<div th:switch="${customer.getCutlery() == null}">
 									<p th:case="${true}" th:text="---">keine Essgarnitur</p>

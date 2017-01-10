@@ -34,6 +34,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pizzaShop.model.actor.Address;
 import pizzaShop.model.actor.Customer;
 import pizzaShop.model.actor.Deliverer;
+import pizzaShop.model.actor.Person;
 import pizzaShop.model.actor.StaffMember;
 import pizzaShop.model.catalog.Cutlery;
 import pizzaShop.model.catalog.Ingredient;
@@ -42,6 +43,7 @@ import pizzaShop.model.catalog.ItemCatalog;
 import pizzaShop.model.catalog.ItemType;
 import pizzaShop.model.catalog.Pizza;
 import pizzaShop.model.catalog.CatalogHelper;
+import pizzaShop.model.store.AddressRepository;
 import pizzaShop.model.store.CustomerRepository;
 import pizzaShop.model.store.ErrorClass;
 import pizzaShop.model.store.PizzaOrder;
@@ -62,19 +64,23 @@ public class StoreController {
 	private final PizzaOrderRepository pizzaOrderRepository;
 	private final StaffMemberRepository staffMemberRepository;
 	private final CatalogHelper catalogHelper;
+	private final AddressRepository addressRepository;
+
 	private final Store store;
 	private ErrorClass error;
 
-	@Autowired
-	public StoreController(CatalogHelper catalogHelper, ItemCatalog itemCatalog, TanManagement tanManagement,
-			CustomerRepository customerRepository, PizzaOrderRepository pOR, Store store,
-			StaffMemberRepository staffMemberRepository) {
+	@Autowired 
+	public StoreController(CatalogHelper catalogHelper,ItemCatalog itemCatalog, TanManagement tanManagement, 
+			CustomerRepository customerRepository, PizzaOrderRepository pOR, Store store, 
+			StaffMemberRepository staffMemberRepository, AddressRepository addressRepo) {
+
 
 		this.itemCatalog = itemCatalog;
 		this.tanManagement = tanManagement;
 		this.customerRepository = customerRepository;
 		this.pizzaOrderRepository = pOR;
 		this.staffMemberRepository = staffMemberRepository;
+		this.addressRepository = addressRepo;
 		this.store = store;
 		this.catalogHelper = catalogHelper;
 		error = new ErrorClass(false);
@@ -244,11 +250,31 @@ public class StoreController {
 		if (!oldTelephoneNumber.equals(telephonenumber)) {
 			tanManagement.updateTelephoneNumber(oldTelephoneNumber, telephonenumber);
 		}
-
-		Customer updatedCustomer = new Customer(surname, forename, telephonenumber, local, postcode, street,
-				housenumber);
-
-		if (oldCutlery != null) {
+		
+		Address newAddress = new Address(local, postcode, street, housenumber);
+		
+		boolean addressAlreadyExists = false;
+		
+		for(Address address : this.addressRepository.findAll())
+		{
+			if(address.equals(newAddress)){
+				newAddress = address;
+				addressAlreadyExists = true;
+				break;
+			}
+		}
+		
+		if(!addressAlreadyExists)
+		{
+			newAddress = this.addressRepository.save(newAddress);
+		}
+	
+		Person updatedPerson = new Person(surname,forename, telephonenumber, newAddress);
+			
+		Customer updatedCustomer = new Customer(updatedPerson);
+		
+		if(oldCutlery != null)
+		{
 			updatedCustomer.setCutlery(oldCutlery);
 		}
 

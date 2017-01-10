@@ -16,10 +16,12 @@ import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import pizzaShop.model.actor.Address;
 import pizzaShop.model.actor.Admin;
 import pizzaShop.model.actor.Baker;
 import pizzaShop.model.actor.Customer;
 import pizzaShop.model.actor.Deliverer;
+import pizzaShop.model.actor.Person;
 import pizzaShop.model.actor.Seller;
 import pizzaShop.model.catalog.Cutlery;
 import pizzaShop.model.catalog.Ingredient;
@@ -195,13 +197,21 @@ public class ApplicationDataInitializer implements DataInitializer {
 	 */
 	public void initializeCustomers() 
 	{	
-		Customer cu1 = new Customer("Jürgens", "Dieter", "12345", "Dresden", "01324", "Müllerstraße", "5b");
-		Customer cu2 = new Customer("Skywalker","Luke","23456","Dresden","01218","Sackgasse","42a");
+		Address a1 = new Address( "Dresden", "01324", "Müllerstraße", "5b");
+		Person p1 = new Person("Jürgens", "Dieter", "12345", a1);
+		Customer cu1 = new Customer(p1);
+		Address a2 = new Address( "Dresden","01218","Sackgasse","42a");
+		Person p2 = new Person("Skywalker","Luke","23456", a1);
+		Customer cu2 = new Customer(p2);
+		cu2.addDeliveryAddress(new Address("Dresden","01218","Sumpfgasse","43a"));
+		cu2.addDeliveryAddress(new Address("Dresden","01218","Sumpfgasse","43b"));
+		cu2.addDeliveryAddress(new Address("Dresden","01218","Sumpfgasse","43c"));	
 		tanManagement.confirmTan(tanManagement.generateNewTan(cu1.getPerson().getTelephoneNumber()));
 		tanManagement.confirmTan(tanManagement.generateNewTan(cu2.getPerson().getTelephoneNumber()));
 		cu2.setCutlery(new Cutlery(Money.of(15.0,EURO),businessTime.getTime()));
 		customerRepository.save(cu1);
 		customerRepository.save(cu2);
 		System.out.println(tanManagement.getTan(customerRepository.save(cu1).getPerson().getTelephoneNumber()).getTanNumber());
+		
 	}
 }

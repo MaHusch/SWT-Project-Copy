@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import pizzaShop.model.actor.Customer;
+import pizzaShop.model.actor.Deliverer;
 import pizzaShop.model.actor.StaffMember;
 import pizzaShop.model.catalog.CatalogHelper;
 import pizzaShop.model.catalog.Cutlery;
@@ -44,6 +45,7 @@ public class Store {
 	private final ItemCatalog itemCatalog;
 	private final PizzaOrderRepository pizzaOrderRepo;
 	private final StaffMemberRepository staffMemberRepository;
+	private final AddressRepository addressRepository;
 	private final CustomerRepository customerRepository;
 	private final Accountancy accountancy;
 	private final BusinessTime businessTime;
@@ -62,7 +64,7 @@ public class Store {
 	public Store(UserAccountManager employeeAccountManager, ItemCatalog itemCatalog,
 			PizzaOrderRepository pizzaOrderRepo, StaffMemberRepository staffMemberRepository,
 			CustomerRepository customerRepository, Accountancy accountancy, BusinessTime businessTime,
-			CatalogHelper catalogHelper, TanManagement tanManagement) {
+			CatalogHelper catalogHelper, TanManagement tanManagement, AddressRepository addressRepository) {
 
 		this.employeeAccountManager = employeeAccountManager;
 		this.itemCatalog = itemCatalog;
@@ -76,6 +78,7 @@ public class Store {
 		this.catalogHelper = catalogHelper;
 		this.tanManagement = tanManagement;
 		error = new ErrorClass(false);
+		this.addressRepository = addressRepository;
 
 		ovenList.add(new Oven(this));
 		ovenList.add(new Oven(this));
