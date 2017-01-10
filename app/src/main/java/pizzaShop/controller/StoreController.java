@@ -4,6 +4,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -63,10 +64,11 @@ public class StoreController {
 	private final CatalogHelper catalogHelper;
 	private final Store store;
 	private ErrorClass error;
-	
-	
-	@Autowired 
-	public StoreController(CatalogHelper catalogHelper,ItemCatalog itemCatalog, TanManagement tanManagement, CustomerRepository customerRepository, PizzaOrderRepository pOR, Store store, StaffMemberRepository staffMemberRepository) {
+
+	@Autowired
+	public StoreController(CatalogHelper catalogHelper, ItemCatalog itemCatalog, TanManagement tanManagement,
+			CustomerRepository customerRepository, PizzaOrderRepository pOR, Store store,
+			StaffMemberRepository staffMemberRepository) {
 
 		this.itemCatalog = itemCatalog;
 		this.tanManagement = tanManagement;
@@ -123,8 +125,8 @@ public class StoreController {
 					}
 				}
 				model.addAttribute("ingredients", ingredients);
-				model.addAttribute("pizzaName",pizza.getName());
-				model.addAttribute("pid",itemID);
+				model.addAttribute("pizzaName", pizza.getName());
+				model.addAttribute("pid", itemID);
 			}
 		}
 		return "pizza_configurator";
@@ -137,9 +139,11 @@ public class StoreController {
 	}
 
 	@RequestMapping(value = "/finishPizza", method = RequestMethod.POST)
-	public String addIngredientsToPizza(Model model,@RequestParam("id_transmit") String ids[],@RequestParam("pizza_name") String pizzaName,
-										@RequestParam(value = "admin_flag", required = false) String admin_flag,@RequestParam(value = "pid", required = false) String pizzaID,@ModelAttribute Cart cart) {
-		System.out.println("Custom pizza name " + pizzaName );
+	public String addIngredientsToPizza(Model model, @RequestParam("id_transmit") String ids[],
+			@RequestParam("pizza_name") String pizzaName,
+			@RequestParam(value = "admin_flag", required = false) String admin_flag,
+			@RequestParam(value = "pid", required = false) String pizzaID, @ModelAttribute Cart cart) {
+		System.out.println("Custom pizza name " + pizzaName);
 		Pizza newPizza;
 
 		if (ids == null || ids.length == 0) {
@@ -147,10 +151,9 @@ public class StoreController {
 			return "redirect:pizza_configurator";
 		} else
 			error.setError(false);
-		
-		
+
 		newPizza = new Pizza("custom", Money.of(0, "EUR"));
-		
+
 		for (int i = 0; i < ids.length; i++) {
 
 			Item foundItem = catalogHelper.findItemByIdentifier(ids[i], ItemType.INGREDIENT);
@@ -161,45 +164,41 @@ public class StoreController {
 
 				Ingredient newIngredient = new Ingredient(itemName, itemPrice);
 				newPizza.addIngredient(newIngredient);
-				
-				if ( pizzaName.equals("") || (pizzaName == null) ) { 
-					newPizza.setName( "custom" ); 
-				}else{ 
-					newPizza.setName( pizzaName );
+
+				if (pizzaName.equals("") || (pizzaName == null)) {
+					newPizza.setName("custom");
+				} else {
+					newPizza.setName(pizzaName);
 				}
 			}
 		}
-		
+
 		System.out.println(admin_flag + " " + pizzaID);
-		if ( (admin_flag != null && !admin_flag.equals("") ) &&  admin_flag.equals("true") && (pizzaID != null && !pizzaID.equals("") ) ){			
-			Pizza pizza = (Pizza)(catalogHelper.findItemByIdentifier(pizzaID, null));
+		if ((admin_flag != null && !admin_flag.equals("")) && admin_flag.equals("true")
+				&& (pizzaID != null && !pizzaID.equals(""))) {
+			Pizza pizza = (Pizza) (catalogHelper.findItemByIdentifier(pizzaID, null));
 			itemCatalog.delete(pizza);
 		}
-		
+
 		boolean exist = false;
 		Item existingPizza = null;
-		for(Item i : itemCatalog.findByType(ItemType.PIZZA))
-		{
-			
-			if(i.toString().equals(newPizza.toString()))
-			{
+		for (Item i : itemCatalog.findByType(ItemType.PIZZA)) {
+
+			if (i.toString().equals(newPizza.toString())) {
 				exist = true;
 				existingPizza = i;
 			}
 		}
-		
-		
-		if(!exist) {
+
+		if (!exist) {
 			Pizza savedPizza = itemCatalog.save(newPizza);
-			cart.addOrUpdateItem(savedPizza, Quantity.of(1));				
-		}
-		else
-		{	
-			model.addAttribute("existingPizza",existingPizza.getName());
-			if(existingPizza != null) 
+			cart.addOrUpdateItem(savedPizza, Quantity.of(1));
+		} else {
+			model.addAttribute("existingPizza", existingPizza.getName());
+			if (existingPizza != null)
 				cart.addOrUpdateItem(existingPizza, Quantity.of(1));
 		}
-		
+
 		return "redirect:catalog";
 	}
 
@@ -223,133 +222,137 @@ public class StoreController {
 
 	@RequestMapping("/customer_display")
 	public String customer_display(Model model) {
-		
+
 		store.checkCutleries();
 		model.addAttribute("customer", customerRepository.findAll());
-		
+
 		return "customer_display";
 	}
 
-	
-	@RequestMapping("/editEmployee") 
-	public String directToEditStaffMember(Model model,@RequestParam("StaffMemberName") String name,RedirectAttributes redirectAttrs) {
+	@RequestMapping("/editEmployee")
+	public String directToEditStaffMember(Model model, @RequestParam("StaffMemberName") String name,
+			RedirectAttributes redirectAttrs) {
 		redirectAttrs.addAttribute("name", name).addFlashAttribute("message", "StaffMember");
-		model.addAttribute("error",error);
+		model.addAttribute("error", error);
 		return "redirect:register_staffmember";
 
 	}
-	
-	@RequestMapping("/editCustomer") 
-	public String editCustomer(Model model,@RequestParam("cid") long id,RedirectAttributes redirectAttrs) {
+
+	@RequestMapping("/editCustomer")
+	public String editCustomer(Model model, @RequestParam("cid") long id, RedirectAttributes redirectAttrs) {
 		redirectAttrs.addAttribute("cid", id).addFlashAttribute("message", "Customer");
-		model.addAttribute("error",error);
+		model.addAttribute("error", error);
 		return "redirect:register_customer";
 
 	}
-	
-	@RequestMapping("/deleteCustomer") 
-	public String deleteCustomer(Model model,@RequestParam("cid") long id) {
-		model.addAttribute("error",error);
-		
+
+	@RequestMapping("/deleteCustomer")
+	public String deleteCustomer(Model model, @RequestParam("cid") long id) {
+		model.addAttribute("error", error);
+
 		Tan foundTan = tanManagement.getTan(customerRepository.findOne(id).getPerson().getTelephoneNumber());
-		
-		if(!foundTan.getStatus().equals(TanStatus.NOT_FOUND))
-		{
-			tanManagement.invalidateTan(foundTan) ;
+
+		if (!foundTan.getStatus().equals(TanStatus.NOT_FOUND)) {
+			tanManagement.invalidateTan(foundTan);
 		}
-		
+
 		Iterable<PizzaOrder> allPizzaOrders = pizzaOrderRepository.findAll();
-		
-		for(PizzaOrder pizzaOrder : allPizzaOrders)
-		{
-			
+
+		for (PizzaOrder pizzaOrder : allPizzaOrders) {
+
 			Customer customer = pizzaOrder.getCustomer();
-			
-			if(customer != null)
-			{
-				if(customer.getId() == id)
-				{
+
+			if (customer != null) {
+				if (customer.getId() == id) {
 					pizzaOrder.setCustomer(null);
 					pizzaOrder.cancelOrder();
-				}		
+				}
 			}
-			
+
 		}
 
 		customerRepository.delete(id);
-		
+
 		return "redirect:customer_display";
 
 	}
-	
+
 	@RequestMapping(value = "/updateCustomer")
-	public String updateStaffMember(@RequestParam("surname") String surname, @RequestParam("forename") String forename,
+	public String updateStaffMember(Model model, @RequestParam("surname") String surname, @RequestParam("forename") String forename,
 			@RequestParam("telnumber") String telephonenumber, @RequestParam("local") String local,
 			@RequestParam("postcode") String postcode, @RequestParam("street") String street,
-			@RequestParam("housenumber") String housenumber, @RequestParam("cid") long id)
-	{
-		
+			@RequestParam("housenumber") String housenumber, @RequestParam("cid") long id) {
+
 		Customer oldCustomer = customerRepository.findOne(id);
+		
+		if (surname == "" || forename == "" || telephonenumber == "" || local == "" || street == "" || housenumber == ""
+				|| postcode == "") {
+			error.setError(true);
+			error.setMessage("Eingabefelder überprüfen!");
+			model.addAttribute("error", error);
+			model.addAttribute("existingCustomer", oldCustomer);
+			model.addAttribute(housenumber);
+			model.addAttribute("street", street);
+			model.addAttribute(postcode);
+			model.addAttribute(local);
+			model.addAttribute(telephonenumber);
+			model.addAttribute(forename);
+			model.addAttribute(surname);
+			
+			return "register_customer";
+		}
+		
 		Cutlery oldCutlery = oldCustomer.getCutlery();
-		
+
 		String oldTelephoneNumber = oldCustomer.getPerson().getTelephoneNumber();
-		
-		if(!oldTelephoneNumber.equals(telephonenumber))
-		{	
+
+		if (!oldTelephoneNumber.equals(telephonenumber)) {
 			tanManagement.updateTelephoneNumber(oldTelephoneNumber, telephonenumber);
 		}
-			
-		Customer updatedCustomer = new Customer(surname,forename, telephonenumber, local, postcode, street, housenumber);
-		
-		if(oldCutlery != null)
-		{
+
+		Customer updatedCustomer = new Customer(surname, forename, telephonenumber, local, postcode, street,
+				housenumber);
+
+		if (oldCutlery != null) {
 			updatedCustomer.setCutlery(oldCutlery);
 		}
-		
-		
+
 		Iterable<PizzaOrder> allPizzaOrders = pizzaOrderRepository.findAll();
-		
-		for(PizzaOrder pizzaOrder : allPizzaOrders)
-		{
-			
+
+		for (PizzaOrder pizzaOrder : allPizzaOrders) {
 			Customer customer = pizzaOrder.getCustomer();
-			
-			if(customer != null)
-			{
-				if(customer.getId() == id)
-				{
+			if (customer != null) {
+				if (customer.getId() == id) {
 					pizzaOrder.setCustomer(updatedCustomer);
-				}		
+				}
 			}
-		
 		}
-		
-		
+
 		customerRepository.save(updatedCustomer);
-		
 		customerRepository.delete(id);
-		
+
 		return "redirect:customer_display";
 	}
-	
+
 	@RequestMapping("returnCutlery")
-	public String returnCutlery(@RequestParam("lost") String lostStr, @RequestParam("cid") long id)
-	{
-		String  cutleryStatus = "lost";
-		if(lostStr.equals("0")) cutleryStatus = "returned";
-	
+	public String returnCutlery(@RequestParam("lost") String lostStr, @RequestParam("cid") long id) {
+		String cutleryStatus = "lost";
+		if (lostStr.equals("0"))
+			cutleryStatus = "returned";
+
 		try {
-			store.returnCutlery(cutleryStatus,this.customerRepository.findOne(id));
+			store.returnCutlery(cutleryStatus, this.customerRepository.findOne(id));
 		} catch (Exception e) {
 			error.setError(true);
-			error.setMessage(e.getMessage());;
+			error.setMessage(e.getMessage());
+			;
 		}
-		
+
 		return "redirect:customer_display";
 	}
-	
+
 	@RequestMapping("/login")
-	public String login(){
+	public String login() {
 		return "login";
 	}
 
