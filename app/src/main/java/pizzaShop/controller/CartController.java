@@ -236,6 +236,13 @@ public class CartController {
 				onSiteStr.equals("0,1") | onSiteStr.equals("0"));
 		System.out.println("cutlery ist:" + cutleryStr);
 		if (customer.isPresent()) {
+			error.setError(false);
+			if(cart.isEmpty()){
+				error.setError(true);
+				error.setMessage("Warenkorb ist leer!");
+				return "redirect:cart";
+			}
+			
 			boolean onSite = false;
 			boolean cutlery = true;
 			System.out.println(onSiteStr + " onSite");
