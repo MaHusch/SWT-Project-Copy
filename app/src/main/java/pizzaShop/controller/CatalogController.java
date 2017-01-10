@@ -46,6 +46,8 @@ public class CatalogController {
 	private Iterable<Item> items;
 	private ArrayList<Item> filteredItems;
 	private final CatalogHelper catalogHelper;
+	private String filter = "Von A bis Z";
+	private String selection = "Alles";
 	/**
 	 * on creation spring searches the itemCatalog and allocates it to the local
 	 * variabel
@@ -68,7 +70,7 @@ public class CatalogController {
 	 */
 	@RequestMapping("/catalog")
 	public String showCatalog(Model model) {
-		return this.filterCatalog(model, "Alles", "von A bis Z");
+		return this.filterCatalog(model, selection, filter);
 	}
 
 	/**
@@ -207,7 +209,8 @@ public class CatalogController {
 		filteredItems = new ArrayList<Item>();
 		
 		System.out.println(filter + ' ' + selection);
-		
+		this.selection = selection;
+		this.filter = filter;
 		switch (selection) {
 		case "Getränke":
 			for (Item i : itemCatalog.findByType(ItemType.DRINK))
