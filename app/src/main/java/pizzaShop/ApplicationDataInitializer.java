@@ -144,7 +144,7 @@ public class ApplicationDataInitializer implements DataInitializer {
 		
 
 		Pizza pizza5 = new Pizza("Diablo", Money.of(0.0, EURO));
-		pizza4.addIngredient(Arrays.asList(base,cheese,mushroom,paprika,chili));
+		pizza5.addIngredient(Arrays.asList(base,cheese,mushroom,paprika,chili));
 		
 		
 		Item beer = new Item("Desperados", Money.of(1.60, EURO), ItemType.DRINK);
