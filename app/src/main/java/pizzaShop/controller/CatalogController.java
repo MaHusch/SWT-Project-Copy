@@ -65,15 +65,10 @@ public class CatalogController {
 	 * 
 	 * @param model
 	 *            for the html view
-	 * @return redirects to the catalog template
 	 */
 	@RequestMapping("/catalog")
 	public String showCatalog(Model model) {
-		items = itemCatalog.findAll();
-
-		model.addAttribute("items", items);
-		model.addAttribute("ItemType", ItemType.values());
-		return "catalog";
+		return this.filterCatalog(model, "Alles", "von A bis Z");
 	}
 
 	/**
