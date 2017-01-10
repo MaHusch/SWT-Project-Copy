@@ -35,22 +35,24 @@ public class SellerController {
 			Customer customer = customerRepository.findOne(id);		
 			model.addAttribute("existingCustomer", customer);
 		}
-		
+		error.setError(false);
 		model.addAttribute("error", error);
 		return "register_customer";
 	}
 
 	@RequestMapping(value = "/registerCustomer", method = RequestMethod.POST)
-	public String addCustomer(@RequestParam("surname") String surname, @RequestParam("forename") String forename,
+	public String addCustomer(Model model, @RequestParam("surname") String surname, @RequestParam("forename") String forename,
 			@RequestParam("telnumber") String telephonenumber, @RequestParam("local") String local,
 			@RequestParam("postcode") String postcode, @RequestParam("street") String street,
 			@RequestParam("housenumber") String housenumber) {
-
+		
+		System.out.println("PenisVagina deine Mamam");
 		if (surname == "" || forename == "" || telephonenumber == "" || local == "" || street == "" || housenumber == ""
 				|| postcode == "") {
 			error.setError(true);
 			error.setMessage("Eingabefelder überprüfen!");
-			return "redirect:register_customer";
+			model.addAttribute("error", error);
+			return "register_customer";
 		} else {
 			error.setError(false);
 			customerRepository

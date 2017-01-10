@@ -35,7 +35,7 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 				ovens[ovenID] = [ false, bakeTime ];
 			} else {
 				if (remainingTime > 0) {
-					alert(remainingTime);
+					//alert(remainingTime);
 					ovens[ovenID] = [ false, parseInt(remainingTime) ];
 					startTimer(ovenID);					
 				}else{

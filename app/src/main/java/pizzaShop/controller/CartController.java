@@ -253,7 +253,7 @@ public class CartController {
 			PizzaOrder pizzaOrder = new PizzaOrder(userAccount.get(), Cash.CASH,
 					tanManagement.generateNewTan(customer.get().getPerson().getTelephoneNumber()), onSite, customer.get());// tanManagement.getTan(customer.getTelephoneNumber()));
 			cart.addItemsTo(orderManager.save(pizzaOrder.getOrder()));
-			store.analyzeOrder(pizzaOrderRepository.save(pizzaOrder));
+			store.analyzeOrder(pizzaOrder);
 			cart.clear();
 			
 			//Bill bill = new Bill(customer.get(), pizzaOrder, businesstime.getTime());
