@@ -125,16 +125,24 @@ public class ApplicationDataInitializer implements DataInitializer {
 		Ingredient chicken_stripes = new Ingredient("Hähnchenstreifen",Money.of(1.50, EURO));
 		Ingredient spinach = new Ingredient("Spinat",Money.of(0.60, EURO));
 		Ingredient olive = new Ingredient("Oliven",Money.of(0.90, EURO));
+		Ingredient chili = new Ingredient("Chili",Money.of(0.70, EURO));
+		Ingredient base = new Ingredient("Teig",Money.of(2.00, EURO));
 		
-		Pizza custom = new Pizza("Basis",Money.of(2.00, EURO));
-		Pizza pizza1 = new Pizza("Barbecue", Money.of(2.00, EURO));
-		pizza1.addIngredient(Arrays.asList(bacon,onions,paprika,cheese));
+		Pizza pizza1 = new Pizza("Barbecue", Money.of(0.00, EURO));
+		pizza1.addIngredient(Arrays.asList(base,bacon,onions,paprika,cheese));
 	
-		Pizza pizza2 = new Pizza("BigApple", Money.of(2.00, EURO));
-		pizza2.addIngredient(Arrays.asList(chicken_stripes,spinach,cheese));
+		Pizza pizza2 = new Pizza("BigApple", Money.of(0.00, EURO));
+		pizza2.addIngredient(Arrays.asList(base,chicken_stripes,spinach,cheese));
 	
-		Pizza pizza3 = new Pizza("Mediteran", Money.of(2.00, EURO));
-		pizza3.addIngredient(Arrays.asList(chicken_stripes,olive,cheese));
+		Pizza pizza3 = new Pizza("Mediteran", Money.of(0.00, EURO));
+		pizza3.addIngredient(Arrays.asList(base,chicken_stripes,olive,cheese));
+		
+		Pizza pizza4 = new Pizza("Fungi", Money.of(0.0, EURO));
+		pizza4.addIngredient(Arrays.asList(base,cheese,mushroom,onions));
+		
+
+		Pizza pizza5 = new Pizza("Diablo", Money.of(0.0, EURO));
+		pizza4.addIngredient(Arrays.asList(base,cheese,mushroom,paprika,chili));
 		
 		
 		Item beer = new Item("Desperados", Money.of(1.60, EURO), ItemType.DRINK);
@@ -151,9 +159,10 @@ public class ApplicationDataInitializer implements DataInitializer {
 		
 		
 
-		itemCatalog.save(Arrays.asList(pizza1,pizza2,pizza3,spinach,wine,freewine,apple_spritzer,water,cola,
-						cheese, mushroom,chicken_stripes,bacon,paprika, 
-						beer, freebeer, salat1,salat2, pineapple, onions, custom, olive));
+		itemCatalog.save(Arrays.asList(pizza1,pizza2,pizza3,pizza4,pizza5,spinach,wine,
+										freewine,apple_spritzer,water,cola,
+										cheese, mushroom,chicken_stripes,bacon,paprika, 
+										beer, freebeer, salat1,salat2, pineapple, onions, base, olive));
 		
 		
 	}
