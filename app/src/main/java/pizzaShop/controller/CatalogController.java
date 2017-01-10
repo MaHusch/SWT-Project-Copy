@@ -108,7 +108,7 @@ public class CatalogController {
 	 * @return redirects to the catalog page
 	 */
 	@RequestMapping("/saveItem")
-	public String saveItem(@RequestParam("pid") ProductIdentifier id, @RequestParam("itemname") String name,
+	public String saveItem(Model model,@RequestParam("pid") ProductIdentifier id, @RequestParam("itemname") String name,
 			@RequestParam("itemprice") Number price, @RequestParam("itemtype") String type) {
 		Item i = itemCatalog.findOne(id).orElse(null);
 
@@ -118,7 +118,10 @@ public class CatalogController {
 		} catch (Exception e) {
 			error.setError(true);
 			error.setMessage(e.getMessage());
-			return "redirect:addItem";
+			model.addAttribute("error",error);
+			model.addAttribute("ItemTypes", ItemType.values());
+			model.addAttribute("item",i);
+			return "addItem";
 		}
 
 		return "redirect:catalog";
