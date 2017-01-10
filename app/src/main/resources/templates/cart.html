@@ -121,7 +121,7 @@
 				<div th:switch="${customer.isPresent()}">
 					<div th:case="true">
 						<p
-							th:text="'Kunde ist: '+${customer.get().getForename()}+' '+${customer.get().getSurname()}+' tel: '+${customer.get().getTelephoneNumber()}">User
+							th:text="'Kunde ist: '+${customer.get().getPerson().getForename()}+' '+${customer.get().getPerson().getSurname()}+' tel: '+${customer.get().getPerson().getTelephoneNumber()}">User
 							is present</p>
 						<form method="post" action="/logoutCustomer">
 							<input class="btn btn-primary" type="submit" value="Ausloggen" />

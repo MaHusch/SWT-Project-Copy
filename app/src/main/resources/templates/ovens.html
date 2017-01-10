@@ -26,17 +26,21 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 		for (var i = 0, row; row = table.rows[i]; i++) {
 
 			var ovenID = i + 1;
-			var element = document.getElementById(String(ovenID)
-					.concat("timer"));
+			var element = document.getElementById(String(ovenID).concat("timer"));
 			//if (element != null) { alert(element.id);}
 
 			var remainingTime = element.value;
-			if (remainingTime === "null" || remainingTime == 0
-					|| remainingTime === "0") {
+			if (remainingTime === "null" || remainingTime == null || remainingTime == 0 || remainingTime === "0" || remainingTime === "undefined") {
+				bakeTime = 0
 				ovens[ovenID] = [ false, bakeTime ];
 			} else {
-				ovens[ovenID] = [ false, parseInt(remainingTime) ];
-				startTimer(ovenID);
+				if (remainingTime > 0) {
+					alert(remainingTime);
+					ovens[ovenID] = [ false, parseInt(remainingTime) ];
+					startTimer(ovenID);					
+				}else{
+					element.value = 0;
+				}
 			}
 
 			//iterate through rows
@@ -59,11 +63,14 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 		//var ovenID = id.replace("timer", "");
 		setOvenTimer(ovenID, true);
 
-		if (clicked === false) {
+		if (clicked == false) {
 			clock = setInterval("timer()", 1000);
 			clicked = true;
-		} else if (clicked === true) {
+		} else if (clicked == true) {
+			clearInterval(clock);
+			clock = setInterval("timer()", 1000);
 		}
+		
 	}
 	function timer() {
 		for (var i = 1; i <= Object.keys(ovens).length; i++) {
@@ -74,8 +81,7 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 					break;
 				}
 				ovens[i][1] = seconds;
-				document.getElementById(i).innerHTML = "Timer: " + seconds
-						+ " sekunden";
+				document.getElementById(i).innerHTML = "Timer: " + seconds + " sekunden";
 			}
 
 		}
@@ -85,6 +91,7 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 		window.clearInterval(clock);
 		clock = setInterval("timer()", 1000);
 		//alert("I am here");
+		bakeTime = 0
 		ovens[id][1] = bakeTime;
 		ovens[id][0] = false;
 
@@ -196,7 +203,7 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 							<form method="post" action="/getNextPizza">
 								<input type="hidden" name="ovenID" value="0"
 									th:value="${oven.getId()}" /> <input class="btn btn-primary"
-									type="submit" value="Auswählen" onclick="startClock()" />
+									type="submit" value="Auswählen" />
 							</form></td>
 						<td sec:authorize="hasRole('ROLE_ADMIN')">
 							<form method="post" action="/deleteOven">
