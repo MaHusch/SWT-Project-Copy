@@ -140,7 +140,13 @@ public class AdminController {
 	@RequestMapping(value = "/deleteStaffMember")
 	public String updateStaffMember(Model model, @RequestParam("StaffMemberName") String username) {
 		StaffMember member = store.getStaffMemberByName(username);
-
+		if(member.getRole().toString().contains("ADMIN")) 
+		{	
+			error.setError(true);
+			error.setMessage("Willst du dich wirklich löschen?");
+			model.addAttribute("error",error);
+			return "redirect:staffmember_display"; 
+		}
 		Optional<UserAccount> userAccount = employeeAccountManager.findByUsername(username);
 
 		if (userAccount.isPresent()) {
