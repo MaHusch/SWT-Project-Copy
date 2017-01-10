@@ -146,7 +146,7 @@
 									<form method="post" action="/assignDeliverer">
 										<select name="delivererList" id="delivererList" size="1">
 											<option th:each=" deliverer : ${deliverers}"
-												th:text="${deliverer.getForename()}">eddy</option>
+												th:text="${deliverer.getPerson().getForename()}">eddy</option>
 										</select> <input type="hidden" value="0" id="delivererName"
 											name="delivererName" th:value="${deliverer}" /> <input
 											type="hidden" value="0" name="orderID"

@@ -118,9 +118,11 @@ public class Store {
 		for (OrderLine l : order.getOrder().getOrderLines()) {
 			Item temp = itemCatalog.findOne(l.getProductIdentifier()).get();
 			if (temp.getType().equals(ItemType.PIZZA)) {
+				Pizza p = (Pizza) temp;
 				for (int i = 0; i < l.getQuantity().getAmount().intValue(); i++) {
-					((Pizza) temp).addOrder(order.getId());
-					pizzaQueue.add(((Pizza) temp));
+					p.setOrderId(order.getId());
+					System.out.println("AnalyzeOrder PizzaOrderQueue: " + p.getOrderId());
+					pizzaQueue.add(p);
 					order.addAsUnbaked();
 				}
 
@@ -146,16 +148,17 @@ public class Store {
 			for (PizzaOrder order : pizzaOrders) {
 
 				System.out.println("Order ID: " + order.getId());
-				System.out.println("Pizza ID: " + pizza.getFirstOrder());
+				System.out.println("Pizza ID: " + pizza.getOrderId());
 
-				if (order.getId().toString().equals(pizza.getFirstOrder())) {
+				if (order.getId().toString().equals(pizza.getOrderId().toString())) {
 					order.markAsBaked();
-					try {
+					System.out.println("updatePizzaOrder im if statement");
+					/*try {
 						pizza.removeFirstOrder();
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						System.out.println("Fehler bei updatePizzaOrder");
-					}
+					}*/
 					pizzaOrderRepo.save(order);
 					return;
 				}
@@ -191,7 +194,7 @@ public class Store {
 		for (int i = 0; i < ovenList.size(); i++) {
 			if (ovenList.get(i).getId() == oven.getId() && ovenList.get(i).isEmpty()) {
 				ovenList.get(i).fill(nextPizza, businessTime);
-				System.out.println(ovenList.get(i).getPizza());
+				System.out.println("Pizza in Ofen Nummer: " + ovenList.get(i).getId() + " Pizza: " +ovenList.get(i).getPizza());
 
 				return true;
 			}

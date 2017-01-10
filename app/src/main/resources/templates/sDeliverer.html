@@ -127,8 +127,8 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 					<tr th:each="order : ${orders}">
 						<td th:text="${order.toString()}">inhalt</td>
 						<td
-							th:text="${order.getCustomer().getForename() +' ' + order.getCustomer().getSurname()}">customer</td>
-						<td th:text="${order.getCustomer().getAddress().toString()}">address
+							th:text="${order.getCustomer().getPerson().getForename() +' ' + order.getCustomer().getPerson().getSurname()}">customer</td>
+						<td th:text="${order.getCustomer().getPerson().getAddress().toString()}">address
 						</td>
 
 
