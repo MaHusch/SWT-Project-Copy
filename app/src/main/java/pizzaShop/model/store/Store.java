@@ -4,15 +4,19 @@ import static org.salespointframework.core.Currencies.EURO;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.money.MonetaryAmount;
 
 import org.javamoney.moneta.Money;
 import org.salespointframework.accountancy.Accountancy;
 import org.salespointframework.accountancy.AccountancyEntry;
-import org.salespointframework.accountancy.ProductPaymentEntry;
+import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.order.Cart;
+import org.salespointframework.order.OrderIdentifier;
 import org.salespointframework.order.OrderLine;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.time.BusinessTime;
@@ -21,8 +25,6 @@ import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import pizzaShop.model.actor.Customer;
 import pizzaShop.model.actor.Deliverer;
@@ -58,6 +60,7 @@ public class Store {
 	private ErrorClass error;
 
 	private Pizzaqueue pizzaQueue = Pizzaqueue.getInstance();
+	private Map<ProductIdentifier, ArrayList<String>> pizzaMap = new HashMap<ProductIdentifier, ArrayList<String>>();
 
 	@Autowired
 	public Store(UserAccountManager employeeAccountManager, ItemCatalog itemCatalog,
@@ -83,7 +86,7 @@ public class Store {
 		ovenList.add(new Oven(this));
 
 	}
-
+	
 	public Pizzaqueue getPizzaQueue() {
 
 		return pizzaQueue;
@@ -139,8 +142,8 @@ public class Store {
 			if (temp.getType().equals(ItemType.PIZZA)) {
 				Pizza p = (Pizza) temp;
 				for (int i = 0; i < l.getQuantity().getAmount().intValue(); i++) {
-					p.setOrderId(order.getId());
-					System.out.println("AnalyzeOrder PizzaOrderQueue: " + p.getOrderId());
+					addOrder(order.getId(), p);
+					System.out.println(getFirstOrder(p));
 					pizzaQueue.add(p);
 					order.addAsUnbaked();
 				}
@@ -167,21 +170,60 @@ public class Store {
 			for (PizzaOrder order : pizzaOrders) {
 
 				System.out.println("Order ID: " + order.getId());
-				System.out.println("Pizza ID: " + pizza.getOrderId());
+				System.out.println("Pizza ID: " + getFirstOrder(pizza));
 
-				if (order.getId().toString().equals(pizza.getOrderId().toString())) {
+				if (order.getId().toString().equals(getFirstOrder(pizza))) {
 					order.markAsBaked();
 					System.out.println("updatePizzaOrder im if statement");
-					/*
-					 * try { pizza.removeFirstOrder(); } catch (Exception e) {
-					 * // TODO Auto-generated catch block
-					 * System.out.println("Fehler bei updatePizzaOrder"); }
-					 */
+					
+					try { removeFirstOrder(pizza); } catch (Exception e) {
+						// TODO Auto-generated catch block
+						System.out.println("Fehler bei updatePizzaOrder"); 
+						}
+				
 					pizzaOrderRepo.save(order);
 					return;
 				}
 			}
 		}
+	}
+	
+	public void addOrder(OrderIdentifier o, Pizza p) {
+		if(!pizzaMap.containsKey(p.getId())){
+			ArrayList<String> tmp = new ArrayList<String>();
+			tmp.add(o.toString());
+			pizzaMap.put(p.getId(), tmp);
+		}else{
+			pizzaMap.get(p.getId()).add(o.toString());
+		}
+		
+
+	}
+
+	/**
+	 * 
+	 * @return returns the first order as a String
+	 */
+	public String getFirstOrder(Pizza p) {
+		if(pizzaMap.get(p.getId()).isEmpty()) System.out.println(p.getName() + " hat keine Bestellung");
+		return pizzaMap.get(p.getId()).get(0);
+	}
+
+	/**
+	 * removes order from the list
+	 * 
+	 * @return returns the name of the first order in the list
+	 * @throws Exception
+	 *             when there is no order in the list
+	 */
+	public String removeFirstOrder(Pizza p) throws Exception {
+		if (pizzaMap.get(p.getId()).isEmpty())
+			throw new NullPointerException("Die Pizza hat keine Orders zugewiesen");
+		return pizzaMap.get(p.getId()).remove(0);
+	}
+	
+	public void printQueue(Pizza p){
+		System.out.println(pizzaMap.get(p.getId()).toString());
 	}
 
 	// deletes customer based on and ID, and cancles all his orders.

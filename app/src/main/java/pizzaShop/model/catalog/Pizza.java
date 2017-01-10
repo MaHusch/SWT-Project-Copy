@@ -25,7 +25,6 @@ public class Pizza extends Item {
 	@ElementCollection
 	private List<String> ingredients;
 
-	private OrderIdentifier orderId;
 	private boolean isFinished;
 
 	@SuppressWarnings("unused")
@@ -122,32 +121,7 @@ public class Pizza extends Item {
 	 * @param o
 	 *            OrderIdentifier of a order which should contain the pizza
 	 */
-	/*public void addOrder(OrderIdentifier o) {
-		orderQueue.add(o.toString());
-
-	}*/
-
-	/**
-	 * 
-	 * @return returns the first order as a String
-	 */
-	/*public String getFirstOrder() {
-		if(orderQueue.isEmpty()) System.out.println(this.getName() + " hat keine Bestellung");
-		return orderQueue.get(0);
-	}*/
-
-	/**
-	 * removes order from the list
-	 * 
-	 * @return returns the name of the first order in the list
-	 * @throws Exception
-	 *             when there is no order in the list
-	 */
-	/*public String removeFirstOrder() throws Exception {
-		if (orderQueue.isEmpty())
-			throw new NullPointerException("Die Pizza hat keine Orders zugewiesen");
-		return orderQueue.remove(0);
-	}*/
+	
 
 	/**
 	 * @return returns the Pizza(ingriedientnames)
@@ -170,13 +144,5 @@ public class Pizza extends Item {
 		}
 
 		return result;
-	}
-
-	public OrderIdentifier getOrderId() {
-		return orderId;
-	}
-
-	public void setOrderId(OrderIdentifier orderId) {
-		this.orderId = orderId;
 	}
 }
