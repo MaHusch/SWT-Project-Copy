@@ -16,8 +16,8 @@ import org.springframework.ui.Model;
 
 import pizzaShop.AbstractWebIntegrationTests;
 import pizzaShop.controller.CatalogController;
-import pizzaShop.model.catalog.Item;
-import pizzaShop.model.catalog.ItemCatalog;
+import pizzaShop.model.DataBaseSystem.ItemCatalog;
+import pizzaShop.model.OrderSystem.Item;
 
 public class CatalogControllerWebIntegrationTests extends AbstractWebIntegrationTests {
 	@Autowired CatalogController controller;

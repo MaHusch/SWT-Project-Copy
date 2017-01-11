@@ -7,13 +7,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import pizzaShop.model.actor.Address;
-import pizzaShop.model.actor.Customer;
-import pizzaShop.model.actor.Person;
-import pizzaShop.model.store.AddressRepository;
-import pizzaShop.model.store.CustomerRepository;
-import pizzaShop.model.store.ErrorClass;
-import pizzaShop.model.tan_management.TanManagement;
+import pizzaShop.model.AccountSystem.Address;
+import pizzaShop.model.AccountSystem.Customer;
+import pizzaShop.model.AccountSystem.Person;
+import pizzaShop.model.DataBaseSystem.AddressRepository;
+import pizzaShop.model.DataBaseSystem.CustomerRepository;
+import pizzaShop.model.ManagementSystem.Tan_Management.TanManagement;
 
 @Controller
 public class SellerController {

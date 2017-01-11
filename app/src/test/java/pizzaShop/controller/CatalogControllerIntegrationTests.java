@@ -18,11 +18,9 @@ import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 
 import pizzaShop.AbstractIntegrationTests;
-import pizzaShop.model.catalog.Item;
-import pizzaShop.model.catalog.ItemCatalog;
-import pizzaShop.model.catalog.ItemType;
-import pizzaShop.model.catalog.NameComparator;
-import pizzaShop.model.store.ErrorClass;
+import pizzaShop.model.DataBaseSystem.ItemCatalog;
+import pizzaShop.model.OrderSystem.Item;
+import pizzaShop.model.OrderSystem.ItemType;
 
 public class CatalogControllerIntegrationTests extends AbstractIntegrationTests {
 

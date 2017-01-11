@@ -16,25 +16,25 @@ import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import pizzaShop.model.actor.Address;
-import pizzaShop.model.actor.Admin;
-import pizzaShop.model.actor.Baker;
-import pizzaShop.model.actor.Customer;
-import pizzaShop.model.actor.Deliverer;
-import pizzaShop.model.actor.Person;
-import pizzaShop.model.actor.Seller;
-import pizzaShop.model.catalog.Cutlery;
-import pizzaShop.model.catalog.Ingredient;
-import pizzaShop.model.catalog.Item;
-import pizzaShop.model.catalog.ItemCatalog;
-import pizzaShop.model.catalog.ItemType;
-import pizzaShop.model.catalog.Pizza;
-import pizzaShop.model.store.CustomerRepository;
-import pizzaShop.model.store.Pizzaqueue;
-import pizzaShop.model.store.SalaryThread;
-import pizzaShop.model.store.StaffMemberRepository;
-import pizzaShop.model.store.Store;
-import pizzaShop.model.tan_management.TanManagement;
+import pizzaShop.model.AccountSystem.Address;
+import pizzaShop.model.AccountSystem.Admin;
+import pizzaShop.model.AccountSystem.Baker;
+import pizzaShop.model.AccountSystem.Customer;
+import pizzaShop.model.AccountSystem.Deliverer;
+import pizzaShop.model.AccountSystem.Person;
+import pizzaShop.model.AccountSystem.Seller;
+import pizzaShop.model.AccountingSystem.SalaryThread;
+import pizzaShop.model.DataBaseSystem.CustomerRepository;
+import pizzaShop.model.DataBaseSystem.ItemCatalog;
+import pizzaShop.model.DataBaseSystem.StaffMemberRepository;
+import pizzaShop.model.ManagementSystem.Pizzaqueue;
+import pizzaShop.model.ManagementSystem.Store;
+import pizzaShop.model.ManagementSystem.Tan_Management.TanManagement;
+import pizzaShop.model.OrderSystem.Cutlery;
+import pizzaShop.model.OrderSystem.Ingredient;
+import pizzaShop.model.OrderSystem.Item;
+import pizzaShop.model.OrderSystem.ItemType;
+import pizzaShop.model.OrderSystem.Pizza;
 
 /**
  * 

@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import pizzaShop.model.store.ErrorClass;
-import pizzaShop.model.store.Store;
+import pizzaShop.model.ManagementSystem.Store;
 
 @Controller
 public class BakerController {

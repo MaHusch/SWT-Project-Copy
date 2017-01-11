@@ -12,10 +12,10 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import pizzaShop.AbstractIntegrationTests;
-import pizzaShop.model.catalog.CatalogHelper;
-import pizzaShop.model.catalog.Item;
-import pizzaShop.model.catalog.ItemCatalog;
-import pizzaShop.model.catalog.ItemType;
+import pizzaShop.model.DataBaseSystem.CatalogHelper;
+import pizzaShop.model.DataBaseSystem.ItemCatalog;
+import pizzaShop.model.OrderSystem.Item;
+import pizzaShop.model.OrderSystem.ItemType;
 
 public class ItemCatalogIntegrationTests extends AbstractIntegrationTests {
 

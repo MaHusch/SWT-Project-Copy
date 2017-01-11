@@ -20,14 +20,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import pizzaShop.model.actor.Baker;
-import pizzaShop.model.actor.Deliverer;
-import pizzaShop.model.actor.Seller;
-import pizzaShop.model.actor.StaffMember;
-import pizzaShop.model.store.ErrorClass;
-import pizzaShop.model.store.Oven;
-import pizzaShop.model.store.StaffMemberRepository;
-import pizzaShop.model.store.Store;
+import pizzaShop.model.AccountSystem.Baker;
+import pizzaShop.model.AccountSystem.Deliverer;
+import pizzaShop.model.AccountSystem.Seller;
+import pizzaShop.model.AccountSystem.StaffMember;
+import pizzaShop.model.DataBaseSystem.StaffMemberRepository;
+import pizzaShop.model.ManagementSystem.Store;
+import pizzaShop.model.ProductionSystem.Oven;
 
 @Controller
 public class AdminController {

@@ -26,22 +26,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import pizzaShop.model.actor.Customer;
-import pizzaShop.model.actor.Deliverer;
-import pizzaShop.model.actor.StaffMember;
-import pizzaShop.model.catalog.Item;
-import pizzaShop.model.catalog.ItemCatalog;
-import pizzaShop.model.catalog.ItemType;
-import pizzaShop.model.store.Bill;
-import pizzaShop.model.store.CustomerRepository;
-import pizzaShop.model.store.ErrorClass;
-import pizzaShop.model.store.PizzaOrder;
-import pizzaShop.model.store.PizzaOrderRepository;
-import pizzaShop.model.store.PizzaOrderStatus;
-import pizzaShop.model.store.StaffMemberRepository;
-import pizzaShop.model.store.Store;
-import pizzaShop.model.tan_management.Tan;
-import pizzaShop.model.tan_management.TanManagement;
+import pizzaShop.model.AccountSystem.Customer;
+import pizzaShop.model.AccountSystem.Deliverer;
+import pizzaShop.model.AccountSystem.StaffMember;
+import pizzaShop.model.AccountingSystem.Bill;
+import pizzaShop.model.DataBaseSystem.CustomerRepository;
+import pizzaShop.model.DataBaseSystem.ItemCatalog;
+import pizzaShop.model.DataBaseSystem.PizzaOrderRepository;
+import pizzaShop.model.DataBaseSystem.StaffMemberRepository;
+import pizzaShop.model.ManagementSystem.Store;
+import pizzaShop.model.ManagementSystem.Tan_Management.Tan;
+import pizzaShop.model.ManagementSystem.Tan_Management.TanManagement;
+import pizzaShop.model.OrderSystem.Item;
+import pizzaShop.model.OrderSystem.ItemType;
+import pizzaShop.model.OrderSystem.PizzaOrder;
+import pizzaShop.model.OrderSystem.PizzaOrderStatus;
 
 @Controller
 @SessionAttributes("cart")

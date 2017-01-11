@@ -19,16 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import groovyjarjarantlr.collections.List;
-import pizzaShop.model.catalog.CatalogHelper;
-import pizzaShop.model.catalog.Ingredient;
-import pizzaShop.model.catalog.Item;
-import pizzaShop.model.catalog.ItemCatalog;
-import pizzaShop.model.catalog.ItemType;
-import pizzaShop.model.catalog.NameComparator;
-import pizzaShop.model.catalog.Pizza;
-import pizzaShop.model.catalog.PriceComparator;
-import pizzaShop.model.store.ErrorClass;
-import pizzaShop.model.store.Store;
+import pizzaShop.model.DataBaseSystem.CatalogHelper;
+import pizzaShop.model.DataBaseSystem.ItemCatalog;
+import pizzaShop.model.ManagementSystem.Store;
+import pizzaShop.model.OrderSystem.Ingredient;
+import pizzaShop.model.OrderSystem.Item;
+import pizzaShop.model.OrderSystem.ItemType;
+import pizzaShop.model.OrderSystem.Pizza;
 
 /**
  * Controller to create the Catalog View

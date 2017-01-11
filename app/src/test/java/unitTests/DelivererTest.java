@@ -6,8 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.order.OrderIdentifier;
 
-import pizzaShop.model.actor.Deliverer;
-import pizzaShop.model.store.PizzaOrder;
+import pizzaShop.model.AccountSystem.Deliverer;
+import pizzaShop.model.OrderSystem.PizzaOrder;
 
 public class DelivererTest {
 

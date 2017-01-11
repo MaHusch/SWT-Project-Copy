@@ -9,9 +9,9 @@ import org.javamoney.moneta.Money;
 import org.junit.Before;
 import org.junit.Test;
 
-import pizzaShop.model.catalog.Ingredient;
-import pizzaShop.model.catalog.ItemType;
-import pizzaShop.model.catalog.Pizza;
+import pizzaShop.model.OrderSystem.Ingredient;
+import pizzaShop.model.OrderSystem.ItemType;
+import pizzaShop.model.OrderSystem.Pizza;
 
 public class PizzaTest {
 

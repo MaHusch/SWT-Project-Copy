@@ -9,7 +9,7 @@ import org.javamoney.moneta.Money;
 import org.junit.Before;
 import org.junit.Test;
 
-import pizzaShop.model.catalog.Cutlery;
+import pizzaShop.model.OrderSystem.Cutlery;
 
 public class CutleryTest {
 	LocalDateTime time;

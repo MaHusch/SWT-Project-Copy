@@ -10,15 +10,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import pizzaShop.model.actor.Baker;
-import pizzaShop.model.actor.Customer;
-import pizzaShop.model.actor.Deliverer;
-import pizzaShop.model.store.CustomerRepository;
-import pizzaShop.model.store.PizzaOrder;
-import pizzaShop.model.store.PizzaOrderRepository;
-import pizzaShop.model.store.Store;
-import pizzaShop.model.tan_management.Tan;
-import pizzaShop.model.tan_management.TanManagement;
+import pizzaShop.model.AccountSystem.Baker;
+import pizzaShop.model.AccountSystem.Customer;
+import pizzaShop.model.AccountSystem.Deliverer;
+import pizzaShop.model.DataBaseSystem.CustomerRepository;
+import pizzaShop.model.DataBaseSystem.PizzaOrderRepository;
+import pizzaShop.model.ManagementSystem.Store;
+import pizzaShop.model.ManagementSystem.Tan_Management.Tan;
+import pizzaShop.model.ManagementSystem.Tan_Management.TanManagement;
+import pizzaShop.model.OrderSystem.PizzaOrder;
 
 @Controller
 public class DelivererController {

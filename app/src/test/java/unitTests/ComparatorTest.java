@@ -9,10 +9,10 @@ import org.javamoney.moneta.Money;
 import org.junit.Before;
 import org.junit.Test;
 
-import pizzaShop.model.catalog.Item;
-import pizzaShop.model.catalog.ItemType;
-import pizzaShop.model.catalog.NameComparator;
-import pizzaShop.model.catalog.PriceComparator;
+import pizzaShop.controller.NameComparator;
+import pizzaShop.controller.PriceComparator;
+import pizzaShop.model.OrderSystem.Item;
+import pizzaShop.model.OrderSystem.ItemType;
 
 public class ComparatorTest {
 
