@@ -19,14 +19,14 @@ public class SellerController {
 
 	private final TanManagement tanManagement;
 	private final CustomerRepository customerRepository;
-	private final AddressRepository addressRepository;
+	//private final AddressRepository addressRepository;
 	private ErrorClass error;
 
 	@Autowired
-	public SellerController(TanManagement tanManagement, CustomerRepository customerRepository, AddressRepository addressRepository) {
+	public SellerController(TanManagement tanManagement, CustomerRepository customerRepository){//, AddressRepository addressRepository) {
 		this.tanManagement = tanManagement;
 		this.customerRepository = customerRepository;
-		this.addressRepository = addressRepository;
+		//this.addressRepository = addressRepository;
 		error = new ErrorClass(false);
 	}
 
@@ -50,7 +50,6 @@ public class SellerController {
 			@RequestParam("postcode") String postcode, @RequestParam("street") String street,
 			@RequestParam("housenumber") String housenumber) {
 		
-		System.out.println("PenisVagina deine Mamam");
 		if (surname == "" || forename == "" || telephonenumber == "" || local == "" || street == "" || housenumber == ""
 				|| postcode == "") {
 			error.setError(true);
@@ -60,8 +59,9 @@ public class SellerController {
 		} else {
 			error.setError(false);
 				
-			Address newAddress = new Address(local, postcode, street, housenumber);
+			//Address newAddress = new Address(local, postcode, street, housenumber);
 			
+			/*
 			boolean addressAlreadyExists = false;
 			
 			for(Address address : this.addressRepository.findAll())
@@ -77,10 +77,11 @@ public class SellerController {
 			{
 				newAddress = this.addressRepository.save(newAddress);
 			}
+			*/
 		
-			Person editedPerson = new Person(surname,forename, telephonenumber, newAddress);
+			//Person editedPerson = new Person(surname,forename, telephonenumber, newAddress);
 			
-			Customer editedCustomer= new Customer(editedPerson);
+			Customer editedCustomer= new Customer(surname,forename, telephonenumber,local, postcode, street, housenumber);
 			
 			customerRepository.save(editedCustomer);
 			tanManagement.generateNewTan(telephonenumber);

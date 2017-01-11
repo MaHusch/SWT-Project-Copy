@@ -63,7 +63,7 @@ public class StoreController {
 	private final PizzaOrderRepository pizzaOrderRepository;
 	private final StaffMemberRepository staffMemberRepository;
 	private final CatalogHelper catalogHelper;
-	private final AddressRepository addressRepository;
+	//private final AddressRepository addressRepository;
 
 	private final Store store;
 	private ErrorClass error;
@@ -71,7 +71,7 @@ public class StoreController {
 	@Autowired 
 	public StoreController(CatalogHelper catalogHelper,ItemCatalog itemCatalog, TanManagement tanManagement, 
 			CustomerRepository customerRepository, PizzaOrderRepository pOR, Store store, 
-			StaffMemberRepository staffMemberRepository, AddressRepository addressRepo) {
+			StaffMemberRepository staffMemberRepository){//, AddressRepository addressRepo) {
 
 
 		this.itemCatalog = itemCatalog;
@@ -79,7 +79,7 @@ public class StoreController {
 		this.customerRepository = customerRepository;
 		this.pizzaOrderRepository = pOR;
 		this.staffMemberRepository = staffMemberRepository;
-		this.addressRepository = addressRepo;
+		//this.addressRepository = addressRepo;
 		this.store = store;
 		this.catalogHelper = catalogHelper;
 		error = new ErrorClass(false);
@@ -222,6 +222,7 @@ public class StoreController {
 			@RequestParam("housenumber") String housenumber, @RequestParam("cid") long id) {
 
 		Customer oldCustomer = customerRepository.findOne(id);
+
 		
 		if (surname == "" || forename == "" || telephonenumber == "" || local == "" || street == "" || housenumber == ""
 				|| postcode == "") {
@@ -248,8 +249,9 @@ public class StoreController {
 			tanManagement.updateTelephoneNumber(oldTelephoneNumber, telephonenumber);
 		}
 		
-		Address newAddress = new Address(local, postcode, street, housenumber);
+		//Address newAddress = new Address(local, postcode, street, housenumber);
 		
+		/*
 		boolean addressAlreadyExists = false;
 		
 		for(Address address : this.addressRepository.findAll())
@@ -265,10 +267,11 @@ public class StoreController {
 		{
 			newAddress = this.addressRepository.save(newAddress);
 		}
+		*/
 	
-		Person updatedPerson = new Person(surname,forename, telephonenumber, newAddress);
+		//Person updatedPerson = new Person(surname,forename, telephonenumber, newAddress);
 			
-		Customer updatedCustomer = new Customer(updatedPerson);
+		Customer updatedCustomer = new Customer(surname,forename, telephonenumber,local, postcode, street, housenumber);
 		
 		if(oldCutlery != null)
 		{
@@ -285,7 +288,7 @@ public class StoreController {
 				}
 			}
 		}
-
+		
 		customerRepository.save(updatedCustomer);
 		customerRepository.delete(id);
 

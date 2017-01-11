@@ -105,6 +105,7 @@
 							<td th:text="${customer.getPerson().getSurname()}">Nachname</td>
 							<td th:text="${customer.getPerson().getTelephoneNumber()}">Telefonnummer</td>
 							<td th:text="${customer.getPerson().getAddress().toString()}">Addresse</td>
+							<!--  
 							<td> 
 								<div class="panel-body">
 									<select id="delivery_adresse" name="delivery_adresse" size="1">
@@ -113,6 +114,7 @@
 											>Addresse</option>
 									</select>
 								</div></td>
+							-->
 							<td>
 								<div th:switch="${customer.getCutlery() == null}">
 									<p th:case="${true}" th:text="---">keine Essgarnitur</p>

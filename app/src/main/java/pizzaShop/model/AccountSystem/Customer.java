@@ -32,9 +32,12 @@ public class Customer {
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private Person myPerson = null;
+	
 
+	/*
 	private ArrayList<Long> deliveryAddressesIDs = new ArrayList<Long>();
 	private ArrayList<String> deliveryAddressesStrings = new ArrayList<String>();
+	*/
 
 	private @Id @GeneratedValue long customerID;
 
@@ -57,13 +60,16 @@ public class Customer {
 	 */
 
 	
-	public Customer(Person person) {
+	public Customer(String surname, String forname, String telephoneNumber, String local, String postcode, String street, String streetnumber) {
+		
+		Address a1 = new Address(local, postcode, street, streetnumber);
+		Person p1 = new Person(surname,forname,telephoneNumber, a1);
 
-		this.myPerson = person;
-
+		this.myPerson = p1;
+		/*
 		this.deliveryAddressesIDs.add(this.myPerson.getAddress().getID());
 		this.deliveryAddressesStrings.add(this.myPerson.getAddress().toString());
-
+		*/
 	}
 
 	/**
@@ -98,6 +104,7 @@ public class Customer {
 		return this.myPerson;
 	}
 	
+	/*
 	public ArrayList<Long> getDeliveryAddressesIDs() {
 		return this.deliveryAddressesIDs;
 	}
@@ -111,7 +118,7 @@ public class Customer {
 		return this.deliveryAddressesIDs.add(newAddress.getID());
 	}
 	
-	/*public String getDeliveryAddressesString() {
+	public String getDeliveryAddressesString() {
 		String completeString = "";
 		
 		Iterator<String> addresseIterator = this.deliveryAddressesStrings.iterator();
