@@ -85,7 +85,10 @@ public class AccountingController {
 
 	@RequestMapping(value = "/createAccountancyEntry", method = RequestMethod.POST)
 	public String createEntry(@RequestParam("value") Integer value, @RequestParam("description") String description) {
-		accountancy.add(new AccountancyEntry(Money.of(value, EURO), description));
+		if(!description.isEmpty() && value != null) 
+			accountancy.add(new AccountancyEntry(Money.of(value, EURO), description));
+		else //errorMeldung ; 
+		{}
 		return "redirect:finances";
 	}
 
