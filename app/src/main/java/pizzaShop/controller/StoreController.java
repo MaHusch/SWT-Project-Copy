@@ -205,7 +205,11 @@ public class StoreController {
 	public String deleteCustomer(Model model,@RequestParam("cid") long id) {
 		model.addAttribute("error",error);
 		
-		store.deleteCustomer(model, id);
+		try {
+			store.deleteCustomer(model, id);
+		} catch (Exception e) {
+			System.out.println("Cutlery fehler beim Kunden");
+		}
 		
 		return "redirect:customer_display";
 
