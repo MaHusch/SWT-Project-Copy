@@ -41,9 +41,7 @@ public class BakerController {
 	public String getNextPizza(Model model, @RequestParam int ovenID) {
 
 		for (int i = 0; i < store.getOvens().size(); i++) {
-
 			if (store.getOvens().get(i).getId() == ovenID) {
-
 				if (store.getOvens().get(i).isEmpty()) {
 					try {
 						store.getNextPizza();
@@ -64,10 +62,7 @@ public class BakerController {
 	
 	@RequestMapping(value ="/forward2", method = RequestMethod.POST)
 	public String forward(@RequestParam("minutes") Integer minutes){
-		
 		businessTime.forward(Duration.ofMinutes(minutes));
-		
-		
 		return "redirect:ovens";
 	}
 
