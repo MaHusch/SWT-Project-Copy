@@ -25,6 +25,8 @@ import org.salespointframework.useraccount.Role;
 import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSender;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
@@ -68,8 +70,8 @@ public class Store {
 	private Pizza nextPizza;
 
 	private ArrayList<String> eMailList;
-
-	private ConsoleWritingMailSender mailSender;
+	
+	private MailSender mailSender;
 
 	private ErrorClass error;
 
@@ -80,7 +82,7 @@ public class Store {
 	public Store(UserAccountManager employeeAccountManager, ItemCatalog itemCatalog,
 			PizzaOrderRepository pizzaOrderRepo, StaffMemberRepository staffMemberRepository,
 			CustomerRepository customerRepository, Accountancy accountancy, BusinessTime businessTime,
-			CatalogHelper catalogHelper, TanManagement tanManagement, AddressRepository addressRepository) {
+			CatalogHelper catalogHelper, TanManagement tanManagement, AddressRepository addressRepository, MailSender mailSender) {
 
 		this.employeeAccountManager = employeeAccountManager;
 		this.itemCatalog = itemCatalog;
@@ -94,7 +96,7 @@ public class Store {
 		this.catalogHelper = catalogHelper;
 		this.tanManagement = tanManagement;
 		this.eMailList = new ArrayList<String>();
-		this.mailSender = new ConsoleWritingMailSender();
+		this.mailSender = mailSender;
 		error = new ErrorClass(false);
 		this.addressRepository = addressRepository;
 
@@ -131,8 +133,15 @@ public class Store {
 			simpleMessage.setTo(eMailAddress);
 			simpleMessage.setSubject("Papa_Pizza_Newsletter");
 			simpleMessage.setText(newsletterText);
+			
+			try{
+				this.mailSender.send(simpleMessage);
+			}
+			catch(MailException ex){
+				System.err.println(ex.getMessage());
+			}
+			
 
-			this.mailSender.send(simpleMessage);
 		}
 
 	}
