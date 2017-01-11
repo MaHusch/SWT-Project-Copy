@@ -83,12 +83,6 @@ public class AccountingController {
 		return "redirect:finances";
 	}
 
-	@RequestMapping(value = "/createAccountancyEntry", method = RequestMethod.POST)
-	public String createEntry(@RequestParam("value") Integer value, @RequestParam("description") String description) {
-		accountancy.add(new AccountancyEntry(Money.of(value, EURO), description));
-		return "redirect:finances";
-	}
-
 
 	@RequestMapping(value = "/forward", method = RequestMethod.POST)
 	public String forward(@RequestParam("days") Integer days) {

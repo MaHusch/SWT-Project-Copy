@@ -82,6 +82,7 @@ public class OrderController {
 			// picked up order, no deliverer needed
 		} else {
 			error.setError(true);
+			error.setMessage("Order ist nicht bereit!");
 		}
 		return "redirect:orders";
 	}
