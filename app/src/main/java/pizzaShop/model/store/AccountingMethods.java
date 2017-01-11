@@ -2,6 +2,7 @@ package pizzaShop.model.store;
 
 import javax.money.MonetaryAmount;
 
+import static org.salespointframework.core.Currencies.EURO;
 import org.javamoney.moneta.Money;
 import org.salespointframework.accountancy.Accountancy;
 import org.salespointframework.accountancy.AccountancyEntry;
@@ -23,7 +24,7 @@ public class AccountingMethods {
 	}
 	
 	public MonetaryAmount total(){
-		MonetaryAmount total = Money.of(0, "EUR");
+		MonetaryAmount total = Money.of(0, EURO);
 		
 		for (AccountancyEntry a : accountancy.findAll())
 		        total = total.add(a.getValue());
@@ -32,7 +33,7 @@ public class AccountingMethods {
 	}
 	
 	public MonetaryAmount intervalTotal(Interval i){
-		MonetaryAmount total = Money.of(0, "EUR");
+		MonetaryAmount total = Money.of(0, EURO);
 		
 		for (AccountancyEntry a : accountancy.find(i))
 		        total = total.add(a.getValue());

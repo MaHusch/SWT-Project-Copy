@@ -1,17 +1,12 @@
 package pizzaShop.model.actor;
 
-import java.util.*;
+import static org.salespointframework.core.Currencies.EURO;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-import org.salespointframework.useraccount.Role;
-
-import pizzaShop.model.catalog.Pizza;
-import pizzaShop.model.store.Oven;
-import pizzaShop.model.store.Pizzaqueue;
-import pizzaShop.model.store.Store;
+import org.javamoney.moneta.Money;
 
 /**
  * BakerClass for representing a Baker of the PizzaShop
@@ -35,6 +30,7 @@ public class Baker extends StaffMember {
 	 */
 	public Baker(String surname, String forename, String telephoneNumber) {
 		super(surname, forename, telephoneNumber);
+		salary = Money.of(250, EURO);
 		//myOvens = new ArrayList<Oven>();
 	}
 

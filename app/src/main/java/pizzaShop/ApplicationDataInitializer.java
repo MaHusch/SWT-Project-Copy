@@ -175,20 +175,14 @@ public class ApplicationDataInitializer implements DataInitializer {
 	public void initializeAccountancy() 
 	{
 		
-		AccountancyEntry ace1 = new AccountancyEntry(Money.of(50, "EUR"), "Einkauf");
+		/*AccountancyEntry ace1 = new AccountancyEntry(Money.of(50, "EUR"), "Einkauf");
 		AccountancyEntry ace2 = new AccountancyEntry(Money.of(-200, "EUR"), "Diebstahl");
 		AccountancyEntry ace3 = new AccountancyEntry(Money.of(536, "EUR"), "Großbestellung");
 		accountancy.add(ace1);
 		accountancy.add(ace2);
-		accountancy.add(ace3);
+		accountancy.add(ace3);*/
 		
-		HashMap<Role, Integer> incomeMap = new HashMap<Role, Integer>();
-		incomeMap.put(Role.of("ROLE_ADMIN"), 400);
-		incomeMap.put(Role.of("ROLE_BAKER"), 250);
-		incomeMap.put(Role.of("ROLE_SELLER"), 300);
-		incomeMap.put(Role.of("ROLE_DELIVERER"), 200);
-		
-		(new Thread(new SalaryThread(accountancy, businessTime, store, incomeMap))).start();
+		(new Thread(new SalaryThread(accountancy, businessTime, store))).start();
 		
 	}
 	

@@ -1,13 +1,12 @@
 package pizzaShop.model.actor;
 
+import static org.salespointframework.core.Currencies.EURO;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-import org.salespointframework.useraccount.Role;
-import org.salespointframework.useraccount.UserAccount;
-
-import pizzaShop.model.store.Store;
+import org.javamoney.moneta.Money;
 
 /**
  * SellerClass for representing a Seller of the PizzaShop
@@ -31,6 +30,7 @@ public class Seller extends StaffMember {
 	 */
 	public Seller(String surname, String forename, String telephoneNumber) {
 		super(surname, forename, telephoneNumber);
+		salary = Money.of(300, EURO);
 	}
 
 }

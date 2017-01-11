@@ -1,9 +1,12 @@
 package pizzaShop.model.actor; //TODO: Store should be tested before
 
-import java.util.*;
+import static org.salespointframework.core.Currencies.EURO;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import org.javamoney.moneta.Money;
 import org.salespointframework.order.OrderIdentifier;
-import org.salespointframework.useraccount.Role;
 
 /**
  * DelivererClass for representing a Deliverer
@@ -33,8 +36,10 @@ public class Deliverer extends StaffMember {
 	 */
 	public Deliverer(String surname, String forename, String telephonenumber) {
 		super(surname, forename, telephonenumber);
+		salary = Money.of(200, EURO);
 		this.setAvailable(false);
 		this.orderToDeliver = new LinkedList<OrderIdentifier>();
+		
 	}
 
 	/**

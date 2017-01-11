@@ -1,14 +1,14 @@
 package pizzaShop.model.actor;
 
+import javax.money.MonetaryAmount;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
-import org.salespointframework.useraccount.*;
-
-import pizzaShop.model.store.Store;
+import org.salespointframework.useraccount.Role;
+import org.salespointframework.useraccount.UserAccount;
 
 /**
  * abstract StaffMemberClass for representing the StaffMembers of the PizzaShop
@@ -27,6 +27,7 @@ public abstract class StaffMember{
 	private String password;
 	private UserAccount userAccount;
 	private Role role;
+	protected MonetaryAmount salary;
 	
 	@OneToOne(cascade = CascadeType.ALL) private Person myPerson = null;
 
@@ -59,6 +60,14 @@ public abstract class StaffMember{
 	public Person getPerson()
 	{
 		return this.myPerson;
+	}
+	
+	public MonetaryAmount getSalary(){
+		return salary;
+	}
+	
+	public MonetaryAmount setSalary(MonetaryAmount s){
+		return salary = s;
 	}
 
 	/*
