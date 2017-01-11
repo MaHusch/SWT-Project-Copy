@@ -25,6 +25,8 @@ import org.salespointframework.useraccount.Role;
 import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSender;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
@@ -66,10 +68,10 @@ public class Store {
 												// StaffMember?
 	private ArrayList<Oven> ovenList;
 	private Pizza nextPizza;
-	
+
 	private ArrayList<String> eMailList;
 	
-	private ConsoleWritingMailSender mailSender;
+	private MailSender mailSender;
 
 	private ErrorClass error;
 
@@ -80,7 +82,7 @@ public class Store {
 	public Store(UserAccountManager employeeAccountManager, ItemCatalog itemCatalog,
 			PizzaOrderRepository pizzaOrderRepo, StaffMemberRepository staffMemberRepository,
 			CustomerRepository customerRepository, Accountancy accountancy, BusinessTime businessTime,
-			CatalogHelper catalogHelper, TanManagement tanManagement, AddressRepository addressRepository) {
+			CatalogHelper catalogHelper, TanManagement tanManagement, AddressRepository addressRepository, MailSender mailSender) {
 
 		this.employeeAccountManager = employeeAccountManager;
 		this.itemCatalog = itemCatalog;
@@ -94,7 +96,7 @@ public class Store {
 		this.catalogHelper = catalogHelper;
 		this.tanManagement = tanManagement;
 		this.eMailList = new ArrayList<String>();
-		this.mailSender = new ConsoleWritingMailSender();
+		this.mailSender = mailSender;
 		error = new ErrorClass(false);
 		this.addressRepository = addressRepository;
 
@@ -103,41 +105,46 @@ public class Store {
 		ovenList.add(new Oven(this));
 
 	}
-	
-	public ArrayList<String> getEMailList(){
+
+	public ArrayList<String> getEMailList() {
 		return this.eMailList;
 	}
-	
-	public boolean addEmailToMailingList(String eMailAddress){
-		
-		if(!this.eMailList.contains(eMailAddress))
-		{
+
+	public boolean addEmailToMailingList(String eMailAddress) {
+
+		if (!this.eMailList.contains(eMailAddress)) {
 			return this.eMailList.add(eMailAddress);
 		}
-		
+
 		return false;
 
 	}
-	
-	public boolean removeEmailFromMailingList(String eMailAddress){
+
+	public boolean removeEmailFromMailingList(String eMailAddress) {
 		return this.eMailList.remove(eMailAddress);
 	}
-	
-	public void sendNewsletter(String newsletterText){
-		
-		for(String eMailAddress : this.eMailList){
-			
+
+	public void sendNewsletter(String newsletterText) {
+
+		for (String eMailAddress : this.eMailList) {
+
 			SimpleMailMessage simpleMessage = new SimpleMailMessage();
-			
+
 			simpleMessage.setTo(eMailAddress);
 			simpleMessage.setSubject("Papa_Pizza_Newsletter");
 			simpleMessage.setText(newsletterText);
 			
-			this.mailSender.send(simpleMessage);
+			try{
+				this.mailSender.send(simpleMessage);
+			}
+			catch(MailException ex){
+				System.err.println(ex.getMessage());
+			}
+			
+
 		}
 
 	}
-	
 
 	public Pizzaqueue getPizzaQueue() {
 
@@ -227,28 +234,29 @@ public class Store {
 				if (order.getId().toString().equals(getFirstOrder(pizza))) {
 					order.markAsBaked();
 					System.out.println("updatePizzaOrder im if statement");
-					
-					try { removeFirstOrder(pizza); } catch (Exception e) {
+
+					try {
+						removeFirstOrder(pizza);
+					} catch (Exception e) {
 						// TODO Auto-generated catch block
-						System.out.println("Fehler bei updatePizzaOrder"); 
-						}
-				
+						System.out.println("Fehler bei updatePizzaOrder");
+					}
+
 					pizzaOrderRepo.save(order);
 					return;
 				}
 			}
 		}
 	}
-	
+
 	public void addOrder(OrderIdentifier o, Pizza p) {
-		if(!pizzaMap.containsKey(p.getId())){
+		if (!pizzaMap.containsKey(p.getId())) {
 			ArrayList<String> tmp = new ArrayList<String>();
 			tmp.add(o.toString());
 			pizzaMap.put(p.getId(), tmp);
-		}else{
+		} else {
 			pizzaMap.get(p.getId()).add(o.toString());
 		}
-		
 
 	}
 
@@ -257,7 +265,8 @@ public class Store {
 	 * @return returns the first order as a String
 	 */
 	public String getFirstOrder(Pizza p) {
-		if(pizzaMap.get(p.getId()).isEmpty()) System.out.println(p.getName() + " hat keine Bestellung");
+		if (pizzaMap.get(p.getId()).isEmpty())
+			System.out.println(p.getName() + " hat keine Bestellung");
 		return pizzaMap.get(p.getId()).get(0);
 	}
 
@@ -273,18 +282,23 @@ public class Store {
 			throw new NullPointerException("Die Pizza hat keine Orders zugewiesen");
 		return pizzaMap.get(p.getId()).remove(0);
 	}
-	
-	public void printQueue(Pizza p){
+
+	public void printQueue(Pizza p) {
 		System.out.println(pizzaMap.get(p.getId()).toString());
 	}
 
 	// deletes customer based on and ID, and cancles all his orders.
-	public void deleteCustomer(Model model, long id) {
+	public void deleteCustomer(Model model, long id) throws Exception {
 
-		Tan foundTan = tanManagement.getTan(customerRepository.findOne(id).getPerson().getTelephoneNumber());
+		Customer c = customerRepository.findOne(id);
+		Tan foundTan = tanManagement.getTan(c.getPerson().getTelephoneNumber());
 
 		if (!foundTan.getStatus().equals(TanStatus.NOT_FOUND)) {
 			tanManagement.invalidateTan(foundTan);
+		}
+
+		if (c.getCutlery() != null) {
+			this.returnCutlery("decayed", c);
 		}
 
 		Iterable<PizzaOrder> allPizzaOrders = this.pizzaOrderRepo.findAll();
