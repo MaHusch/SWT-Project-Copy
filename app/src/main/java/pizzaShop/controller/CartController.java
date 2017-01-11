@@ -169,9 +169,15 @@ public class CartController {
 	@RequestMapping(value = "/changeQuantity", method = RequestMethod.POST)
 	public String changeQuantity(@RequestParam("ciid") String cartId, @RequestParam("amount") int amount, @RequestParam("quantity") int
 			quantity, @RequestParam("pid") ProductIdentifier id, @ModelAttribute Cart cart){
+		error.setError(false);
 		Optional<Item> item = itemCatalog.findOne(id); 
-		assertTrue("Product must not be emtpy!", item.isPresent());
+		if(!item.isPresent()){
+			error.setError(true);
+			error.setMessage("Produkt existiert nicht mehr!");
+			return removeItem(cartId, cart);
+		}
 		if(quantity + amount == 0){
+			
 			return removeItem(cartId, cart);
 		}else{
 			cart.addOrUpdateItem(item.get(), Quantity.of(amount));
