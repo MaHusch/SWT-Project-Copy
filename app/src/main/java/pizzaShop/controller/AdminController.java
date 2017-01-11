@@ -73,7 +73,6 @@ public class AdminController {
 
 		if (surname == "" || forename == "" || telephonenumber == "" || username == "" || password == ""
 				|| role == "") {
-			error.setError(true);
 			model.addAttribute("error", error);
 			return "redirect:register_staffmember";
 		}
@@ -126,6 +125,7 @@ public class AdminController {
 		model.addAttribute("staffmember", store.getStaffMemberList());
 		model.addAttribute("error",error);
 		
+		
 
 		return "staffmember_display";
 	}
@@ -161,7 +161,6 @@ public class AdminController {
 		
 		if (surname == "" || forename == "" || telephonenumber == "" || username == "" || password == "") {
 			error.setError(true);
-			model.addAttribute("error", error);
 			redirectAttrs.addAttribute("name", username).addFlashAttribute("message", "StaffMember");
 			return "redirect:register_staffmember";
 		}
