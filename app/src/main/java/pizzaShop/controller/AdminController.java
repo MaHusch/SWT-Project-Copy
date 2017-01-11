@@ -11,6 +11,7 @@ import org.salespointframework.accountancy.AccountancyEntry;
 import org.salespointframework.useraccount.Role;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
+import org.salespointframework.useraccount.web.LoggedIn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -117,6 +118,37 @@ public class AdminController {
 
 		return "redirect:staffmember_display";
 	}
+	
+	@RequestMapping("/staffmember_display")
+	public String staffmember_display(Model model) {
+
+		model.addAttribute("staffmember", store.getStaffMemberList());
+		model.addAttribute("error",error);
+
+		return "staffmember_display";
+	}
+	
+	@RequestMapping(value = "/deleteStaffMember")
+	public String updateStaffMember(Model model, @RequestParam("StaffMemberName") String username, @LoggedIn Optional<UserAccount> lUserAccount) {
+		StaffMember member = store.getStaffMemberByName(username);
+		if(member.getUserAccount().equals(lUserAccount.get())) 
+		{	
+			error.setError(true);
+			error.setMessage("Eingeloggter Admin kann nicht gelöscht werden!");
+			
+			return "redirect:staffmember_display"; 
+		}
+		Optional<UserAccount> userAccount = employeeAccountManager.findByUsername(username);
+
+		if (userAccount.isPresent()) {
+			employeeAccountManager.disable(userAccount.get().getId());
+		}
+
+		ArrayList<StaffMember> staffMemberList = (ArrayList<StaffMember>) store.getStaffMemberList();
+		staffMemberList.remove(member);
+
+		return "redirect:staffmember_display";
+	}
 
 	@RequestMapping(value = "/updateStaffMember")
 	public String updateStaffMember(Model model, @RequestParam("surname") String surname,
@@ -137,27 +169,7 @@ public class AdminController {
 		return "redirect:staffmember_display";
 	}
 
-	@RequestMapping(value = "/deleteStaffMember")
-	public String updateStaffMember(Model model, @RequestParam("StaffMemberName") String username) {
-		StaffMember member = store.getStaffMemberByName(username);
-		if(member.getRole().toString().contains("ADMIN")) 
-		{	
-			error.setError(true);
-			error.setMessage("Willst du dich wirklich löschen?");
-			model.addAttribute("error",error);
-			return "redirect:staffmember_display"; 
-		}
-		Optional<UserAccount> userAccount = employeeAccountManager.findByUsername(username);
-
-		if (userAccount.isPresent()) {
-			employeeAccountManager.disable(userAccount.get().getId());
-		}
-
-		ArrayList<StaffMember> staffMemberList = (ArrayList<StaffMember>) store.getStaffMemberList();
-		staffMemberList.remove(member);
-
-		return "redirect:staffmember_display";
-	}
+	
 
 	@RequestMapping(value = "/addOven", method = RequestMethod.POST)
 	public String addOven(Model model) {

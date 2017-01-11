@@ -174,13 +174,7 @@ public class StoreController {
 		return "tan";
 	}
 
-	@RequestMapping("/staffmember_display")
-	public String staffmember_display(Model model) {
-
-		model.addAttribute("staffmember", store.getStaffMemberList());
-
-		return "staffmember_display";
-	}
+	
 
 	@RequestMapping("/customer_display")
 	public String customer_display(Model model) {
