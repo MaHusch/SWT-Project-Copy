@@ -12,13 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AccountingMethods {
+public class AccountingHelper {
 	
 	private final Accountancy accountancy;
 	private final BusinessTime businessTime;
 
 	@Autowired
-	public AccountingMethods(Accountancy accountancy, BusinessTime businessTime) {
+	public AccountingHelper(Accountancy accountancy, BusinessTime businessTime) {
 		this.accountancy = accountancy;
 		this.businessTime = businessTime;
 	}

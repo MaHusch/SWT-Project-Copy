@@ -1,11 +1,8 @@
 package pizzaShop.model.store;
 
-import static org.salespointframework.core.Currencies.EURO;
-
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.TextStyle;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 
@@ -14,26 +11,29 @@ import javax.money.MonetaryAmount;
 import org.salespointframework.accountancy.Accountancy;
 import org.salespointframework.accountancy.AccountancyEntry;
 import org.salespointframework.time.BusinessTime;
-import org.salespointframework.useraccount.Role;
+import org.springframework.stereotype.Component;
 
 import pizzaShop.model.actor.StaffMember;
+
 
 public class SalaryThread implements Runnable {
 
 	private final Accountancy accountancy;
 	private final BusinessTime businessTime;
 	private final Store store;
+	
 
 	// @Autowired
 	public SalaryThread(Accountancy accountancy, BusinessTime businessTime, Store store) {
 		this.accountancy = accountancy;
 		this.businessTime = businessTime;
 		this.store = store;
+		
 	}
 
 	public void run() {
 		LocalDateTime currentDate = businessTime.getTime();
-		long delay = 5;
+		long delay = 3;
 		long next = System.currentTimeMillis();
 		while (true) {
 			LocalDateTime newDate = businessTime.getTime();

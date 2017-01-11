@@ -5,8 +5,6 @@ import static org.salespointframework.core.Currencies.EURO;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.TextStyle;
-import java.util.Locale;
 import java.util.Optional;
 
 import org.javamoney.moneta.Money;
@@ -29,23 +27,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import pizzaShop.model.store.AccountingMethods;
+import pizzaShop.model.store.AccountingHelper;
 import pizzaShop.model.store.Store;
 
 @Controller
 public class AccountingController {
 
 	private final Accountancy accountancy;
-	private final AccountingMethods accountingMethods;
+	private final AccountingHelper accountingHelper;
 	private final BusinessTime businessTime;
 	private final Store store;
 	private int offsetW = 0;
 	private int currentW = 0;
 
 	@Autowired
-	public AccountingController(Store store,Accountancy accountancy, AccountingMethods accountingMethods, BusinessTime businessTime) {
+	public AccountingController(Store store,Accountancy accountancy, AccountingHelper accountingHelper, BusinessTime businessTime) {
 		this.accountancy = accountancy;
-		this.accountingMethods = accountingMethods;
+		this.accountingHelper = accountingHelper;
 		this.businessTime = businessTime;
 		this.store = store;
 	}
@@ -69,8 +67,8 @@ public class AccountingController {
 		model.addAttribute("displayInterval", i);//displayTime.getMonth().getDisplayName(TextStyle.FULL, Locale.GERMAN)+" "+displayTime.getYear());
 		model.addAttribute("currentWeek", currentW);
 		model.addAttribute("currentTime", businessTime.getTime());
-		model.addAttribute("totalGain", accountingMethods.total());
-		model.addAttribute("weeklyGain", accountingMethods.intervalTotal(i)); 
+		model.addAttribute("totalGain", accountingHelper.total());
+		model.addAttribute("weeklyGain", accountingHelper.intervalTotal(i)); 
 		store.checkCutleries();
 		
 		return "finances";
@@ -112,7 +110,34 @@ public class AccountingController {
 
 	@RequestMapping(value = "/forward", method = RequestMethod.POST)
 	public String forward(@RequestParam("days") Integer days) {
-		businessTime.forward(Duration.ofDays(days));
+		//accountingMethods.
+		
+		int tDays = 0;
+		int cDays = 0;
+		LocalDateTime cTime = businessTime.getTime();
+		while(tDays < days){
+			int cMonth = cTime.getMonthValue(); 
+			cTime = cTime.plusDays(1);
+			tDays++;
+			cDays++;
+			if(cTime.getMonthValue() > cMonth){
+				businessTime.forward(Duration.ofDays(cDays));
+				cDays = 0;
+				try {
+					Thread.sleep(200);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			else if(tDays == days){
+				businessTime.forward(Duration.ofDays(cDays));
+			}
+		}
+		
+		//businessTime.forward(Duration.ofDays(days));
+		
+		
 		return "redirect:finances";
 	}
 
