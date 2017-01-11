@@ -41,7 +41,8 @@ public class AccountingController {
 	private int currentW = 0;
 
 	@Autowired
-	public AccountingController(Store store,Accountancy accountancy, AccountingHelper accountingHelper, BusinessTime businessTime) {
+	public AccountingController(Store store, Accountancy accountancy, AccountingHelper accountingHelper,
+			BusinessTime businessTime) {
 		this.accountancy = accountancy;
 		this.accountingHelper = accountingHelper;
 		this.businessTime = businessTime;
@@ -50,95 +51,49 @@ public class AccountingController {
 
 	@RequestMapping("/finances")
 	public String finances(Model model) {
-		LocalDateTime frstMon = businessTime.getTime();
-		frstMon = frstMon.minusDays(frstMon.getDayOfYear()-1);
-		while(true){
-			if(frstMon.getDayOfWeek().equals(DayOfWeek.MONDAY))
-				break;
-			frstMon = frstMon.plusDays(1);
-		}
-		
+		LocalDateTime frstMon = accountingHelper.getFirstMonday();
 		LocalDateTime displayTime = businessTime.getTime().plusWeeks(offsetW);
-		displayTime = displayTime.minusDays(displayTime.getDayOfWeek().getValue()-1);
-		currentW = ((displayTime.getDayOfYear()-frstMon.getDayOfYear()+1) / 7)+1;
+		
+		displayTime = displayTime.minusDays(displayTime.getDayOfWeek().getValue() - 1);
+		currentW = ((displayTime.getDayOfYear() - frstMon.getDayOfYear() + 1) / 7) + 1;
 		Interval i = Interval.from(displayTime.minusDays(1)).to(displayTime.minusDays(1).plusWeeks(1));
 		model.addAttribute("entries", accountancy.findAll());
-		model.addAttribute("currentDisplay", accountancy.find(i));	
-		model.addAttribute("displayInterval", i);//displayTime.getMonth().getDisplayName(TextStyle.FULL, Locale.GERMAN)+" "+displayTime.getYear());
+		model.addAttribute("currentDisplay", accountancy.find(i));
+		model.addAttribute("displayInterval", i);// displayTime.getMonth().getDisplayName(TextStyle.FULL,
+													// Locale.GERMAN)+"
+													// "+displayTime.getYear());
 		model.addAttribute("currentWeek", currentW);
 		model.addAttribute("currentTime", businessTime.getTime());
 		model.addAttribute("totalGain", accountingHelper.total());
-		model.addAttribute("weeklyGain", accountingHelper.intervalTotal(i)); 
+		model.addAttribute("weeklyGain", accountingHelper.intervalTotal(i));
 		store.checkCutleries();
-		
+
 		return "finances";
 	}
-	
+
 	@RequestMapping(value = "/decreaseWeek", method = RequestMethod.POST)
 	public String decreaseWeek() {
 		offsetW -= 1;
 		return "redirect:finances";
 	}
-	
-	
+
 	@RequestMapping(value = "/increaseWeek", method = RequestMethod.POST)
 	public String increaseWeek() {
 		offsetW += 1;
 		return "redirect:finances";
 	}
-	
-	
 
 	@RequestMapping(value = "/createAccountancyEntry", method = RequestMethod.POST)
 	public String createEntry(@RequestParam("value") Integer value, @RequestParam("description") String description) {
-
 		accountancy.add(new AccountancyEntry(Money.of(value, EURO), description));
 		return "redirect:finances";
 	}
 
 
-	@RequestMapping(value = "/createOrder", method = RequestMethod.POST)
-	public String payOrder(@RequestParam("value") Integer value, @LoggedIn Optional<UserAccount> userAccount) {
-
-		if (!userAccount.isPresent())
-			return "redirect:login";
-		Order order = new Order(userAccount.get(), Cash.CASH);
-		order.add(new OrderLine(new Product("test", Money.of(value, EURO)), Quantity.of(1)));
-		accountancy.add(ProductPaymentEntry.of(order, "Order by " + userAccount.get().getId() + ": " + order.getId()));
-		return "redirect:finances";
-	}
-
 	@RequestMapping(value = "/forward", method = RequestMethod.POST)
 	public String forward(@RequestParam("days") Integer days) {
-		//accountingMethods.
-		
-		int tDays = 0;
-		int cDays = 0;
-		LocalDateTime cTime = businessTime.getTime();
-		while(tDays < days){
-			int cMonth = cTime.getMonthValue(); 
-			cTime = cTime.plusDays(1);
-			tDays++;
-			cDays++;
-			if(cTime.getMonthValue() > cMonth){
-				businessTime.forward(Duration.ofDays(cDays));
-				cDays = 0;
-				try {
-					
-					Thread.sleep(store.getStaffMemberList().size()*15);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			else if(tDays == days){
-				businessTime.forward(Duration.ofDays(cDays));
-			}
-		}
-		
-		//businessTime.forward(Duration.ofDays(days));
-		
-		
+		accountingHelper.forward(days);
+
 		return "redirect:finances";
 	}
 
