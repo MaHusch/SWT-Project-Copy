@@ -21,10 +21,10 @@ public class CatalogControllerWebIntegrationTests extends AbstractWebIntegration
 	 * constraints.
 	 */
 	@Test
-	public void catalogMvcIntegrationTest() throws Exception {
+	public void catalogViewMvcIntegrationTest() throws Exception {
 
-		mvc.perform(get("/catalog")). //
-				andExpect(status().isOk()).//
+		mvc.perform(get("/catalog")). 
+				andExpect(status().isOk()).
 				andExpect(model().attribute("catalog", is(not(emptyIterable()))));
 	}
 }
