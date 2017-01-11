@@ -124,7 +124,8 @@ public class AccountingController {
 				businessTime.forward(Duration.ofDays(cDays));
 				cDays = 0;
 				try {
-					Thread.sleep(200);
+					
+					Thread.sleep(store.getStaffMemberList().size()*15);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
