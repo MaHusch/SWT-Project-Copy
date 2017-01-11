@@ -109,13 +109,11 @@
 	</header>
 
 	<!-- panel with CatalogTable -->
-	<div class="container col-md-12">
+	<div sec:authorize="isAuthenticated()" class="container col-md-12">
 		<div class="panel panel-primary">
 			<!-- Default panel contents -->
-			<div class="panel-heading">Unser Angebot</div>
+			<div class="panel-heading">Auswahl</div>
 			<div class="panel-body">
-				<p>Werfen Sie einen Blick auf unser ausgewähtes Angebot an
-					Pizzen, Salaten und Getränken.</p>
 				<form method="post" action="/filterCatalog" name="ItemfilterForm">
 					<select name="selection" id="selection" class="selectpicker">
 						<option>Alles</option>
@@ -212,10 +210,19 @@
 			</div>
 		</div>
 	</div>
+	<div class="container col-md-12" sec:authorize="!isAuthenticated()">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Unser Angebot</div>
+			<div class="panel-body">
+				<p>Werfen Sie einen Blick auf unser ausgewähtes Angebot an
+					Pizzen, Salaten und Getränken.</p>
+			</div>
+		</div>
+	</div>
 
-	<!-- <div sec:authorize="!hasRole('ROLE_ADMIN')" th:each="item : ${items}"
+	<div sec:authorize="!isAuthenticated()" th:each="item : ${items}"
 		th:unless="${item.getType().equals(ItemType[3]) or item.getType().equals(ItemType[4])}"
-		class="container col-sm-3">
+		class="container col-sm-4">
 		<div class="panel panel-primary">
 			<div class="panel-heading" th:text="${item.getName()}">Itemname</div>
 			<div class="panel-body">
@@ -239,7 +246,8 @@
 				</table>
 			</div>
 		</div>
-	</div>-->
+	</div>
+
 
 
 
