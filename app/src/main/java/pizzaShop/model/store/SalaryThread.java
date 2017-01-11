@@ -1,5 +1,7 @@
 package pizzaShop.model.store;
 
+import static org.salespointframework.core.Currencies.EURO;
+
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.TextStyle;
@@ -7,7 +9,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 
-import org.javamoney.moneta.Money;
+import javax.money.MonetaryAmount;
+
 import org.salespointframework.accountancy.Accountancy;
 import org.salespointframework.accountancy.AccountancyEntry;
 import org.salespointframework.time.BusinessTime;
@@ -20,13 +23,11 @@ public class SalaryThread implements Runnable {
 	private final Accountancy accountancy;
 	private final BusinessTime businessTime;
 	private final Store store;
-	private final HashMap<Role, Integer> incomeMap;
 
 	// @Autowired
-	public SalaryThread(Accountancy accountancy, BusinessTime businessTime, Store store, HashMap<Role, Integer> incomeMap) {
+	public SalaryThread(Accountancy accountancy, BusinessTime businessTime, Store store) {
 		this.accountancy = accountancy;
 		this.businessTime = businessTime;
-		this.incomeMap = incomeMap;
 		this.store = store;
 	}
 
@@ -40,14 +41,15 @@ public class SalaryThread implements Runnable {
 				int dateDiff = (newDate.getYear() - currentDate.getYear()) * 12 + newDate.getMonthValue() - currentDate.getMonthValue();
 
 				
-				int currentIncome;
+				MonetaryAmount currentIncome;
 				StaffMember currentStaff;
 				for (int i = 0; i < dateDiff; i++) {
 					Iterator<StaffMember> staffIterator = store.getStaffMemberList().iterator();
 					while(staffIterator.hasNext()){
 						currentStaff = staffIterator.next();
-						currentIncome = incomeMap.get(currentStaff.getRole());
-						accountancy.add(new AccountancyEntry(Money.of(currentIncome*-1, "EUR"), "Gehalt: "+currentStaff.getPerson().getForename() +" ("+currentStaff.getRole().toString().substring(5)+") für " + Month.of((currentDate.getMonthValue() + i - 1) % 12 + 1).getDisplayName(TextStyle.FULL, Locale.GERMAN)));
+						currentIncome = currentStaff.getSalary();
+						accountancy.add(new AccountancyEntry(currentIncome.multiply(-1), "Gehalt: "+currentStaff.getPerson().getForename() +" ("+currentStaff.getRole().toString().substring(5)+") für " + Month.of((currentDate.getMonthValue() + i - 1) % 12 + 1).getDisplayName(TextStyle.FULL, Locale.GERMAN)));
+						
 					}
 					
 					

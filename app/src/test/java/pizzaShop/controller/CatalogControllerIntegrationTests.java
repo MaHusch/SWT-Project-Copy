@@ -21,6 +21,7 @@ import pizzaShop.AbstractIntegrationTests;
 import pizzaShop.model.catalog.Item;
 import pizzaShop.model.catalog.ItemCatalog;
 import pizzaShop.model.catalog.ItemType;
+import pizzaShop.model.catalog.NameComparator;
 import pizzaShop.model.store.ErrorClass;
 
 public class CatalogControllerIntegrationTests extends AbstractIntegrationTests {
@@ -114,22 +115,31 @@ public class CatalogControllerIntegrationTests extends AbstractIntegrationTests 
 		assertThat(e.getError(), is(true));
 		assertThat(item, is(i));
 	}
-	
-	//filtered Items werden nicht überprüft
+
+	// filtered Items werden nicht überprüft
 	@Test
-	public void filterCatalogTest()
-	{
+	public void filterCatalogTest() {
 		Model model = new ExtendedModelMap();
 		String selection = "Getränke";
 		String filter = "von A bis Z";
-		
+
 		String returnedView = controller.filterCatalog(model, selection, filter);
 		assertThat(returnedView, is("catalog"));
-		
+
 		Map<String, Object> map = model.asMap();
-		
+		ArrayList<Item> map_items = (ArrayList<Item>) map.get("items");
+		NameComparator comp = new NameComparator(true);
+
+		if (map_items.size() >= 2) {
+			for (int i = 0; i+1 < map_items.size(); i++) {
+				Item i1 = map_items.get(i);
+				Item i2 = map_items.get(i+1);
+				assertTrue(comp.compare(i1, i2) <= 0);
+			}
+		}
+
 		assertThat(map.get("lastfilter"), is(filter));
 		assertThat(map.get("lastselection"), is(selection));
-		
-	}	
+
+	}
 }
