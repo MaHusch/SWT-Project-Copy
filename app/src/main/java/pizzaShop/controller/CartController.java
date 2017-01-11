@@ -56,7 +56,8 @@ public class CartController {
 	private final BusinessTime businesstime;
 	private Optional<Customer> customer = Optional.empty();
 	private final Store store;
-	private ErrorClass error;
+	private ErrorClass cartError;
+	private ErrorClass ordersError;
 	private boolean freeDrink = false;
 
 	@Autowired
@@ -71,7 +72,8 @@ public class CartController {
 		this.staffMemberRepository = staffMemberRepository;
 		this.store = store;
 		this.businesstime = businesstime;
-		error = new ErrorClass(false);
+		cartError = new ErrorClass(false);
+		ordersError = new ErrorClass(false);
 	}
 
 	@ModelAttribute("cart")
@@ -90,7 +92,7 @@ public class CartController {
 				freeDrinks.add(i);
 		}
 		model.addAttribute("freeDrinks", freeDrinks);
-		model.addAttribute("error", error);
+		model.addAttribute("error", cartError);
 		model.addAttribute("customer", customer);
 		model.addAttribute("freeDrink", freeDrink);
 		return "cart";
@@ -125,7 +127,7 @@ public class CartController {
 		model.addAttribute("uncompletedOrders", uncompletedOrders);
 		model.addAttribute("completedOrders", completedOrders);
 		model.addAttribute("deliverers", deliverers);
-		model.addAttribute("error", error);
+		model.addAttribute("error", ordersError);
 
 		return "orders";
 	}
@@ -134,10 +136,10 @@ public class CartController {
 	public String cofirmLocalOrder(@RequestParam("orderID") OrderIdentifier id){
 		PizzaOrder p = pizzaOrderRepository.findOne(id);
 		if(p.getOrderStatus().equals(PizzaOrderStatus.READY)){
-			error.setError(false);
+			ordersError.setError(false);
 			store.completeOrder(pizzaOrderRepository.findOne(id), "mitgenommen", null); //picked up order, no deliverer needed
 		}else{
-			error.setError(true);
+			ordersError.setError(true);
 		}
 		return "redirect:orders";
 	}
@@ -169,11 +171,11 @@ public class CartController {
 	@RequestMapping(value = "/changeQuantity", method = RequestMethod.POST)
 	public String changeQuantity(@RequestParam("ciid") String cartId, @RequestParam("amount") int amount, @RequestParam("quantity") int
 			quantity, @RequestParam("pid") ProductIdentifier id, @ModelAttribute Cart cart){
-		error.setError(false);
+		cartError.setError(false);
 		Optional<Item> item = itemCatalog.findOne(id); 
 		if(!item.isPresent()){
-			error.setError(true);
-			error.setMessage("Produkt existiert nicht mehr!");
+			cartError.setError(true);
+			cartError.setMessage("Produkt existiert nicht mehr!");
 			return removeItem(cartId, cart);
 		}
 		if(quantity + amount == 0){
@@ -208,7 +210,7 @@ public class CartController {
 
 		Tan tan = tanManagement.getTan(telephoneNumber);
 		if (tan.getTanNumber().equals(tanValue)) {
-			error.setError(false);
+			cartError.setError(false);
 			for (Customer c : customerRepository.findAll()) {
 				System.out.println("test" + c.getPerson().getTelephoneNumber());
 				if (telephoneNumber.equals(c.getPerson().getTelephoneNumber())) {
@@ -217,9 +219,8 @@ public class CartController {
 				}
 			}
 		} else {
-			error.setError(true);
-			error.setMessage("Fehler bei der TAN-Überprüfung! Erneut eingeben!");
-			System.out.println("fail");
+			cartError.setError(true);
+			cartError.setMessage("Fehler bei der TAN-Überprüfung! Erneut eingeben!");
 		}
 
 		return "redirect:cart";
@@ -242,10 +243,10 @@ public class CartController {
 				onSiteStr.equals("0,1") | onSiteStr.equals("0"));
 		System.out.println("cutlery ist:" + cutleryStr);
 		if (customer.isPresent()) {
-			error.setError(false);
+			cartError.setError(false);
 			if(cart.isEmpty()){
-				error.setError(true);
-				error.setMessage("Warenkorb ist leer!");
+				cartError.setError(true);
+				cartError.setMessage("Warenkorb ist leer!");
 				return "redirect:cart";
 			}
 			
@@ -281,8 +282,8 @@ public class CartController {
 			@RequestParam("orderID") OrderIdentifier orderID) {// @RequestParam
 																// OrderIdentifier
 		if (name == null || name.equals("")) {
-			error.setError(true);
-			error.setMessage("Keinen Lieferanten ausgewählt!");
+			ordersError.setError(true);
+			ordersError.setMessage("Keinen Lieferanten ausgewählt!");
 		} else {
 			Deliverer deliverer = (Deliverer) store.getStaffMemberByForename(name);
 

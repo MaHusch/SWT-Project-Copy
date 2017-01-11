@@ -129,5 +129,10 @@ public class Person {
 	public void setAddress(Address address) {
 		this.address = address;
 	}
+	
+	public String toString(){
+		
+		return (this.forename + " " + this.surname + System.getProperty("line.separator") + this.address.toString());
+	}
 
 }

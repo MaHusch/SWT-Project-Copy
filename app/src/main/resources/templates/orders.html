@@ -120,6 +120,7 @@
 							<th>Preis</th>
 							<th>Status</th>
 							<th>Ungebackene Pizzen</th>
+							<th>Kunde/Addresse</th>
 							<th sec:authorize="hasRole('ROLE_SELLER')">Lieferant</th>
 						</tr>
 					</thead>
@@ -133,6 +134,7 @@
 								<td th:text="${order.getTotalPrice()}">arg</td>
 								<td th:text="${order.getOrderStatus() }">arg</td>
 								<td th:text="${order.getUnbakedPizzas() }">arg</td>
+								<td th:text="${order.getCustomer().getPerson().toString()}">arg</td>
 								<td sec:authorize="hasRole('ROLE_SELLER')"
 									th:if="${order.getPickUp()}">
 									<form method="post" action="/confirmCollection">

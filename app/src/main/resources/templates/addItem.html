@@ -160,8 +160,8 @@
 						<input type="hidden" name="pid" value="0" th:value="${item.id}" />
 					</div>
 
-					<input type="submit" value="Erstellen" th:if="${item == null}" />
-					<input type="submit" value="Bearbeiten" th:if="${item}" />
+					<input class="btn btn-primary" type="submit" value="Erstellen" th:if="${item == null}" />
+					<input class="btn btn-primary" type="submit" value="Bearbeiten" th:if="${item}" />
 				</form>
 
 

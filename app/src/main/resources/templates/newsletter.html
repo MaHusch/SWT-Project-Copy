@@ -5,7 +5,7 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css"
 	th:href="@{/resources/css/style.css}" />
-<title>Welcome</title>
+<title>Newsletter</title>
 </head>
 <body>
 	<!-- Navbar -->
@@ -37,11 +37,13 @@
 								<span class="caret"></span>
 						</a>
 							<ul class="dropdown-menu">
-								<li><a sec:authorize="hasRole('ROLE_BAKER') or hasRole('ROLE_ADMIN')"
+								<li><a
+									sec:authorize="hasRole('ROLE_BAKER') or hasRole('ROLE_ADMIN')"
 									href="ovens.html">Öfen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_DELIVERER')"
 									href="index.html">Deliverer Dashboard</a></li>
-								<li><a sec:authorize="hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')"
+								<li><a
+									sec:authorize="hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')"
 									href="orders.html">Bestellungen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_SELLER')"
 									href="register_customer.html">Kunden registrieren</a></li>
@@ -53,7 +55,8 @@
 									href="addItem.html">Item hinzufügen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
 									href="catalog.html">Katalog bearbeiten</a></li>
-								<li><a sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER')"
+								<li><a
+									sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER')"
 									href="customer_display.html">Kunden anzeigen</a></li>
 								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
 									href="staffmember_display.html">Mitarbeiter anzeigen</a></li>
@@ -78,24 +81,37 @@
 		</nav>
 	</header>
 
-
-	<form>
-		<input type="email" id="email" name="email"></input> 
-			<br></br>
-		<input type="submit" value="Hinzufuegen" formaction="addEmail"></input>
-		<input type="submit" value="Entfernen" formaction="removeEmail"></input>
-	</form>
-	
-	<br></br>
-	
-	<div sec:authorize="hasRole('ROLE_ADMIN')">
-		<form action="sendNewsletter">
-		<textarea rows="10" cols="100" id="newsletter_text" name="newsletter_text"></textarea>
-			<br></br>
-		<input type="submit" value="Newsletter verschicken"></input>
-	</form>
+	<div class="container col-md-4">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Für Newsletter anmelden</div>
+			<div class="panel-body">
+				<p>Hier können Sie sich für unseren Newsletter anmelden!
+					Verpassen Sie keine Sonderangebote mehr!</p>
+				<p>Geben Sie unten einfach ihre E-Mail Adresse ein:</p>
+				<form>
+					<input type="email" id="email" name="email"></input> <br></br> <input
+						class="btn btn-primary" type="submit" value="Hinzufuegen"
+						formaction="addEmail"></input> <input class="btn btn-primary"
+						type="submit" value="Entfernen" formaction="removeEmail"></input>
+				</form>
+			</div>
+		</div>
 	</div>
-	
+
+
+	<div class="container col-md-12" sec:authorize="hasRole('ROLE_ADMIN')">
+		<div class="panel panel-primary">
+			<div class="panel-heading">E-Mail für den Newsletter verfassen:</div>
+			<div class="panel-body">
+				<form action="sendNewsletter">
+					<textarea required="required" rows="10" cols="100" id="newsletter_text"
+						name="newsletter_text"></textarea>
+				<br /> <input class="btn btn-primary" type="submit" value="Newsletter verschicken"></input>
+				</form>
+			</div>
+		</div>
+	</div>
+
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<!-- Latest compiled and minified JavaScript -->
