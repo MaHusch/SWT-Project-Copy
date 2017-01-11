@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import pizzaShop.model.actor.Baker;
 import pizzaShop.model.actor.Deliverer;
@@ -124,6 +125,7 @@ public class AdminController {
 
 		model.addAttribute("staffmember", store.getStaffMemberList());
 		model.addAttribute("error",error);
+		
 
 		return "staffmember_display";
 	}
@@ -131,6 +133,7 @@ public class AdminController {
 	@RequestMapping(value = "/deleteStaffMember")
 	public String updateStaffMember(Model model, @RequestParam("StaffMemberName") String username, @LoggedIn Optional<UserAccount> lUserAccount) {
 		StaffMember member = store.getStaffMemberByName(username);
+		error.setError(false);
 		if(member.getUserAccount().equals(lUserAccount.get())) 
 		{	
 			error.setError(true);
@@ -153,8 +156,15 @@ public class AdminController {
 	@RequestMapping(value = "/updateStaffMember")
 	public String updateStaffMember(Model model, @RequestParam("surname") String surname,
 			@RequestParam("forename") String forename, @RequestParam("telnumber") String telephonenumber,
-			@RequestParam("username") String username, @RequestParam("password") String password) {
+			@RequestParam("username") String username, @RequestParam("password") String password, RedirectAttributes redirectAttrs) {
 		StaffMember member = store.getStaffMemberByName(username);
+		
+		if (surname == "" || forename == "" || telephonenumber == "" || username == "" || password == "") {
+			error.setError(true);
+			model.addAttribute("error", error);
+			redirectAttrs.addAttribute("name", username).addFlashAttribute("message", "StaffMember");
+			return "redirect:register_staffmember";
+		}
 
 		member.getPerson().setForename(forename);
 		member.getPerson().setSurname(surname);
