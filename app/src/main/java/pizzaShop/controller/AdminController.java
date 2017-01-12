@@ -208,8 +208,20 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/deleteOven", method = RequestMethod.POST)
-	public String deleteOVen(@RequestParam("ovenID") int id) {
-
+	public String deleteOVen(Model model,@RequestParam("ovenID") int id) {
+		
+		for(Oven o : store.getOvens())
+		{
+			if(o.getId() == id && !o.isEmpty())
+			{
+				error.setError(true);
+				error.setMessage("Ofen ist nicht leer");
+				model.addAttribute("ovens", store.getOvens());
+				model.addAttribute("queue", store.getPizzaQueue());
+				model.addAttribute("error", error);
+				return "ovens";
+			}
+		}
 		store.deleteOven(id);
 
 		return "redirect:ovens";
