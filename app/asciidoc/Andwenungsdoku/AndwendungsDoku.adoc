@@ -44,7 +44,6 @@ image::Bilder/itemBearbeiten.png[]
 
 Der Admin und der Verkäufen können Items bearbeiten. Der Unterschied besteht darin, dass ein Verkäufer ein neues Item im Warenkatalog hinzufügt und der Admin ein bestehendes Item überschreibt.
 
-=== Waren hinzufügen
 
 === Pizza erstellen/verfeinern
 
@@ -53,6 +52,14 @@ image::Bilder/itemVerfeinern.png[]
 Hier können Kunden ihre eigenen Pizzen aus einer Auswahl an Zutaten erstellen. Der Admin kann hier komplett neue Pizzen dem Warenkatalog hinzufügen und der Verkäufer übernimmt die Angaben des Kunden um die vom Kunden gewünschte, persönliche Pizza zu erstellen und in den Warenkorb zu legen.
 
 == Warenkorb
+
+image::Bilder/warenkorbCustomer.png[]
+
+Auf dieser Seite sieht der Kunde was in seinem Warenkorb ist. Außerdem sieht er wie sich der Preis ändert, wenn er eine Essgarnitur dazu bestellt und die Bestellung vor Ort abholt.
+
+image::Bilder/warenkorbSeller.png[]
+
+Der Seller kann hier die Telefonnummer und die dazugehörige TAN des Kunden überprüfen, und dann den Warenkorb für den Kunden auslösen. Außerdem kann er hier ebenfalls die Essgarnitur des Kunden im System zurückgeben.
 
 == Finanzen
 
