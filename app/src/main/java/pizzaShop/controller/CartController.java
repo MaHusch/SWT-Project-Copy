@@ -187,29 +187,31 @@ public class CartController {
 	 *            for the html view
 	 * @param cart
 	 *            {@link Cart} for the order
-	 * @param onSiteStr
+	 * @param pickUpStr
 	 *            "0,1" if pickUp radio button is checked, else "0"
 	 * @param cutleryStr
 	 *            "0,1" if cutlery radio button is checked, else "0"
 	 * @param userAccount
 	 *            currently logged in {@link UserAccount}
 	 * @return redirects to the cart page
+	 * @throws Exception 
 	 */
 	@RequestMapping(value = "/checkout", method = RequestMethod.POST)
-	public String buy(Model model, @ModelAttribute Cart cart, @RequestParam("onSite") String onSiteStr,
-			@RequestParam("cutlery") String cutleryStr, @LoggedIn Optional<UserAccount> userAccount) {
+	public String buy(Model model, @ModelAttribute Cart cart, @RequestParam("pickUp") String pickUpStr,
+			@RequestParam("cutlery") String cutleryStr, @LoggedIn Optional<UserAccount> userAccount) throws Exception {
 
 		cartError.setError(false);
 
-		boolean onSite = onSiteStr.equals("0,1") ? true : false;
+		boolean pickUp = pickUpStr.equals("0,1") ? true : false;
 		boolean cutlery = cutleryStr.equals("0,1") ? true : false;
-
+		
 		try {
-			cartHelper.createPizzaOrder(cutlery, onSite, userAccount.orElse(null), cart, customer.orElse(null));
+			cartHelper.createPizzaOrder(cutlery, pickUp, userAccount.orElse(null), cart, customer.orElse(null));
 			model.addAttribute("PizzaQueueTime", cartHelper.pizzaQueueTime());
 		} catch (Exception e) {
 			cartError.setError(true);
-			cartError.setMessage(e.getMessage());
+			cartError.setMessage(e.getMessage()+e.getStackTrace());
+			throw e;
 		}
 
 		return "redirect:cart";

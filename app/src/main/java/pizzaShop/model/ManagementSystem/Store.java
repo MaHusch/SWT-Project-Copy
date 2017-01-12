@@ -390,20 +390,7 @@ public class Store {
 	 *            current time when borrowed
 	 * @return
 	 */
-	public boolean lentCutlery(Customer customer, LocalDateTime time) {
-		Cutlery cutlery = new Cutlery(Money.of(15.0, EURO), time);
-		if (customer.equals(null))
-			return false;
-		if (customer.getCutlery() != null)
-			return false; // has to return his lent cutlery before TODO: error
-							// on cart template
-
-		customer.setCutlery(cutlery);
-
-		this.customerRepository.save(customer);
-
-		return true;
-	}
+	
 
 	/**
 	 * Function for returning a {@link Cutlery} lent by a customer

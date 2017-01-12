@@ -11,7 +11,7 @@
 <body>
 	<script>
 		function editPrice() {
-			if (document.getElementById('cutleryCheckbox').checked == true) {
+			if (document.getElementById('cutlery').checked == true) {
 				document.getElementById('cutleryPrice').innerHTML = "+ 15€ Pfand";
 				return false;
 			} else {
@@ -120,17 +120,16 @@
 				<p id="cutleryPrice"></p>
 
 				<form method="post" action="/checkout">
-					<label for="onSite">Abholung vor Ort(10% Rabatt auf den
-						Gesamtpreis)</label>: <input type="hidden" name="onSite" value="0" /> <input
-						type="checkbox" name="onSite" value="1" /> <br> </br> <label
-						for="cutlery"> Essgarnitur</label>: <input type="hidden"
-						name="cutlery" value="0" /> <input type="checkbox"
-						id="cutleryCheckbox" name="cutleryCheckbox" value="1"
-						onclick="editPrice()" /> <br> </br>
-					<div sec:authorize="hasRole('ROLE_SELLER')"
-						th:switch="${customer.isPresent()}">
-						<input th:case="true" class="btn btn-primary" type="submit"
-							value="Kaufen" />
+					<label for="onSite">Abholung vor Ort(10% Rabatt auf den	Gesamtpreis):</label> 
+					<input type="hidden" name="pickUp" value="0" /> 
+					<input type="checkbox" name="pickUp" value="1" /> 
+					<br> </br> 
+					<label for="cutlery"> Essgarnitur:</label> 
+					<input type="hidden" name="cutlery" value="0" /> 
+					<input type="checkbox" id="cutlery" name="cutlery" value="1"  onclick="editPrice()"/> 
+					<br> </br>
+					<div th:switch="${customer.isPresent() }" sec:authorize="hasRole('ROLE_SELLER')">
+						<input  th:case="true" class="btn btn-primary" type="submit" value="Kaufen" />
 
 						<p th:case="false">Kein Kunde eingeloggt</p>
 					</div>
