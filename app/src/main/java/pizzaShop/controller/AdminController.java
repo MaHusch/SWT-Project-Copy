@@ -174,6 +174,15 @@ public class AdminController {
 
 		member.getPerson().setForename(forename);
 		member.getPerson().setSurname(surname);
+		for(char c : telephonenumber.toCharArray()){
+			if(!Character.isDigit(c)){
+				error.setError(true);
+				error.setMessage("Telefonnummer darf nur Ziffern enthalten!");
+				redirectAttrs.addAttribute("name", username).addFlashAttribute("message", "StaffMember");
+				return "redirect:register_staffmember";
+				
+			}
+		}
 		member.getPerson().setTelephoneNumber(telephonenumber);
 		member.setSalary(Money.of(salary, EURO));
 
