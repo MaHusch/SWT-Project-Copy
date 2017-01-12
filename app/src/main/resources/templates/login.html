@@ -115,7 +115,9 @@ input:focus {
 <body>
 	<div class="login">
 		<h1>Login</h1>
+		
 		<form method="post" th:action="@{/login}">
+		<p th:if="${param.error}" style="color:white;">Wrong user or password</p>
 			<input type="text" id="username" name="username"
 				placeholder="Username" required="required" autofocus="autofocus" /> <input
 				type="password" id="password" name="password" placeholder="Password"
