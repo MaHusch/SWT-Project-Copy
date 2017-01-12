@@ -2,7 +2,6 @@ package pizzaShop.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import org.salespointframework.order.OrderIdentifier;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import pizzaShop.model.AccountSystem.Baker;
-import pizzaShop.model.AccountSystem.Customer;
 import pizzaShop.model.AccountSystem.Deliverer;
-import pizzaShop.model.DataBaseSystem.CustomerRepository;
 import pizzaShop.model.DataBaseSystem.PizzaOrderRepository;
 import pizzaShop.model.ManagementSystem.Store;
 import pizzaShop.model.ManagementSystem.Tan_Management.Tan;

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import pizzaShop.model.AccountSystem.Customer;
 import pizzaShop.model.DataBaseSystem.CatalogHelper;
 import pizzaShop.model.DataBaseSystem.CustomerRepository;
 import pizzaShop.model.DataBaseSystem.ItemCatalog;
@@ -25,12 +24,10 @@ import pizzaShop.model.ManagementSystem.Store;
 import pizzaShop.model.ManagementSystem.Tan_Management.Tan;
 import pizzaShop.model.ManagementSystem.Tan_Management.TanManagement;
 import pizzaShop.model.ManagementSystem.Tan_Management.TanStatus;
-import pizzaShop.model.OrderSystem.Cutlery;
 import pizzaShop.model.OrderSystem.Ingredient;
 import pizzaShop.model.OrderSystem.Item;
 import pizzaShop.model.OrderSystem.ItemType;
 import pizzaShop.model.OrderSystem.Pizza;
-import pizzaShop.model.OrderSystem.PizzaOrder;
 
 @Controller
 public class StoreController {

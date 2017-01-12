@@ -10,7 +10,6 @@ import org.javamoney.moneta.Money;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import pizzaShop.model.ManagementSystem.Store;
 import pizzaShop.model.OrderSystem.Ingredient;
 import pizzaShop.model.OrderSystem.Item;
 import pizzaShop.model.OrderSystem.ItemType;

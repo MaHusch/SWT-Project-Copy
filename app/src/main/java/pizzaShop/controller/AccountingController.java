@@ -1,25 +1,10 @@
 package pizzaShop.controller;
 
-import static org.salespointframework.core.Currencies.EURO;
-
-import java.time.DayOfWeek;
-import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
-import org.javamoney.moneta.Money;
 import org.salespointframework.accountancy.Accountancy;
-import org.salespointframework.accountancy.AccountancyEntry;
-import org.salespointframework.accountancy.ProductPaymentEntry;
-import org.salespointframework.catalog.Product;
-import org.salespointframework.order.Order;
-import org.salespointframework.order.OrderLine;
-import org.salespointframework.payment.Cash;
-import org.salespointframework.quantity.Quantity;
 import org.salespointframework.time.BusinessTime;
 import org.salespointframework.time.Interval;
-import org.salespointframework.useraccount.UserAccount;
-import org.salespointframework.useraccount.web.LoggedIn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
