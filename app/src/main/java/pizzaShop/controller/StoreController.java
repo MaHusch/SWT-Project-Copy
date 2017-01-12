@@ -157,6 +157,7 @@ public class StoreController {
 
 		store.checkCutleries();
 		model.addAttribute("customer", customerRepository.findAll());
+		model.addAttribute("tanListe", this.tanManagement);
 		model.addAttribute("error", customerError);
 
 		return "customer_display";
