@@ -45,7 +45,7 @@ public class CartController {
 	private final CartHelper cartHelper;
 	private Optional<Customer> customer = Optional.empty();
 
-	private ErrorClass cartError;
+	private ErrorClass error;
 
 	@Autowired
 	public CartController(ItemCatalog itemCatalog, TanManagement tanManagement, CustomerRepository customerRepository,
@@ -55,7 +55,7 @@ public class CartController {
 		this.customerRepository = customerRepository;
 		this.cartHelper = cartHelper;
 
-		cartError = new ErrorClass(false);
+		error = new ErrorClass(false);
 	}
 
 	/**
@@ -77,12 +77,8 @@ public class CartController {
 	public String pizzaCart(Model model, @ModelAttribute Cart cart) {
 		model.addAttribute("items", itemCatalog.findAll());
 
-		ArrayList<Item> freeDrinks = new ArrayList<Item>();
+		ArrayList<Item> freeDrinks = (ArrayList<Item>) itemCatalog.findByType(ItemType.FREEDRINK);
 		// TODO: use itemCatalog.findByType(ItemType.FREEDRINK)
-		for (Item i : itemCatalog.findAll()) {
-			if (i.getType().equals(ItemType.FREEDRINK))
-				freeDrinks.add(i);
-		}
 		boolean freeDrink = false;
 		Iterator<CartItem> ci = cart.iterator();
 		while (ci.hasNext()) {
@@ -94,9 +90,10 @@ public class CartController {
 		customer = (customer.isPresent()) ? Optional.of(customerRepository.findOne(customer.get().getId()))
 				: Optional.empty();
 
-		model.addAttribute("freeDrinks", freeDrinks);
-		model.addAttribute("error", cartError);
+		
+		model.addAttribute("error", error);
 		model.addAttribute("customer", customer);
+		model.addAttribute("freeDrinks", freeDrinks);
 		model.addAttribute("freeDrink", freeDrink);
 		return "cart";
 
@@ -131,6 +128,7 @@ public class CartController {
 	@RequestMapping(value = "/removeCartItem", method = RequestMethod.POST)
 	public String removeItem(@RequestParam("ciid") String cartId, @ModelAttribute Cart cart) {
 		cart.removeItem(cartId);
+		cartHelper.updateFreeDrink(cart);
 		return "redirect:cart";
 
 	}
@@ -148,7 +146,7 @@ public class CartController {
 	public String changeQuantity(@RequestParam("ciid") String cartId, @RequestParam("amount") int amount,
 			@RequestParam("quantity") int quantity, @RequestParam("pid") ProductIdentifier id,
 			@ModelAttribute Cart cart) {
-		cartError.setError(false);
+		error.setError(false);
 		Item item = itemCatalog.findOne(id).orElse(null);
 		if (quantity + amount == 0) {
 			cart.removeItem(cartId);
@@ -158,8 +156,8 @@ public class CartController {
 			try {
 				cartHelper.changeQuantity(item, amount, cart);
 			} catch (Exception e) {
-				cartError.setError(true);
-				cartError.setMessage(e.getMessage());
+				error.setError(true);
+				error.setMessage(e.getMessage());
 				cart.removeItem(cartId);
 
 			}
@@ -200,7 +198,7 @@ public class CartController {
 	public String buy(Model model, @ModelAttribute Cart cart, @RequestParam("pickUp") String pickUpStr,
 			@RequestParam("cutlery") String cutleryStr, @RequestParam("remark") String remark, @LoggedIn Optional<UserAccount> userAccount) {
 
-		cartError.setError(false);
+		error.setError(false);
 
 		boolean pickUp = pickUpStr.equals("0,1") ? true : false;
 		boolean cutlery = cutleryStr.equals("0,1") ? true : false;
@@ -209,8 +207,8 @@ public class CartController {
 			cartHelper.createPizzaOrder(cutlery, pickUp, userAccount.orElse(null), cart, customer.orElse(null), remark);
 			model.addAttribute("PizzaQueueTime", cartHelper.pizzaQueueTime());
 		} catch (Exception e) {
-			cartError.setError(true);
-			cartError.setMessage(e.getMessage());
+			error.setError(true);
+			error.setMessage(e.getMessage());
 		}
 
 		return "redirect:cart";
@@ -230,13 +228,13 @@ public class CartController {
 
 		Tan tan = tanManagement.getTan(telephoneNumber);
 
-		cartError.setError(false);
+		error.setError(false);
 
 		if (tan.getTanNumber().equals(tanValue)) {
 			customer = cartHelper.checkTan(tan);
 		} else {
-			cartError.setError(true);
-			cartError.setMessage("Fehler bei der TAN-Überprüfung! Erneut eingeben!");
+			error.setError(true);
+			error.setMessage("Fehler bei der TAN-Überprüfung! Erneut eingeben!");
 		}
 
 		return "redirect:cart";

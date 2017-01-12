@@ -60,7 +60,12 @@ public class CartHelper {
 			throw new IllegalArgumentException("Produkt existiert nicht mehr!");
 
 		cart.addOrUpdateItem(item, Quantity.of(amount));
+		updateFreeDrink(cart);
+		
 
+	}
+	
+	public void updateFreeDrink(Cart cart){
 		final int FREE_DRINK_PRICE_THRESHOLD = 30;
 		if (cart.getPrice().getNumber().intValue() < FREE_DRINK_PRICE_THRESHOLD) {
 			Iterator<CartItem> ci = cart.iterator();
@@ -73,7 +78,6 @@ public class CartHelper {
 			}
 
 		}
-
 	}
 
 	/**
@@ -106,7 +110,7 @@ public class CartHelper {
 		if (cutlery) {
 			
 			if (customer.getCutlery() != null){
-				throw new Exception("Kunde hat schon ein Besteck ausgeliehen!");
+				throw new IllegalArgumentException("Kunde hat schon ein Besteck ausgeliehen!");
 			}
 			// if false --> return error
 			
@@ -140,15 +144,10 @@ public class CartHelper {
 
 		for (Customer c : customerRepository.findAll()) {
 			if (tanManagement.getTelephoneNumber(tan).equals(c.getPerson().getTelephoneNumber())) {
-				System.out.println("valid: " + tan.getTanNumber() + " tel: " + c.getPerson().getTelephoneNumber());
 				return Optional.of(c);
-
 			}
-
 		}
-		Optional<Customer> c = Optional.empty();
-		return c;
-
+		return Optional.empty();
 	}
 
 	/**
