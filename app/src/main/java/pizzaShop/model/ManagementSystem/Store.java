@@ -4,7 +4,6 @@ import static org.salespointframework.core.Currencies.EURO;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +18,6 @@ import org.salespointframework.order.Cart;
 import org.salespointframework.order.OrderIdentifier;
 import org.salespointframework.order.OrderLine;
 import org.salespointframework.quantity.Quantity;
-import org.salespointframework.support.ConsoleWritingMailSender;
 import org.salespointframework.time.BusinessTime;
 import org.salespointframework.useraccount.Role;
 import org.salespointframework.useraccount.UserAccountManager;
@@ -58,8 +56,6 @@ public class Store {
 	private final UserAccountManager employeeAccountManager;
 	private final ItemCatalog itemCatalog;
 	private final PizzaOrderRepository pizzaOrderRepo;
-	private final StaffMemberRepository staffMemberRepository;
-	private final AddressRepository addressRepository;
 	private final CustomerRepository customerRepository;
 	private final Accountancy accountancy;
 	private final BusinessTime businessTime;
@@ -74,8 +70,6 @@ public class Store {
 
 	private MailSender mailSender;
 
-	private ErrorClass error;
-
 	private Pizzaqueue pizzaQueue = Pizzaqueue.getInstance();
 	private Map<ProductIdentifier, ArrayList<String>> pizzaMap = new HashMap<ProductIdentifier, ArrayList<String>>();
 
@@ -89,7 +83,6 @@ public class Store {
 		this.employeeAccountManager = employeeAccountManager;
 		this.itemCatalog = itemCatalog;
 		this.pizzaOrderRepo = pizzaOrderRepo;
-		this.staffMemberRepository = staffMemberRepository;
 		this.customerRepository = customerRepository;
 		this.staffMemberList = new ArrayList<StaffMember>();
 		this.ovenList = new ArrayList<Oven>();
@@ -99,9 +92,7 @@ public class Store {
 		this.tanManagement = tanManagement;
 		this.eMailList = new ArrayList<String>();
 		this.mailSender = mailSender;
-		error = new ErrorClass(false);
-		this.addressRepository = addressRepository;
-
+		new ErrorClass(false);
 		ovenList.add(new Oven(this));
 		ovenList.add(new Oven(this));
 		ovenList.add(new Oven(this));
@@ -247,7 +238,6 @@ public class Store {
 					try {
 						removeFirstOrder(pizza);
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
 						System.out.println("Fehler bei updatePizzaOrder");
 					}
 
