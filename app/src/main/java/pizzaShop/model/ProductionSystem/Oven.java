@@ -47,7 +47,7 @@ public class Oven {
 	}
 
 	public boolean fill(Pizza pizza, BusinessTime businessTime) {
-		if (!pizza.equals(null)) {
+		if (this.isEmpty()) {
 			currentPizza = pizza;
 			empty = false;
 			myTimer = new BakerTimer(businessTime);
