@@ -146,6 +146,22 @@
 			<div class="panel-body">
 				<p>Werfen Sie einen Blick auf unser ausgewähtes Angebot an
 					Pizzen, Salaten und Getränken.</p>
+					
+					<form method="post" action="/filterCatalog" name="ItemfilterForm">
+					<select name="selection" id="selection" class="selectpicker">
+						<option>Alles</option>
+						<option>Getränke</option>
+						<option>Essen</option>
+					</select> <select name="filter" id="filter" class="selectpicker">
+						<option>hoechster Preis zuerst</option>
+						<option>niedrigster Preis zuerst</option>
+						<option>von A bis Z</option>
+						<option>von Z bis A</option>
+					</select> <input class="btn btn-primary" type="submit" value="Filtern" />
+				</form>
+				<input type="hidden" th:value="${lastfilter}" id="lastfilterText" />
+				<input type="hidden" th:value="${lastselection}"
+					id="lastselectionText" />
 			</div>
 		</div>
 	</div>
