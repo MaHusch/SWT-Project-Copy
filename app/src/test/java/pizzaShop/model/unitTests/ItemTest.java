@@ -1,4 +1,4 @@
-package unitTests;
+package pizzaShop.model.unitTests;
 
 import static org.junit.Assert.*;
 import static org.salespointframework.core.Currencies.EURO;
@@ -18,13 +18,13 @@ public class ItemTest {
 		public void setUp()
 		{
 			i1 = new Item("Beer",Money.of(3.44, EURO),ItemType.DRINK);
-			i2 = new Item("FreeBeer",Money.of(3.44, EURO),ItemType.FREEDRINK); //should turn into 0.0
+			i2 = new Item("FreeBeer",Money.of(3.44, EURO),ItemType.FREEDRINK); 
 		}
 		
 		@Test
 		public void testContructor() {
 			assertEquals(i2.getPrice(),Money.of(0.0, EURO));
-			//TODO: illegalArgument bei Name = "" oder price < 0 
+			
 		}
 		
 		@Test
