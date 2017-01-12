@@ -127,6 +127,10 @@
 					<label for="cutlery"> Essgarnitur:</label> 
 					<input type="hidden" name="cutlery" value="0" /> 
 					<input type="checkbox" id="cutlery" name="cutlery" value="1"  onclick="editPrice()"/> 
+					<br> </br> 
+					<label for="cutlery"> Anmerkung:</label> 
+					<br> </br> 
+					<textarea rows="2" cols="50" id="remark" name="remark"></textarea>
 					<br> </br>
 					<div th:switch="${customer.isPresent() }" sec:authorize="hasRole('ROLE_SELLER')">
 						<input  th:case="true" class="btn btn-primary" type="submit" value="Kaufen" />

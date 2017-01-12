@@ -93,7 +93,7 @@ public class CartHelper {
 	 *             if either userAccount or customer are null; if cart is empty
 	 * 
 	 */
-	public void createPizzaOrder(boolean cutlery, boolean onSite, UserAccount userAccount, Cart cart, Customer customer)
+	public void createPizzaOrder(boolean cutlery, boolean onSite, UserAccount userAccount, Cart cart, Customer customer, String remark)
 			throws Exception {
 		if (userAccount.equals(null))
 			throw new IllegalArgumentException("Nicht eingeloggt!");
@@ -117,6 +117,7 @@ public class CartHelper {
 
 		PizzaOrder pizzaOrder = new PizzaOrder(userAccount, Cash.CASH,
 				tanManagement.generateNewTan(customer.getPerson().getTelephoneNumber()), onSite, customer);
+		pizzaOrder.setRemark(remark);
 		cart.addItemsTo(orderManager.save(pizzaOrder.getOrder()));
 		store.analyzeOrder(pizzaOrder);
 		cart.clear();

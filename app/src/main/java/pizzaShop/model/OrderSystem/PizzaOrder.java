@@ -42,6 +42,8 @@ public class PizzaOrder {
 	private Order order;
 
 	private int unbakedPizzas = 0;
+	
+	private String remark = "-";
 
 	@OneToOne
 	private Customer customer;
@@ -159,6 +161,14 @@ public class PizzaOrder {
 	
 	public void setCustomer(Customer newCustomer){
 		customer = newCustomer;
+	}
+	
+	public void setRemark(String remark){
+		this.remark = remark;
+	}
+	
+	public String getRemark(){
+		return this.remark;
 	}
 	
 	@Override

@@ -123,7 +123,8 @@ public class Store {
 		for (String eMailAddress : this.eMailList) {
 
 			SimpleMailMessage simpleMessage = new SimpleMailMessage();
-
+			
+			simpleMessage.setFrom("papa-pizza@gmail.com");
 			simpleMessage.setTo(eMailAddress);
 			simpleMessage.setSubject("Papa_Pizza_Newsletter");
 			simpleMessage.setText(newsletterText);

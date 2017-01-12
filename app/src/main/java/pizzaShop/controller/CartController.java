@@ -198,7 +198,7 @@ public class CartController {
 	 */
 	@RequestMapping(value = "/checkout", method = RequestMethod.POST)
 	public String buy(Model model, @ModelAttribute Cart cart, @RequestParam("pickUp") String pickUpStr,
-			@RequestParam("cutlery") String cutleryStr, @LoggedIn Optional<UserAccount> userAccount) {
+			@RequestParam("cutlery") String cutleryStr, @RequestParam("remark") String remark, @LoggedIn Optional<UserAccount> userAccount) {
 
 		cartError.setError(false);
 
@@ -206,7 +206,7 @@ public class CartController {
 		boolean cutlery = cutleryStr.equals("0,1") ? true : false;
 		
 		try {
-			cartHelper.createPizzaOrder(cutlery, pickUp, userAccount.orElse(null), cart, customer.orElse(null));
+			cartHelper.createPizzaOrder(cutlery, pickUp, userAccount.orElse(null), cart, customer.orElse(null), remark);
 			model.addAttribute("PizzaQueueTime", cartHelper.pizzaQueueTime());
 		} catch (Exception e) {
 			cartError.setError(true);
