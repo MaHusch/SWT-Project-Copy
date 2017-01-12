@@ -39,6 +39,7 @@ public class AccountingController {
 	private final Store store;
 	private int offsetW = 0;
 	private int currentW = 0;
+	//comment to jumstart jenkins, pls delete
 
 	@Autowired
 	public AccountingController(Store store, Accountancy accountancy, AccountingHelper accountingHelper,
