@@ -3,7 +3,6 @@ package pizzaShop.model.OrderSystem;
 import java.util.Iterator;
 import java.util.Optional;
 
-import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.order.Cart;
 import org.salespointframework.order.CartItem;
 import org.salespointframework.order.Order;
@@ -14,16 +13,9 @@ import org.salespointframework.time.BusinessTime;
 import org.salespointframework.useraccount.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import pizzaShop.model.AccountSystem.Customer;
 import pizzaShop.model.DataBaseSystem.CustomerRepository;
-import pizzaShop.model.DataBaseSystem.ItemCatalog;
-import pizzaShop.model.DataBaseSystem.PizzaOrderRepository;
-import pizzaShop.model.DataBaseSystem.StaffMemberRepository;
 import pizzaShop.model.ManagementSystem.Store;
 import pizzaShop.model.ManagementSystem.Tan_Management.Tan;
 import pizzaShop.model.ManagementSystem.Tan_Management.TanManagement;
@@ -32,32 +24,19 @@ import pizzaShop.model.ManagementSystem.Tan_Management.TanManagement;
 public class CartHelper {
 
 	private final OrderManager<Order> orderManager;
-	private final ItemCatalog itemCatalog;
 	private final TanManagement tanManagement;
 	private final CustomerRepository customerRepository;
-	private final PizzaOrderRepository pizzaOrderRepository;
-	private final StaffMemberRepository staffMemberRepository;
 	private final BusinessTime businesstime;
-	private Optional<Customer> customer = Optional.empty();
 	private final Store store;
 
 	@Autowired
-	public CartHelper(OrderManager<Order> orderManager, ItemCatalog itemCatalog, TanManagement tanManagement,
-			CustomerRepository customerRepository, PizzaOrderRepository pizzaOrderRepository,
-			StaffMemberRepository staffMemberRepository, Store store, BusinessTime businesstime) {
+	public CartHelper(OrderManager<Order> orderManager, TanManagement tanManagement,
+			CustomerRepository customerRepository, Store store, BusinessTime businesstime) {
 		this.orderManager = orderManager;
-		this.itemCatalog = itemCatalog;
 		this.tanManagement = tanManagement;
 		this.customerRepository = customerRepository;
-		this.pizzaOrderRepository = pizzaOrderRepository;
-		this.staffMemberRepository = staffMemberRepository;
 		this.store = store;
 		this.businesstime = businesstime;
-	}
-
-	public void removeItem(String cartId, Cart cart) {
-		cart.removeItem(cartId);
-
 	}
 
 	/**
@@ -148,7 +127,10 @@ public class CartHelper {
 
 	}
 	
-	
+	/**
+	 * calculates time until all {@link Pizza}'s in the {@link PizzaQueue} are finished
+	 * @return the time in seconds
+	 */
 	public int pizzaQueueTime(){
 		
 		int timeLeftInQueue = store.getPizzaQueue().size() * 300;
