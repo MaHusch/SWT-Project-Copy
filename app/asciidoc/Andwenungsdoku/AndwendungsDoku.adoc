@@ -1,4 +1,4 @@
-= BenutzerHandbuch
+= Benutzer Handbuch
 :toc: macro 
 
 == Inhaltsverzeichnis
@@ -13,25 +13,53 @@ Hier ist eine Anleitung zur Verwendung der einzelnen Bereiche der Anwendung zu f
 
 == Allgemeine Navigation
 
-image::/app/asciidoc/allgemeineNavigation.png[]
+image::/app/asciidoc/Anwendungsdoku/Bilder/allgemeineNavigation.png[]
+
+Die obere Navigationsleiste (aus der Sicht des Admins).
+Die Mitarbeiter haben ihre benötigten Menüs im DropDownMenü "Menü", welches für den Kunden nicht sichtbar ist.
 
 == Einloggen
 
-== Warencatalog
+image::/app/asciidoc/Anwendungsdoku/Bilder/login.png[]
 
-=== Waren filtern
+Die Login-Seite
 
-=== Waren bearbeiten
+== Warenkatalog
+
+image::/app/asciidoc/Anwendungsdoku/Bilder/catalogCustomer.png[]
+
+Der Warenkatalog aus Sicht eines Kunden. Man kann den Katalog sortieren, Waren dem Warenkorb hinzufügen und eine Pizza nach den eigenen Wünschen verfeinern mithilfe der jeweiligen Buttons.
+
+image::/app/asciidoc/Anwendungsdoku/Bilder/catalogAdmin.png[]
+
+Der Warenkatalog aus Sicht des Admins. Er kann Items aus dem Warenkatalog entfernen, sie bearbeiten und Pizzen dauerhaft verfeinern.
+
+image::/app/asciidoc/Anwendungsdoku/Bilder/catalogSeller.png[]
+
+Der Warenkatalog aus Sicht des Verkäufers. Er kann Items dem Warenkorb hinzufügen und Pizzen temporär verfeinern. 
+
+=== Item bearbeiten/hinzufügen
+
+image::/app/asciidoc/Anwendungsdoku/Bilder/itemBearbeiten.png[]
+
+Der Admin und der Verkäufen können Items bearbeiten. Der Unterschied besteht darin, dass ein Verkäufer ein neues Item im Warenkatalog hinzufügt und der Admin ein bestehendes Item überschreibt.
 
 === Waren hinzufügen
 
-=== Pizza verfeinern
+=== Pizza erstellen/verfeinern
+
+image::/app/asciidoc/Anwendungsdoku/Bilder/itemVerfeinern.png[]
+
+Hier können Kunden ihre eigenen Pizzen aus einer Auswahl an Zutaten erstellen. Der Admin kann hier komplett neue Pizzen dem Warenkatalog hinzufügen und der Verkäufer übernimmt die Angaben des Kunden um die vom Kunden gewünschte, persönliche Pizza zu erstellen.
 
 == Warenkorb
 
 == Finanzen
 
-=== Finanzübersicht
+image::/app/asciidoc/Anwendungsdoku/Bilder/finanzen.png[]
+
+Die Finanzübersicht des Admins. Er kann hier durch die Kalenderwochen gehen und die Einträge überprüfen.
+In einem extra Panel besteht die Möglichkeit, die Buisinesstime vorzuspulen.
 
 == Bestellungen
 
@@ -45,7 +73,11 @@ image::/app/asciidoc/allgemeineNavigation.png[]
 
 === Email hinzufügen/entfernen
 
-=== Newsletter abschicken
+=== Newsletter 
+
+image::/app/asciidoc/Anwendungsdoku/Bilder/newsletterAdmin.png[]
+
+Auf dieser Seite kann der Admin den Text für die Newsletter-Email schreiben und diese E-Mail dann verschicken.
 
 == Öfen
 
@@ -57,12 +89,60 @@ image::/app/asciidoc/allgemeineNavigation.png[]
 
 === Mitarbeiter 
 
+==== Admin
+
+==== Verkäufer
+
+==== Bäcker
+
+
+==== Lieferant
+
+image::/app/asciidoc/Anwendungsdoku/Bilder/delivererDashboard.png[]
+
+Die Startseite des Lieferanten. Er kann sich hier einchecken, die Essgarnitur eines Kunden zurückgeben und seine Liste der Kunden die er beliefern soll aktualisieren.
+
+
 ==== Mitarbeiterübersicht
+
+image::/app/asciidoc/Anwendungsdoku/Bilder/mitarbeiterAnzeigen.png[]
+
+Die Mitarbeiterübersicht für den Admin. Er kann hier Mitarbeiter überarbeiten oder entfernen.
+
 ==== Mitarbeiter bearbeiten
+
+image::/app/asciidoc/Anwendungsdoku/Bilder/mitarbeiterBearbeiten.png[]
+
+Auf dieser Seite kann der Admin die Daten eines Mitarbeiters überarbeiten.
+
 ==== Mitarbeiter entfernen
+
+image::/app/asciidoc/Anwendungsdoku/Bilder/mitarbeiterRegistrieren.png[]
+
+Der Admin kann hier einen neuen Mitarbeiter registrieren und seine Rolle festlegen (es kann allerdings immer nur einen Admin geben).
 
 === Kunden
 
+==== Kundenübersicht
+
+image::/app/asciidoc/Anwendungsdoku/Bilder/delivererCutlery.png[]
+
+Der Lieferant kann hier auswählen (nachdem er auf seiner Startseite auf "Cutlery zurückgeben" geklickt hat) welcher Kunde seine Cutlery zurückgegeben hat.
+
+image::/app/asciidoc/Anwendungsdoku/Bilder/kundenAnzeige.png[]
+
+Der Admin kann hier Kunden bearbeiten oder entfernen. 
+
 ==== Kunden registrieren
+
+image::/app/asciidoc/Anwendungsdoku/Bilder/kundenRegistrieren.png[]
+
+Der Verkäufer kann auf dieser Seite neue Kunden registrieren.
+
 ==== Kunden bearbeiten
+
+image::/app/asciidoc/Anwendungsdoku/Bilder/kundenBearbeiten.png[]
+
+Der Admin kann hier Kundendaten überarbeiten.
+
 ==== Kunden entfernen
