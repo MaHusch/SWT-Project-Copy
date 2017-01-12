@@ -13,35 +13,34 @@ Hier ist eine Anleitung zur Verwendung der einzelnen Bereiche der Anwendung zu f
 
 == Allgemeine Navigation
 
-image::/Bilder/allgemeineNavigation.png[]
+image::Bilder/allgemeineNavigation.png[]
 
 Die obere Navigationsleiste (aus der Sicht des Admins).
 Die Mitarbeiter haben ihre benötigten Menüs im DropDownMenü "Menü", welches für den Kunden nicht sichtbar ist.
 
 == Einloggen
 
-image::/Anwendungsdoku/Bilder/login.png[dasdasdas]
-image::images/layout.png[J14P main circuit board]
+image::Bilder/login.png[]
 
 Die Login-Seite
 
 == Warenkatalog
 
-image::/asciidoc/Anwendungsdoku/Bilder/catalogCustomer.png[]
+image::Bilder/catalogCustomer.png[]
 
 Der Warenkatalog aus Sicht eines Kunden. Man kann den Katalog sortieren, Waren dem Warenkorb hinzufügen und eine Pizza nach den eigenen Wünschen verfeinern mithilfe der jeweiligen Buttons.
 
-image::/app/asciidoc/Anwendungsdoku/Bilder/catalogAdmin.png[]
+image::Bilder/catalogAdmin.png[]
 
 Der Warenkatalog aus Sicht des Admins. Er kann Items aus dem Warenkatalog entfernen, sie bearbeiten und Pizzen dauerhaft verfeinern.
 
-image::app/asciidoc/Anwendungsdoku/Bilder/catalogSeller.png[]
+image::Bilder/catalogSeller.png[]
 
 Der Warenkatalog aus Sicht des Verkäufers. Er kann Items dem Warenkorb hinzufügen und Pizzen temporär verfeinern. 
 
 === Item bearbeiten/hinzufügen
 
-image::app/asciidoc/Anwendungsdoku/Bilder/itemBearbeiten.png[]
+image::Bilder/itemBearbeiten.png[]
 
 Der Admin und der Verkäufen können Items bearbeiten. Der Unterschied besteht darin, dass ein Verkäufer ein neues Item im Warenkatalog hinzufügt und der Admin ein bestehendes Item überschreibt.
 
@@ -49,7 +48,7 @@ Der Admin und der Verkäufen können Items bearbeiten. Der Unterschied besteht d
 
 === Pizza erstellen/verfeinern
 
-image::swt16w16/app/asciidoc/Anwendungsdoku/Bilder/itemVerfeinern.png[]
+image::Bilder/itemVerfeinern.png[]
 
 Hier können Kunden ihre eigenen Pizzen aus einer Auswahl an Zutaten erstellen. Der Admin kann hier komplett neue Pizzen dem Warenkatalog hinzufügen und der Verkäufer übernimmt die Angaben des Kunden um die vom Kunden gewünschte, persönliche Pizza zu erstellen.
 
@@ -57,7 +56,7 @@ Hier können Kunden ihre eigenen Pizzen aus einer Auswahl an Zutaten erstellen. 
 
 == Finanzen
 
-image::/app/asciidoc/Anwendungsdoku/Bilder/finanzen.png[]
+image::Bilder/finanzen.png[]
 
 Die Finanzübersicht des Admins. Er kann hier durch die Kalenderwochen gehen und die Einträge überprüfen.
 In einem extra Panel besteht die Möglichkeit, die Buisinesstime vorzuspulen.
@@ -76,7 +75,7 @@ In einem extra Panel besteht die Möglichkeit, die Buisinesstime vorzuspulen.
 
 === Newsletter 
 
-image::/app/asciidoc/Anwendungsdoku/Bilder/newsletterAdmin.png[]
+image::Bilder/newsletterAdmin.png[]
 
 Auf dieser Seite kann der Admin den Text für die Newsletter-Email schreiben und diese E-Mail dann verschicken.
 
@@ -99,26 +98,26 @@ Auf dieser Seite kann der Admin den Text für die Newsletter-Email schreiben und
 
 ==== Lieferant
 
-image::/app/asciidoc/Anwendungsdoku/Bilder/delivererDashboard.png[]
+image::Bilder/delivererDashboard.png[]
 
 Die Startseite des Lieferanten. Er kann sich hier einchecken, die Essgarnitur eines Kunden zurückgeben und seine Liste der Kunden die er beliefern soll aktualisieren.
 
 
 ==== Mitarbeiterübersicht
 
-image::/app/asciidoc/Anwendungsdoku/Bilder/mitarbeiterAnzeigen.png[]
+image::Bilder/mitarbeiterAnzeigen.png[]
 
 Die Mitarbeiterübersicht für den Admin. Er kann hier Mitarbeiter überarbeiten oder entfernen.
 
 ==== Mitarbeiter bearbeiten
 
-image::/app/asciidoc/Anwendungsdoku/Bilder/mitarbeiterBearbeiten.png[]
+image::Bilder/mitarbeiterBearbeiten.png[]
 
 Auf dieser Seite kann der Admin die Daten eines Mitarbeiters überarbeiten.
 
 ==== Mitarbeiter entfernen
 
-image::/app/asciidoc/Anwendungsdoku/Bilder/mitarbeiterRegistrieren.png[]
+image::Bilder/mitarbeiterRegistrieren.png[]
 
 Der Admin kann hier einen neuen Mitarbeiter registrieren und seine Rolle festlegen (es kann allerdings immer nur einen Admin geben).
 
