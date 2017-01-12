@@ -40,7 +40,7 @@ Der Warenkatalog aus Sicht des Verkäufers. Er kann Items dem Warenkorb hinzufü
 
 === Item bearbeiten/hinzufügen
 
-image::/app/asciidoc/Anwendungsdoku/Bilder/itemBearbeiten.png[]
+image::app/asciidoc/Anwendungsdoku/Bilder/itemBearbeiten.png[]
 
 Der Admin und der Verkäufen können Items bearbeiten. Der Unterschied besteht darin, dass ein Verkäufer ein neues Item im Warenkatalog hinzufügt und der Admin ein bestehendes Item überschreibt.
 
@@ -48,7 +48,7 @@ Der Admin und der Verkäufen können Items bearbeiten. Der Unterschied besteht d
 
 === Pizza erstellen/verfeinern
 
-image::/app/asciidoc/Anwendungsdoku/Bilder/itemVerfeinern.png[]
+image::swt16w16/app/asciidoc/Anwendungsdoku/Bilder/itemVerfeinern.png[]
 
 Hier können Kunden ihre eigenen Pizzen aus einer Auswahl an Zutaten erstellen. Der Admin kann hier komplett neue Pizzen dem Warenkatalog hinzufügen und der Verkäufer übernimmt die Angaben des Kunden um die vom Kunden gewünschte, persönliche Pizza zu erstellen.
 
