@@ -195,6 +195,11 @@ public class Store {
 		return null;
 	}
 
+	/**
+	 * Method to fill the pizzaqueue, if order contains pizza
+	 * @param order PizzaOrder to be analyzed
+	 * @return analyzed PizzaOrder
+	 */
 	public PizzaOrder analyzeOrder(PizzaOrder order) {
 		for (OrderLine l : order.getOrder().getOrderLines()) {
 			Item temp = itemCatalog.findOne(l.getProductIdentifier()).get();
@@ -218,6 +223,10 @@ public class Store {
 
 	}
 
+	/**
+	 * Update unbaked pizza in a {@link PizzaOrder}
+	 * @param pizza
+	 */
 	public void updatePizzaOrder(Pizza pizza) {
 
 		if (pizza.equals(null)) {
@@ -248,7 +257,7 @@ public class Store {
 			}
 		}
 	}
-
+	
 	public void addOrder(OrderIdentifier o, Pizza p) {
 		if (!pizzaMap.containsKey(p.getId())) {
 			ArrayList<String> tmp = new ArrayList<String>();
@@ -287,7 +296,12 @@ public class Store {
 		System.out.println(pizzaMap.get(p.getId()).toString());
 	}
 
-	// deletes customer based on and ID, and cancles all his orders.
+	/**
+	 *  deletes customer based on and ID, and cancels all his orders.
+	 * @param model
+	 * @param id
+	 * @throws Exception
+	 */
 	public void deleteCustomer(Model model, long id) throws Exception {
 
 		Customer c = customerRepository.findOne(id);
@@ -319,6 +333,12 @@ public class Store {
 		customerRepository.delete(id);
 	}
 
+	/**
+	 * finish Order and create AccountancyEntry
+	 * @param p
+	 * @param msg
+	 * @param del
+	 */
 	public void completeOrder(PizzaOrder p, String msg, Deliverer del) {
 		p.completeOrder();
 		pizzaOrderRepo.save(p);
@@ -351,6 +371,11 @@ public class Store {
 		}
 	}
 
+	/**
+	 * put first pizza in queue into given oven
+	 * @param oven oven to be filled
+	 * @return whether successfull or not
+	 */
 	public boolean putPizzaIntoOven(Oven oven) {
 
 		for (int i = 0; i < ovenList.size(); i++) {
@@ -476,6 +501,9 @@ public class Store {
 		}
 	}
 
+	/**
+	 * check whether any cutlery has decayed 
+	 */
 	public void checkCutleries() {
 		for (Customer c : this.customerRepository.findAll()) {
 			if (c.getCutlery() != null && c.getCutlery().getDate().isBefore(businessTime.getTime())) {
@@ -498,6 +526,12 @@ public class Store {
 		}
 	}
 
+	/**
+	 * 
+	 * @param t input telephonnumber
+	 * @param p {@link Person} to be edited (if new Person --> null) 
+	 * @return errormessage (isEmpty if valid)
+	 */
 	public String validateTelephonenumber(String t, Person p) {
 		for (char c : t.toCharArray()) {
 			if (!Character.isDigit(c))
