@@ -102,6 +102,12 @@ public class OrderController {
 		return "redirect:orders";
 	}
 
+	/**
+	 * Method to unassign the {@link Deliverer} from a {@link PizzaOrder}
+	 * @param model model 
+	 * @param orderID orderID of the pizzaOrder
+	 * @return redirects to orders
+	 */
 	@RequestMapping(value = "changeDeliverer", method = RequestMethod.POST)
 	public String assignDeliverer(Model model,@RequestParam("orderID") OrderIdentifier orderID) {
 		
