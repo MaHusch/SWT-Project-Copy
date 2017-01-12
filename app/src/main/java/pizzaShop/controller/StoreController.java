@@ -35,33 +35,29 @@ public class StoreController {
 	ItemCatalog itemCatalog;
 	private final TanManagement tanManagement;
 	private final CustomerRepository customerRepository;
-	private final PizzaOrderRepository pizzaOrderRepository;
 	private final CatalogHelper catalogHelper;
-	//private final AddressRepository addressRepository;
 
 	private final Store store;
 	private ErrorClass error;
 	private ErrorClass customerError = new ErrorClass(false);
 
-	@Autowired 
-	public StoreController(CatalogHelper catalogHelper,ItemCatalog itemCatalog, TanManagement tanManagement, 
-			CustomerRepository customerRepository, PizzaOrderRepository pOR, Store store){//, AddressRepository addressRepo) {
-
+	@Autowired
+	public StoreController(CatalogHelper catalogHelper, ItemCatalog itemCatalog, TanManagement tanManagement,
+			CustomerRepository customerRepository, PizzaOrderRepository pOR, Store store) {// ,
+																							// AddressRepository
+																							// addressRepo)
+																							// {
 
 		this.itemCatalog = itemCatalog;
 		this.tanManagement = tanManagement;
 		this.customerRepository = customerRepository;
-		this.pizzaOrderRepository = pOR;
-		
-		//this.addressRepository = addressRepo;
 		this.store = store;
 		this.catalogHelper = catalogHelper;
 		error = new ErrorClass(false);
 	}
 
 	@RequestMapping("/sBaker")
-	public String sBaker() // direct to baker dashboard(after login)
-	{
+	public String sBaker() {
 		return "redirect:ovens";
 	}
 
@@ -123,35 +119,31 @@ public class StoreController {
 			@RequestParam(value = "admin_flag", required = false) String admin_flag,
 			@RequestParam(value = "pid", required = false) String pizzaID, @ModelAttribute Cart cart) {
 		System.out.println("Custom pizza name " + pizzaName);
-		Pizza newPizza;
-
 		if (ids == null || ids.length == 0) {
 			error.setError(true);
 			return "redirect:pizza_configurator";
 		} else
 			error.setError(false);
 
-		
 		store.configurePizza(model, ids, pizzaName, admin_flag, pizzaID, cart);
-	
+
 		return "redirect:catalog";
 	}
 
 	@RequestMapping("/tan")
 	public String tan(Model model) {
 
-		
 		ArrayList<Map.Entry<Tan, String>> activeTans = new ArrayList<Map.Entry<Tan, String>>();
 		ArrayList<Map.Entry<Tan, String>> usedTans = new ArrayList<Map.Entry<Tan, String>>();
-		
-		for(Entry<Tan, String> t : tanManagement.getAllTans()){
-			if(t.getKey().getStatus().equals(TanStatus.USED)){
+
+		for (Entry<Tan, String> t : tanManagement.getAllTans()) {
+			if (t.getKey().getStatus().equals(TanStatus.USED)) {
 				usedTans.add(t);
-			}else{
+			} else {
 				activeTans.add(t);
 			}
 		}
-		
+
 		model.addAttribute("activeTans", activeTans);
 		model.addAttribute("usedTans", usedTans);
 
@@ -160,14 +152,12 @@ public class StoreController {
 		return "tan";
 	}
 
-	
-
 	@RequestMapping("/customer_display")
 	public String customer_display(Model model) {
 
 		store.checkCutleries();
 		model.addAttribute("customer", customerRepository.findAll());
-		model.addAttribute("error",customerError);
+		model.addAttribute("error", customerError);
 
 		return "customer_display";
 	}
@@ -187,9 +177,9 @@ public class StoreController {
 		return "redirect:register_customer";
 
 	}
-	
-	@RequestMapping("/deleteCustomer") 
-	public String deleteCustomer(Model model,@RequestParam("cid") long id) {
+
+	@RequestMapping("/deleteCustomer")
+	public String deleteCustomer(Model model, @RequestParam("cid") long id) {
 		customerError.setError(false);
 		try {
 			store.deleteCustomer(model, id);
@@ -197,12 +187,10 @@ public class StoreController {
 			customerError.setError(true);
 			customerError.setMessage(e.getMessage());
 		}
-		
+
 		return "redirect:customer_display";
 
 	}
-
-	
 
 	@RequestMapping("returnCutlery")
 	public String returnCutlery(@RequestParam("lost") String lostStr, @RequestParam("cid") long id) {
@@ -225,37 +213,37 @@ public class StoreController {
 	public String login() {
 		return "login";
 	}
-	
-	@RequestMapping("/newsletter") 
+
+	@RequestMapping("/newsletter")
 	public String newsletter() {
-		
+
 		return "newsletter";
 
 	}
-	
-	@RequestMapping("addEmail") 
+
+	@RequestMapping("addEmail")
 	public String addEmail(@RequestParam("email") String eMailAddress) {
-		
+
 		store.addEmailToMailingList(eMailAddress);
-		
+
 		return "newsletter";
 
 	}
-	
-	@RequestMapping("removeEmail") 
+
+	@RequestMapping("removeEmail")
 	public String removeEmail(@RequestParam("email") String eMailAddress) {
-		
+
 		store.removeEmailFromMailingList(eMailAddress);
-		
+
 		return "newsletter";
 
 	}
-	
-	@RequestMapping("sendNewsletter") 
+
+	@RequestMapping("sendNewsletter")
 	public String sendNewsletter(@RequestParam("newsletter_text") String newsletterText) {
-		
+
 		store.sendNewsletter(newsletterText);
-		
+
 		return "newsletter";
 
 	}
