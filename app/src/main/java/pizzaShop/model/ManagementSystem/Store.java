@@ -443,7 +443,7 @@ public class Store {
 
 		Pizza newPizza;
 
-		newPizza = new Pizza("custom", Money.of(0, "EUR"));
+		newPizza = new Pizza("custom", Money.of(2, "EUR"));
 
 		for (int i = 0; i < ids.length; i++) {
 

@@ -2,13 +2,9 @@ package pizzaShop;
 
 import static org.salespointframework.core.Currencies.EURO;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
-import java.util.HashMap;
-
 import org.javamoney.moneta.Money;
 import org.salespointframework.accountancy.Accountancy;
-import org.salespointframework.accountancy.AccountancyEntry;
 import org.salespointframework.core.DataInitializer;
 import org.salespointframework.time.BusinessTime;
 import org.salespointframework.useraccount.Role;
@@ -16,18 +12,15 @@ import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import pizzaShop.model.AccountSystem.Address;
 import pizzaShop.model.AccountSystem.Admin;
 import pizzaShop.model.AccountSystem.Baker;
 import pizzaShop.model.AccountSystem.Customer;
 import pizzaShop.model.AccountSystem.Deliverer;
-import pizzaShop.model.AccountSystem.Person;
 import pizzaShop.model.AccountSystem.Seller;
 import pizzaShop.model.AccountingSystem.SalaryThread;
 import pizzaShop.model.DataBaseSystem.CustomerRepository;
 import pizzaShop.model.DataBaseSystem.ItemCatalog;
 import pizzaShop.model.DataBaseSystem.StaffMemberRepository;
-import pizzaShop.model.ManagementSystem.Pizzaqueue;
 import pizzaShop.model.ManagementSystem.Store;
 import pizzaShop.model.ManagementSystem.Tan_Management.TanManagement;
 import pizzaShop.model.OrderSystem.Cutlery;
@@ -46,14 +39,11 @@ import pizzaShop.model.OrderSystem.Pizza;
 public class ApplicationDataInitializer implements DataInitializer {
 
 	private final Accountancy accountancy;
-	private final UserAccountManager employeeAccountManager;
 	private final BusinessTime businessTime;
 	private final CustomerRepository customerRepository;
 	private final TanManagement tanManagement;
 	private final Store store;
 	private final ItemCatalog itemCatalog;
-	private final StaffMemberRepository staffMemberRepository;
-
 	/**
 	 * gets the components via autowired
 	 * 
@@ -68,13 +58,11 @@ public class ApplicationDataInitializer implements DataInitializer {
 			BusinessTime businessTime, CustomerRepository customerRepository, TanManagement tanManagement, Store store,
 			ItemCatalog itemCatalog, StaffMemberRepository staffMemberRepository) {
 		this.accountancy = accountancy;
-		this.employeeAccountManager = employeeAccountManager;
 		this.businessTime = businessTime;
 		this.customerRepository = customerRepository;
 		this.tanManagement = tanManagement;
 		this.store = store;
 		this.itemCatalog = itemCatalog;
-		this.staffMemberRepository = staffMemberRepository;
 	}
 
 	/**
@@ -133,22 +121,21 @@ public class ApplicationDataInitializer implements DataInitializer {
 		Ingredient spinach = new Ingredient("Spinat", Money.of(0.60, EURO));
 		Ingredient olive = new Ingredient("Oliven", Money.of(0.90, EURO));
 		Ingredient chili = new Ingredient("Chili", Money.of(0.70, EURO));
-		Ingredient base = new Ingredient("Teig", Money.of(2.00, EURO));
 
 		Pizza pizza1 = new Pizza("Barbecue", Money.of(0.00, EURO));
-		pizza1.addIngredient(Arrays.asList(base, bacon, onions, paprika, cheese));
+		pizza1.addIngredient(Arrays.asList(bacon, onions, paprika, cheese));
 
 		Pizza pizza2 = new Pizza("BigApple", Money.of(0.00, EURO));
-		pizza2.addIngredient(Arrays.asList(base, chicken_stripes, spinach, cheese));
+		pizza2.addIngredient(Arrays.asList(chicken_stripes, spinach, cheese));
 
 		Pizza pizza3 = new Pizza("Mediteran", Money.of(0.00, EURO));
-		pizza3.addIngredient(Arrays.asList(base, chicken_stripes, olive, cheese));
+		pizza3.addIngredient(Arrays.asList(chicken_stripes, olive, cheese));
 
 		Pizza pizza4 = new Pizza("Fungi", Money.of(0.0, EURO));
-		pizza4.addIngredient(Arrays.asList(base, cheese, mushroom, onions));
+		pizza4.addIngredient(Arrays.asList(cheese, mushroom, onions));
 
 		Pizza pizza5 = new Pizza("Diablo", Money.of(0.0, EURO));
-		pizza5.addIngredient(Arrays.asList(base, cheese, mushroom, paprika, chili));
+		pizza5.addIngredient(Arrays.asList(cheese, mushroom, paprika, chili));
 
 		Item beer = new Item("Desperados", Money.of(1.60, EURO), ItemType.DRINK);
 		Item cola = new Item("Coca Cola", Money.of(2.50, EURO), ItemType.DRINK);
@@ -163,7 +150,7 @@ public class ApplicationDataInitializer implements DataInitializer {
 
 		itemCatalog.save(Arrays.asList(pizza1, pizza2, pizza3, pizza4, pizza5, spinach, wine, freewine, apple_spritzer,
 				water, cola, cheese, mushroom, chicken_stripes, bacon, paprika, beer, freebeer, salat1, salat2,
-				pineapple, onions, base, olive));
+				pineapple, onions,olive));
 
 	}
 
