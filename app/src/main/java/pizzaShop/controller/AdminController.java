@@ -143,7 +143,7 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/deleteStaffMember")
-	public String updateStaffMember(Model model, @RequestParam("StaffMemberName") String username, @LoggedIn Optional<UserAccount> lUserAccount) {
+	public String deleteStaffMember(Model model, @RequestParam("StaffMemberName") String username, @LoggedIn Optional<UserAccount> lUserAccount) {
 		StaffMember member = store.getStaffMemberByName(username);
 		error.setError(false);
 		if(member.getUserAccount().equals(lUserAccount.get())) 

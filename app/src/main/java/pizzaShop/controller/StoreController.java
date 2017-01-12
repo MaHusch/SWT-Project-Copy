@@ -3,6 +3,8 @@ package pizzaShop.controller;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.salespointframework.order.Cart;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,9 @@ import pizzaShop.model.DataBaseSystem.CustomerRepository;
 import pizzaShop.model.DataBaseSystem.ItemCatalog;
 import pizzaShop.model.DataBaseSystem.PizzaOrderRepository;
 import pizzaShop.model.ManagementSystem.Store;
+import pizzaShop.model.ManagementSystem.Tan_Management.Tan;
 import pizzaShop.model.ManagementSystem.Tan_Management.TanManagement;
+import pizzaShop.model.ManagementSystem.Tan_Management.TanStatus;
 import pizzaShop.model.OrderSystem.Cutlery;
 import pizzaShop.model.OrderSystem.Ingredient;
 import pizzaShop.model.OrderSystem.Item;
@@ -139,7 +143,20 @@ public class StoreController {
 	@RequestMapping("/tan")
 	public String tan(Model model) {
 
-		model.addAttribute("tan", tanManagement.getAllTans());
+		
+		ArrayList<Map.Entry<Tan, String>> activeTans = new ArrayList<Map.Entry<Tan, String>>();
+		ArrayList<Map.Entry<Tan, String>> usedTans = new ArrayList<Map.Entry<Tan, String>>();
+		
+		for(Entry<Tan, String> t : tanManagement.getAllTans()){
+			if(t.getKey().getStatus().equals(TanStatus.USED)){
+				usedTans.add(t);
+			}else{
+				activeTans.add(t);
+			}
+		}
+		
+		model.addAttribute("activeTans", activeTans);
+		model.addAttribute("usedTans", usedTans);
 
 		model.addAttribute("notConfirmedTans", tanManagement.getAllNotConfirmedTans());
 
@@ -188,85 +205,7 @@ public class StoreController {
 
 	}
 
-	@RequestMapping(value = "/updateCustomer")
-	public String updateStaffMember(Model model, @RequestParam("surname") String surname, @RequestParam("forename") String forename,
-			@RequestParam("telnumber") String telephonenumber, @RequestParam("local") String local,
-			@RequestParam("postcode") String postcode, @RequestParam("street") String street,
-			@RequestParam("housenumber") String housenumber, @RequestParam("cid") long id) {
-		customerError.setError(false);
-		Customer oldCustomer = customerRepository.findOne(id);
-		String oldTelephoneNumber = oldCustomer.getPerson().getTelephoneNumber();
-		
-		if (surname.equals("") || forename.equals("") || telephonenumber.equals("") || local.equals("") || street.equals("") || housenumber.equals("")
-				|| postcode.equals("")) {
-			customerError.setError(true);
-			customerError.setMessage("Eingabefelder überprüfen!");
-			model.addAttribute("existingCustomer", oldCustomer);
-			return "register_customer";
-		}
-		
-		String msg = store.validateTelephonenumber(telephonenumber,oldCustomer.getPerson());
-		if(!msg.isEmpty())
-		{
-			customerError.setError(true);
-			customerError.setMessage(msg);
-			return "redirect:register_customer";
-		}
-		
-		
-		Cutlery oldCutlery = oldCustomer.getCutlery();
-
-		
-
-		if (!oldTelephoneNumber.equals(telephonenumber)) {
-			tanManagement.updateTelephoneNumber(oldTelephoneNumber, telephonenumber);
-		}
-		
-		//Address newAddress = new Address(local, postcode, street, housenumber);
-		
-		/*
-		boolean addressAlreadyExists = false;
-		
-		for(Address address : this.addressRepository.findAll())
-		{
-			if(address.equals(newAddress)){
-				newAddress = address;
-				addressAlreadyExists = true;
-				break;
-			}
-		}
-		
-		if(!addressAlreadyExists)
-		{
-			newAddress = this.addressRepository.save(newAddress);
-		}
-		*/
 	
-		//Person updatedPerson = new Person(surname,forename, telephonenumber, newAddress);
-			
-		Customer updatedCustomer = new Customer(surname,forename, telephonenumber,local, postcode, street, housenumber);
-		
-		if(oldCutlery != null)
-		{
-			updatedCustomer.setCutlery(oldCutlery);
-		}
-
-		Iterable<PizzaOrder> allPizzaOrders = pizzaOrderRepository.findAll();
-
-		for (PizzaOrder pizzaOrder : allPizzaOrders) {
-			Customer customer = pizzaOrder.getCustomer();
-			if (customer != null) {
-				if (customer.getId() == id) {
-					pizzaOrder.setCustomer(updatedCustomer);
-				}
-			}
-		}
-		
-		customerRepository.save(updatedCustomer);
-		customerRepository.delete(id);
-
-		return "redirect:customer_display";
-	}
 
 	@RequestMapping("returnCutlery")
 	public String returnCutlery(@RequestParam("lost") String lostStr, @RequestParam("cid") long id) {
