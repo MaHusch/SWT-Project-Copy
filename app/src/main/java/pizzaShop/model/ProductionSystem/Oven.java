@@ -12,7 +12,7 @@ public class Oven {
 	private static int ID = 1;
 	private int ovenID;
 	private Pizza currentPizza = null;
-	private BakerTimer myTimer;
+	private BakerTimer myTimer = null;
 	private boolean empty = true;
 
 	private final Store store;
