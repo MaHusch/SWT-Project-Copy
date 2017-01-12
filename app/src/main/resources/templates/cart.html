@@ -24,6 +24,7 @@
 	<!-- NavBar -->
 	<div th:include="navbar :: navbar">...</div>
 
+
 	<!-- Panel for CustomerCheck -->
 	<div sec:authorize="hasRole('ROLE_SELLER')" class="container col-md-4">
 		<div class="panel panel-primary">
@@ -120,25 +121,33 @@
 				<p id="cutleryPrice"></p>
 
 				<form method="post" action="/checkout">
-					<label for="onSite">Abholung vor Ort(10% Rabatt auf den	Gesamtpreis):</label> 
-					<input type="hidden" name="pickUp" value="0" /> 
-					<input type="checkbox" name="pickUp" value="1" /> 
-					<br> </br> 
-					<label for="cutlery"> Essgarnitur:</label> 
-					<input type="hidden" name="cutlery" value="0" /> 
-					<input type="checkbox" id="cutlery" name="cutlery" value="1"  onclick="editPrice()"/> 
-					<br> </br> 
-					<label for="cutlery"> Anmerkung:</label> 
-					<br> </br> 
+					<label for="onSite">Abholung vor Ort(10% Rabatt auf den
+						Gesamtpreis):</label> <input type="hidden" name="pickUp" value="0" /> <input
+						type="checkbox" name="pickUp" value="1" /> <br> </br> <label
+						for="cutlery"> Essgarnitur:</label> <input type="hidden"
+						name="cutlery" value="0" /> <input type="checkbox" id="cutlery"
+						name="cutlery" value="1" onclick="editPrice()" /> <br> </br> <label
+						for="cutlery"> Anmerkung:</label> <br> </br>
 					<textarea rows="2" cols="50" id="remark" name="remark"></textarea>
 					<br> </br>
-					<div th:switch="${customer.isPresent() }" sec:authorize="hasRole('ROLE_SELLER')">
-						<input  th:case="true" class="btn btn-primary" type="submit" value="Kaufen" />
+					<div th:switch="${customer.isPresent() }"
+						sec:authorize="hasRole('ROLE_SELLER')">
+						<input th:case="true" class="btn btn-primary" type="submit"
+							value="Kaufen" />
 
 						<p th:case="false">Kein Kunde eingeloggt</p>
 					</div>
 
 				</form>
+			</div>
+		</div>
+	</div>
+	
+		<div th:if="${pizzaQueueTime != null}" class="container col-md-3">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Voraussichtliche Backdauer:</div>
+			<div class="panel-body">
+				<p th:text="${pizzaQueueTime/60 + ' Minuten bis die Pizzen im Ofen durch sind'}" />
 			</div>
 		</div>
 	</div>
@@ -172,6 +181,8 @@
 			</div>
 		</div>
 	</div>
+
+
 
 	<div th:if="${error.getError() == true}" class="container col-md-6">
 		<div class="panel panel-danger">
