@@ -27,7 +27,7 @@ public abstract class StaffMember{
 	private String password;
 	private UserAccount userAccount;
 	private Role role;
-	protected MonetaryAmount salary;
+	protected MonetaryAmount salary = null;
 	
 	@OneToOne(cascade = CascadeType.ALL) private Person myPerson = null;
 

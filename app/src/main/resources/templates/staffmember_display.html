@@ -22,6 +22,7 @@
 							<td>Nachname</td>
 							<td>Telefonnummer</td>
 							<td>Rolle</td>
+							<td>Gehalt</td>
 						</tr>
 						<tbody>
 							<tr th:each=" staffmember : ${staffmember}">
@@ -29,6 +30,7 @@
 								<td th:text="${staffmember.getPerson().getSurname()}">Nachname</td>
 								<td th:text="${staffmember.getPerson().getTelephoneNumber()}">Nachname</td>
 								<td th:text="${staffmember.getRole()}">Rolle</td>
+								<td th:text="${staffmember.getSalary().getNumber()}">Gehalt</td>
 								
 								
 								<td>

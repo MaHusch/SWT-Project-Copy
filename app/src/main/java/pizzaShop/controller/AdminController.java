@@ -50,12 +50,6 @@ public class AdminController {
 		StaffMember member = store.getStaffMemberByName(name);
 		// System.out.println(member.getUsername());
 		model.addAttribute("staffMember", member);
-
-		// ArrayList<StaffMember> staffMemberList = (ArrayList<StaffMember>)
-		// store.getStaffMemberList();
-		// StaffMember updatedMember =
-		// staffMemberList.get(staffMemberList.indexOf(member));
-
 		model.addAttribute("error", error);
 		return "register_staffmember";
 	}
@@ -66,9 +60,11 @@ public class AdminController {
 			@RequestParam("username") String username, @RequestParam("password") String password,
 			@RequestParam("role") String role) {
 
+		error.setError(false);
 		if (surname.equals("") || forename.equals("") || telephonenumber.equals("") || username.equals("") || password.equals("")
 				|| role.equals("")) {
-			model.addAttribute("error", error);
+			error.setError(true);
+			error.setMessage("Eingabefelder überprüfen!");
 			return "redirect:register_staffmember";
 		}
 		
@@ -77,12 +73,9 @@ public class AdminController {
 		{
 			error.setError(true);
 			error.setMessage(msg);
-			model.addAttribute("error", error);
 			return "redirect:register_staffmember";
 		}
 		
-		error.setError(false);
-
 		StaffMember staffMember;
 
 		switch (role) {
@@ -168,11 +161,13 @@ public class AdminController {
 	@RequestMapping(value = "/updateStaffMember")
 	public String updateStaffMember(Model model, @RequestParam("surname") String surname,
 			@RequestParam("forename") String forename, @RequestParam("telnumber") String telephonenumber,
-			@RequestParam("username") String username, @RequestParam("password") String password, RedirectAttributes redirectAttrs) {
-		StaffMember member = store.getStaffMemberByName(username);
+			@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("salary") Long salary, RedirectAttributes redirectAttrs) {
 		
-		if (surname.equals("") || forename.equals("") || telephonenumber.equals("") || username.equals("") || password.equals("")) {
+		error.setError(false);
+		StaffMember member = store.getStaffMemberByName(username);
+		if (surname.equals("") || forename.equals("") || telephonenumber.equals("") || username.equals("") || password.equals("") || salary == null) {
 			error.setError(true);
+			error.setMessage("Eingabefelder überprüfen!");
 			redirectAttrs.addAttribute("name", username).addFlashAttribute("message", "StaffMember");
 			return "redirect:register_staffmember";
 		}
@@ -180,6 +175,7 @@ public class AdminController {
 		member.getPerson().setForename(forename);
 		member.getPerson().setSurname(surname);
 		member.getPerson().setTelephoneNumber(telephonenumber);
+		member.setSalary(Money.of(salary, EURO));
 
 		Optional<UserAccount> userAccount = employeeAccountManager.findByUsername(username);
 

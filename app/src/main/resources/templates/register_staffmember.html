@@ -77,6 +77,10 @@
 									<option>Lieferant</option>
 							</select></td>
 						</tr>
+						<tr th:if = "${staffMember}">
+							<td><label for="username">Gehalt[€]*</label>:</td>
+							<td th:if = "${staffMember}"><input type="number" id="salary" name="salary" th:value="${staffMember.getSalary().getNumber()}" min="0"/></td>
+						</tr>
 						<tr>
 							<td>
 							<input th:if = "${staffMember}" type="hidden" id="username" name="username" th:value="${staffMember.getUsername()}"/>
