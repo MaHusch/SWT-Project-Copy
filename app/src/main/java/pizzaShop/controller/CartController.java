@@ -156,7 +156,16 @@ public class CartController {
 		cart.addOrUpdateItem(itemCatalog.findOne(id).get(), Quantity.of(1));
 		return "redirect:cart";
 	}
-
+	
+	/**
+	 * setup for {@link CartHelper} createPizzaOrder()
+	 * @param model
+	 * @param cart
+	 * @param onSiteStr 
+	 * @param cutleryStr
+	 * @param userAccount
+	 * @return
+	 */
 	@RequestMapping(value = "/checkout", method = RequestMethod.POST)
 	public String buy(Model model, @ModelAttribute Cart cart, 
 						@RequestParam("onSite") String onSiteStr,
@@ -166,7 +175,7 @@ public class CartController {
 		cartError.setError(false);
 
 		boolean onSite = onSiteStr.equals("0,1") ? true : false;
-		boolean cutlery = cutleryStr.equals("0") ? false : true;
+		boolean cutlery = cutleryStr.equals("0,1") ? true : false;
 
 		try {
 			cartHelper.createPizzaOrder(cutlery, onSite, userAccount.orElse(null), cart, customer.orElse(null));

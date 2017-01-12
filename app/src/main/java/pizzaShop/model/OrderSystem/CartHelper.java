@@ -56,7 +56,6 @@ public class CartHelper {
 	}
 
 	public void removeItem(String cartId, Cart cart) {
-
 		cart.removeItem(cartId);
 
 	}
