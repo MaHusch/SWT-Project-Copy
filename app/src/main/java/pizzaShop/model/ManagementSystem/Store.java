@@ -105,6 +105,19 @@ public class Store {
 	public boolean addEmailToMailingList(String eMailAddress) {
 
 		if (!this.eMailList.contains(eMailAddress)) {
+			
+			SimpleMailMessage simpleMessage = new SimpleMailMessage();
+			
+			simpleMessage.setTo(eMailAddress);
+			simpleMessage.setSubject("Papa Pizza Newsletter");
+			simpleMessage.setText("Willkommen zum Papa Pizza Newsletter");
+
+			try {
+				this.mailSender.send(simpleMessage);
+			} catch (MailException ex) {
+				System.err.println(ex.getMessage());
+			}
+			
 			return this.eMailList.add(eMailAddress);
 		}
 
@@ -122,9 +135,8 @@ public class Store {
 
 			SimpleMailMessage simpleMessage = new SimpleMailMessage();
 			
-			simpleMessage.setFrom("papa-pizza@gmail.com");
 			simpleMessage.setTo(eMailAddress);
-			simpleMessage.setSubject("Papa_Pizza_Newsletter");
+			simpleMessage.setSubject("Papa Pizza Newsletter");
 			simpleMessage.setText(newsletterText);
 
 			try {
