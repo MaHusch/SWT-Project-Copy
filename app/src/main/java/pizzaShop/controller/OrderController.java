@@ -88,14 +88,17 @@ public class OrderController {
 	}
 
 	@RequestMapping(value = "/assignDeliverer", method = RequestMethod.POST)
-	public String assignDeliverer(Model model, @RequestParam("delivererName") String name, @RequestParam("orderID") OrderIdentifier orderID) {
-		if (name == null || name.equals("")) {
+	public String assignDeliverer(Model model, @RequestParam("delivererList") String username, @RequestParam("orderID") OrderIdentifier orderID) {
+		if (username == null || username.equals("")) {
 			error.setError(true);
 			error.setMessage("Keinen Lieferanten ausgewählt!");
 		} else {
-			Deliverer deliverer = (Deliverer) store.getStaffMemberByForename(name);
+			Deliverer deliverer = (Deliverer) store.getStaffMemberByName(username);
 
 			deliverer.addOrder(orderID);
+			PizzaOrder p = pizzaOrderRepository.findOne(orderID);
+			p.assignDeliverer();
+			pizzaOrderRepository.save(p);
 		}
 		return "redirect:orders";
 	}

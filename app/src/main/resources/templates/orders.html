@@ -55,8 +55,8 @@
 						</tr>
 					</thead>
 					<tbody>
-						<div th:each="order : ${uncompletedOrders}">
-							<tr>
+						
+							<tr th:each="order : ${uncompletedOrders}">
 								<td sec:authorize="hasRole('ROLE_ADMIN')"
 									th:text="${order.getId() }">arg</td>
 								<td sec:authorize="isAuthenticated()"
@@ -65,8 +65,7 @@
 								<td th:text="${order.getOrderStatus() }">arg</td>
 								<td th:text="${order.getUnbakedPizzas() }">arg</td>
 								<td th:text="${order.getCustomer().getPerson().toString()}">arg</td>
-								<td sec:authorize="hasRole('ROLE_SELLER')"
-									th:if="${order.getPickUp()}">
+								<td sec:authorize="hasRole('ROLE_SELLER')" th:if="${order.getPickUp()}">
 									<form method="post" action="/confirmCollection">
 										<input type="hidden" value="0" name="orderID"
 											th:value="${order.getId()}" /> <input
@@ -75,22 +74,25 @@
 									</form>
 								</td>
 
-								<td sec:authorize="hasRole('ROLE_SELLER')"
-									th:unless="${order.getPickUp()}">
-									<form method="post" action="/assignDeliverer">
-										<select name="delivererList" id="delivererList" size="1">
-											<option th:each=" deliverer : ${deliverers}"
-												th:text="${deliverer.getPerson().getForename()}">eddy</option>
-										</select> <input type="hidden" value="0" id="delivererName"
-											name="delivererName" th:value="${deliverer}" /> <input
+								<td sec:authorize="hasRole('ROLE_SELLER')" th:unless="${order.getPickUp()}" >
+									<form th:unless="${order.getOrderStatus().name().contains('PENDING')}" method="post" action="/assignDeliverer">
+										<select name="delivererList" id="delivererList" size="1" >
+											
+												<option th:each="deliverer : ${deliverers}" th:value= "${deliverer.getUsername()}" th:text="${deliverer.getPerson().getForename()}">mark</option>
+											
+											
+										</select>  <input
 											type="hidden" value="0" name="orderID"
 											th:value="${order.getId()}" /> <input
 											class="btn btn-primary" type="submit"
-											value="Lieferant schicken" onclick="assignDeliverer();" />
-									</form>
+											value="Lieferant schicken"  /> <!-- onclick="assignDeliverer();" -->
+									</form >
+									<div th:if="${order.getOrderStatus().name().contains('PENDING')}">
+										<p>zugewiesen</p>
+									</div>
 								</td>
 							</tr>
-						</div>
+					
 					</tbody>
 				</table>
 			</div>
@@ -109,12 +111,10 @@
 							<th>Preis</th>
 							<th>Status</th>
 							<th>Unbaked</th>
-							<th>Lieferant</th>
 						</tr>
 					</thead>
 					<tbody>
-						<div th:each="order : ${completedOrders}">
-							<tr>
+							<tr th:each="order : ${completedOrders}">
 								<td th:text="${order.getId() }">arg</td>
 								<td th:text="${order.toString()}">arg</td>
 								<td th:text="${{order.getTotalPrice()}}">arg</td>
@@ -123,7 +123,7 @@
 								<td th:text="${order.getOrderStatus() }">arg</td>
 								<td th:text="${order.getUnbakedPizzas() }">arg</td>
 							</tr>
-						</div>
+					
 					</tbody>
 				</table>
 			</div>

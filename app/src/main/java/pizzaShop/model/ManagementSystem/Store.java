@@ -324,7 +324,7 @@ public class Store {
 		pizzaOrderRepo.save(p);
 		if (del == null) {
 			AccountancyEntry a = new AccountancyEntry(p.getTotalPrice(),
-					"Order über Account " + p.getOrder().getUserAccount().getUsername() + " " + msg);
+					"Order von " + p.getCustomer().getPerson().getForename() + p.getCustomer().getPerson().getSurname() + " über Account " + p.getOrder().getUserAccount().getUsername() + " " + msg);
 			accountancy.add(a);
 
 		} else {

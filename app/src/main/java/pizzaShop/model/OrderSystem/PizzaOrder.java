@@ -6,6 +6,8 @@ import javax.money.MonetaryAmount;
 import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.OneToOne;
 
 import org.junit.Assert;
@@ -31,6 +33,7 @@ public class PizzaOrder {
 	@OneToOne(cascade = { CascadeType.ALL })
 	private Tan newTan;
 
+	@Enumerated(EnumType.STRING)
 	private PizzaOrderStatus pizzaOrderStatus = PizzaOrderStatus.OPEN;
 
 	@OneToOne(cascade = { CascadeType.ALL })
@@ -124,6 +127,10 @@ public class PizzaOrder {
 	
 	public void cancelOrder() {
 		this.setOrderStatus(PizzaOrderStatus.CANCELLED);
+	}
+	
+	public void assignDeliverer(){
+		this.setOrderStatus(PizzaOrderStatus.PENDING);
 	}
 
 	public boolean getPickUp() {
