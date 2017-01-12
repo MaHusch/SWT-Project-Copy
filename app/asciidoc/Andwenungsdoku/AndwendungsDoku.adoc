@@ -34,7 +34,7 @@ image::/app/asciidoc/Anwendungsdoku/Bilder/catalogAdmin.png[]
 
 Der Warenkatalog aus Sicht des Admins. Er kann Items aus dem Warenkatalog entfernen, sie bearbeiten und Pizzen dauerhaft verfeinern.
 
-image::/app/asciidoc/Anwendungsdoku/Bilder/catalogSeller.png[]
+image::app/asciidoc/Anwendungsdoku/Bilder/catalogSeller.png[]
 
 Der Warenkatalog aus Sicht des Verkäufers. Er kann Items dem Warenkorb hinzufügen und Pizzen temporär verfeinern. 
 
