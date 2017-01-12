@@ -20,7 +20,8 @@ Die Mitarbeiter haben ihre benötigten Menüs im DropDownMenü "Menü", welches 
 
 == Einloggen
 
-image::/Anwendungsdoku/Bilder/login.png[]
+image::/Anwendungsdoku/Bilder/login.png[dasdasdas]
+image::images/layout.png[J14P main circuit board]
 
 Die Login-Seite
 
