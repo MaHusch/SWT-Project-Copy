@@ -1,58 +1,33 @@
 package pizzaShop.controller;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-
-import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
-import javax.money.MonetaryAmount;
-
-import org.javamoney.moneta.Money;
-import org.salespointframework.catalog.Product;
-import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.order.Cart;
-import org.salespointframework.order.OrderIdentifier;
-import org.salespointframework.order.OrderStatus;
-import org.salespointframework.quantity.Quantity;
-import org.salespointframework.useraccount.Password;
-import org.salespointframework.useraccount.UserAccount;
-import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import pizzaShop.model.AccountSystem.Address;
 import pizzaShop.model.AccountSystem.Customer;
-import pizzaShop.model.AccountSystem.Deliverer;
-import pizzaShop.model.AccountSystem.Person;
-import pizzaShop.model.AccountSystem.StaffMember;
-import pizzaShop.model.DataBaseSystem.AddressRepository;
 import pizzaShop.model.DataBaseSystem.CatalogHelper;
 import pizzaShop.model.DataBaseSystem.CustomerRepository;
 import pizzaShop.model.DataBaseSystem.ItemCatalog;
 import pizzaShop.model.DataBaseSystem.PizzaOrderRepository;
 import pizzaShop.model.DataBaseSystem.StaffMemberRepository;
 import pizzaShop.model.ManagementSystem.Store;
-import pizzaShop.model.ManagementSystem.Tan_Management.Tan;
 import pizzaShop.model.ManagementSystem.Tan_Management.TanManagement;
-import pizzaShop.model.ManagementSystem.Tan_Management.TanStatus;
 import pizzaShop.model.OrderSystem.Cutlery;
 import pizzaShop.model.OrderSystem.Ingredient;
 import pizzaShop.model.OrderSystem.Item;
 import pizzaShop.model.OrderSystem.ItemType;
 import pizzaShop.model.OrderSystem.Pizza;
 import pizzaShop.model.OrderSystem.PizzaOrder;
-import pizzaShop.model.OrderSystem.PizzaOrderStatus;
 
 @Controller
 public class StoreController {
@@ -67,6 +42,7 @@ public class StoreController {
 
 	private final Store store;
 	private ErrorClass error;
+	private ErrorClass customerError = new ErrorClass(false);
 
 	@Autowired 
 	public StoreController(CatalogHelper catalogHelper,ItemCatalog itemCatalog, TanManagement tanManagement, 
@@ -180,6 +156,7 @@ public class StoreController {
 
 		store.checkCutleries();
 		model.addAttribute("customer", customerRepository.findAll());
+		model.addAttribute("error",customerError);
 
 		return "customer_display";
 	}
@@ -196,19 +173,18 @@ public class StoreController {
 	@RequestMapping("/editCustomer")
 	public String editCustomer(Model model, @RequestParam("cid") long id, RedirectAttributes redirectAttrs) {
 		redirectAttrs.addAttribute("cid", id).addFlashAttribute("message", "Customer");
-		model.addAttribute("error", error);
 		return "redirect:register_customer";
 
 	}
 	
 	@RequestMapping("/deleteCustomer") 
 	public String deleteCustomer(Model model,@RequestParam("cid") long id) {
-		model.addAttribute("error",error);
-		
+		customerError.setError(false);
 		try {
 			store.deleteCustomer(model, id);
 		} catch (Exception e) {
-			System.out.println("Cutlery fehler beim Kunden");
+			customerError.setError(true);
+			customerError.setMessage(e.getMessage());
 		}
 		
 		return "redirect:customer_display";
@@ -220,15 +196,14 @@ public class StoreController {
 			@RequestParam("telnumber") String telephonenumber, @RequestParam("local") String local,
 			@RequestParam("postcode") String postcode, @RequestParam("street") String street,
 			@RequestParam("housenumber") String housenumber, @RequestParam("cid") long id) {
-
+		customerError.setError(false);
 		Customer oldCustomer = customerRepository.findOne(id);
 		String oldTelephoneNumber = oldCustomer.getPerson().getTelephoneNumber();
 		
-		if (surname == "" || forename == "" || telephonenumber == "" || local == "" || street == "" || housenumber == ""
-				|| postcode == "") {
-			error.setError(true);
-			error.setMessage("Eingabefelder überprüfen!");
-			model.addAttribute("error", error);
+		if (surname.equals("") || forename.equals("") || telephonenumber.equals("") || local.equals("") || street.equals("") || housenumber.equals("")
+				|| postcode.equals("")) {
+			customerError.setError(true);
+			customerError.setMessage("Eingabefelder überprüfen!");
 			model.addAttribute("existingCustomer", oldCustomer);
 			return "register_customer";
 		}
@@ -236,13 +211,11 @@ public class StoreController {
 		String msg = store.validateTelephonenumber(telephonenumber,oldCustomer.getPerson());
 		if(!msg.isEmpty())
 		{
-			error.setError(true);
-			error.setMessage(msg);
-			model.addAttribute("error", error);
-			return "redirect:register_staffmember";
+			customerError.setError(true);
+			customerError.setMessage(msg);
+			return "redirect:register_customer";
 		}
 		
-		error.setError(false);
 		
 		Cutlery oldCutlery = oldCustomer.getCutlery();
 

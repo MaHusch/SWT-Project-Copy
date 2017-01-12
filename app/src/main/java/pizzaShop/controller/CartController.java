@@ -198,7 +198,7 @@ public class CartController {
 	 */
 	@RequestMapping(value = "/checkout", method = RequestMethod.POST)
 	public String buy(Model model, @ModelAttribute Cart cart, @RequestParam("pickUp") String pickUpStr,
-			@RequestParam("cutlery") String cutleryStr, @LoggedIn Optional<UserAccount> userAccount) throws Exception {
+			@RequestParam("cutlery") String cutleryStr, @LoggedIn Optional<UserAccount> userAccount) {
 
 		cartError.setError(false);
 
@@ -210,8 +210,7 @@ public class CartController {
 			model.addAttribute("PizzaQueueTime", cartHelper.pizzaQueueTime());
 		} catch (Exception e) {
 			cartError.setError(true);
-			cartError.setMessage(e.getMessage()+e.getStackTrace());
-			throw e;
+			cartError.setMessage(e.getMessage());
 		}
 
 		return "redirect:cart";

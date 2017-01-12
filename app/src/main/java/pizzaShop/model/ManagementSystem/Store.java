@@ -48,6 +48,7 @@ import pizzaShop.model.OrderSystem.Item;
 import pizzaShop.model.OrderSystem.ItemType;
 import pizzaShop.model.OrderSystem.Pizza;
 import pizzaShop.model.OrderSystem.PizzaOrder;
+import pizzaShop.model.OrderSystem.PizzaOrderStatus;
 import pizzaShop.model.ProductionSystem.Oven;
 
 @Component
@@ -188,7 +189,9 @@ public class Store {
 
 	/**
 	 * Method to fill the pizzaqueue, if order contains pizza
-	 * @param order PizzaOrder to be analyzed
+	 * 
+	 * @param order
+	 *            PizzaOrder to be analyzed
 	 * @return analyzed PizzaOrder
 	 */
 	public PizzaOrder analyzeOrder(PizzaOrder order) {
@@ -216,6 +219,7 @@ public class Store {
 
 	/**
 	 * Update unbaked pizza in a {@link PizzaOrder}
+	 * 
 	 * @param pizza
 	 */
 	public void updatePizzaOrder(Pizza pizza) {
@@ -247,7 +251,7 @@ public class Store {
 			}
 		}
 	}
-	
+
 	public void addOrder(OrderIdentifier o, Pizza p) {
 		if (!pizzaMap.containsKey(p.getId())) {
 			ArrayList<String> tmp = new ArrayList<String>();
@@ -287,7 +291,8 @@ public class Store {
 	}
 
 	/**
-	 *  deletes customer based on and ID, and cancels all his orders.
+	 * deletes customer based on and ID, and cancels all his orders.
+	 * 
 	 * @param model
 	 * @param id
 	 * @throws Exception
@@ -296,6 +301,23 @@ public class Store {
 
 		Customer c = customerRepository.findOne(id);
 		Tan foundTan = tanManagement.getTan(c.getPerson().getTelephoneNumber());
+		
+		Iterable<PizzaOrder> allPizzaOrders = this.pizzaOrderRepo.findAll();
+		ArrayList<PizzaOrder> ordersToDelete = new ArrayList<PizzaOrder>();
+		for (PizzaOrder pizzaOrder : allPizzaOrders) {
+			Customer customer = pizzaOrder.getCustomer();
+
+			if (customer.getId() == id) {
+				ordersToDelete.add(pizzaOrder);
+				PizzaOrderStatus pOStatus = pizzaOrder.getOrderStatus();
+				if (!(pOStatus.equals(PizzaOrderStatus.CANCELLED) || pOStatus.equals(PizzaOrderStatus.COMPLETED))) {
+					throw new Exception("Kunde hat noch offene Bestellungen!");
+				}
+			}
+
+		}
+		pizzaOrderRepo.delete(ordersToDelete);
+		
 
 		if (!foundTan.getStatus().equals(TanStatus.NOT_FOUND)) {
 			tanManagement.invalidateTan(foundTan);
@@ -305,26 +327,12 @@ public class Store {
 			this.returnCutlery("decayed", c);
 		}
 
-		Iterable<PizzaOrder> allPizzaOrders = this.pizzaOrderRepo.findAll();
-
-		for (PizzaOrder pizzaOrder : allPizzaOrders) {
-
-			Customer customer = pizzaOrder.getCustomer();
-
-			if (customer != null) {
-				if (customer.getId() == id) {
-					pizzaOrder.setCustomer(null);
-					pizzaOrder.cancelOrder();
-				}
-			}
-
-		}
-
 		customerRepository.delete(id);
 	}
 
 	/**
 	 * finish Order and create AccountancyEntry
+	 * 
 	 * @param p
 	 * @param msg
 	 * @param del
@@ -363,7 +371,9 @@ public class Store {
 
 	/**
 	 * put first pizza in queue into given oven
-	 * @param oven oven to be filled
+	 * 
+	 * @param oven
+	 *            oven to be filled
 	 * @return whether successfull or not
 	 */
 	public boolean putPizzaIntoOven(Oven oven) {
@@ -390,7 +400,6 @@ public class Store {
 	 *            current time when borrowed
 	 * @return
 	 */
-	
 
 	/**
 	 * Function for returning a {@link Cutlery} lent by a customer
@@ -415,7 +424,7 @@ public class Store {
 
 		if (status.equals("lost") || status.equals("decayed")) {
 			if (status.equals("decayed"))
-				message = "hat seine Essgarnitur nicht zurückgegeben";
+				message = " hat seine Essgarnitur nicht zurückgegeben";
 			accountancy.add(new AccountancyEntry(Money.of(customer.getCutlery().getPrice().getNumber(), EURO),
 					customer.getPerson().getForename() + " " + customer.getPerson().getSurname() + message));
 		}
@@ -479,7 +488,7 @@ public class Store {
 	}
 
 	/**
-	 * check whether any cutlery has decayed 
+	 * check whether any cutlery has decayed
 	 */
 	public void checkCutleries() {
 		for (Customer c : this.customerRepository.findAll()) {
@@ -505,8 +514,10 @@ public class Store {
 
 	/**
 	 * 
-	 * @param t input telephonnumber
-	 * @param p {@link Person} to be edited (if new Person --> null) 
+	 * @param t
+	 *            input telephonnumber
+	 * @param p
+	 *            {@link Person} to be edited (if new Person --> null)
 	 * @return errormessage (isEmpty if valid)
 	 */
 	public String validateTelephonenumber(String t, Person p) {
@@ -515,10 +526,9 @@ public class Store {
 				return "Telefonnummer enthält Buchstaben";
 
 		}
-		
-		for(Customer cu : this.customerRepository.findAll())
-		{
-			if(cu.getPerson().getTelephoneNumber().equals(t) && !cu.getPerson().equals(p))
+
+		for (Customer cu : this.customerRepository.findAll()) {
+			if (cu.getPerson().getTelephoneNumber().equals(t) && !cu.getPerson().equals(p))
 				return "Diese Telefonnummber ist bereits vergeben";
 		}
 		return "";
