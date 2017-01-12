@@ -20,7 +20,6 @@
 				return true;
 			}
 		}
-
 	</script>
 	<!-- NavBar -->
 	<div th:include="navbar :: navbar">...</div>
@@ -128,9 +127,10 @@
 						name="cutlery" value="0" /> <input type="checkbox"
 						id="cutleryCheckbox" name="cutleryCheckbox" value="1"
 						onclick="editPrice()" /> <br> </br>
-					<div th:switch="${customer.isPresent()}">
-						<input sec:authorize="hasRole('ROLE_SELLER')" th:case="true"
-							class="btn btn-primary" type="submit" value="Kaufen" />
+					<div sec:authorize="hasRole('ROLE_SELLER')"
+						th:switch="${customer.isPresent()}">
+						<input th:case="true" class="btn btn-primary" type="submit"
+							value="Kaufen" />
 
 						<p th:case="false">Kein Kunde eingeloggt</p>
 					</div>
