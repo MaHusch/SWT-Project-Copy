@@ -64,15 +64,7 @@ public class Oven {
 	}
 
 	public Pizza getPizza() {
-		try {
-			if (!currentPizza.equals(null)) {
-				return currentPizza;
-			} else {
-				return null;
-			}
-		} catch (Exception e) {
-			return null;
-		}
+		return currentPizza;	
 	}
 
 	public String getPizzaName() {
