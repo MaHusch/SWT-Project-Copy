@@ -74,10 +74,9 @@ public class Store {
 
 	@Autowired
 	public Store(UserAccountManager employeeAccountManager, ItemCatalog itemCatalog,
-			PizzaOrderRepository pizzaOrderRepo, 
-			CustomerRepository customerRepository, Accountancy accountancy, BusinessTime businessTime,
-			CatalogHelper catalogHelper, TanManagement tanManagement, AddressRepository addressRepository,
-			MailSender mailSender) {
+			PizzaOrderRepository pizzaOrderRepo, CustomerRepository customerRepository, Accountancy accountancy,
+			BusinessTime businessTime, CatalogHelper catalogHelper, TanManagement tanManagement,
+			AddressRepository addressRepository, MailSender mailSender) {
 
 		this.employeeAccountManager = employeeAccountManager;
 		this.itemCatalog = itemCatalog;
@@ -105,9 +104,9 @@ public class Store {
 	public boolean addEmailToMailingList(String eMailAddress) {
 
 		if (!this.eMailList.contains(eMailAddress)) {
-			
+
 			SimpleMailMessage simpleMessage = new SimpleMailMessage();
-			
+
 			simpleMessage.setTo(eMailAddress);
 			simpleMessage.setSubject("Papa Pizza Newsletter");
 			simpleMessage.setText("Willkommen zum Papa Pizza Newsletter");
@@ -117,7 +116,7 @@ public class Store {
 			} catch (MailException ex) {
 				System.err.println(ex.getMessage());
 			}
-			
+
 			return this.eMailList.add(eMailAddress);
 		}
 
@@ -134,7 +133,7 @@ public class Store {
 		for (String eMailAddress : this.eMailList) {
 
 			SimpleMailMessage simpleMessage = new SimpleMailMessage();
-			
+
 			simpleMessage.setTo(eMailAddress);
 			simpleMessage.setSubject("Papa Pizza Newsletter");
 			simpleMessage.setText(newsletterText);
@@ -291,7 +290,7 @@ public class Store {
 	 * @throws Exception
 	 *             when there is no order in the list
 	 */
-	public String removeFirstOrder(Pizza p) throws Exception {
+	public String removeFirstOrder(Pizza p) throws NullPointerException {
 		if (pizzaMap.get(p.getId()).isEmpty())
 			throw new NullPointerException("Die Pizza hat keine Orders zugewiesen");
 		return pizzaMap.get(p.getId()).remove(0);
@@ -312,7 +311,7 @@ public class Store {
 
 		Customer c = customerRepository.findOne(id);
 		Tan foundTan = tanManagement.getTan(c.getPerson().getTelephoneNumber());
-		
+
 		Iterable<PizzaOrder> allPizzaOrders = this.pizzaOrderRepo.findAll();
 		ArrayList<PizzaOrder> ordersToDelete = new ArrayList<PizzaOrder>();
 		for (PizzaOrder pizzaOrder : allPizzaOrders) {
@@ -328,7 +327,6 @@ public class Store {
 
 		}
 		pizzaOrderRepo.delete(ordersToDelete);
-		
 
 		if (!foundTan.getStatus().equals(TanStatus.NOT_FOUND)) {
 			tanManagement.invalidateTan(foundTan);
@@ -371,7 +369,7 @@ public class Store {
 		}
 	}
 
-	public void getNextPizza() throws Exception {
+	public void getNextPizza() throws NullPointerException {
 
 		if (!pizzaQueue.isEmpty()) {
 			nextPizza = pizzaQueue.poll();
@@ -392,25 +390,12 @@ public class Store {
 		for (int i = 0; i < ovenList.size(); i++) {
 			if (ovenList.get(i).getId() == oven.getId() && ovenList.get(i).isEmpty()) {
 				ovenList.get(i).fill(nextPizza, businessTime);
-				System.out.println(
-						"Pizza in Ofen Nummer: " + ovenList.get(i).getId() + " Pizza: " + ovenList.get(i).getPizza());
 
 				return true;
 			}
 		}
 		return false;
 	}
-
-	/**
-	 * function to simulate the case "customer lent a {@link Cutlery}" (no
-	 * inventory needed thus only created on lending)
-	 * 
-	 * @param customer
-	 *            lending customer
-	 * @param time
-	 *            current time when borrowed
-	 * @return
-	 */
 
 	/**
 	 * Function for returning a {@link Cutlery} lent by a customer
@@ -420,13 +405,11 @@ public class Store {
 	 *            {@link catalog_item.Cutlery}, <code> false </code> if he
 	 *            returns it properly
 	 * @param customer
-	 *            customer who wants to return his {@link catalog_item.Cutlery}
+	 *            customer who wants to return his {@link Cutlery}
 	 * @throws Exception
-	 *             when customer hasn't lent a {@link catalog_item.Cutlery}
-	 *             beforehand
+	 *             when customer hasn't lent a {@link Cutlery} beforehand
 	 */
-	public void returnCutlery(String status, Customer customer) throws Exception {
-		// TODO: decayed not equals lost --> other Accountancymessage
+	public void returnCutlery(String status, Customer customer) throws NullPointerException {
 		String message = " hat seine Essgarnitur verloren";
 		if (customer == null)
 			throw new NullPointerException("Welcher Kunde?");

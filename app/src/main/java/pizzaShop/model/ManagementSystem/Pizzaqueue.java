@@ -6,9 +6,6 @@ import pizzaShop.model.OrderSystem.Pizza;
 
 public class Pizzaqueue extends LinkedBlockingQueue<Pizza> {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private static final Pizzaqueue Queue = new Pizzaqueue();
 
