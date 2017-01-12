@@ -24,6 +24,7 @@ public class AccountingController {
 	private final Store store;
 	private int offsetW = 0;
 	private int currentW = 0;
+	private ErrorClass error = new ErrorClass(false);
 
 	@Autowired
 	public AccountingController(Store store, Accountancy accountancy, AccountingHelper accountingHelper,
@@ -51,20 +52,21 @@ public class AccountingController {
 		model.addAttribute("currentTime", businessTime.getTime());
 		model.addAttribute("totalGain", accountingHelper.total());
 		model.addAttribute("weeklyGain", accountingHelper.intervalTotal(i));
+		model.addAttribute("error", error);
 		store.checkCutleries();
 
 		return "finances";
 	}
 
-	@RequestMapping(value = "/decreaseWeek", method = RequestMethod.POST)
-	public String decreaseWeek() {
-		offsetW -= 1;
+	@RequestMapping(value = "/changeWeek", method = RequestMethod.POST)
+	public String changeWeek(@RequestParam("amount") int amount) {
+		offsetW += amount;
 		return "redirect:finances";
 	}
 
-	@RequestMapping(value = "/increaseWeek", method = RequestMethod.POST)
+	@RequestMapping(value = "/resetWeek", method = RequestMethod.POST)
 	public String increaseWeek() {
-		offsetW += 1;
+		offsetW = 0;
 		return "redirect:finances";
 	}
 
@@ -82,8 +84,14 @@ public class AccountingController {
 
 	@RequestMapping(value = "/forward", method = RequestMethod.POST)
 	public String forward(@RequestParam("days") Integer days) {
-		accountingHelper.forward(days);
-
+		error.setError(false);
+		if(days == null){
+			error.setError(true);
+			error.setMessage("Feld darf nicht leer sein!");
+			
+		}else{
+			accountingHelper.forward(days);
+		}
 		return "redirect:finances";
 	}
 
