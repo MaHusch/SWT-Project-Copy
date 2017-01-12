@@ -1,7 +1,5 @@
 package pizzaShop.controller;
 
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Optional;
@@ -11,7 +9,6 @@ import org.salespointframework.order.Cart;
 import org.salespointframework.order.CartItem;
 import org.salespointframework.order.Order;
 import org.salespointframework.order.OrderManager;
-import org.salespointframework.payment.Cash;
 import org.salespointframework.quantity.Quantity;
 import org.salespointframework.time.BusinessTime;
 import org.salespointframework.useraccount.UserAccount;
@@ -36,7 +33,6 @@ import pizzaShop.model.ManagementSystem.Tan_Management.TanManagement;
 import pizzaShop.model.OrderSystem.CartHelper;
 import pizzaShop.model.OrderSystem.Item;
 import pizzaShop.model.OrderSystem.ItemType;
-import pizzaShop.model.OrderSystem.PizzaOrder;
 
 @Controller
 @SessionAttributes("cart")
@@ -159,12 +155,12 @@ public class CartController {
 	
 	/**
 	 * setup for {@link CartHelper} createPizzaOrder()
-	 * @param model
-	 * @param cart
-	 * @param onSiteStr 
-	 * @param cutleryStr
-	 * @param userAccount
-	 * @return
+	 * @param model for the html view
+	 * @param cart {@link Cart} for the order
+	 * @param onSiteStr  "0,1" if pickUp radio button is checked, else "0"
+	 * @param cutleryStr "0,1" if cutlery radio button is checked, else "0"
+	 * @param userAccount currently logged in {@link UserAccount}
+	 * @return redirects to the cart page
 	 */
 	@RequestMapping(value = "/checkout", method = RequestMethod.POST)
 	public String buy(Model model, @ModelAttribute Cart cart, 
@@ -188,6 +184,13 @@ public class CartController {
 		return "redirect:cart";
 	}
 
+	
+	/**
+	 * setup for {@link CartHelper} checkTan()
+	 * @param telephoneNumber telephoneNumber to be checked
+	 * @param tanValue {@link String} containing value of {@link Tan} to be checked 
+	 * @return
+	 */
 	@RequestMapping(value = "/checkTan", method = RequestMethod.POST)
 	public String checkTan(@RequestParam("tnumber") String telephoneNumber, @RequestParam("tan") String tanValue) {
 

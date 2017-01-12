@@ -70,8 +70,8 @@ public class AdminController {
 			@RequestParam("username") String username, @RequestParam("password") String password,
 			@RequestParam("role") String role) {
 
-		if (surname == "" || forename == "" || telephonenumber == "" || username == "" || password == ""
-				|| role == "") {
+		if (surname.equals("") || forename.equals("") || telephonenumber.equals("") || username.equals("") || password.equals("")
+				|| role.equals("")) {
 			model.addAttribute("error", error);
 			return "redirect:register_staffmember";
 		}
@@ -106,7 +106,7 @@ public class AdminController {
 		}
 		
 		
-		if( store.getStaffMemberByName(username) == null){
+		if( store.getStaffMemberByName(username).equals(null)){
 			store.getStaffMemberList().add(staffMember);
 			store.updateUserAccount(staffMember, username, password, Role.of("ROLE_" + role));
 		}else{
@@ -175,7 +175,7 @@ public class AdminController {
 			@RequestParam("username") String username, @RequestParam("password") String password, RedirectAttributes redirectAttrs) {
 		StaffMember member = store.getStaffMemberByName(username);
 		
-		if (surname == "" || forename == "" || telephonenumber == "" || username == "" || password == "") {
+		if (surname.equals("") || forename.equals("") || telephonenumber.equals("") || username.equals("") || password.equals("")) {
 			error.setError(true);
 			redirectAttrs.addAttribute("name", username).addFlashAttribute("message", "StaffMember");
 			return "redirect:register_staffmember";
