@@ -148,5 +148,17 @@ public class CartHelper {
 		return c;
 
 	}
+	
+	
+	public int pizzaQueueTime(){
+		
+		int timeLeftInQueue = store.getPizzaQueue().size() * 300;
+		
+		for (int i = 0; i < store.getOvens().size(); i++){
+			timeLeftInQueue = timeLeftInQueue + store.getOvens().get(i).getBakerTimer().getCounter();
+		}
+		
+		return timeLeftInQueue;
+	}
 
 }
