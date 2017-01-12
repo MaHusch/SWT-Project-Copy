@@ -93,9 +93,16 @@ public class AdminController {
 			staffMember = new Seller(surname, forename, telephonenumber);
 			break;
 		}
-
-		store.getStaffMemberList().add(staffMember);
-
+		
+		
+		if( store.getStaffMemberByName(username) == null){
+			store.getStaffMemberList().add(staffMember);
+			store.updateUserAccount(staffMember, username, password, Role.of("ROLE_" + role));
+		}else{
+			model.addAttribute("error", error);
+		}
+		
+		
 		/*
 		 * Optional<UserAccount> userAccount =
 		 * employeeAccountManager.findByUsername(username);
@@ -113,7 +120,6 @@ public class AdminController {
 		 * }
 		 */
 
-		store.updateUserAccount(staffMember, username, password, Role.of("ROLE_" + role));
 
 		return "redirect:staffmember_display";
 	}
