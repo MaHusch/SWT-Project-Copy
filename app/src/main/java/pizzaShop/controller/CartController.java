@@ -33,6 +33,7 @@ import pizzaShop.model.DataBaseSystem.StaffMemberRepository;
 import pizzaShop.model.ManagementSystem.Store;
 import pizzaShop.model.ManagementSystem.Tan_Management.Tan;
 import pizzaShop.model.ManagementSystem.Tan_Management.TanManagement;
+import pizzaShop.model.OrderSystem.CartHelper;
 import pizzaShop.model.OrderSystem.Item;
 import pizzaShop.model.OrderSystem.ItemType;
 import pizzaShop.model.OrderSystem.PizzaOrder;
@@ -48,15 +49,16 @@ public class CartController {
 	private final PizzaOrderRepository pizzaOrderRepository;
 	private final StaffMemberRepository staffMemberRepository;
 	private final BusinessTime businesstime;
+	private final CartHelper cartHelper;
 	private Optional<Customer> customer = Optional.empty();
 	private final Store store;
 	private ErrorClass cartError;
-	private boolean freeDrink = false;
 
 	@Autowired
 	public CartController(OrderManager<Order> orderManager, ItemCatalog itemCatalog, TanManagement tanManagement,
 			CustomerRepository customerRepository, PizzaOrderRepository pizzaOrderRepository,
-			StaffMemberRepository staffMemberRepository, Store store, BusinessTime businesstime) {
+			StaffMemberRepository staffMemberRepository, Store store, BusinessTime businesstime,
+			CartHelper cartHelper) {
 		this.orderManager = orderManager;
 		this.itemCatalog = itemCatalog;
 		this.tanManagement = tanManagement;
@@ -64,6 +66,7 @@ public class CartController {
 		this.pizzaOrderRepository = pizzaOrderRepository;
 		this.staffMemberRepository = staffMemberRepository;
 		this.store = store;
+		this.cartHelper = cartHelper;
 		this.businesstime = businesstime;
 		cartError = new ErrorClass(false);
 	}
@@ -83,6 +86,17 @@ public class CartController {
 			if (i.getType().equals(ItemType.FREEDRINK))
 				freeDrinks.add(i);
 		}
+		boolean freeDrink = false;
+		Iterator<CartItem> ci = cart.iterator();
+		while (ci.hasNext()) {
+			if (((Item) ci.next().getProduct()).getType().equals(ItemType.FREEDRINK)) {
+				freeDrink = true;
+				break;
+			}
+		}
+		customer = (customer.isPresent()) ? Optional.of(customerRepository.findOne(customer.get().getId())) : Optional.empty();
+	
+
 		model.addAttribute("freeDrinks", freeDrinks);
 		model.addAttribute("error", cartError);
 		model.addAttribute("customer", customer);
@@ -106,10 +120,7 @@ public class CartController {
 
 	@RequestMapping(value = "/removeCartItem", method = RequestMethod.POST)
 	public String removeItem(@RequestParam("ciid") String cartId, @ModelAttribute Cart cart) {
-		if (cart.getItem(cartId).get().getPrice().isZero())
-			freeDrink = false;
-		cart.removeItem(cartId);
-
+		cartHelper.removeItem(cartId, cart);
 		return "redirect:cart";
 
 	}
@@ -121,36 +132,28 @@ public class CartController {
 									@RequestParam("pid") ProductIdentifier id,
 									@ModelAttribute Cart cart) {
 		cartError.setError(false);
-		Optional<Item> item = itemCatalog.findOne(id);
-		if (!item.isPresent()) {
-			cartError.setError(true);
-			cartError.setMessage("Produkt existiert nicht mehr!");
-			return removeItem(cartId, cart);
-		}
+		Item item = itemCatalog.findOne(id).orElse(null);
 		if (quantity + amount == 0) {
+			cartHelper.removeItem(cartId, cart);
 
-			return removeItem(cartId, cart);
 		} else {
-			cart.addOrUpdateItem(item.get(), Quantity.of(amount));
-		}
-		if (cart.getPrice().getNumber().intValue() < 30) {
-			Iterator<CartItem> ci = cart.iterator();
-			while (ci.hasNext()) {
-				CartItem i = ci.next();
-				if (((Item) i.getProduct()).getType().equals(ItemType.FREEDRINK)) {
-					cart.removeItem(i.getId());
-					break;
-				}
+
+			try {
+				cartHelper.changeQuantity(item, amount, cart);
+			} catch (Exception e) {
+				cartError.setError(true);
+				cartError.setMessage(e.getMessage());
+				cartHelper.removeItem(cartId, cart);
+
 			}
-			freeDrink = false;
 		}
 		return "redirect:cart";
+
 	}
 
 	@RequestMapping(value = "/addFreeDrink", method = RequestMethod.POST)
-	public String addFreeDrink(@RequestParam("iid") ProductIdentifier id, @ModelAttribute Cart cart) {
+	public String addFreeDrink(	@RequestParam("iid") ProductIdentifier id, @ModelAttribute Cart cart) {
 		cart.addOrUpdateItem(itemCatalog.findOne(id).get(), Quantity.of(1));
-		freeDrink = true;
 		return "redirect:cart";
 	}
 
@@ -159,45 +162,21 @@ public class CartController {
 						@RequestParam("onSite") String onSiteStr,
 						@RequestParam("cutlery") String cutleryStr, 
 						@LoggedIn Optional<UserAccount> userAccount) {
-		if (!userAccount.isPresent()) {
-			return "redirect:login";
-		}
-		assertTrue("Checkbox liefert anderen Wert als 0 oder 1! nämlich" + onSiteStr,
-				onSiteStr.equals("0,1") | onSiteStr.equals("0"));
+
 		System.out.println("cutlery ist:" + cutleryStr);
-		if (customer.isPresent()) {
-			cartError.setError(false);
-			if (cart.isEmpty()) {
-				cartError.setError(true);
-				cartError.setMessage("Warenkorb ist leer!");
-				return "redirect:cart";
-			}
 
-			boolean onSite = false;
-			boolean cutlery = true;
-			System.out.println(onSiteStr + " onSite");
-			if (onSiteStr.equals("0,1")) {
-				onSite = true;
-			}
-			if (cutleryStr.equals("0"))
-				cutlery = false;
+		cartError.setError(false);
 
-			// TODO: check if customer already has a cutlery --> throw error
-			if (cutlery) {
-				// if false --> return error
-				store.lentCutlery(customer.get(), businesstime.getTime());
-			}
+		boolean onSite = onSiteStr.equals("0,1") ? true : false;
+		boolean cutlery = cutleryStr.equals("0") ? false : true;
 
-			PizzaOrder pizzaOrder = new PizzaOrder(userAccount.get(), Cash.CASH,
-					tanManagement.generateNewTan(customer.get().getPerson().getTelephoneNumber()), onSite, customer.get());
-			cart.addItemsTo(orderManager.save(pizzaOrder.getOrder()));
-			store.analyzeOrder(pizzaOrder);
-			cart.clear();
-
-			// Bill bill = new Bill(customer.get(), pizzaOrder,
-			// businesstime.getTime());
-			// customer = Optional.empty(); disabled for testing purposes
+		try {
+			cartHelper.createPizzaOrder(cutlery, onSite, userAccount.orElse(null), cart, customer.orElse(null));
+		} catch (Exception e) {
+			cartError.setError(true);
+			cartError.setMessage(e.getMessage());
 		}
+
 		return "redirect:cart";
 	}
 
@@ -205,16 +184,11 @@ public class CartController {
 	public String checkTan(@RequestParam("tnumber") String telephoneNumber, @RequestParam("tan") String tanValue) {
 
 		Tan tan = tanManagement.getTan(telephoneNumber);
+
+		cartError.setError(false);
+
 		if (tan.getTanNumber().equals(tanValue)) {
-			cartError.setError(false);
-			for (Customer c : customerRepository.findAll()) {
-				System.out.println("test" + c.getPerson().getTelephoneNumber());
-				if (telephoneNumber.equals(c.getPerson().getTelephoneNumber())) {
-					customer = Optional.of(c);
-					System.out
-							.println("valid: " + tanValue + " tel: " + customer.get().getPerson().getTelephoneNumber());
-				}
-			}
+			customer = cartHelper.checkTan(tan);
 		} else {
 			cartError.setError(true);
 			cartError.setMessage("Fehler bei der TAN-Überprüfung! Erneut eingeben!");
