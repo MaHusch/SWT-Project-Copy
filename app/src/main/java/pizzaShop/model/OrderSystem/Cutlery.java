@@ -7,8 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-import org.salespointframework.time.BusinessTime;
-
 /**
  * Class for representing Cutlery
  * 
@@ -32,7 +30,7 @@ public class Cutlery{
 	/**
 	 * unused Constructor for Spring
 	 */
-	@SuppressWarnings("unused")
+	@Deprecated
 	public Cutlery() {
 	}
 

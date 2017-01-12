@@ -5,7 +5,7 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css"
 	th:href="@{/resources/css/style.css}" />
-<title>Welcome</title>
+<title>TAN-Liste</title>
 </head>
 <body>
 	<!-- Navbar -->
@@ -23,7 +23,7 @@
 						<td>Status</td>
 					</tr>
 					<tbody>
-						<tr th:each=" entry : ${tan}">
+						<tr th:each=" entry : ${activeTans}">
 							<td th:text="${entry.getValue()}">TelephoneNumber</td>
 							<td th:text="${entry.getKey().getTanNumber()}">TanNumber</td>
 							<td th:text="${entry.getKey().getStatus()}">Status</td>
@@ -48,6 +48,26 @@
 					<tbody>
 						<tr th:each=" entry : ${notConfirmedTans}">
 							<td th:text="${entry.getValue()}">TelephoneNumber</td>
+							<td th:text="${entry.getKey().getTanNumber()}">TanNumber</td>
+							<td th:text="${entry.getKey().getStatus()}">Status</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	
+	<div sec:authorize="hasRole('ROLE_ADMIN')" class="container col-md-6">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Benutzte TANs</div>
+			<div class="panel-body">
+				<table class="table table-striped table-bordered">
+					<tr>
+						<td>TanNumber</td>
+						<td>Status</td>
+					</tr>
+					<tbody>
+						<tr th:each=" entry : ${usedTans}">
 							<td th:text="${entry.getKey().getTanNumber()}">TanNumber</td>
 							<td th:text="${entry.getKey().getStatus()}">Status</td>
 						</tr>

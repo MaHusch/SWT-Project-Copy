@@ -2,9 +2,7 @@ package pizzaShop.model.ManagementSystem;
 
 import static org.salespointframework.core.Currencies.EURO;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,14 +17,13 @@ import org.salespointframework.order.Cart;
 import org.salespointframework.order.OrderIdentifier;
 import org.salespointframework.order.OrderLine;
 import org.salespointframework.quantity.Quantity;
-import org.salespointframework.support.ConsoleWritingMailSender;
 import org.salespointframework.time.BusinessTime;
 import org.salespointframework.useraccount.Role;
 import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
@@ -40,7 +37,6 @@ import pizzaShop.model.DataBaseSystem.CatalogHelper;
 import pizzaShop.model.DataBaseSystem.CustomerRepository;
 import pizzaShop.model.DataBaseSystem.ItemCatalog;
 import pizzaShop.model.DataBaseSystem.PizzaOrderRepository;
-import pizzaShop.model.DataBaseSystem.StaffMemberRepository;
 import pizzaShop.model.ManagementSystem.Tan_Management.Tan;
 import pizzaShop.model.ManagementSystem.Tan_Management.TanManagement;
 import pizzaShop.model.ManagementSystem.Tan_Management.TanStatus;
@@ -50,6 +46,7 @@ import pizzaShop.model.OrderSystem.Item;
 import pizzaShop.model.OrderSystem.ItemType;
 import pizzaShop.model.OrderSystem.Pizza;
 import pizzaShop.model.OrderSystem.PizzaOrder;
+import pizzaShop.model.OrderSystem.PizzaOrderStatus;
 import pizzaShop.model.ProductionSystem.Oven;
 
 @Component
@@ -58,8 +55,6 @@ public class Store {
 	private final UserAccountManager employeeAccountManager;
 	private final ItemCatalog itemCatalog;
 	private final PizzaOrderRepository pizzaOrderRepo;
-	private final StaffMemberRepository staffMemberRepository;
-	private final AddressRepository addressRepository;
 	private final CustomerRepository customerRepository;
 	private final Accountancy accountancy;
 	private final BusinessTime businessTime;
@@ -74,22 +69,18 @@ public class Store {
 
 	private MailSender mailSender;
 
-	private ErrorClass error;
-
 	private Pizzaqueue pizzaQueue = Pizzaqueue.getInstance();
 	private Map<ProductIdentifier, ArrayList<String>> pizzaMap = new HashMap<ProductIdentifier, ArrayList<String>>();
 
 	@Autowired
 	public Store(UserAccountManager employeeAccountManager, ItemCatalog itemCatalog,
-			PizzaOrderRepository pizzaOrderRepo, StaffMemberRepository staffMemberRepository,
-			CustomerRepository customerRepository, Accountancy accountancy, BusinessTime businessTime,
-			CatalogHelper catalogHelper, TanManagement tanManagement, AddressRepository addressRepository,
-			MailSender mailSender) {
+			PizzaOrderRepository pizzaOrderRepo, CustomerRepository customerRepository, Accountancy accountancy,
+			BusinessTime businessTime, CatalogHelper catalogHelper, TanManagement tanManagement,
+			AddressRepository addressRepository, MailSender mailSender) {
 
 		this.employeeAccountManager = employeeAccountManager;
 		this.itemCatalog = itemCatalog;
 		this.pizzaOrderRepo = pizzaOrderRepo;
-		this.staffMemberRepository = staffMemberRepository;
 		this.customerRepository = customerRepository;
 		this.staffMemberList = new ArrayList<StaffMember>();
 		this.ovenList = new ArrayList<Oven>();
@@ -99,9 +90,7 @@ public class Store {
 		this.tanManagement = tanManagement;
 		this.eMailList = new ArrayList<String>();
 		this.mailSender = mailSender;
-		error = new ErrorClass(false);
-		this.addressRepository = addressRepository;
-
+		new ErrorClass(false);
 		ovenList.add(new Oven(this));
 		ovenList.add(new Oven(this));
 		ovenList.add(new Oven(this));
@@ -115,6 +104,19 @@ public class Store {
 	public boolean addEmailToMailingList(String eMailAddress) {
 
 		if (!this.eMailList.contains(eMailAddress)) {
+
+			SimpleMailMessage simpleMessage = new SimpleMailMessage();
+
+			simpleMessage.setTo(eMailAddress);
+			simpleMessage.setSubject("Papa Pizza Newsletter");
+			simpleMessage.setText("Willkommen zum Papa Pizza Newsletter");
+
+			try {
+				this.mailSender.send(simpleMessage);
+			} catch (MailException ex) {
+				System.err.println(ex.getMessage());
+			}
+
 			return this.eMailList.add(eMailAddress);
 		}
 
@@ -133,7 +135,7 @@ public class Store {
 			SimpleMailMessage simpleMessage = new SimpleMailMessage();
 
 			simpleMessage.setTo(eMailAddress);
-			simpleMessage.setSubject("Papa_Pizza_Newsletter");
+			simpleMessage.setSubject("Papa Pizza Newsletter");
 			simpleMessage.setText(newsletterText);
 
 			try {
@@ -197,7 +199,9 @@ public class Store {
 
 	/**
 	 * Method to fill the pizzaqueue, if order contains pizza
-	 * @param order PizzaOrder to be analyzed
+	 * 
+	 * @param order
+	 *            PizzaOrder to be analyzed
 	 * @return analyzed PizzaOrder
 	 */
 	public PizzaOrder analyzeOrder(PizzaOrder order) {
@@ -225,11 +229,12 @@ public class Store {
 
 	/**
 	 * Update unbaked pizza in a {@link PizzaOrder}
+	 * 
 	 * @param pizza
 	 */
 	public void updatePizzaOrder(Pizza pizza) {
 
-		if (pizza.equals(null)) {
+		if (pizza == null) {
 			return;
 		} else {
 
@@ -247,7 +252,6 @@ public class Store {
 					try {
 						removeFirstOrder(pizza);
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
 						System.out.println("Fehler bei updatePizzaOrder");
 					}
 
@@ -257,7 +261,7 @@ public class Store {
 			}
 		}
 	}
-	
+
 	public void addOrder(OrderIdentifier o, Pizza p) {
 		if (!pizzaMap.containsKey(p.getId())) {
 			ArrayList<String> tmp = new ArrayList<String>();
@@ -286,7 +290,7 @@ public class Store {
 	 * @throws Exception
 	 *             when there is no order in the list
 	 */
-	public String removeFirstOrder(Pizza p) throws Exception {
+	public String removeFirstOrder(Pizza p) throws NullPointerException {
 		if (pizzaMap.get(p.getId()).isEmpty())
 			throw new NullPointerException("Die Pizza hat keine Orders zugewiesen");
 		return pizzaMap.get(p.getId()).remove(0);
@@ -297,7 +301,8 @@ public class Store {
 	}
 
 	/**
-	 *  deletes customer based on and ID, and cancels all his orders.
+	 * deletes customer based on and ID, and cancels all his orders.
+	 * 
 	 * @param model
 	 * @param id
 	 * @throws Exception
@@ -307,6 +312,22 @@ public class Store {
 		Customer c = customerRepository.findOne(id);
 		Tan foundTan = tanManagement.getTan(c.getPerson().getTelephoneNumber());
 
+		Iterable<PizzaOrder> allPizzaOrders = this.pizzaOrderRepo.findAll();
+		ArrayList<PizzaOrder> ordersToDelete = new ArrayList<PizzaOrder>();
+		for (PizzaOrder pizzaOrder : allPizzaOrders) {
+			Customer customer = pizzaOrder.getCustomer();
+
+			if (customer.getId() == id) {
+				ordersToDelete.add(pizzaOrder);
+				PizzaOrderStatus pOStatus = pizzaOrder.getOrderStatus();
+				if (!(pOStatus.equals(PizzaOrderStatus.CANCELLED) || pOStatus.equals(PizzaOrderStatus.COMPLETED))) {
+					throw new Exception("Kunde hat noch offene Bestellungen!");
+				}
+			}
+
+		}
+		pizzaOrderRepo.delete(ordersToDelete);
+
 		if (!foundTan.getStatus().equals(TanStatus.NOT_FOUND)) {
 			tanManagement.invalidateTan(foundTan);
 		}
@@ -315,26 +336,12 @@ public class Store {
 			this.returnCutlery("decayed", c);
 		}
 
-		Iterable<PizzaOrder> allPizzaOrders = this.pizzaOrderRepo.findAll();
-
-		for (PizzaOrder pizzaOrder : allPizzaOrders) {
-
-			Customer customer = pizzaOrder.getCustomer();
-
-			if (customer != null) {
-				if (customer.getId() == id) {
-					pizzaOrder.setCustomer(null);
-					pizzaOrder.cancelOrder();
-				}
-			}
-
-		}
-
 		customerRepository.delete(id);
 	}
 
 	/**
 	 * finish Order and create AccountancyEntry
+	 * 
 	 * @param p
 	 * @param msg
 	 * @param del
@@ -362,7 +369,7 @@ public class Store {
 		}
 	}
 
-	public void getNextPizza() throws Exception {
+	public void getNextPizza() throws NullPointerException {
 
 		if (!pizzaQueue.isEmpty()) {
 			nextPizza = pizzaQueue.poll();
@@ -373,7 +380,9 @@ public class Store {
 
 	/**
 	 * put first pizza in queue into given oven
-	 * @param oven oven to be filled
+	 * 
+	 * @param oven
+	 *            oven to be filled
 	 * @return whether successfull or not
 	 */
 	public boolean putPizzaIntoOven(Oven oven) {
@@ -381,38 +390,11 @@ public class Store {
 		for (int i = 0; i < ovenList.size(); i++) {
 			if (ovenList.get(i).getId() == oven.getId() && ovenList.get(i).isEmpty()) {
 				ovenList.get(i).fill(nextPizza, businessTime);
-				System.out.println(
-						"Pizza in Ofen Nummer: " + ovenList.get(i).getId() + " Pizza: " + ovenList.get(i).getPizza());
 
 				return true;
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * function to simulate the case "customer lent a {@link Cutlery}" (no
-	 * inventory needed thus only created on lending)
-	 * 
-	 * @param customer
-	 *            lending customer
-	 * @param time
-	 *            current time when borrowed
-	 * @return
-	 */
-	public boolean lentCutlery(Customer customer, LocalDateTime time) {
-		Cutlery cutlery = new Cutlery(Money.of(15.0, EURO), time);
-		if (customer.equals(null))
-			return false;
-		if (customer.getCutlery() != null)
-			return false; // has to return his lent cutlery before TODO: error
-							// on cart template
-
-		customer.setCutlery(cutlery);
-
-		this.customerRepository.save(customer);
-
-		return true;
 	}
 
 	/**
@@ -423,13 +405,11 @@ public class Store {
 	 *            {@link catalog_item.Cutlery}, <code> false </code> if he
 	 *            returns it properly
 	 * @param customer
-	 *            customer who wants to return his {@link catalog_item.Cutlery}
+	 *            customer who wants to return his {@link Cutlery}
 	 * @throws Exception
-	 *             when customer hasn't lent a {@link catalog_item.Cutlery}
-	 *             beforehand
+	 *             when customer hasn't lent a {@link Cutlery} beforehand
 	 */
-	public void returnCutlery(String status, Customer customer) throws Exception {
-		// TODO: decayed not equals lost --> other Accountancymessage
+	public void returnCutlery(String status, Customer customer) throws NullPointerException {
 		String message = " hat seine Essgarnitur verloren";
 		if (customer == null)
 			throw new NullPointerException("Welcher Kunde?");
@@ -438,7 +418,7 @@ public class Store {
 
 		if (status.equals("lost") || status.equals("decayed")) {
 			if (status.equals("decayed"))
-				message = "hat seine Essgarnitur nicht zurückgegeben";
+				message = " hat seine Essgarnitur nicht zurückgegeben";
 			accountancy.add(new AccountancyEntry(Money.of(customer.getCutlery().getPrice().getNumber(), EURO),
 					customer.getPerson().getForename() + " " + customer.getPerson().getSurname() + message));
 		}
@@ -453,7 +433,7 @@ public class Store {
 
 		Pizza newPizza;
 
-		newPizza = new Pizza("custom", Money.of(0, "EUR"));
+		newPizza = new Pizza("custom", Money.of(2, "EUR"));
 
 		for (int i = 0; i < ids.length; i++) {
 
@@ -474,7 +454,6 @@ public class Store {
 			}
 		}
 
-		System.out.println(admin_flag + " " + pizzaID);
 		if ((admin_flag != null && !admin_flag.equals("")) && admin_flag.equals("true")
 				&& (pizzaID != null && !pizzaID.equals(""))) {
 			Pizza pizza = (Pizza) (catalogHelper.findItemByIdentifier(pizzaID, null));
@@ -502,7 +481,7 @@ public class Store {
 	}
 
 	/**
-	 * check whether any cutlery has decayed 
+	 * check whether any cutlery has decayed
 	 */
 	public void checkCutleries() {
 		for (Customer c : this.customerRepository.findAll()) {
@@ -510,8 +489,6 @@ public class Store {
 				try {
 					this.returnCutlery("decayed", c);
 				} catch (Exception e) {
-					System.out.println("if statement geht nicht");
-
 				}
 			}
 		}
@@ -528,8 +505,10 @@ public class Store {
 
 	/**
 	 * 
-	 * @param t input telephonnumber
-	 * @param p {@link Person} to be edited (if new Person --> null) 
+	 * @param t
+	 *            input telephonnumber
+	 * @param p
+	 *            {@link Person} to be edited (if new Person --> null)
 	 * @return errormessage (isEmpty if valid)
 	 */
 	public String validateTelephonenumber(String t, Person p) {
@@ -538,10 +517,9 @@ public class Store {
 				return "Telefonnummer enthält Buchstaben";
 
 		}
-		
-		for(Customer cu : this.customerRepository.findAll())
-		{
-			if(cu.getPerson().getTelephoneNumber().equals(t) && !cu.getPerson().equals(p))
+
+		for (Customer cu : this.customerRepository.findAll()) {
+			if (cu.getPerson().getTelephoneNumber().equals(t) && !cu.getPerson().equals(p))
 				return "Diese Telefonnummber ist bereits vergeben";
 		}
 		return "";

@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.Timer;
 
 import org.salespointframework.time.BusinessTime;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class BakerTimer extends Timer {
 

@@ -18,6 +18,7 @@ import org.salespointframework.payment.PaymentMethod;
 import org.salespointframework.useraccount.UserAccount;
 
 import pizzaShop.model.AccountSystem.Customer;
+import pizzaShop.model.AccountSystem.Deliverer;
 import pizzaShop.model.ManagementSystem.Tan_Management.Tan;
 
 @Entity
@@ -29,6 +30,7 @@ public class PizzaOrder {
 	private OrderIdentifier orderIdentifier;
 	private boolean freeDrink;
 	private boolean pickUp;
+	private String deliverername;
 
 	@OneToOne(cascade = { CascadeType.ALL })
 	private Tan newTan;
@@ -40,6 +42,8 @@ public class PizzaOrder {
 	private Order order;
 
 	private int unbakedPizzas = 0;
+	
+	private String remark = "-";
 
 	@OneToOne
 	private Customer customer;
@@ -129,12 +133,18 @@ public class PizzaOrder {
 		this.setOrderStatus(PizzaOrderStatus.CANCELLED);
 	}
 	
-	public void assignDeliverer(){
+	public void assignDeliverer(Deliverer d){
 		this.setOrderStatus(PizzaOrderStatus.PENDING);
+		this.deliverername = d.getUsername();
 	}
 
 	public boolean getPickUp() {
 		return pickUp;
+	}
+	
+	public String getDelivererName()
+	{
+		return this.deliverername;
 	}
 
 	public MonetaryAmount getTotalPrice() {
@@ -151,6 +161,14 @@ public class PizzaOrder {
 	
 	public void setCustomer(Customer newCustomer){
 		customer = newCustomer;
+	}
+	
+	public void setRemark(String remark){
+		this.remark = remark;
+	}
+	
+	public String getRemark(){
+		return this.remark;
 	}
 	
 	@Override

@@ -2,16 +2,10 @@ package pizzaShop.model.OrderSystem;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-
-import org.salespointframework.catalog.ProductIdentifier;
-import org.salespointframework.order.OrderIdentifier;
 
 /**
  * PizzaClass for representing a pizza of the PizzaShop

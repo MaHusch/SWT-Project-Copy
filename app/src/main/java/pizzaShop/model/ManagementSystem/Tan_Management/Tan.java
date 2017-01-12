@@ -4,9 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-import org.salespointframework.core.AbstractEntity;
-import org.salespointframework.core.SalespointIdentifier;
-
 
 @Entity
 public class Tan{ //extends AbstractEntity<SalespointIdentifier>{

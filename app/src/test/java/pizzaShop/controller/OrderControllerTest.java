@@ -2,13 +2,10 @@ package pizzaShop.controller;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.junit.Test;
 import org.salespointframework.order.Order;
-import org.salespointframework.order.OrderIdentifier;
 import org.salespointframework.order.OrderManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ExtendedModelMap;
@@ -17,8 +14,6 @@ import org.springframework.ui.Model;
 import pizzaShop.AbstractIntegrationTests;
 import pizzaShop.model.DataBaseSystem.PizzaOrderRepository;
 import pizzaShop.model.ManagementSystem.Store;
-import pizzaShop.model.OrderSystem.PizzaOrder;
-import pizzaShop.model.OrderSystem.PizzaOrderStatus;
 
 public class OrderControllerTest extends AbstractIntegrationTests {
 	@Autowired

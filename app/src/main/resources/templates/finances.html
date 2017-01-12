@@ -11,17 +11,6 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <title>Finanzen</title>
 </head>
 <body>
-	 <script language="Javascript">
-
-	 function IsEmpty(){
-		  if(document.forms['forward'].days.value === "")
-		  {
-		    alert("Bitte Anzahl eintragen");
-		    return false;
-		  }
-		    return true;
-		}
-	</script>
 	<!-- Navbar -->
 	<div th:include="navbar :: navbar" >...</div>
 
@@ -35,14 +24,19 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 
 					<div id="frm">
 						<!-- <p th:text="${#temporals.format(displayTime, 'dd.MM.yyyy HH:mm')}">11.10.2002</p> -->
-						<form method="post" action="/decreaseWeek">
+						<form method="post" action="/changeWeek">
+							<input type="hidden" name="amount" th:value="-1" />
 							<input class="btn btn-primary" type="submit" value='←' />
 						</form>
 						<b th:text="${currentWeek}+'. Kalenderwoche, '+
 									${#temporals.format(displayInterval.getStart().plusDays(1), 'dd.MM.yyyy')}+' - '+
-									${#temporals.format(displayInterval.getEnd().plusDays(1), 'dd.MM.yyyy')}">11.10.2002">11.10.2002</b>
-						<form method="post" action="/increaseWeek">
+									${#temporals.format(displayInterval.getEnd().plusDays(1), 'dd.MM.yyyy')}">11.10.2002</b>
+						<form method="post" action="/changeWeek">
+							<input type="hidden" name="amount" th:value="1" />
 							<input class="btn btn-primary" type="submit" value='→' />
+						</form>
+						<form method="post" action="/resetWeek">
+							<input class="btn btn-primary" type="submit" value='R' />
 						</form>
 					</div>
 					<table class="table table-striped">
@@ -55,8 +49,7 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 						</thead>
 						<tbody>
 							<tr th:each="AccountancyEntry : ${currentDisplay} ">
-								<td
-									th:text="${#temporals.format(AccountancyEntry.date.get(), 'dd.MM.yyyy')}"></td>
+								<td th:text="${#temporals.format(AccountancyEntry.date.get(), 'dd.MM.yyyy')}"></td>
 								<td th:text="${{AccountancyEntry.getValue()}}"></td>
 								<td th:text="${AccountancyEntry.getDescription()}"></td>
 							</tr>
@@ -72,8 +65,6 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 		</div>
 
 	</div>
-
-	
 
 	<!-- ><div class="tables">
 		<table>
@@ -99,74 +90,28 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 		</table>
 	</div> -->
 
-	<!-- <div sec:authorize="hasRole('ROLE_ADMIN')" class="container col-md-4">
-		<div class="panel panel-primary">
-			<div class="panel-heading">Neuen Finanzeintrag manuell
-				hinzufügen</div>
-			<div class="panel-body">
-				<form method="post" action="/createAccountancyEntry">
-					<fieldset>
-						<label for="value">Wert</label> <input id="value" type="number"
-							name="value"  value="0" /> <br />
-						<textarea name="description" cols="30" rows="2" placeholder="Beschreibung des Eintrags"></textarea>
-						<br /> <input type="submit" value="Senden" />
-					</fieldset>
-				</form>
-			</div>
-		</div>
-	</div>
-
-	  <div sec:authorize="hasRole('ROLE_ADMIN')" class="container col-md-4">
-		<div class="panel panel-primary">
-			<div class="panel-heading">Neue Bestellung manuell hinzufügen</div>
-			<div class="panel-body">
-				<form method="post" action="/createOrder">
-					<fieldset>
-						<label for="value">Wert</label> <input id="value" type="number"
-							name="value" /> <br /> <input type="submit" value="Senden" />
-					</fieldset>
-				</form>
-			</div>
-		</div>
-	</div> -->
-
 	<div sec:authorize="hasRole('ROLE_ADMIN')" class="container col-md-4">
 		<div class="panel panel-primary">
 			<div class="panel-heading">Zeit vorspulen</div>
 			<div class="panel-body">
 				<p th:text="${#temporals.format(currentTime, 'dd.MM.yyyy')}">11.10.2002</p>
 				<form name="forward" method="post" action="/forward">
-					<label for="days">Anzahl an Tagen</label> <input id="days"
-						type="number" name="days" /> 
-						
-						<input class="btn btn-primary" onclick="return IsEmpty();" type="submit" value="Forward" />
+					<label for="days">Anzahl an Tagen</label> 
+					<input id="days" type="number" name="days" min="1" value="1"/> 
+					<input class="btn btn-primary" type="submit" value="Vorspulen" />
 				</form>
 			</div>
 		</div>
 	</div>
-
-	<!-- <form method="post" action="/createAccountancyEntry">
-			<fieldset>
-				<legend>Neuen Finanzeintrag hinzufügen</legend>
-				<label for="value">Wert</label> <input id="value" type="number"
-					name="value" /> <br />
-				<textarea name="description" cols="30" rows="2"></textarea>
-				<br /> <input type="submit" value="Senden" />
-			</fieldset>
-		</form>-->
-
-	<!-- <form method="post" action="/createOrder">
-			<fieldset>
-				<legend>Neue Bestellung eintragen</legend>
-				<label for="value">Wert</label> <input id="value" type="number"
-					name="value" /> <br /> <input type="submit" value="Senden" />
-			</fieldset>
-		</form>-->
-
-	<!-- <form method="post" action="/forward">
-			<label for="days">Anzahl an Tagen</label> <input id="days"
-				type="number" name="days" /> <input type="submit" value="Forward" />
-		</form>-->
+	
+	<div th:if="${error.getError() == true}" class="container col-md-6">
+		<div class="panel panel-danger">
+			<div class="panel-heading">Fehler!</div>
+			<div class="panel-body">
+				<p th:text="${error.getMessage()}">Fehler!</p>
+			</div>
+		</div>
+	</div>
 
 
 	<script

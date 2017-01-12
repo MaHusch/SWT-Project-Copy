@@ -1,58 +1,33 @@
 package pizzaShop.controller;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-
-import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
+import java.util.Map.Entry;
 
-import javax.money.MonetaryAmount;
-
-import org.javamoney.moneta.Money;
-import org.salespointframework.catalog.Product;
-import org.salespointframework.catalog.ProductIdentifier;
 import org.salespointframework.order.Cart;
-import org.salespointframework.order.OrderIdentifier;
-import org.salespointframework.order.OrderStatus;
-import org.salespointframework.quantity.Quantity;
-import org.salespointframework.useraccount.Password;
-import org.salespointframework.useraccount.UserAccount;
-import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import pizzaShop.model.AccountSystem.Address;
-import pizzaShop.model.AccountSystem.Customer;
-import pizzaShop.model.AccountSystem.Deliverer;
-import pizzaShop.model.AccountSystem.Person;
-import pizzaShop.model.AccountSystem.StaffMember;
-import pizzaShop.model.DataBaseSystem.AddressRepository;
 import pizzaShop.model.DataBaseSystem.CatalogHelper;
 import pizzaShop.model.DataBaseSystem.CustomerRepository;
 import pizzaShop.model.DataBaseSystem.ItemCatalog;
 import pizzaShop.model.DataBaseSystem.PizzaOrderRepository;
-import pizzaShop.model.DataBaseSystem.StaffMemberRepository;
 import pizzaShop.model.ManagementSystem.Store;
 import pizzaShop.model.ManagementSystem.Tan_Management.Tan;
 import pizzaShop.model.ManagementSystem.Tan_Management.TanManagement;
 import pizzaShop.model.ManagementSystem.Tan_Management.TanStatus;
-import pizzaShop.model.OrderSystem.Cutlery;
 import pizzaShop.model.OrderSystem.Ingredient;
 import pizzaShop.model.OrderSystem.Item;
 import pizzaShop.model.OrderSystem.ItemType;
 import pizzaShop.model.OrderSystem.Pizza;
-import pizzaShop.model.OrderSystem.PizzaOrder;
-import pizzaShop.model.OrderSystem.PizzaOrderStatus;
 
 @Controller
 public class StoreController {
@@ -60,34 +35,29 @@ public class StoreController {
 	ItemCatalog itemCatalog;
 	private final TanManagement tanManagement;
 	private final CustomerRepository customerRepository;
-	private final PizzaOrderRepository pizzaOrderRepository;
-	private final StaffMemberRepository staffMemberRepository;
 	private final CatalogHelper catalogHelper;
-	//private final AddressRepository addressRepository;
 
 	private final Store store;
 	private ErrorClass error;
+	private ErrorClass customerError = new ErrorClass(false);
 
-	@Autowired 
-	public StoreController(CatalogHelper catalogHelper,ItemCatalog itemCatalog, TanManagement tanManagement, 
-			CustomerRepository customerRepository, PizzaOrderRepository pOR, Store store, 
-			StaffMemberRepository staffMemberRepository){//, AddressRepository addressRepo) {
-
+	@Autowired
+	public StoreController(CatalogHelper catalogHelper, ItemCatalog itemCatalog, TanManagement tanManagement,
+			CustomerRepository customerRepository, PizzaOrderRepository pOR, Store store) {// ,
+																							// AddressRepository
+																							// addressRepo)
+																							// {
 
 		this.itemCatalog = itemCatalog;
 		this.tanManagement = tanManagement;
 		this.customerRepository = customerRepository;
-		this.pizzaOrderRepository = pOR;
-		this.staffMemberRepository = staffMemberRepository;
-		//this.addressRepository = addressRepo;
 		this.store = store;
 		this.catalogHelper = catalogHelper;
 		error = new ErrorClass(false);
 	}
 
 	@RequestMapping("/sBaker")
-	public String sBaker() // direct to baker dashboard(after login)
-	{
+	public String sBaker() {
 		return "redirect:ovens";
 	}
 
@@ -149,37 +119,45 @@ public class StoreController {
 			@RequestParam(value = "admin_flag", required = false) String admin_flag,
 			@RequestParam(value = "pid", required = false) String pizzaID, @ModelAttribute Cart cart) {
 		System.out.println("Custom pizza name " + pizzaName);
-		Pizza newPizza;
-
 		if (ids == null || ids.length == 0) {
 			error.setError(true);
 			return "redirect:pizza_configurator";
 		} else
 			error.setError(false);
 
-		
 		store.configurePizza(model, ids, pizzaName, admin_flag, pizzaID, cart);
-	
+
 		return "redirect:catalog";
 	}
 
 	@RequestMapping("/tan")
 	public String tan(Model model) {
 
-		model.addAttribute("tan", tanManagement.getAllTans());
+		ArrayList<Map.Entry<Tan, String>> activeTans = new ArrayList<Map.Entry<Tan, String>>();
+		ArrayList<Map.Entry<Tan, String>> usedTans = new ArrayList<Map.Entry<Tan, String>>();
+
+		for (Entry<Tan, String> t : tanManagement.getAllTans()) {
+			if (t.getKey().getStatus().equals(TanStatus.USED)) {
+				usedTans.add(t);
+			} else {
+				activeTans.add(t);
+			}
+		}
+
+		model.addAttribute("activeTans", activeTans);
+		model.addAttribute("usedTans", usedTans);
 
 		model.addAttribute("notConfirmedTans", tanManagement.getAllNotConfirmedTans());
 
 		return "tan";
 	}
 
-	
-
 	@RequestMapping("/customer_display")
 	public String customer_display(Model model) {
 
 		store.checkCutleries();
 		model.addAttribute("customer", customerRepository.findAll());
+		model.addAttribute("error", customerError);
 
 		return "customer_display";
 	}
@@ -196,106 +174,22 @@ public class StoreController {
 	@RequestMapping("/editCustomer")
 	public String editCustomer(Model model, @RequestParam("cid") long id, RedirectAttributes redirectAttrs) {
 		redirectAttrs.addAttribute("cid", id).addFlashAttribute("message", "Customer");
-		model.addAttribute("error", error);
 		return "redirect:register_customer";
 
 	}
-	
-	@RequestMapping("/deleteCustomer") 
-	public String deleteCustomer(Model model,@RequestParam("cid") long id) {
-		model.addAttribute("error",error);
-		
+
+	@RequestMapping("/deleteCustomer")
+	public String deleteCustomer(Model model, @RequestParam("cid") long id) {
+		customerError.setError(false);
 		try {
 			store.deleteCustomer(model, id);
 		} catch (Exception e) {
-			System.out.println("Cutlery fehler beim Kunden");
+			customerError.setError(true);
+			customerError.setMessage(e.getMessage());
 		}
-		
+
 		return "redirect:customer_display";
 
-	}
-
-	@RequestMapping(value = "/updateCustomer")
-	public String updateStaffMember(Model model, @RequestParam("surname") String surname, @RequestParam("forename") String forename,
-			@RequestParam("telnumber") String telephonenumber, @RequestParam("local") String local,
-			@RequestParam("postcode") String postcode, @RequestParam("street") String street,
-			@RequestParam("housenumber") String housenumber, @RequestParam("cid") long id) {
-
-		Customer oldCustomer = customerRepository.findOne(id);
-		String oldTelephoneNumber = oldCustomer.getPerson().getTelephoneNumber();
-		
-		if (surname == "" || forename == "" || telephonenumber == "" || local == "" || street == "" || housenumber == ""
-				|| postcode == "") {
-			error.setError(true);
-			error.setMessage("Eingabefelder überprüfen!");
-			model.addAttribute("error", error);
-			model.addAttribute("existingCustomer", oldCustomer);
-			return "register_customer";
-		}
-		
-		String msg = store.validateTelephonenumber(telephonenumber,oldCustomer.getPerson());
-		if(!msg.isEmpty())
-		{
-			error.setError(true);
-			error.setMessage(msg);
-			model.addAttribute("error", error);
-			return "redirect:register_staffmember";
-		}
-		
-		error.setError(false);
-		
-		Cutlery oldCutlery = oldCustomer.getCutlery();
-
-		
-
-		if (!oldTelephoneNumber.equals(telephonenumber)) {
-			tanManagement.updateTelephoneNumber(oldTelephoneNumber, telephonenumber);
-		}
-		
-		//Address newAddress = new Address(local, postcode, street, housenumber);
-		
-		/*
-		boolean addressAlreadyExists = false;
-		
-		for(Address address : this.addressRepository.findAll())
-		{
-			if(address.equals(newAddress)){
-				newAddress = address;
-				addressAlreadyExists = true;
-				break;
-			}
-		}
-		
-		if(!addressAlreadyExists)
-		{
-			newAddress = this.addressRepository.save(newAddress);
-		}
-		*/
-	
-		//Person updatedPerson = new Person(surname,forename, telephonenumber, newAddress);
-			
-		Customer updatedCustomer = new Customer(surname,forename, telephonenumber,local, postcode, street, housenumber);
-		
-		if(oldCutlery != null)
-		{
-			updatedCustomer.setCutlery(oldCutlery);
-		}
-
-		Iterable<PizzaOrder> allPizzaOrders = pizzaOrderRepository.findAll();
-
-		for (PizzaOrder pizzaOrder : allPizzaOrders) {
-			Customer customer = pizzaOrder.getCustomer();
-			if (customer != null) {
-				if (customer.getId() == id) {
-					pizzaOrder.setCustomer(updatedCustomer);
-				}
-			}
-		}
-		
-		customerRepository.save(updatedCustomer);
-		customerRepository.delete(id);
-
-		return "redirect:customer_display";
 	}
 
 	@RequestMapping("returnCutlery")
@@ -319,37 +213,37 @@ public class StoreController {
 	public String login() {
 		return "login";
 	}
-	
-	@RequestMapping("/newsletter") 
+
+	@RequestMapping("/newsletter")
 	public String newsletter() {
-		
+
 		return "newsletter";
 
 	}
-	
-	@RequestMapping("addEmail") 
+
+	@RequestMapping("addEmail")
 	public String addEmail(@RequestParam("email") String eMailAddress) {
-		
+
 		store.addEmailToMailingList(eMailAddress);
-		
+
 		return "newsletter";
 
 	}
-	
-	@RequestMapping("removeEmail") 
+
+	@RequestMapping("removeEmail")
 	public String removeEmail(@RequestParam("email") String eMailAddress) {
-		
+
 		store.removeEmailFromMailingList(eMailAddress);
-		
+
 		return "newsletter";
 
 	}
-	
-	@RequestMapping("sendNewsletter") 
+
+	@RequestMapping("sendNewsletter")
 	public String sendNewsletter(@RequestParam("newsletter_text") String newsletterText) {
-		
+
 		store.sendNewsletter(newsletterText);
-		
+
 		return "newsletter";
 
 	}

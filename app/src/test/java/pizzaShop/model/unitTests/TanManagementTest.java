@@ -1,4 +1,4 @@
-package unitTests;
+package pizzaShop.model.unitTests;
 
 import static org.junit.Assert.*;
 
@@ -63,49 +63,44 @@ public class TanManagementTest {
 	public void invalidateTanTest() {
 		
 		String testTelephoneNumber = "123456";
-		
+		Integer counter = 0;
+		Integer counter2 = 0;
 		Tan newTan = TanMan.generateNewTan(testTelephoneNumber);
 		
 		Iterable<Entry<Tan,String>> test = TanMan.getAllNotConfirmedTans();
 		
 		for(Entry<Tan, String> entry : test)
 		{
-			System.out.println(entry.getValue());
-			System.out.println(entry.getKey().getTanNumber());
-			System.out.println(entry.getKey().getStatus());
+			assertNotNull(entry.getValue());
+			assertNotNull(entry.getKey().getTanNumber());
+			assertTrue(entry.getKey().getStatus().equals(TanStatus.NOT_CONFIRMED));
+			counter++;
 		}
 		
-		System.out.println("end");
-		
+	
 		TanMan.confirmTan(newTan);
 		
-		Iterable<Entry<Tan,String>> test3 = TanMan.getAllTans();
+		Iterable<Entry<Tan,String>> it2 = TanMan.getAllNotConfirmedTans();
 		
-		for(Entry<Tan, String> entry : test3)
+		for(@SuppressWarnings("unused") Entry<Tan, String> entry : it2)
 		{
-			System.out.println(entry.getValue());
-			System.out.println(entry.getKey().getTanNumber());
-			System.out.println(entry.getKey().getStatus());
+			counter2++;
 		}
 		
-		System.out.println("end");
-		
-		//TanMan.invalidateTan(newTan);
+		assertTrue(counter-1 == counter2);
 		
 		Tan newTan2 = TanMan.generateNewTan(testTelephoneNumber);
 		
 		TanMan.confirmTan(newTan2);
 		
-		Iterable<Entry<Tan,String>> test2 = TanMan.getAllTans();
+		Iterable<Entry<Tan,String>> it3 = TanMan.getAllTans();
 		
-		for(Entry<Tan, String> entry : test2)
+		for(Entry<Tan, String> entry : it3)
 		{
 			System.out.println(entry.getValue());
 			System.out.println(entry.getKey().getTanNumber());
-			System.out.println(entry.getKey().getStatus());
 		}
 		
-		System.out.println("end");
 		
 		assertEquals(TanStatus.USED,newTan.getStatus());
 				

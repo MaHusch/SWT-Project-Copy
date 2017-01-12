@@ -7,7 +7,7 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css"
 	th:href="@{/resources/css/style.css}" />
-<title>DelivererDashboard</title>
+<title>Deliverer-Dashboard</title>
 </head>
 <body>
 
@@ -53,6 +53,7 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 						<td>Inhalt</td>
 						<td>Kunde</td>
 						<td>Adresse</td>
+						<td>Anmerkung</td>
 
 					</tr>
 					<tr th:each="order : ${orders}">
@@ -61,6 +62,7 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 							th:text="${order.getCustomer().getPerson().getForename() +' ' + order.getCustomer().getPerson().getSurname()}">customer</td>
 						<td th:text="${order.getCustomer().getPerson().getAddress().toString()}">address
 						</td>
+						<td th:text="${order.getRemark()}">Anmerkung</td>
 
 
 					</tr>

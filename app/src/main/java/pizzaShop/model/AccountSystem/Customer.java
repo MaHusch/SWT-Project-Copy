@@ -1,16 +1,11 @@
 package pizzaShop.model.AccountSystem;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import javax.persistence.CascadeType;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
-import pizzaShop.model.DataBaseSystem.AddressRepository;
 import pizzaShop.model.OrderSystem.Cutlery;
 
 

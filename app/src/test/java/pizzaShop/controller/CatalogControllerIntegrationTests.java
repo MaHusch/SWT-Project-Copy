@@ -1,13 +1,11 @@
 package pizzaShop.controller;
 
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.iterableWithSize;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -125,6 +123,7 @@ public class CatalogControllerIntegrationTests extends AbstractIntegrationTests 
 		assertThat(returnedView, is("catalog"));
 
 		Map<String, Object> map = model.asMap();
+		@SuppressWarnings("unchecked")
 		ArrayList<Item> map_items = (ArrayList<Item>) map.get("items");
 		NameComparator comp = new NameComparator(true);
 

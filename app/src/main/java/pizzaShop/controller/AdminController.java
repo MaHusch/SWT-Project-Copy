@@ -24,7 +24,6 @@ import pizzaShop.model.AccountSystem.Baker;
 import pizzaShop.model.AccountSystem.Deliverer;
 import pizzaShop.model.AccountSystem.Seller;
 import pizzaShop.model.AccountSystem.StaffMember;
-import pizzaShop.model.DataBaseSystem.StaffMemberRepository;
 import pizzaShop.model.ManagementSystem.Store;
 import pizzaShop.model.ProductionSystem.Oven;
 
@@ -32,17 +31,14 @@ import pizzaShop.model.ProductionSystem.Oven;
 public class AdminController {
 
 	private ErrorClass error = new ErrorClass(false);
-	private final StaffMemberRepository staffMemberRepository;
 	private final UserAccountManager employeeAccountManager;
 	private final Accountancy accountancy;
 
 	private final Store store;
 
 	@Autowired
-	public AdminController(Store store, StaffMemberRepository staffMemberRepository,
-			UserAccountManager employeeAccountManager, Accountancy accountancy) {
+	public AdminController(Store store, UserAccountManager employeeAccountManager, Accountancy accountancy) {
 		this.store = store;
-		this.staffMemberRepository = staffMemberRepository;
 		this.employeeAccountManager = employeeAccountManager;
 		this.accountancy = accountancy;
 
@@ -70,8 +66,8 @@ public class AdminController {
 			@RequestParam("username") String username, @RequestParam("password") String password,
 			@RequestParam("role") String role) {
 
-		if (surname == "" || forename == "" || telephonenumber == "" || username == "" || password == ""
-				|| role == "") {
+		if (surname.equals("") || forename.equals("") || telephonenumber.equals("") || username.equals("") || password.equals("")
+				|| role.equals("")) {
 			model.addAttribute("error", error);
 			return "redirect:register_staffmember";
 		}
@@ -147,7 +143,7 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/deleteStaffMember")
-	public String updateStaffMember(Model model, @RequestParam("StaffMemberName") String username, @LoggedIn Optional<UserAccount> lUserAccount) {
+	public String deleteStaffMember(Model model, @RequestParam("StaffMemberName") String username, @LoggedIn Optional<UserAccount> lUserAccount) {
 		StaffMember member = store.getStaffMemberByName(username);
 		error.setError(false);
 		if(member.getUserAccount().equals(lUserAccount.get())) 
@@ -175,7 +171,7 @@ public class AdminController {
 			@RequestParam("username") String username, @RequestParam("password") String password, RedirectAttributes redirectAttrs) {
 		StaffMember member = store.getStaffMemberByName(username);
 		
-		if (surname == "" || forename == "" || telephonenumber == "" || username == "" || password == "") {
+		if (surname.equals("") || forename.equals("") || telephonenumber.equals("") || username.equals("") || password.equals("")) {
 			error.setError(true);
 			redirectAttrs.addAttribute("name", username).addFlashAttribute("message", "StaffMember");
 			return "redirect:register_staffmember";
@@ -208,8 +204,20 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/deleteOven", method = RequestMethod.POST)
-	public String deleteOVen(@RequestParam("ovenID") int id) {
-
+	public String deleteOVen(Model model,@RequestParam("ovenID") int id) {
+		
+		for(Oven o : store.getOvens())
+		{
+			if(o.getId() == id && !o.isEmpty())
+			{
+				error.setError(true);
+				error.setMessage("Ofen ist nicht leer");
+				model.addAttribute("ovens", store.getOvens());
+				model.addAttribute("queue", store.getPizzaQueue());
+				model.addAttribute("error", error);
+				return "ovens";
+			}
+		}
 		store.deleteOven(id);
 
 		return "redirect:ovens";

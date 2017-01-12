@@ -38,7 +38,7 @@
 
 
 	<div sec:authorize="hasRole('ROLE_SELLER') || hasRole('ROLE_ADMIN')"
-		class="container col-md-8">
+		class="container col-md-12">
 		<div class="panel panel-primary">
 			<div class="panel-heading">Übersicht der aktiven Bestellungen</div>
 			<div class="panel-body">
@@ -75,20 +75,24 @@
 								</td>
 
 								<td sec:authorize="hasRole('ROLE_SELLER')" th:unless="${order.getPickUp()}" >
-									<form th:unless="${order.getOrderStatus().name().contains('PENDING')}" method="post" action="/assignDeliverer">
+									<form th:unless="${order.getOrderStatus().name().contains('PENDING') or order.getOrderStatus().name().contains('DELIVERING')}" method="post" action="/assignDeliverer">
 										<select name="delivererList" id="delivererList" size="1" >
-											
 												<option th:each="deliverer : ${deliverers}" th:value= "${deliverer.getUsername()}" th:text="${deliverer.getPerson().getForename()}">mark</option>
-											
-											
 										</select>  <input
 											type="hidden" value="0" name="orderID"
 											th:value="${order.getId()}" /> <input
 											class="btn btn-primary" type="submit"
 											value="Lieferant schicken"  /> <!-- onclick="assignDeliverer();" -->
 									</form >
-									<div th:if="${order.getOrderStatus().name().contains('PENDING')}">
-										<p>zugewiesen</p>
+									<div th:if="${order.getOrderStatus().name().contains('PENDING') or order.getOrderStatus().name().contains('DELIVERING')}">
+										<p th:text="${order.getDelivererName()}">zugewiesen</p>
+										<form th:if="${order.getOrderStatus().name().contains('PENDING')}" th:action="/changeDeliverer" method="post">
+										<input
+											type="hidden" value="0" name="orderID"
+											th:value="${order.getId()}" /> <input
+											class="btn btn-primary" type="submit"
+											value="Lieferant ändern"  />
+										</form>
 									</div>
 								</td>
 							</tr>
@@ -99,7 +103,7 @@
 		</div>
 	</div>
 
-	<div sec:authorize="hasRole('ROLE_ADMIN')" class="container col-md-8">
+	<div sec:authorize="hasRole('ROLE_ADMIN')" class="container col-md-12">
 		<div class="panel panel-primary">
 			<div class="panel-heading">Übersicht aller Bestellungen</div>
 			<div class="panel-body">
@@ -110,7 +114,7 @@
 							<th>Inhalt</th>
 							<th>Preis</th>
 							<th>Status</th>
-							<th>Unbaked</th>
+							<th>Ungebackene Pizzen</th>
 						</tr>
 					</thead>
 					<tbody>

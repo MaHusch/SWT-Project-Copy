@@ -12,7 +12,7 @@ public class Oven {
 	private static int ID = 1;
 	private int ovenID;
 	private Pizza currentPizza = null;
-	private BakerTimer myTimer;
+	private BakerTimer myTimer = null;
 	private boolean empty = true;
 
 	private final Store store;
@@ -37,7 +37,7 @@ public class Oven {
 	}
 
 	public boolean notifyObservers(Pizza pizza) {
-		if (!pizza.equals(null)) {
+		if (pizza != null) {
 			store.updatePizzaOrder(pizza);
 			return true;
 		} else {
@@ -47,7 +47,7 @@ public class Oven {
 	}
 
 	public boolean fill(Pizza pizza, BusinessTime businessTime) {
-		if (!pizza.equals(null)) {
+		if (this.isEmpty()) {
 			currentPizza = pizza;
 			empty = false;
 			myTimer = new BakerTimer(businessTime);
@@ -64,15 +64,7 @@ public class Oven {
 	}
 
 	public Pizza getPizza() {
-		try {
-			if (!currentPizza.equals(null)) {
-				return currentPizza;
-			} else {
-				return null;
-			}
-		} catch (Exception e) {
-			return null;
-		}
+		return currentPizza;	
 	}
 
 	public String getPizzaName() {

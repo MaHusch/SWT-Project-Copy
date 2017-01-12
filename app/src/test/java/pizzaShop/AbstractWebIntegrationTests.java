@@ -29,6 +29,7 @@ import org.springframework.web.context.WebApplicationContext;
 /**
  * @author Oliver Gierke
  */
+@SuppressWarnings("deprecation")
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @SpringApplicationConfiguration(classes = Application.class)
