@@ -75,6 +75,17 @@ public class AdminController {
 			model.addAttribute("error", error);
 			return "redirect:register_staffmember";
 		}
+		
+		String msg = store.validateTelephonenumber(telephonenumber, null);
+		if(!msg.isEmpty())
+		{
+			error.setError(true);
+			error.setMessage(msg);
+			model.addAttribute("error", error);
+			return "redirect:register_staffmember";
+		}
+		
+		error.setError(false);
 
 		StaffMember staffMember;
 

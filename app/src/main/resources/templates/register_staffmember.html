@@ -93,7 +93,7 @@
 		<div class="panel panel-danger">
 			<div class="panel-heading">Fehler!</div>
 			<div class="panel-body">
-				<p>Felder mit (*) dürfen nicht leer sein!</p>
+				<p th:text="${error.getMessage()}">Fehler!</p>
 			</div>
 		</div>
 	</div>

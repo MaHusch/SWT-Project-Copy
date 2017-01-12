@@ -33,6 +33,7 @@ import org.springframework.ui.Model;
 import pizzaShop.controller.ErrorClass;
 import pizzaShop.model.AccountSystem.Customer;
 import pizzaShop.model.AccountSystem.Deliverer;
+import pizzaShop.model.AccountSystem.Person;
 import pizzaShop.model.AccountSystem.StaffMember;
 import pizzaShop.model.DataBaseSystem.AddressRepository;
 import pizzaShop.model.DataBaseSystem.CatalogHelper;
@@ -70,7 +71,7 @@ public class Store {
 	private Pizza nextPizza;
 
 	private ArrayList<String> eMailList;
-	
+
 	private MailSender mailSender;
 
 	private ErrorClass error;
@@ -82,7 +83,8 @@ public class Store {
 	public Store(UserAccountManager employeeAccountManager, ItemCatalog itemCatalog,
 			PizzaOrderRepository pizzaOrderRepo, StaffMemberRepository staffMemberRepository,
 			CustomerRepository customerRepository, Accountancy accountancy, BusinessTime businessTime,
-			CatalogHelper catalogHelper, TanManagement tanManagement, AddressRepository addressRepository, MailSender mailSender) {
+			CatalogHelper catalogHelper, TanManagement tanManagement, AddressRepository addressRepository,
+			MailSender mailSender) {
 
 		this.employeeAccountManager = employeeAccountManager;
 		this.itemCatalog = itemCatalog;
@@ -133,14 +135,12 @@ public class Store {
 			simpleMessage.setTo(eMailAddress);
 			simpleMessage.setSubject("Papa_Pizza_Newsletter");
 			simpleMessage.setText(newsletterText);
-			
-			try{
+
+			try {
 				this.mailSender.send(simpleMessage);
-			}
-			catch(MailException ex){
+			} catch (MailException ex) {
 				System.err.println(ex.getMessage());
 			}
-			
 
 		}
 
@@ -324,7 +324,8 @@ public class Store {
 		pizzaOrderRepo.save(p);
 		if (del == null) {
 			AccountancyEntry a = new AccountancyEntry(p.getTotalPrice(),
-					"Order von " + p.getCustomer().getPerson().getForename() + p.getCustomer().getPerson().getSurname() + " über Account " + p.getOrder().getUserAccount().getUsername() + " " + msg);
+					"Order von " + p.getCustomer().getPerson().getForename() + p.getCustomer().getPerson().getSurname()
+							+ " über Account " + p.getOrder().getUserAccount().getUsername() + " " + msg);
 			accountancy.add(a);
 
 		} else {
@@ -495,5 +496,20 @@ public class Store {
 				ovenList.remove(i);
 			}
 		}
+	}
+
+	public String validateTelephonenumber(String t, Person p) {
+		for (char c : t.toCharArray()) {
+			if (!Character.isDigit(c))
+				return "Telefonnummer enthält Buchstaben";
+
+		}
+		
+		for(Customer cu : this.customerRepository.findAll())
+		{
+			if(cu.getPerson().getTelephoneNumber().equals(t) && !cu.getPerson().equals(p))
+				return "Diese Telefonnummber ist bereits vergeben";
+		}
+		return "";
 	}
 }

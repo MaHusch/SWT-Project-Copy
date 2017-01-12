@@ -222,7 +222,7 @@ public class StoreController {
 			@RequestParam("housenumber") String housenumber, @RequestParam("cid") long id) {
 
 		Customer oldCustomer = customerRepository.findOne(id);
-
+		String oldTelephoneNumber = oldCustomer.getPerson().getTelephoneNumber();
 		
 		if (surname == "" || forename == "" || telephonenumber == "" || local == "" || street == "" || housenumber == ""
 				|| postcode == "") {
@@ -230,20 +230,23 @@ public class StoreController {
 			error.setMessage("Eingabefelder überprüfen!");
 			model.addAttribute("error", error);
 			model.addAttribute("existingCustomer", oldCustomer);
-			model.addAttribute(housenumber);
-			model.addAttribute("street", street);
-			model.addAttribute(postcode);
-			model.addAttribute(local);
-			model.addAttribute(telephonenumber);
-			model.addAttribute(forename);
-			model.addAttribute(surname);
-			
 			return "register_customer";
 		}
 		
+		String msg = store.validateTelephonenumber(telephonenumber,oldCustomer.getPerson());
+		if(!msg.isEmpty())
+		{
+			error.setError(true);
+			error.setMessage(msg);
+			model.addAttribute("error", error);
+			return "redirect:register_staffmember";
+		}
+		
+		error.setError(false);
+		
 		Cutlery oldCutlery = oldCustomer.getCutlery();
 
-		String oldTelephoneNumber = oldCustomer.getPerson().getTelephoneNumber();
+		
 
 		if (!oldTelephoneNumber.equals(telephonenumber)) {
 			tanManagement.updateTelephoneNumber(oldTelephoneNumber, telephonenumber);

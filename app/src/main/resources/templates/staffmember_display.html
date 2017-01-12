@@ -12,7 +12,7 @@
 	<div th:include="navbar :: navbar" >...</div>
 
 	<!-- staffmember list panel -->
-	<div sec:authorize="hasRole('ROLE_ADMIN')" class="container col-md-6">
+	<div sec:authorize="hasRole('ROLE_ADMIN')" class="container col-md-9">
 		<div class="panel panel-primary">
 			<div class="panel-heading">Mitarbeiter Anzeige</div>
 			<div class="panel-body">
@@ -20,12 +20,14 @@
 						<tr>
 							<td>Vorname</td>
 							<td>Nachname</td>
+							<td>Telefonnummer</td>
 							<td>Rolle</td>
 						</tr>
 						<tbody>
 							<tr th:each=" staffmember : ${staffmember}">
 								<td th:text="${staffmember.getPerson().getForename()}">Vorname</td>
 								<td th:text="${staffmember.getPerson().getSurname()}">Nachname</td>
+								<td th:text="${staffmember.getPerson().getTelephoneNumber()}">Nachname</td>
 								<td th:text="${staffmember.getRole()}">Rolle</td>
 								
 								
