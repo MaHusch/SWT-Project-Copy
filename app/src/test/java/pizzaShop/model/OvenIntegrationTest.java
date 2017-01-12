@@ -6,7 +6,6 @@ import static org.salespointframework.core.Currencies.EURO;
 import org.javamoney.moneta.Money;
 import org.junit.*;
 import org.salespointframework.time.BusinessTime;
-import org.salespointframework.useraccount.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import pizzaShop.AbstractIntegrationTests;
@@ -47,9 +46,9 @@ public class OvenIntegrationTest extends AbstractIntegrationTests{
 	public void constructorTest(){
 		// 3 ovens via initializer 
 		store.getOvens().clear();
-		assertEquals(o1.getId(), 4);
-		assertEquals(o2.getId(), 5);
-		assertEquals(o3.getId(), 6);
+		assertEquals(o1.getId(), 7);
+		assertEquals(o2.getId(), 8);
+		assertEquals(o3.getId(), 9);
 		store.getOvens().add(o1);
 		store.getOvens().add(o2);
 		store.getOvens().add(o3);

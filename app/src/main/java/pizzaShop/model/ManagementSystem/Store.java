@@ -454,7 +454,6 @@ public class Store {
 			}
 		}
 
-		System.out.println(admin_flag + " " + pizzaID);
 		if ((admin_flag != null && !admin_flag.equals("")) && admin_flag.equals("true")
 				&& (pizzaID != null && !pizzaID.equals(""))) {
 			Pizza pizza = (Pizza) (catalogHelper.findItemByIdentifier(pizzaID, null));
@@ -490,8 +489,6 @@ public class Store {
 				try {
 					this.returnCutlery("decayed", c);
 				} catch (Exception e) {
-					System.out.println("if statement geht nicht");
-
 				}
 			}
 		}
