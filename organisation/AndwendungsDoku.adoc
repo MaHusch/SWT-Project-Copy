@@ -31,8 +31,6 @@ Hier ist eine Anleitung zur Verwendung der einzelnen Bereiche der Anwendung zu f
 
 === Finanzübersicht
 
-=== Finanzeintrag erstellen
-
 == Bestellungen
 
 === Bestellungübersicht
