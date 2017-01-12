@@ -36,13 +36,13 @@ Der Warenkatalog aus Sicht des Admins. Er kann Items aus dem Warenkatalog entfer
 
 image::Bilder/catalogSeller.png[]
 
-Der Warenkatalog aus Sicht des Verkäufers. Er kann Items dem Warenkorb hinzufügen und Pizzen temporär verfeinern. 
+Der Warenkatalog aus Sicht des Verkäufers. Er kann Items dem Warenkorb hinzufügen und Pizzen verfeinern, wodurch eine neue Pizza erstellt wird. 
 
 === Item bearbeiten/hinzufügen
 
 image::Bilder/itemBearbeiten.png[]
 
-Der Admin und der Verkäufen können Items bearbeiten. Der Unterschied besteht darin, dass ein Verkäufer ein neues Item im Warenkatalog hinzufügt und der Admin ein bestehendes Item überschreibt.
+Der Admin kann hier Items bearbeiten. Die Eingabefelder dürfen dafür aber nicht leer sein, und der Preis muss positiv sein. 
 
 
 === Pizza erstellen/verfeinern
@@ -86,7 +86,7 @@ Der Seller kann auf seiner Übersicht der Bestellungen nur die aktiven Bestellun
 
 image::Bilder/tans.png[]
 
-Auf der Seite für die TAN-Liste sieht der Admin, welche TANs gerade im Umlauf sind, welche noch nicht vom System bestätigt sind und welche eingelöst worden sind.
+Auf der Seite für die TAN-Liste sieht der Admin, welche TANs gerade im Umlauf sind, welche noch nicht vom System bestätigt sind und welche schon benutzt worden sind.
 
 == Newsletter
 
@@ -102,28 +102,31 @@ Auf dieser Seite kann der Admin den Text für die Newsletter-Email schreiben und
 image::Bilder/newsletterCustomer.png[]
 
 Der Kunde kann sich hier in die E-Mail-Liste für den Newsletter eintragen.
+
 == Öfen
 
 image::Bilder/ovensAdmin.png[]
 
-Der Admin hat hier die Möglichkeit einen neuen Ofen dem Shop hinzuzufügen, dabei wird ein neuer Finanzeintrag erstellt. Außerdem kann er hier defekte Öfen löschen.
+Der Admin hat hier die Möglichkeit einen neuen Ofen dem Shop hinzuzufügen, dabei wird ein neuer Finanzeintrag erstellt. Außerdem kann er hier defekte Öfen löschen. 
 
 image::Bilder/ovensBaker.png[]
 
 Der Bäcker kann auf seiner einzig relevanten Seite die nächste Pizza die in der Warteschlange ist in einen Ofen legen.
+Desweiteren sieht er wie viele Sekunden die Pizzen in den Öfen noch brauchen.
 
-== Personenverwaltung
+== Personal
 
 === Mitarbeiter 
 
-==== Admin
+===== Admin
 
-==== Verkäufer
+===== Verkäufer
 
-==== Bäcker
+===== Bäcker
 
+seine Startseite ist die Ofenseite (siehe Oven).
 
-==== Lieferant
+===== Lieferant
 
 image::Bilder/delivererDashboard.png[]
 
@@ -140,7 +143,7 @@ Die Mitarbeiterübersicht für den Admin. Er kann hier Mitarbeiter überarbeiten
 
 image::Bilder/mitarbeiterBearbeiten.png[]
 
-Auf dieser Seite kann der Admin die Daten eines Mitarbeiters überarbeiten.
+Auf dieser Seite kann der Admin die Daten eines Mitarbeiters überarbeiten, diese dürfen nicht leer sein und die Telefonnummer darf nur aus Zahlen bestehen.
 
 ==== Mitarbeiter entfernen
 
@@ -158,13 +161,14 @@ Der Lieferant kann hier auswählen (nachdem er auf seiner Startseite auf "Cutler
 
 image::Bilder/kundenAnzeige.png[]
 
-Der Admin kann hier Kunden bearbeiten oder entfernen. 
+Der Admin kann hier Kunden bearbeiten oder entfernen, indem der zugehörige Button geklickt wird
 
 ==== Kunden registrieren
 
 image::Bilder/kundenRegistrieren.png[]
 
 Der Verkäufer kann auf dieser Seite neue Kunden registrieren.
+Die Telefonnummer des Kunden darf hierbei noch nicht vergeben sein, da mithilfe von ihr eine Tan dem Kunden zugewiesen wird.
 
 ==== Kunden bearbeiten
 
@@ -172,4 +176,4 @@ image::Bilder/kundenBearbeiten.png[]
 
 Der Admin kann hier Kundendaten überarbeiten.
 
-==== Kunden entfernen
+
