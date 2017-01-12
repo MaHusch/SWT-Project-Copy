@@ -1,4 +1,4 @@
-package unitTests;
+package pizzaShop.model.unitTests;
 
 import static org.junit.Assert.*;
 
@@ -57,6 +57,8 @@ public class PizzaOrderTest {
 		assertEquals(po1.getOrderStatus(), PizzaOrderStatus.COMPLETED);
 		po1.deliverOrder();
 		assertEquals(po1.getOrderStatus(), PizzaOrderStatus.DELIVERING);
+		po1.cancelOrder();
+		assertEquals(po1.getOrderStatus(), PizzaOrderStatus.CANCELLED);
 	}
 	
 	

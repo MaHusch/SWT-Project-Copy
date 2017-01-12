@@ -122,19 +122,19 @@ public class ApplicationDataInitializer implements DataInitializer {
 		Ingredient olive = new Ingredient("Oliven", Money.of(0.90, EURO));
 		Ingredient chili = new Ingredient("Chili", Money.of(0.70, EURO));
 
-		Pizza pizza1 = new Pizza("Barbecue", Money.of(0.00, EURO));
+		Pizza pizza1 = new Pizza("Barbecue", Money.of(2.00, EURO));
 		pizza1.addIngredient(Arrays.asList(bacon, onions, paprika, cheese));
 
-		Pizza pizza2 = new Pizza("BigApple", Money.of(0.00, EURO));
+		Pizza pizza2 = new Pizza("BigApple", Money.of(2.00, EURO));
 		pizza2.addIngredient(Arrays.asList(chicken_stripes, spinach, cheese));
 
-		Pizza pizza3 = new Pizza("Mediteran", Money.of(0.00, EURO));
+		Pizza pizza3 = new Pizza("Mediteran", Money.of(2.00, EURO));
 		pizza3.addIngredient(Arrays.asList(chicken_stripes, olive, cheese));
 
-		Pizza pizza4 = new Pizza("Fungi", Money.of(0.0, EURO));
+		Pizza pizza4 = new Pizza("Fungi", Money.of(2.0, EURO));
 		pizza4.addIngredient(Arrays.asList(cheese, mushroom, onions));
 
-		Pizza pizza5 = new Pizza("Diablo", Money.of(0.0, EURO));
+		Pizza pizza5 = new Pizza("Diablo", Money.of(2.0, EURO));
 		pizza5.addIngredient(Arrays.asList(cheese, mushroom, paprika, chili));
 
 		Item beer = new Item("Desperados", Money.of(1.60, EURO), ItemType.DRINK);

@@ -1,16 +1,20 @@
-package unitTests;		// test Store befor
+package pizzaShop.model;		// test Store befor
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.salespointframework.order.OrderIdentifier;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import pizzaShop.AbstractIntegrationTests;
 import pizzaShop.model.AccountSystem.Deliverer;
+import pizzaShop.model.DataBaseSystem.PizzaOrderRepository;
 import pizzaShop.model.OrderSystem.PizzaOrder;
 
-public class DelivererTest {
+public class DelivererIntegrationTest extends AbstractIntegrationTests {
 
+	@Autowired PizzaOrderRepository pOR;
 	Deliverer d1;
 	
 	
@@ -18,7 +22,6 @@ public class DelivererTest {
 	public void setUp() throws Exception 
 	{
 		d1 = new Deliverer("Horst", "Peter", "1234");
-		
 		
 	}
 
@@ -46,20 +49,23 @@ public class DelivererTest {
 		
 	}
 	
-	/*@Test
+	@Test
 	public void testaddOrderIdentifier()
 	{
-		d1.addOrder(oi1);
-		assertTrue(d1.getOrders().contains(o1));
+		PizzaOrder pO = new PizzaOrder();
+		d1.addOrder(pO.getId());
+		assertTrue(d1.getOrders().contains(pO.getId()));
 	}
 
 	@Test
 	public void testremoveOrderIdentifier()
 	{
-		assertEquals(oi1,d1.removeOrder(oi1));
-		assertFalse(d1.getOrders().contains(o1));
+		OrderIdentifier pOI = new PizzaOrder().getId();
+		d1.addOrder(pOI);
+		assertEquals(pOI,d1.removeOrder(pOI));
+		assertFalse(d1.getOrders().contains(pOI));
 		d1.clearOrders();
 		assertTrue(d1.getOrders().isEmpty());
-	}*/
+	}
 	
 }

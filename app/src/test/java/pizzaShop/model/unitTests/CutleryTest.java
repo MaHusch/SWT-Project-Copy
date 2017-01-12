@@ -1,4 +1,4 @@
-package unitTests;
+package pizzaShop.model.unitTests;
 
 import static org.junit.Assert.*;
 
