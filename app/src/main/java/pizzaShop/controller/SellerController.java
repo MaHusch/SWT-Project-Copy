@@ -1,5 +1,7 @@
 package pizzaShop.controller;
 
+import java.util.Map.Entry;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +15,7 @@ import pizzaShop.model.AccountSystem.Person;
 import pizzaShop.model.DataBaseSystem.AddressRepository;
 import pizzaShop.model.DataBaseSystem.CustomerRepository;
 import pizzaShop.model.ManagementSystem.Store;
+import pizzaShop.model.ManagementSystem.Tan_Management.Tan;
 import pizzaShop.model.ManagementSystem.Tan_Management.TanManagement;
 
 @Controller
@@ -25,10 +28,10 @@ public class SellerController {
 	private final Store store;
 
 	@Autowired
-	public SellerController(Store store,TanManagement tanManagement, CustomerRepository customerRepository) {// ,
-																									// AddressRepository
-																									// addressRepository)
-		this.store = store;																							// {
+	public SellerController(Store store, TanManagement tanManagement, CustomerRepository customerRepository) {// ,
+		// AddressRepository
+		// addressRepository)
+		this.store = store; // {
 		this.tanManagement = tanManagement;
 		this.customerRepository = customerRepository;
 		// this.addressRepository = addressRepository;
@@ -63,6 +66,7 @@ public class SellerController {
 			model.addAttribute("error", error);
 			return "register_customer";
 		}
+
 		String msg = store.validateTelephonenumber(telephonenumber, null);
 		if (!msg.isEmpty()) {
 			error.setError(true);
@@ -94,6 +98,12 @@ public class SellerController {
 
 		customerRepository.save(editedCustomer);
 		tanManagement.generateNewTan(telephonenumber);
+		Tan newTan = null;
+		for (Entry<Tan, String> t : tanManagement.getAllNotConfirmedTans())
+			if (t.getValue().equals(telephonenumber))
+				newTan = t.getKey();
+		if (newTan != null)
+			tanManagement.confirmTan(newTan);
 		return "redirect:customer_display";
 	}
 }
