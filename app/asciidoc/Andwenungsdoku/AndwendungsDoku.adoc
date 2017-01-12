@@ -50,7 +50,7 @@ Der Admin und der Verkäufen können Items bearbeiten. Der Unterschied besteht d
 
 image::Bilder/itemVerfeinern.png[]
 
-Hier können Kunden ihre eigenen Pizzen aus einer Auswahl an Zutaten erstellen. Der Admin kann hier komplett neue Pizzen dem Warenkatalog hinzufügen und der Verkäufer übernimmt die Angaben des Kunden um die vom Kunden gewünschte, persönliche Pizza zu erstellen.
+Hier können Kunden ihre eigenen Pizzen aus einer Auswahl an Zutaten erstellen. Der Admin kann hier komplett neue Pizzen dem Warenkatalog hinzufügen und der Verkäufer übernimmt die Angaben des Kunden um die vom Kunden gewünschte, persönliche Pizza zu erstellen und in den Warenkorb zu legen.
 
 == Warenkorb
 
@@ -65,9 +65,21 @@ In einem extra Panel besteht die Möglichkeit, die Buisinesstime vorzuspulen.
 
 === Bestellungübersicht
 
+image::Bilder/ordersAdmin.png[]
+
+Hier sieht der Admin die laufenden und abgeschlossenen Bestellungen des Pizzashops. 
+
+image::Bilder/ordersSeller.png[]
+
+Der Seller kann auf seiner Übersicht der Bestellungen nur die aktiven Bestellungen sehen. Den Bestellungen kann der Lieferant zugewiesen werden. Falls ein falscher Lieferant zugewiesen wurde, kann dies noch geändert werden.
+
 === Bestellung zuweisen
 
 == TAN-System
+
+image::Bilder/tans.png[]
+
+Auf der Seite für die TAN-Liste sieht der Admin, welche TANs gerade im Umlauf sind, welche noch nicht vom System bestätigt sind und welche eingelöst worden sind.
 
 == Newsletter
 
@@ -79,11 +91,19 @@ image::Bilder/newsletterAdmin.png[]
 
 Auf dieser Seite kann der Admin den Text für die Newsletter-Email schreiben und diese E-Mail dann verschicken.
 
+
+image::Bilder/newsletterCustomer.png[]
+
+Der Kunde kann sich hier in die E-Mail-Liste für den Newsletter eintragen.
 == Öfen
 
-=== Ofen befüllen
+image::Bilder/ovensAdmin.png[]
 
-=== Ofen hinzufügen
+Der Admin hat hier die Möglichkeit einen neuen Ofen dem Shop hinzuzufügen, dabei wird ein neuer Finanzeintrag erstellt. Außerdem kann er hier defekte Öfen löschen.
+
+image::Bilder/ovensBaker.png[]
+
+Der Bäcker kann auf seiner einzig relevanten Seite die nächste Pizza die in der Warteschlange ist in einen Ofen legen.
 
 == Personenverwaltung
 
@@ -125,23 +145,23 @@ Der Admin kann hier einen neuen Mitarbeiter registrieren und seine Rolle festleg
 
 ==== Kundenübersicht
 
-image::/app/asciidoc/Anwendungsdoku/Bilder/delivererCutlery.png[]
+image::Bilder/delivererCutlery.png[]
 
 Der Lieferant kann hier auswählen (nachdem er auf seiner Startseite auf "Cutlery zurückgeben" geklickt hat) welcher Kunde seine Cutlery zurückgegeben hat.
 
-image::/app/asciidoc/Anwendungsdoku/Bilder/kundenAnzeige.png[]
+image::Bilder/kundenAnzeige.png[]
 
 Der Admin kann hier Kunden bearbeiten oder entfernen. 
 
 ==== Kunden registrieren
 
-image::/app/asciidoc/Anwendungsdoku/Bilder/kundenRegistrieren.png[]
+image::Bilder/kundenRegistrieren.png[]
 
 Der Verkäufer kann auf dieser Seite neue Kunden registrieren.
 
 ==== Kunden bearbeiten
 
-image::/app/asciidoc/Anwendungsdoku/Bilder/kundenBearbeiten.png[]
+image::Bilder/kundenBearbeiten.png[]
 
 Der Admin kann hier Kundendaten überarbeiten.
 
