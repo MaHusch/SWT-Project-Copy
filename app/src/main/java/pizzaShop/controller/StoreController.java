@@ -19,7 +19,6 @@ import pizzaShop.model.DataBaseSystem.CatalogHelper;
 import pizzaShop.model.DataBaseSystem.CustomerRepository;
 import pizzaShop.model.DataBaseSystem.ItemCatalog;
 import pizzaShop.model.DataBaseSystem.PizzaOrderRepository;
-import pizzaShop.model.DataBaseSystem.StaffMemberRepository;
 import pizzaShop.model.ManagementSystem.Store;
 import pizzaShop.model.ManagementSystem.Tan_Management.TanManagement;
 import pizzaShop.model.OrderSystem.Cutlery;
@@ -36,7 +35,6 @@ public class StoreController {
 	private final TanManagement tanManagement;
 	private final CustomerRepository customerRepository;
 	private final PizzaOrderRepository pizzaOrderRepository;
-	private final StaffMemberRepository staffMemberRepository;
 	private final CatalogHelper catalogHelper;
 	//private final AddressRepository addressRepository;
 
@@ -46,15 +44,14 @@ public class StoreController {
 
 	@Autowired 
 	public StoreController(CatalogHelper catalogHelper,ItemCatalog itemCatalog, TanManagement tanManagement, 
-			CustomerRepository customerRepository, PizzaOrderRepository pOR, Store store, 
-			StaffMemberRepository staffMemberRepository){//, AddressRepository addressRepo) {
+			CustomerRepository customerRepository, PizzaOrderRepository pOR, Store store){//, AddressRepository addressRepo) {
 
 
 		this.itemCatalog = itemCatalog;
 		this.tanManagement = tanManagement;
 		this.customerRepository = customerRepository;
 		this.pizzaOrderRepository = pOR;
-		this.staffMemberRepository = staffMemberRepository;
+		
 		//this.addressRepository = addressRepo;
 		this.store = store;
 		this.catalogHelper = catalogHelper;

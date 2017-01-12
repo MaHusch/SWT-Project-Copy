@@ -2,7 +2,6 @@ package pizzaShop.model.OrderSystem;
 
 import static org.salespointframework.core.Currencies.EURO;
 
-import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.Optional;
 
@@ -57,12 +56,13 @@ public class CartHelper {
 	 *             if the {@link Item} is null
 	 */
 	public void changeQuantity(Item item, int amount, Cart cart) throws Exception {
-		if (item.equals(null))
+		if (item == null)
 			throw new IllegalArgumentException("Produkt existiert nicht mehr!");
 
 		cart.addOrUpdateItem(item, Quantity.of(amount));
 
-		if (cart.getPrice().getNumber().intValue() < 30) {
+		final int FREE_DRINK_PRICE_THRESHOLD = 30;
+		if (cart.getPrice().getNumber().intValue() < FREE_DRINK_PRICE_THRESHOLD) {
 			Iterator<CartItem> ci = cart.iterator();
 			while (ci.hasNext()) {
 				CartItem i = ci.next();
@@ -95,12 +95,12 @@ public class CartHelper {
 	 */
 	public void createPizzaOrder(boolean cutlery, boolean onSite, UserAccount userAccount, Cart cart, Customer customer, String remark)
 			throws Exception {
-		if (userAccount.equals(null))
+		if (userAccount == null)
 			throw new IllegalArgumentException("Nicht eingeloggt!");
-		if (customer.equals(null))
+		if (customer == null)
 			throw new IllegalArgumentException("Kein Kunde vorhanden!");
 		if (cart.isEmpty())
-			throw new Exception("Warenkorb ist leer!");
+			throw new IllegalArgumentException("Warenkorb ist leer!");
 
 		// TODO: check if customer already has a cutlery --> throw error
 		if (cutlery) {
@@ -159,7 +159,8 @@ public class CartHelper {
 	 */
 	public int pizzaQueueTime() {
 
-		int timeLeftInQueue = store.getPizzaQueue().size() * 300;
+		final int SECONDS_TO_BAKE = 300;
+		int timeLeftInQueue = store.getPizzaQueue().size() * SECONDS_TO_BAKE;
 
 		for (Oven o : store.getOvens()) {
 			timeLeftInQueue +=  (o.getBakerTimer() == null) ? 0 : o.getBakerTimer().getCounter();

@@ -3,6 +3,7 @@ package pizzaShop;
 import static org.salespointframework.core.Currencies.EURO;
 
 import java.util.Arrays;
+
 import org.javamoney.moneta.Money;
 import org.salespointframework.accountancy.Accountancy;
 import org.salespointframework.core.DataInitializer;
@@ -20,7 +21,6 @@ import pizzaShop.model.AccountSystem.Seller;
 import pizzaShop.model.AccountingSystem.SalaryThread;
 import pizzaShop.model.DataBaseSystem.CustomerRepository;
 import pizzaShop.model.DataBaseSystem.ItemCatalog;
-import pizzaShop.model.DataBaseSystem.StaffMemberRepository;
 import pizzaShop.model.ManagementSystem.Store;
 import pizzaShop.model.ManagementSystem.Tan_Management.TanManagement;
 import pizzaShop.model.OrderSystem.Cutlery;
@@ -56,7 +56,7 @@ public class ApplicationDataInitializer implements DataInitializer {
 	@Autowired
 	public ApplicationDataInitializer(Accountancy accountancy, UserAccountManager employeeAccountManager,
 			BusinessTime businessTime, CustomerRepository customerRepository, TanManagement tanManagement, Store store,
-			ItemCatalog itemCatalog, StaffMemberRepository staffMemberRepository) {
+			ItemCatalog itemCatalog) {
 		this.accountancy = accountancy;
 		this.businessTime = businessTime;
 		this.customerRepository = customerRepository;

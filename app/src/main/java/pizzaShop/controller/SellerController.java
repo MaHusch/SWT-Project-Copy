@@ -58,8 +58,8 @@ public class SellerController {
 			@RequestParam("local") String local, @RequestParam("postcode") String postcode,
 			@RequestParam("street") String street, @RequestParam("housenumber") String housenumber) {
 
-		if (surname == "" || forename == "" || telephonenumber == "" || local == "" || street == "" || housenumber == ""
-				|| postcode == "") {
+		if (surname.equals("") || forename.equals("") || telephonenumber.equals("") || local.equals("") || street.equals("") || housenumber.equals("")
+				|| postcode.equals("")) {
 
 			error.setError(true);
 			error.setMessage("Eingabefelder überprüfen!");
