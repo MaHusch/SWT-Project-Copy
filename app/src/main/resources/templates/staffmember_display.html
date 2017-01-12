@@ -9,76 +9,10 @@
 </head>
 <body>
 	<!-- Navbar -->
-	<header>
-		<nav class="navbar navbar-default">
-			<div class="container-fluid">
-				<!-- Brand and toggle get grouped for better mobile display -->
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle collapsed"
-						data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
-						aria-expanded="false">
-						<span class="sr-only">Toggle navigation</span> <span
-							class="icon-bar"></span> <span class="icon-bar"></span> <span
-							class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand" href="index.html">Papa Pizza</a>
-				</div>
-				<!-- Collect the nav links, forms, and other content for toggling -->
-				<div class="collapse navbar-collapse"
-					id="bs-example-navbar-collapse-1">
-					<ul class="nav navbar-nav">
-						<li><a href="catalog.html">Unser Angebot</a></li>
-						<li><a href="pizza_configurator.html">Pizza erstellen</a></li>
-						<li><a href="cart.html">Warenkorb</a></li>
-						<li sec:authorize="isAuthenticated()" class="dropdown"><a
-							href="#" class="dropdown-toggle" data-toggle="dropdown"
-							role="button" aria-haspopup="true" aria-expanded="false">Menü
-								<span class="caret"></span>
-						</a>
-							<ul class="dropdown-menu">
-								<li><a sec:authorize="hasRole('ROLE_BAKER') or hasRole('ROLE_ADMIN')"
-									href="ovens.html">Öfen</a></li>
-								<li><a sec:authorize="hasRole('ROLE_DELIVERER')"
-									href="index.html">Deliverer Dashboard</a></li>
-								<li><a sec:authorize="hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')"
-									href="orders.html">Bestellungen</a></li>
-								<li><a sec:authorize="hasRole('ROLE_SELLER')"
-									href="register_customer.html">Kunden registrieren</a></li>
-								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
-									href="register_staffmember.html">Mitarbeiter registieren</a></li>
-								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
-									href="finances.html">Finanzen</a></li>
-								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
-									href="addItem.html">Item hinzufügen</a></li>
-								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
-									href="catalog.html">Katalog bearbeiten</a></li>
-								<li><a sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER')"
-									href="customer_display.html">Kunden anzeigen</a></li>
-								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
-									href="staffmember_display.html">Mitarbeiter anzeigen</a></li>
-								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
-									href="tan.html">TAN-Liste</a></li>
-
-							</ul></li>
-
-					</ul>
-
-					<p class="navbar-text navbar-right"
-						sec:authorize="isAuthenticated()"
-						th:text="${'Eingeloggt als: ' + #authentication?.name}" />
-					<a sec:authorize="!isAuthenticated()"
-						class="navbar-text navbar-right" href="/login">Login</a> <a
-						sec:authorize="isAuthenticated()" class="navbar-text navbar-right"
-						href="/logout">Logout</a>
-				</div>
-				<!-- /.navbar-collapse -->
-			</div>
-			<!-- /.container-fluid -->
-		</nav>
-	</header>
+	<div th:include="navbar :: navbar" >...</div>
 
 	<!-- staffmember list panel -->
-	<div sec:authorize="hasRole('ROLE_ADMIN')" class="container col-md-6">
+	<div sec:authorize="hasRole('ROLE_ADMIN')" class="container col-md-9">
 		<div class="panel panel-primary">
 			<div class="panel-heading">Mitarbeiter Anzeige</div>
 			<div class="panel-body">
@@ -86,12 +20,14 @@
 						<tr>
 							<td>Vorname</td>
 							<td>Nachname</td>
+							<td>Telefonnummer</td>
 							<td>Rolle</td>
 						</tr>
 						<tbody>
 							<tr th:each=" staffmember : ${staffmember}">
-								<td th:text="${staffmember.getForename()}">Vorname</td>
-								<td th:text="${staffmember.getSurname()}">Nachname</td>
+								<td th:text="${staffmember.getPerson().getForename()}">Vorname</td>
+								<td th:text="${staffmember.getPerson().getSurname()}">Nachname</td>
+								<td th:text="${staffmember.getPerson().getTelephoneNumber()}">Nachname</td>
 								<td th:text="${staffmember.getRole()}">Rolle</td>
 								
 								
@@ -111,6 +47,16 @@
 							</tr>
 						</tbody>
 					</table>
+			</div>
+		</div>
+	</div>
+	
+
+	<div th:if="${error.getError() == true}" class="container col-md-6">
+		<div class="panel panel-danger">
+			<div class="panel-heading">Fehler!</div>
+			<div class="panel-body">
+				<p th:text="${error.getMessage()}">Fehler!</p>
 			</div>
 		</div>
 	</div>

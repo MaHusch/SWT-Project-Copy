@@ -14,8 +14,9 @@
 	// checks if there are already values in the configuration list in case a preconfiguration as been selected
 
 	function checkExistingCustomer() {
-		
-		var value = document.getElementById('existingCustomer').getAttribute('value');
+
+		var value = document.getElementById('existingCustomer').getAttribute(
+				'value');
 		// if an item is already present, change the form so it calls the function to overwrite,update and save the item's information
 		if (value == "true") {
 			var form = document.getElementById("registerForm");
@@ -32,78 +33,13 @@
 
 <body onLoad="checkExistingCustomer();">
 	<!-- Navbar -->
-	<header>
-		<nav class="navbar navbar-default">
-			<div class="container-fluid">
-				<!-- Brand and toggle get grouped for better mobile display -->
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle collapsed"
-						data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
-						aria-expanded="false">
-						<span class="sr-only">Toggle navigation</span> <span
-							class="icon-bar"></span> <span class="icon-bar"></span> <span
-							class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand" href="index.html">Papa Pizza</a>
-				</div>
-				<!-- Collect the nav links, forms, and other content for toggling -->
-				<div class="collapse navbar-collapse"
-					id="bs-example-navbar-collapse-1">
-					<ul class="nav navbar-nav">
-						<li><a href="catalog.html">Unser Angebot</a></li>
-						<li><a href="pizza_configurator.html">Pizza erstellen</a></li>
-						<li><a href="cart.html">Warenkorb</a></li>
-						<li sec:authorize="isAuthenticated()" class="dropdown"><a
-							href="#" class="dropdown-toggle" data-toggle="dropdown"
-							role="button" aria-haspopup="true" aria-expanded="false">Menü
-								<span class="caret"></span>
-						</a>
-							<ul class="dropdown-menu">
-								<li><a sec:authorize="hasRole('ROLE_BAKER') or hasRole('ROLE_ADMIN')"
-									href="ovens.html">Öfen</a></li>
-								<li><a sec:authorize="hasRole('ROLE_DELIVERER')"
-									href="index.html">Deliverer Dashboard</a></li>
-								<li><a sec:authorize="hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')"
-									href="orders.html">Bestellungen</a></li>
-								<li><a sec:authorize="hasRole('ROLE_SELLER')"
-									href="register_customer.html">Kunden registrieren</a></li>
-								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
-									href="register_staffmember.html">Mitarbeiter registieren</a></li>
-								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
-									href="finances.html">Finanzen</a></li>
-								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
-									href="addItem.html">Item hinzufügen</a></li>
-								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
-									href="catalog.html">Katalog bearbeiten</a></li>
-								<li><a sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER')"
-									href="customer_display.html">Kunden anzeigen</a></li>
-								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
-									href="staffmember_display.html">Mitarbeiter anzeigen</a></li>
-								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
-									href="tan.html">TAN-Liste</a></li>
+	<div th:include="navbar :: navbar" >...</div>
 
-							</ul></li>
-
-					</ul>
-
-					<p class="navbar-text navbar-right"
-						sec:authorize="isAuthenticated()"
-						th:text="${'Eingeloggt als: ' + #authentication?.name}" />
-					<a sec:authorize="!isAuthenticated()"
-						class="navbar-text navbar-right" href="/login">Login</a> <a
-						sec:authorize="isAuthenticated()" class="navbar-text navbar-right"
-						href="/logout">Logout</a>
-				</div>
-				<!-- /.navbar-collapse -->
-			</div>
-			<!-- /.container-fluid -->
-		</nav>
-	</header>
-	
-	<div th:if="${existingCustomer}" value = "true" id="existingCustomer"></div>
+	<div th:if="${existingCustomer}" value="true" id="existingCustomer"></div>
 
 	<!-- panel for customer registration -->
-	<div sec:authorize="hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')" class="container col-md-6">
+	<div sec:authorize="hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')"
+		class="container col-md-6">
 		<div class="panel panel-primary">
 			<div class="panel-heading">Kunden Registrieren</div>
 			<div class="panel-body">
@@ -112,45 +48,70 @@
 					<table>
 						<tr>
 							<td><label for="surname">Name*</label>:</td>
-							<td th:if = "${existingCustomer}"><input type="text" id="surname" name="surname" th:value="${existingCustomer.getSurname()}"/></td>
-							<td th:if = "${existingCustomer} == null"><input type="text" id="surname" name="surname"/></td>
+							<td th:if="${existingCustomer}"><input type="text"
+								id="surname" name="surname"
+								th:value="${existingCustomer.getPerson().getSurname()}" /></td>
+							<td th:if="${existingCustomer} == null"><input type="text"
+								id="surname" name="surname" /></td>
 						</tr>
 						<tr>
 							<td><label for="forename">Vorname*</label>:</td>
-							<td th:if = "${existingCustomer}"><input type="text" id="forename" name="forename" th:value="${existingCustomer.getForename()}"/></td>
-							<td th:if = "${existingCustomer} == null"><input type="text" id="forename" name="forename" /></td>
+							<td th:if="${existingCustomer}"><input type="text"
+								id="forename" name="forename"
+								th:value="${existingCustomer.getPerson().getForename()}" /></td>
+							<td th:if="${existingCustomer} == null"><input type="text"
+								id="forename" name="forename" /></td>
 						</tr>
 						<tr>
 							<td><label for="telnumber">Tel*</label>:</td>
-							<td th:if = "${existingCustomer}"><input type="text" id="telnumber" name="telnumber" th:value="${existingCustomer.getTelephoneNumber()}"/></td>
-							<td th:if = "${existingCustomer} == null"><input type="text" id="telnumber" name="telnumber" /></td>
+							<td th:if="${existingCustomer}"><input type="text"
+								id="telnumber" name="telnumber"
+								th:value="${existingCustomer.getPerson().getTelephoneNumber()}" /></td>
+							<td th:if="${existingCustomer} == null"><input type="text"
+								id="telnumber" name="telnumber" /></td>
 						</tr>
 						<tr>
 							<td><label for="local">Ort*</label>:</td>
-							<td th:if = "${existingCustomer}"><input type="text" id="local" name="local" th:value="${existingCustomer.getAddress().getLocal()}"/></td>
-							<td th:if = "${existingCustomer} == null"><input type="text" id="local" name="local" /></td>
+							<td th:if="${existingCustomer}"><input type="text"
+								id="local" name="local"
+								th:value="${existingCustomer.getPerson().getAddress().getLocal()}" /></td>
+							<td th:if="${existingCustomer} == null"><input type="text"
+								id="local" name="local" /></td>
 						</tr>
 						<tr>
 							<td><label for="postcode">Postleitzahl*</label>:</td>
-							<td th:if = "${existingCustomer}"><input type="text" id="postcode" name="postcode" th:value="${existingCustomer.getAddress().getPostcode()}"/></td>
-							<td th:if = "${existingCustomer} == null"><input type="text" id="postcode" name="postcode" /></td>
+							<td th:if="${existingCustomer}"><input type="text"
+								id="postcode" name="postcode"
+								th:value="${existingCustomer.getPerson().getAddress().getPostcode()}" /></td>
+							<td th:if="${existingCustomer} == null"><input type="text"
+								id="postcode" name="postcode" /></td>
 						</tr>
 						<tr>
 							<td><label for="street">Straßenname*</label>:</td>
-							<td th:if = "${existingCustomer}"><input type="text" id="street" name="street" th:value="${existingCustomer.getAddress().getStreet()}"/></td>
-							<td th:if = "${existingCustomer} == null"><input type="text" id="street" name="street" /></td>
+							<td th:if="${existingCustomer}"><input type="text"
+								id="street" name="street"
+								th:value="${existingCustomer.getPerson().getAddress().getStreet()}" /></td>
+							<td th:if="${existingCustomer} == null"><input type="text"
+								id="street" name="street" /></td>
 						</tr>
 						<tr>
 							<td><label for="housenumber">Hausnummer*</label>:</td>
-							<td th:if = "${existingCustomer}"><input type="text" id="housenumber" name="housenumber" th:value="${existingCustomer.getAddress().getHousenumber()}"/></td>
-							<td th:if = "${existingCustomer} == null"><input type="text" id="housenumber" name="housenumber" /></td>
+							<td th:if="${existingCustomer}"><input type="text"
+								id="housenumber" name="housenumber"
+								th:value="${existingCustomer.getPerson().getAddress().getHousenumber()}" /></td>
+							<td th:if="${existingCustomer} == null"><input type="text"
+								id="housenumber" name="housenumber" /></td>
 						</tr>
 						<tr>
-							<td>
-							<input th:if = "${existingCustomer}" type="hidden" id="cutlery" name="cutlery" th:value="${existingCustomer.getCutlery()}"/>
-							<input th:if = "${existingCustomer}" type="hidden" id="cid" name="cid" th:value="${existingCustomer.getId()}"/>
-							<input th:if = "${existingCustomer == null}" class="btn btn-primary" type="submit" value="Registrieren" />
-							<input th:if = "${existingCustomer}" class="btn btn-primary" type="submit" value="Bestätigen" /></td>
+							<td><input th:if="${existingCustomer}" type="hidden"
+								id="cutlery" name="cutlery"
+								th:value="${existingCustomer.getCutlery()}" /> <input
+								th:if="${existingCustomer}" type="hidden" id="cid" name="cid"
+								th:value="${existingCustomer.getId()}" /> <input
+								th:if="${existingCustomer == null}" class="btn btn-primary"
+								type="submit" value="Registrieren" /> <input
+								th:if="${existingCustomer}" class="btn btn-primary"
+								type="submit" value="Bestätigen" /></td>
 						</tr>
 					</table>
 				</form>
@@ -158,7 +119,14 @@
 		</div>
 	</div>
 
-	<p th:if="${error.getError() == true}">fehler</p>
+	<div th:if="${error.getError() == true}" class="container col-md-6">
+		<div class="panel panel-danger">
+			<div class="panel-heading">Fehler!</div>
+			<div class="panel-body">
+			<p th:text="${error.getMessage()}">Fehler!</p>
+			</div>
+		</div>
+	</div>
 
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

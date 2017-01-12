@@ -1,0 +1,53 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/style.css}" />
+<title>Newsletter</title>
+</head>
+<body>
+	<!-- Navbar -->
+	<div th:include="navbar :: navbar" >...</div>
+
+	<div class="container col-md-4">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Für Newsletter anmelden</div>
+			<div class="panel-body">
+				<p>Hier können Sie sich für unseren Newsletter anmelden!
+					Verpassen Sie keine Sonderangebote mehr!</p>
+				<p>Geben Sie unten einfach ihre E-Mail Adresse ein:</p>
+				<form>
+					<input type="email" id="email" name="email"></input> <br></br> <input
+						class="btn btn-primary" type="submit" value="Hinzufuegen"
+						formaction="addEmail"></input> <input class="btn btn-primary"
+						type="submit" value="Entfernen" formaction="removeEmail"></input>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="container col-md-12" sec:authorize="hasRole('ROLE_ADMIN')">
+		<div class="panel panel-primary">
+			<div class="panel-heading">E-Mail für den Newsletter verfassen:</div>
+			<div class="panel-body">
+				<form action="sendNewsletter">
+					<textarea required="required" rows="10" cols="100" id="newsletter_text"
+						name="newsletter_text"></textarea>
+				<br /> <input class="btn btn-primary" type="submit" value="Newsletter verschicken"></input>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+		integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+		crossorigin="anonymous"></script>
+</body>
+</html>

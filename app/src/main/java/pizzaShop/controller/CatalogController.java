@@ -19,15 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import groovyjarjarantlr.collections.List;
-import pizzaShop.model.catalog_item.Ingredient;
-import pizzaShop.model.catalog_item.Item;
-import pizzaShop.model.catalog_item.ItemType;
-import pizzaShop.model.catalog_item.NameComparator;
-import pizzaShop.model.catalog_item.Pizza;
-import pizzaShop.model.catalog_item.PriceComparator;
-import pizzaShop.model.store.ErrorClass;
-import pizzaShop.model.store.ItemCatalog;
-import pizzaShop.model.store.Store;
+import pizzaShop.model.DataBaseSystem.CatalogHelper;
+import pizzaShop.model.DataBaseSystem.ItemCatalog;
+import pizzaShop.model.ManagementSystem.Store;
+import pizzaShop.model.OrderSystem.Ingredient;
+import pizzaShop.model.OrderSystem.Item;
+import pizzaShop.model.OrderSystem.ItemType;
+import pizzaShop.model.OrderSystem.Pizza;
 
 /**
  * Controller to create the Catalog View
@@ -44,7 +42,9 @@ public class CatalogController {
 	private ErrorClass error = new ErrorClass(false);
 	private Iterable<Item> items;
 	private ArrayList<Item> filteredItems;
-
+	private final CatalogHelper catalogHelper;
+	private String filter = "Von A bis Z";
+	private String selection = "Alles";
 	/**
 	 * on creation spring searches the itemCatalog and allocates it to the local
 	 * variabel
@@ -53,9 +53,10 @@ public class CatalogController {
 	 *            the itemCatalog of the shop
 	 */
 	@Autowired
-	public CatalogController(ItemCatalog itemCatalog, Store store) {
+	public CatalogController(CatalogHelper catalogHelper,ItemCatalog itemCatalog, Store store) {
 		this.itemCatalog = itemCatalog;
 		this.store = store;
+		this.catalogHelper = catalogHelper;
 	}
 
 	/**
@@ -63,15 +64,10 @@ public class CatalogController {
 	 * 
 	 * @param model
 	 *            for the html view
-	 * @return redirects to the catalog template
 	 */
 	@RequestMapping("/catalog")
 	public String showCatalog(Model model) {
-		items = itemCatalog.findAll();
-
-		model.addAttribute("items", items);
-		model.addAttribute("ItemType", ItemType.values());
-		return "catalog";
+		return this.filterCatalog(model, selection, filter);
 	}
 
 	/**
@@ -90,19 +86,8 @@ public class CatalogController {
 			System.out.println("item nicht gefunden");
 			return "redirect:catalog";
 		}
-
-		itemCatalog.delete(id);
-		if (item.getType().equals(ItemType.INGREDIENT)) {
-			Pizza p1;
-			for (Item x : itemCatalog.findByType(ItemType.PIZZA)) {
-				p1 = (Pizza) x;
-				if (p1.getIngredients().contains(item.getName())) {
-					p1.getIngredients().remove(item.getName());
-					itemCatalog.save(p1);
-				}
-			}
-
-		}
+		
+		this.catalogHelper.removeItem(item);
 
 		return "redirect:catalog";
 	}
@@ -122,17 +107,20 @@ public class CatalogController {
 	 * @return redirects to the catalog page
 	 */
 	@RequestMapping("/saveItem")
-	public String saveItem(@RequestParam("pid") ProductIdentifier id, @RequestParam("itemname") String name,
+	public String saveItem(Model model,@RequestParam("pid") ProductIdentifier id, @RequestParam("itemname") String name,
 			@RequestParam("itemprice") Number price, @RequestParam("itemtype") String type) {
 		Item i = itemCatalog.findOne(id).orElse(null);
 
 		try {
-			store.saveEditedItem(i, name, type, price);
+			catalogHelper.saveEditedItem(i, name, type, price);
 			error.setError(false);
 		} catch (Exception e) {
 			error.setError(true);
 			error.setMessage(e.getMessage());
-			return "redirect:addItem";
+			model.addAttribute("error",error);
+			model.addAttribute("ItemTypes", ItemType.values());
+			model.addAttribute("item",i);
+			return "addItem";
 		}
 
 		return "redirect:catalog";
@@ -190,7 +178,7 @@ public class CatalogController {
 			@RequestParam("itemtype") String type) {
 		System.out.println("erstellen");
 		try {
-			store.createNewItem(name, type, price);
+			catalogHelper.createNewItem(name, type, price);
 			error.setError(false);
 		} catch (Exception e) {
 			error.setError(true);
@@ -216,38 +204,56 @@ public class CatalogController {
 	public String filterCatalog(Model model, @RequestParam("selection") String selection,
 			@RequestParam("filter") String filter) {
 		filteredItems = new ArrayList<Item>();
+		
 		System.out.println(filter + ' ' + selection);
-
+		this.selection = selection;
+		this.filter = filter;
 		switch (selection) {
 		case "Getränke":
 			for (Item i : itemCatalog.findByType(ItemType.DRINK))
 				filteredItems.add(i);
+			for (Item i : itemCatalog.findByType(ItemType.FREEDRINK))
+				filteredItems.add(i);
+			
 			break;
 		case "Essen":
 			for (Item i : itemCatalog.findByType(ItemType.PIZZA))
 				filteredItems.add(i);
 			for (Item i : itemCatalog.findByType(ItemType.SALAD))
 				filteredItems.add(i);
+			for (Item i : itemCatalog.findByType(ItemType.INGREDIENT))
+				filteredItems.add(i);
+			
+			
 			break;
 		default: // alles ist default
 			for (Item i : itemCatalog.findAll())
 				filteredItems.add(i);
+			
 		}
 
 		switch (filter) {
-		case "hoechster Preis zuerst":
+		default : //"hoechster Preis zuerst"
 			Collections.sort(filteredItems, new PriceComparator(false));
+			
 			break;
 		case "niedrigster Preis zuerst":
 			Collections.sort(filteredItems, new PriceComparator(true));
+			
 			break;
 		case "von A bis Z":
+			
 			Collections.sort(filteredItems, new NameComparator(true));
 			break;
 		case "von Z bis A":
+			
 			Collections.sort(filteredItems, new NameComparator(false));
 		}
-
+		
+		
+		// TODO: JS in catalog.hmtl --> set select inputs 
+		model.addAttribute("lastfilter",filter);
+		model.addAttribute("lastselection",selection);
 		model.addAttribute("items", filteredItems);
 		model.addAttribute("ItemType", ItemType.values());
 		return "catalog";

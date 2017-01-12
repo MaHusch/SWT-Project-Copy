@@ -7,9 +7,9 @@ import java.util.Map.Entry;
 import org.junit.Before;
 import org.junit.Test;
 
-import pizzaShop.model.tan_management.Tan;
-import pizzaShop.model.tan_management.TanManagement;
-import pizzaShop.model.tan_management.TanStatus;
+import pizzaShop.model.ManagementSystem.Tan_Management.Tan;
+import pizzaShop.model.ManagementSystem.Tan_Management.TanManagement;
+import pizzaShop.model.ManagementSystem.Tan_Management.TanStatus;
 
 public class TanManagementTest {
 	

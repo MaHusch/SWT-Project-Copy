@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import pizzaShop.model.store.ErrorClass;
-import pizzaShop.model.store.Store;
+import pizzaShop.model.ManagementSystem.Store;
 
 @Controller
 public class BakerController {
@@ -41,9 +40,7 @@ public class BakerController {
 	public String getNextPizza(Model model, @RequestParam int ovenID) {
 
 		for (int i = 0; i < store.getOvens().size(); i++) {
-
 			if (store.getOvens().get(i).getId() == ovenID) {
-
 				if (store.getOvens().get(i).isEmpty()) {
 					try {
 						store.getNextPizza();
@@ -64,10 +61,7 @@ public class BakerController {
 	
 	@RequestMapping(value ="/forward2", method = RequestMethod.POST)
 	public String forward(@RequestParam("minutes") Integer minutes){
-		
 		businessTime.forward(Duration.ofMinutes(minutes));
-		
-		
 		return "redirect:ovens";
 	}
 

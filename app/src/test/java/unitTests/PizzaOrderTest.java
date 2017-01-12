@@ -8,11 +8,11 @@ import org.salespointframework.payment.Cash;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
 
-import pizzaShop.model.actor.Customer;
-import pizzaShop.model.store.PizzaOrder;
-import pizzaShop.model.store.PizzaOrderStatus;
-import pizzaShop.model.tan_management.Tan;
-import pizzaShop.model.tan_management.TanStatus;
+import pizzaShop.model.AccountSystem.Customer;
+import pizzaShop.model.ManagementSystem.Tan_Management.Tan;
+import pizzaShop.model.ManagementSystem.Tan_Management.TanStatus;
+import pizzaShop.model.OrderSystem.PizzaOrder;
+import pizzaShop.model.OrderSystem.PizzaOrderStatus;
 
 public class PizzaOrderTest {
 	

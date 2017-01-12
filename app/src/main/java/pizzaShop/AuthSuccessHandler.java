@@ -15,12 +15,12 @@ public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHa
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String role = auth.getAuthorities().toString();
 
-		String targetUrl = "";
+		String targetUrl = "/";
 
 		if(role.contains("ADMIN")) targetUrl = "/sAdmin";
 		else if(role.contains("SELLER")) targetUrl = "/sSeller";
 		else if (role.contains("DELIVERER")) targetUrl = "/sDeliverer";
-		else targetUrl = "/"; //queue size == 0 error with /ovens
+		else if (role.contains("BAKER")) targetUrl = "/sBaker"; 
 		return targetUrl;
 	}
 }

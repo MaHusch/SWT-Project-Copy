@@ -7,10 +7,10 @@ import org.javamoney.moneta.Money;
 import org.junit.*;
 import org.salespointframework.useraccount.Role;
 
-import pizzaShop.model.actor.Baker;
-import pizzaShop.model.catalog_item.Pizza;
-import pizzaShop.model.store.Oven;
-import pizzaShop.model.store.Store;
+import pizzaShop.model.AccountSystem.Baker;
+import pizzaShop.model.ManagementSystem.Store;
+import pizzaShop.model.OrderSystem.Pizza;
+import pizzaShop.model.ProductionSystem.Oven;
 
 public class OvenTest {
 	

@@ -7,88 +7,44 @@
 	th:href="@{/resources/css/style.css}"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" />
 <title>Items</title>
+<script type="text/javascript">
+	//<![CDATA[
+	function CheckAuswahl() {
+		var lastfilter = document.getElementById("lastfilterText").value;
+		var lastselection = document.getElementById("lastselectionText").value;
+
+		var filterOptionCount = 4;
+		var selectionOptionCount = 3;
+
+		// filter options
+		for (var i = 0; i < filterOptionCount; i++) {
+			if (document.ItemfilterForm.filter.options[i].innerHTML === lastfilter)
+				document.ItemfilterForm.filter.options[i].selected = true;
+		}
+
+		// selection options
+		for (var i = 0; i < selectionOptionCount; i++) {
+			if (document.ItemfilterForm.selection.options[i].innerHTML === lastselection)
+				document.ItemfilterForm.selection.options[i].selected = true;
+		}
+
+	}
+	//]]>
+</script>
+
 </head>
-<body>
+
+<body onload="CheckAuswahl()">
 	<!-- NavBar -->
-	<header>
-		<nav class="navbar navbar-default">
-			<div class="container-fluid">
-				<!-- Brand and toggle get grouped for better mobile display -->
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle collapsed"
-						data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
-						aria-expanded="false">
-						<span class="sr-only">Toggle navigation</span> <span
-							class="icon-bar"></span> <span class="icon-bar"></span> <span
-							class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand" href="index.html">Papa Pizza</a>
-				</div>
-				<!-- Collect the nav links, forms, and other content for toggling -->
-				<div class="collapse navbar-collapse"
-					id="bs-example-navbar-collapse-1">
-					<ul class="nav navbar-nav">
-						<li><a href="catalog.html">Unser Angebot</a></li>
-						<li><a href="pizza_configurator.html">Pizza erstellen</a></li>
-						<li><a href="cart.html">Warenkorb</a></li>
-						<li sec:authorize="isAuthenticated()" class="dropdown"><a
-							href="#" class="dropdown-toggle" data-toggle="dropdown"
-							role="button" aria-haspopup="true" aria-expanded="false">Menü
-								<span class="caret"></span>
-						</a>
-							<ul class="dropdown-menu">
-								<li><a sec:authorize="hasRole('ROLE_BAKER') or hasRole('ROLE_ADMIN')"
-									href="ovens.html">Öfen</a></li>
-								<li><a sec:authorize="hasRole('ROLE_DELIVERER')"
-									href="sDeliverer.html">Deliverer Dashboard</a></li>
-								<li><a
-									sec:authorize="hasRole('ROLE_SELLER') or hasRole('ROLE_ADMIN')"
-									href="orders.html">Bestellungen</a></li>
-								<li><a sec:authorize="hasRole('ROLE_SELLER')"
-									href="register_customer.html">Kunden registrieren</a></li>
-								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
-									href="register_staffmember.html">Mitarbeiter registieren</a></li>
-								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
-									href="finances.html">Finanzen</a></li>
-								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
-									href="addItem.html">Item hinzufügen</a></li>
-								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
-									href="catalog.html">Katalog bearbeiten</a></li>
-								<li><a
-									sec:authorize="hasRole('ROLE_ADMIN')  or hasRole('ROLE_SELLER')"
-									href="customer_display.html">Kunden anzeigen</a></li>
-								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
-									href="staffmember_display.html">Mitarbeiter anzeigen</a></li>
-								<li><a sec:authorize="hasRole('ROLE_ADMIN')"
-									href="tan.html">TAN-Liste</a></li>
-
-							</ul></li>
-
-					</ul>
-
-					<p class="navbar-text navbar-right"
-						sec:authorize="isAuthenticated()"
-						th:text="${'Eingeloggt als: ' + #authentication?.name}" />
-					<a sec:authorize="!isAuthenticated()"
-						class="navbar-text navbar-right" href="/login">Login</a> <a
-						sec:authorize="isAuthenticated()" class="navbar-text navbar-right"
-						href="/logout">Logout</a>
-				</div>
-				<!-- /.navbar-collapse -->
-			</div>
-			<!-- /.container-fluid -->
-		</nav>
-	</header>
+	<div th:include="navbar :: navbar" >...</div>
 
 	<!-- panel with CatalogTable -->
-	<div class="container col-md-12">
+	<div sec:authorize="isAuthenticated()" class="container col-md-12">
 		<div class="panel panel-primary">
 			<!-- Default panel contents -->
-			<div class="panel-heading">Unser Angebot</div>
+			<div class="panel-heading">Auswahl</div>
 			<div class="panel-body">
-				<p>Werfen Sie einen Blick auf unser ausgewähtes Angebot an
-					Pizzen, Salaten und Getränken.</p>
-				<form method="post" action="/filterCatalog">
+				<form method="post" action="/filterCatalog" name="ItemfilterForm">
 					<select name="selection" id="selection" class="selectpicker">
 						<option>Alles</option>
 						<option>Getränke</option>
@@ -100,12 +56,15 @@
 						<option>von Z bis A</option>
 					</select> <input class="btn btn-primary" type="submit" value="Filtern" />
 				</form>
+				<input type="hidden" th:value="${lastfilter}" id="lastfilterText" />
+				<input type="hidden" th:value="${lastselection}"
+					id="lastselectionText" />
 				<!-- Table -->
 				<table sec:authorize="hasRole('ROLE_ADMIN')"
 					class="table table-striped table-bordered">
 					<tr>
 						<th>Name</th>
-						<th>Price</th>
+						<th>Preis</th>
 						<th>Art</th>
 						<th></th>
 						<th></th>
@@ -133,9 +92,10 @@
 						</td>
 						<td sec:authorize="hasRole('ROLE_ADMIN')">
 							<form method="post" action="/editItem">
-								<input type="hidden" name="pid" value="0" th:value="${item.getId()}" />
-								<input type="hidden" name="number" value="1" /> <input
-									class="btn btn-primary" type="submit" value="Bearbeiten" />
+								<input type="hidden" name="pid" value="0"
+									th:value="${item.getId()}" /> <input type="hidden"
+									name="number" value="1" /> <input class="btn btn-primary"
+									type="submit" value="Bearbeiten" />
 							</form>
 						</td>
 						<td th:if="${item.getType().equals(ItemType[1])}">
@@ -151,16 +111,68 @@
 					<button class="btn btn-primary" type="Submit">Item
 						erstellen</button>
 				</form>
+				<table sec:authorize="!hasRole('ROLE_ADMIN')"
+					class="table table-striped table-bordered">
+					<tr>
+						<th>Name</th>
+						<th>Preis</th>
+						<th>Art</th>
+					</tr>
+					<tr th:each="item : ${items}"
+						th:unless="${item.getType().equals(ItemType[3]) or item.getType().equals(ItemType[4])}">
+						<td th:text="${item.getName()}">PizzaPizza</td>
+						<td th:text="${{item.getPrice()}}">0,10 €</td>
+						<td th:text="${item.toString()}">Obst</td>
+						<td><form method="post" action="/addCartItem">
+								<input type="hidden" name="pid" value="0" th:value="${item.id}" />
+								<input type="hidden" name="number" value="1" /> <input
+									class="btn btn-primary" type="submit" value="Hinzufügen" />
+							</form></td>
+						<td th:if="${item.getType().equals(ItemType[1])}">
+							<form method="post" action="/configurePizza">
+								<input type="hidden" name="pid" value="0" th:value="${item.id}" />
+								<input type="hidden" name="number" value="1" /> <input
+									class="btn btn-primary" type="submit" value="Verfeinern" />
+							</form>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="container col-md-12" sec:authorize="!isAuthenticated()">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Unser Angebot</div>
+			<div class="panel-body">
+				<p>Werfen Sie einen Blick auf unser ausgewähtes Angebot an
+					Pizzen, Salaten und Getränken.</p>
+					
+					<form method="post" action="/filterCatalog" name="ItemfilterForm">
+					<select name="selection" id="selection" class="selectpicker">
+						<option>Alles</option>
+						<option>Getränke</option>
+						<option>Essen</option>
+					</select> <select name="filter" id="filter" class="selectpicker">
+						<option>hoechster Preis zuerst</option>
+						<option>niedrigster Preis zuerst</option>
+						<option>von A bis Z</option>
+						<option>von Z bis A</option>
+					</select> <input class="btn btn-primary" type="submit" value="Filtern" />
+				</form>
+				<input type="hidden" th:value="${lastfilter}" id="lastfilterText" />
+				<input type="hidden" th:value="${lastselection}"
+					id="lastselectionText" />
 			</div>
 		</div>
 	</div>
 
-	<div sec:authorize="!hasRole('ROLE_ADMIN')" th:each="item : ${items}" th:unless="${item.getType().equals(ItemType[3]) or item.getType().equals(ItemType[4])}"
-		class="container col-sm-3">
-		<div  class="panel panel-primary">
+	<div sec:authorize="!isAuthenticated()" th:each="item : ${items}"
+		th:unless="${item.getType().equals(ItemType[3]) or item.getType().equals(ItemType[4])}"
+		class="container col-sm-4">
+		<div class="panel panel-primary">
 			<div class="panel-heading" th:text="${item.getName()}">Itemname</div>
 			<div class="panel-body">
-			<p th:text="${item.toString()}" />
+				<p th:text="${item.toString()}" />
 				<p th:text="${'Preis: ' + item.getPrice()}" />
 				<table>
 					<tr>
@@ -169,17 +181,19 @@
 								<input type="hidden" name="number" value="1" /> <input
 									class="btn btn-primary" type="submit" value="Hinzufügen" />
 							</form></td>
-					<td th:if="${item.getType().equals(ItemType[1])}">
-						<form method="post" action="/configurePizza">
+						<td th:if="${item.getType().equals(ItemType[1])}">
+							<form method="post" action="/configurePizza">
 								<input type="hidden" name="pid" value="0" th:value="${item.id}" />
 								<input type="hidden" name="number" value="1" /> <input
 									class="btn btn-primary" type="submit" value="Verfeinern" />
-							</form></td>
+							</form>
+						</td>
 					</tr>
 				</table>
 			</div>
 		</div>
 	</div>
+
 
 
 
