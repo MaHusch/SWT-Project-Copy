@@ -37,7 +37,6 @@ public class OrderController {
 		error = new ErrorClass(false);
 	}
 
-	
 	@RequestMapping("/orders")
 	public String pizzaOrder(Model model) {
 
@@ -72,7 +71,6 @@ public class OrderController {
 		return "orders";
 	}
 
-
 	@RequestMapping(value = "/confirmCollection", method = RequestMethod.POST)
 	public String cofirmLocalOrder(@RequestParam("orderID") OrderIdentifier id) {
 		PizzaOrder p = pizzaOrderRepository.findOne(id);
@@ -88,7 +86,8 @@ public class OrderController {
 	}
 
 	@RequestMapping(value = "/assignDeliverer", method = RequestMethod.POST)
-	public String assignDeliverer(Model model, @RequestParam("delivererList") String username, @RequestParam("orderID") OrderIdentifier orderID) {
+	public String assignDeliverer(Model model, @RequestParam("delivererList") String username,
+			@RequestParam("orderID") OrderIdentifier orderID) {
 		if (username == null || username.equals("")) {
 			error.setError(true);
 			error.setMessage("Keinen Lieferanten ausgewählt!");
@@ -97,9 +96,19 @@ public class OrderController {
 
 			deliverer.addOrder(orderID);
 			PizzaOrder p = pizzaOrderRepository.findOne(orderID);
-			p.assignDeliverer();
+			p.assignDeliverer(deliverer);
 			pizzaOrderRepository.save(p);
 		}
 		return "redirect:orders";
 	}
-}
+
+	@RequestMapping(value = "changeDeliverer", method = RequestMethod.POST)
+	public String assignDeliverer(Model model,@RequestParam("orderID") OrderIdentifier orderID) {
+		
+		PizzaOrder p = pizzaOrderRepository.findOne(orderID);
+		Deliverer deliverer = (Deliverer) store.getStaffMemberByName(p.getDelivererName());
+		deliverer.removeOrder(orderID);	
+		p.readyOrder();
+		pizzaOrderRepository.save(p);
+		return"redirect:orders";
+}}

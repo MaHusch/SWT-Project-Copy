@@ -88,7 +88,14 @@
 											value="Lieferant schicken"  /> <!-- onclick="assignDeliverer();" -->
 									</form >
 									<div th:if="${order.getOrderStatus().name().contains('PENDING')}">
-										<p>zugewiesen</p>
+										<p th:text="${order.getDelivererName()}">zugewiesen</p>
+										<form th:action="changeDeliverer" method="post">
+										<input
+											type="hidden" value="0" name="orderID"
+											th:value="${order.getId()}" /> <input
+											class="btn btn-primary" type="submit"
+											value="Lieferant ändern"  />
+										</form>
 									</div>
 								</td>
 							</tr>
