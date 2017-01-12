@@ -24,7 +24,6 @@ import pizzaShop.model.AccountSystem.Baker;
 import pizzaShop.model.AccountSystem.Deliverer;
 import pizzaShop.model.AccountSystem.Seller;
 import pizzaShop.model.AccountSystem.StaffMember;
-import pizzaShop.model.DataBaseSystem.StaffMemberRepository;
 import pizzaShop.model.ManagementSystem.Store;
 import pizzaShop.model.ProductionSystem.Oven;
 
@@ -32,17 +31,14 @@ import pizzaShop.model.ProductionSystem.Oven;
 public class AdminController {
 
 	private ErrorClass error = new ErrorClass(false);
-	private final StaffMemberRepository staffMemberRepository;
 	private final UserAccountManager employeeAccountManager;
 	private final Accountancy accountancy;
 
 	private final Store store;
 
 	@Autowired
-	public AdminController(Store store, StaffMemberRepository staffMemberRepository,
-			UserAccountManager employeeAccountManager, Accountancy accountancy) {
+	public AdminController(Store store, UserAccountManager employeeAccountManager, Accountancy accountancy) {
 		this.store = store;
-		this.staffMemberRepository = staffMemberRepository;
 		this.employeeAccountManager = employeeAccountManager;
 		this.accountancy = accountancy;
 
@@ -106,7 +102,7 @@ public class AdminController {
 		}
 		
 		
-		if( store.getStaffMemberByName(username).equals(null)){
+		if( store.getStaffMemberByName(username) == null){
 			store.getStaffMemberList().add(staffMember);
 			store.updateUserAccount(staffMember, username, password, Role.of("ROLE_" + role));
 		}else{

@@ -50,7 +50,7 @@ public class DelivererController {
 
 		for (OrderIdentifier oId : currentDeliverer.getOrders()) {
 			PizzaOrder pO = pizzaOrderRepository.findOne(oId);
-			if (!pO.equals(null))
+			if (pO != null)
 				delivererOrders.add(pO);
 
 		}

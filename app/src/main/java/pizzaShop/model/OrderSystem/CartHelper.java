@@ -56,7 +56,7 @@ public class CartHelper {
 	 *             if the {@link Item} is null
 	 */
 	public void changeQuantity(Item item, int amount, Cart cart) throws Exception {
-		if (item.equals(null))
+		if (item == null)
 			throw new IllegalArgumentException("Produkt existiert nicht mehr!");
 
 		cart.addOrUpdateItem(item, Quantity.of(amount));
@@ -95,9 +95,9 @@ public class CartHelper {
 	 */
 	public void createPizzaOrder(boolean cutlery, boolean onSite, UserAccount userAccount, Cart cart, Customer customer)
 			throws Exception {
-		if (userAccount.equals(null))
+		if (userAccount == null)
 			throw new IllegalArgumentException("Nicht eingeloggt!");
-		if (customer.equals(null))
+		if (customer == null)
 			throw new IllegalArgumentException("Kein Kunde vorhanden!");
 		if (cart.isEmpty())
 			throw new IllegalArgumentException("Warenkorb ist leer!");

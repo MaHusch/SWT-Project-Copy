@@ -37,7 +37,7 @@ public class Oven {
 	}
 
 	public boolean notifyObservers(Pizza pizza) {
-		if (!pizza.equals(null)) {
+		if (pizza != null) {
 			store.updatePizzaOrder(pizza);
 			return true;
 		} else {

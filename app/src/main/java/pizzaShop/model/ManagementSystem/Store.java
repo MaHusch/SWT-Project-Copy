@@ -2,7 +2,6 @@ package pizzaShop.model.ManagementSystem;
 
 import static org.salespointframework.core.Currencies.EURO;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,9 +21,9 @@ import org.salespointframework.time.BusinessTime;
 import org.salespointframework.useraccount.Role;
 import org.salespointframework.useraccount.UserAccountManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
@@ -38,7 +37,6 @@ import pizzaShop.model.DataBaseSystem.CatalogHelper;
 import pizzaShop.model.DataBaseSystem.CustomerRepository;
 import pizzaShop.model.DataBaseSystem.ItemCatalog;
 import pizzaShop.model.DataBaseSystem.PizzaOrderRepository;
-import pizzaShop.model.DataBaseSystem.StaffMemberRepository;
 import pizzaShop.model.ManagementSystem.Tan_Management.Tan;
 import pizzaShop.model.ManagementSystem.Tan_Management.TanManagement;
 import pizzaShop.model.ManagementSystem.Tan_Management.TanStatus;
@@ -76,7 +74,7 @@ public class Store {
 
 	@Autowired
 	public Store(UserAccountManager employeeAccountManager, ItemCatalog itemCatalog,
-			PizzaOrderRepository pizzaOrderRepo, StaffMemberRepository staffMemberRepository,
+			PizzaOrderRepository pizzaOrderRepo, 
 			CustomerRepository customerRepository, Accountancy accountancy, BusinessTime businessTime,
 			CatalogHelper catalogHelper, TanManagement tanManagement, AddressRepository addressRepository,
 			MailSender mailSender) {
@@ -224,7 +222,7 @@ public class Store {
 	 */
 	public void updatePizzaOrder(Pizza pizza) {
 
-		if (pizza.equals(null)) {
+		if (pizza == null) {
 			return;
 		} else {
 
