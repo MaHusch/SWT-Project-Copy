@@ -13,20 +13,20 @@ Hier ist eine Anleitung zur Verwendung der einzelnen Bereiche der Anwendung zu f
 
 == Allgemeine Navigation
 
-image::/app/asciidoc/Anwendungsdoku/Bilder/allgemeineNavigation.png[]
+image::/Bilder/allgemeineNavigation.png[]
 
 Die obere Navigationsleiste (aus der Sicht des Admins).
 Die Mitarbeiter haben ihre benötigten Menüs im DropDownMenü "Menü", welches für den Kunden nicht sichtbar ist.
 
 == Einloggen
 
-image::/app/asciidoc/Anwendungsdoku/Bilder/login.png[]
+image::/Anwendungsdoku/Bilder/login.png[]
 
 Die Login-Seite
 
 == Warenkatalog
 
-image::/app/asciidoc/Anwendungsdoku/Bilder/catalogCustomer.png[]
+image::/asciidoc/Anwendungsdoku/Bilder/catalogCustomer.png[]
 
 Der Warenkatalog aus Sicht eines Kunden. Man kann den Katalog sortieren, Waren dem Warenkorb hinzufügen und eine Pizza nach den eigenen Wünschen verfeinern mithilfe der jeweiligen Buttons.
 
