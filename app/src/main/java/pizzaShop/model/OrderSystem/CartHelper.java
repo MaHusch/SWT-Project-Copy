@@ -61,6 +61,13 @@ public class CartHelper {
 
 	}
 
+	/**
+	 *  changes quantity of a {@link CartItem} by +- 1 
+	 * @param item {@link Item} in the changed {@link CartItem}
+	 * @param amount amount the quantity is altered by
+	 * @param cart the {@link Cart} in which the {@link CartItem} is saved
+	 * @throws Exception if the {@link Item} is null
+	 */
 	public void changeQuantity(Item item, int amount, Cart cart) throws Exception{
 		if(item.equals(null))
 			throw new IllegalArgumentException("Produkt existiert nicht mehr!");
@@ -81,6 +88,17 @@ public class CartHelper {
 
 	}
 
+	
+	/**
+	 * creates {@link PizzaOrder} from the contents of the {@link Cart}
+	 * @param cutlery boolean: is a cutlery being lent?
+	 * @param onSite boolean: is the order picked up by the customer?
+	 * @param userAccount currently logged in {@link UserAccount}
+	 * @param cart the {@link Cart} from which the {@link PizzaOrder} is created
+	 * @param customer {@link Customer} behind the order
+	 * @throws Exception if either userAccount or customer are null; if cart is empty 
+	 * 
+	 */
 	public void createPizzaOrder(boolean cutlery, boolean onSite, UserAccount userAccount, Cart cart, Customer customer) throws Exception {
 		if(userAccount.equals(null))
 			throw new IllegalArgumentException("Nicht eingeloggt!");
@@ -110,6 +128,11 @@ public class CartHelper {
 
 	}
 
+	/**
+	 * checks if the given {@link Tan} has an attached {@link Customer}
+	 * @param tan {@link Tan} to be checked
+	 * @return Optional of {@link Customer} or Optional.empty is no customer is found 
+	 */
 	public Optional<Customer> checkTan(Tan tan) {
 
 		for (Customer c : customerRepository.findAll()) {
