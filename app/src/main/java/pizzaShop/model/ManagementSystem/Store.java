@@ -1,8 +1,8 @@
 package pizzaShop.model.ManagementSystem;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.money.MonetaryAmount;
@@ -208,30 +208,35 @@ public class Store {
 	/**
 	 * Method to fill the pizzaqueue, if order contains pizza
 	 * 
-	 * @param order
+	 * @param pOrder
 	 *            PizzaOrder to be analyzed
+	 * @param bakeTime  
 	 * @return analyzed PizzaOrder
 	 */
-	public PizzaOrder analyzePizzaOrder(PizzaOrder order) {
-		for (OrderLine l : order.getOrder().getOrderLines()) {
+	public PizzaOrder analyzePizzaOrder(PizzaOrder pOrder, int bakeTime) {
+		for (OrderLine l : pOrder.getOrder().getOrderLines()) {
 			Item temp = itemCatalog.findOne(l.getProductIdentifier()).get();
 			if (temp.getType().equals(ItemType.PIZZA)) {
 				Pizza p = (Pizza) temp;
 				for (int i = 0; i < l.getQuantity().getAmount().intValue(); i++) {
-					addOrder(order.getId(), p);
+					addOrder(pOrder.getId(), p);
 					System.out.println(getFirstOrder(p));
 					pizzaQueue.add(p);
-					order.addAsUnbaked();
+					pOrder.addAsUnbaked();
 				}
 
 			}
 		}
-		if (order.getUnbakedPizzas() == 0) {
-			order.readyOrder();
+		LocalDateTime estimatedTime = businessTime.getTime().plusSeconds(bakeTime);
+		final int DRESDEN_TIME_CONSTANT = 25;
+		estimatedTime = pOrder.getPickUp() ? estimatedTime : estimatedTime.plusMinutes(DRESDEN_TIME_CONSTANT); 
+		pOrder.setEstimatedDelivery(estimatedTime);
+		if (pOrder.getUnbakedPizzas() == 0) {
+			pOrder.readyOrder();
 		}
-		pizzaOrderRepo.save(order);
+		pizzaOrderRepo.save(pOrder);
 		System.out.println(pizzaQueue);
-		return order;
+		return pOrder;
 
 	}
 

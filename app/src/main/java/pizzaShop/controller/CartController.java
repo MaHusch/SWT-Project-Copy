@@ -213,7 +213,7 @@ public class CartController {
 			error.setMessage(e.getMessage());
 		}
 
-		return "redirect:cart";
+		return "redirect:orders";
 	}
 
 	/**
