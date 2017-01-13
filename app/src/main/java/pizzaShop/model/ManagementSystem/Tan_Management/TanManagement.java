@@ -176,9 +176,12 @@ public class TanManagement {
 		
 		while(!foundNewTan)
 		{
+			
 			Integer newTan = new Random().nextInt(99999) + 1;
 			
 			String newTanString = newTan.toString();
+			
+			// This is to ensure that all TANs have 5 digits and that leading zeros are possible.
 			
 			if(newTanString.length() == 4)			
 			{				
