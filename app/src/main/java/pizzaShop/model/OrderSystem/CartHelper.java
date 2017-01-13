@@ -126,7 +126,7 @@ public class CartHelper {
 		store.analyzePizzaOrder(pizzaOrder, pizzaQueueTime());
 		cart.clear();
 
-		//Bill bill = new Bill(customer, pizzaOrder,businessTime.getTime());
+		Bill bill = new Bill(customer, pizzaOrder,businessTime.getTime());
 		// customer = Optional.empty(); disabled for testing purposes
 
 	}
