@@ -87,6 +87,7 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 			do{
 				id++;
 			}while(ovens[id] == null)
+
 			if (ovens[id][0] == true) {
 				var seconds = ovens[id][1] - 1;
 				if (seconds <= 0) {
@@ -138,22 +139,19 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 						<td th:if="${oven.getBakerTimer() == null}">Ofen ist leer!</td>
 						<td th:if="${oven.getBakerTimer() != null}"
 							th:id="${oven.getId()}">Ofen ist leer!</td>
-						<td ><input
-							th:if="${oven.getBakerTimer() == null}" type="hidden"
-							th:id="${oven.getId()} + timer " value="null" /> <input
-							th:if="${oven.getBakerTimer() != null}" type="hidden"
-							th:id="${oven.getId()} + timer "
-							th:value="${oven.getBakerTimer().getCounter()}" />
+						<td>
+							<input th:if="${oven.getBakerTimer() == null}" 	type="hidden" th:id="${oven.getId()} + timer " value="null" />
+							<input th:if="${oven.getBakerTimer() != null}" 	type="hidden" th:id="${oven.getId()} + timer "
+																			th:value="${oven.getBakerTimer().getCounter()}" />
 							<form method="post" action="/getNextPizza">
-								<input type="hidden" name="ovenID" value="0"
-									th:value="${oven.getId()}" /> <input class="btn btn-primary"
-									type="submit" value="Auswählen" />
-							</form></td>
+								<input type="hidden" name="ovenID" value="0" th:value="${oven.getId()}" /> 
+								<input class="btn btn-primary" type="submit" value="Auswählen" />
+							</form>
+						</td>
 						<td sec:authorize="hasRole('ROLE_ADMIN')">
 							<form method="post" action="/deleteOven">
-								<input type="hidden" name="ovenID" value="0"
-									th:value="${oven.getId()}" /> <input class="btn btn-primary"
-									type="submit" value="Ofen löschen" />
+								<input type="hidden" name="ovenID" value="0" th:value="${oven.getId()}" /> 
+								<input class="btn btn-primary" type="submit" value="Ofen löschen" />
 							</form>
 						</td>
 					</tr>

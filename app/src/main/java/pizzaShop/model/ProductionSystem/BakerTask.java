@@ -36,6 +36,7 @@ public class BakerTask extends TimerTask {
 			myPizza.setStatus(true);
 			myOven.notifyObservers(myPizza);
 			myOven.clear();
+			return;
 		}
 
 		int j = (endDate.getMinute() - businessTime.getTime().getMinute()) * 60;
@@ -54,6 +55,7 @@ public class BakerTask extends TimerTask {
 			myPizza.setStatus(true);
 			myOven.notifyObservers(myPizza);
 			myOven.clear();
+			return;
 		}
 
 	}
