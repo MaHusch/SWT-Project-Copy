@@ -151,6 +151,20 @@ public class Store {
 
 		return ovenList;
 	}
+	
+	/**
+	 * finds an {@link Oven} through its id
+	 * @param id of the {@link Oven}
+	 * @return the {@link Oven} with OvenId = id OR null if not found
+	 */
+	public Oven findOvenById(int id){
+		for(Oven o : getOvens()){
+			if(o.getId() == id){
+				return o;
+			}
+		}
+		return null;
+	}
 
 	public List<StaffMember> getStaffMemberList() {
 		return staffMemberList;
@@ -198,7 +212,7 @@ public class Store {
 	 *            PizzaOrder to be analyzed
 	 * @return analyzed PizzaOrder
 	 */
-	public PizzaOrder analyzeOrder(PizzaOrder order) {
+	public PizzaOrder analyzePizzaOrder(PizzaOrder order) {
 		for (OrderLine l : order.getOrder().getOrderLines()) {
 			Item temp = itemCatalog.findOne(l.getProductIdentifier()).get();
 			if (temp.getType().equals(ItemType.PIZZA)) {
@@ -324,32 +338,13 @@ public class Store {
 		}
 	}
 
-	public void getNextPizza() throws NullPointerException {
+	public Pizza getNextPizza() throws NullPointerException {
 
 		if (!pizzaQueue.isEmpty()) {
-			nextPizza = pizzaQueue.poll();
+			return pizzaQueue.poll();
 		} else {
 			throw new NullPointerException("There is no Pizza in the PizzaQueue!");
 		}
-	}
-
-	/**
-	 * put first pizza in queue into given oven
-	 * 
-	 * @param oven
-	 *            oven to be filled
-	 * @return whether successfull or not
-	 */
-	public boolean putPizzaIntoOven(Oven oven) {
-
-		for (int i = 0; i < ovenList.size(); i++) {
-			if (ovenList.get(i).getId() == oven.getId() && ovenList.get(i).isEmpty()) {
-				ovenList.get(i).fill(nextPizza, businessTime);
-
-				return true;
-			}
-		}
-		return false;
 	}
 
 	public void configurePizza(Model model, String ids[], String pizzaName, String admin_flag, String pizzaID,
@@ -401,15 +396,6 @@ public class Store {
 			model.addAttribute("existingPizza", existingPizza.getName());
 			if (existingPizza != null)
 				cart.addOrUpdateItem(existingPizza, Quantity.of(1));
-		}
-	}
-
-	public void deleteOven(int Id) {
-
-		for (int i = 0; i < ovenList.size(); i++) {
-			if (ovenList.get(i).getId() == Id) {
-				ovenList.remove(i);
-			}
 		}
 	}
 

@@ -4,6 +4,7 @@ import static org.salespointframework.core.Currencies.EURO;
 
 import java.security.Principal;
 import java.time.Duration;
+import java.util.ArrayList;
 
 import org.javamoney.moneta.Money;
 import org.salespointframework.accountancy.Accountancy;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import pizzaShop.model.ManagementSystem.Store;
+import pizzaShop.model.OrderSystem.Pizza;
 import pizzaShop.model.ProductionSystem.Oven;
+import pizzaShop.model.ProductionSystem.OvenHelper;
 
 @Controller
 public class OvenController {
@@ -27,12 +30,14 @@ public class OvenController {
 	private final Store store;
 	private final BusinessTime businessTime;
 	private final Accountancy accountancy;
+	private final OvenHelper ovenHelper;
 
 	@Autowired
-	public OvenController(Store store, BusinessTime businessTime, Accountancy accountancy) {
+	public OvenController(Store store, BusinessTime businessTime, Accountancy accountancy, OvenHelper ovenHelper) {
 		this.store = store;
 		this.businessTime = businessTime;
 		this.accountancy = accountancy;
+		this.ovenHelper = ovenHelper;
 	}
 
 	@RequestMapping("/ovens")
@@ -46,72 +51,45 @@ public class OvenController {
 
 	@RequestMapping(value = "/getNextPizza", method = RequestMethod.POST)
 	public String getNextPizza(Model model, @RequestParam int ovenID) {
-
-		for (int i = 0; i < store.getOvens().size(); i++) {
-			if (store.getOvens().get(i).getId() == ovenID) {
-				if (store.getOvens().get(i).isEmpty()) {
-					try {
-						store.getNextPizza();
-						error.setError(false);
-						store.putPizzaIntoOven(store.getOvens().get(i));
-						return "redirect:ovens";
-					} catch (Exception e) {
-						e.printStackTrace();
-						error.setError(true);
-						return "redirect:ovens";
-					}
-				}
-			}
+		error.setError(false);
+		try {
+			ovenHelper.putPizzaIntoOven(ovenID);
+		} catch (Exception e) {
+			error.setError(true);
+			error.setMessage(e.getMessage());
 		}
-
 		return "redirect:ovens";
 	}
-	
-	@RequestMapping(value ="/forward2", method = RequestMethod.POST)
-	public String forward(@RequestParam("minutes") Integer minutes){
+
+	@RequestMapping(value = "/forward2", method = RequestMethod.POST)
+	public String forward(@RequestParam("minutes") Integer minutes) {
 		error.setError(false);
-		if(minutes == null){
+		try {
+			ovenHelper.forward(minutes);
+		} catch (Exception e) {
 			error.setError(true);
-			error.setMessage("Feld darf nicht leer sein!");
-			
-		}else{
-			businessTime.forward(Duration.ofMinutes(minutes));
-			try {
-				Thread.sleep(1500);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			error.setMessage(e.getMessage());
 		}
+
 		return "redirect:ovens";
 	}
 
 	@RequestMapping(value = "/addOven", method = RequestMethod.POST)
 	public String addOven(Model model) {
-	
-		store.getOvens().add(new Oven(store));
-		accountancy.add(new AccountancyEntry(Money.of(-1000, EURO), "Neuer Ofen gekauft"));
-
-	
+		ovenHelper.addOven();
 		return "redirect:ovens";
-	
+
 	}
 
 	@RequestMapping(value = "/deleteOven", method = RequestMethod.POST)
-	public String deleteOven(Model model,@RequestParam("ovenID") int id) {
-		
-		for(Oven o : store.getOvens())
-		{
-			if(o.getId() == id && !o.isEmpty())
-			{
-				error.setError(true);
-				error.setMessage("Ofen ist nicht leer");
-
-				return "redirect:ovens";
-			}
+	public String deleteOven(Model model, @RequestParam("ovenID") int id) {
+		error.setError(false);
+		try {
+			ovenHelper.deleteOven(id);
+		} catch (Exception e) {
+			error.setError(true);
+			error.setMessage(e.getMessage());
 		}
-		store.deleteOven(id);
-	
 		return "redirect:ovens";
 	}
 

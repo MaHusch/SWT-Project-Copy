@@ -123,7 +123,7 @@ public class CartHelper {
 				tanManagement.generateNewTan(customer.getPerson().getTelephoneNumber()), onSite, customer);
 		pizzaOrder.setRemark(remark);
 		cart.addItemsTo(orderManager.save(pizzaOrder.getOrder()));
-		store.analyzeOrder(pizzaOrder);
+		store.analyzePizzaOrder(pizzaOrder);
 		cart.clear();
 
 		// Bill bill = new Bill(customer.get(), pizzaOrder,
