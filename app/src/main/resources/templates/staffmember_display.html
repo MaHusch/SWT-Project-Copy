@@ -1,6 +1,7 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css"
@@ -9,7 +10,7 @@
 </head>
 <body>
 	<!-- Navbar -->
-	<div th:include="navbar :: navbar" >...</div>
+	<div th:include="fragments :: navbar" >...</div>
 
 	<!-- staffmember list panel -->
 	<div sec:authorize="hasRole('ROLE_ADMIN')" class="container col-md-9">
@@ -18,17 +19,19 @@
 			<div class="panel-body">
 					<table class="table table-striped table-bordered">
 						<tr>
-							<td>Vorname</td>
-							<td>Nachname</td>
-							<td>Telefonnummer</td>
-							<td>Rolle</td>
+							<th>Vorname			</th>
+							<th>Nachname		</th>
+							<th>Telefonnummer	</th>
+							<th>Rolle			</th>
+							<th>Gehalt			</th>
 						</tr>
 						<tbody>
 							<tr th:each=" staffmember : ${staffmember}">
 								<td th:text="${staffmember.getPerson().getForename()}">Vorname</td>
 								<td th:text="${staffmember.getPerson().getSurname()}">Nachname</td>
 								<td th:text="${staffmember.getPerson().getTelephoneNumber()}">Nachname</td>
-								<td th:text="${staffmember.getRole()}">Rolle</td>
+								<td th:text="${staffmember.getRole().getName().substring(5)}">Rolle</td>
+								<td th:text="${{staffmember.getSalary()}}">Gehalt</td>
 								
 								
 								<td>
@@ -52,14 +55,7 @@
 	</div>
 	
 
-	<div th:if="${error.getError() == true}" class="container col-md-6">
-		<div class="panel panel-danger">
-			<div class="panel-heading">Fehler!</div>
-			<div class="panel-body">
-				<p th:text="${error.getMessage()}">Fehler!</p>
-			</div>
-		</div>
-	</div>
+	<div th:include="fragments :: errorClass">...</div>
 
 
 	<script

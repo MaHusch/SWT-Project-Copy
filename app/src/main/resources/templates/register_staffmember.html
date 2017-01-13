@@ -1,6 +1,7 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
@@ -32,7 +33,7 @@
 
 <body onLoad="checkExistingStaffMember();">
 	<!-- Navbar -->
-	<div th:include="navbar :: navbar" >...</div>
+	<div th:include="fragments :: navbar" >...</div>
 	
 	
 	<div th:if="${staffMember}" value = "true" id="existingStaffMember"></div>
@@ -77,6 +78,10 @@
 									<option>Lieferant</option>
 							</select></td>
 						</tr>
+						<tr th:if = "${staffMember}">
+							<td><label for="username">Gehalt[€]*</label>:</td>
+							<td th:if = "${staffMember}"><input type="number" step="0.01" id="salary" name="salary" th:value="${staffMember.getSalary().getNumber().floatValue()}" min="0"/></td>
+						</tr>
 						<tr>
 							<td>
 							<input th:if = "${staffMember}" type="hidden" id="username" name="username" th:value="${staffMember.getUsername()}"/>
@@ -89,14 +94,7 @@
 		</div>
 	</div>
 
-	<div th:if="${error.getError() == true}" class="container col-md-4">
-		<div class="panel panel-danger">
-			<div class="panel-heading">Fehler!</div>
-			<div class="panel-body">
-				<p th:text="${error.getMessage()}">Fehler!</p>
-			</div>
-		</div>
-	</div>
+	<div th:include="fragments :: errorClass">...</div>
 
 
 	<script

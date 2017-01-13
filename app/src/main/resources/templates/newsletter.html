@@ -1,6 +1,7 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css"
@@ -9,7 +10,7 @@
 </head>
 <body>
 	<!-- Navbar -->
-	<div th:include="navbar :: navbar" >...</div>
+	<div th:include="fragments :: navbar" >...</div>
 
 	<div class="container col-md-4">
 		<div class="panel panel-primary">
@@ -19,10 +20,11 @@
 					Verpassen Sie keine Sonderangebote mehr!</p>
 				<p>Geben Sie unten einfach ihre E-Mail Adresse ein:</p>
 				<form>
-					<input type="email" id="email" name="email"></input> <br></br> <input
-						class="btn btn-primary" type="submit" value="Hinzufuegen"
-						formaction="addEmail"></input> <input class="btn btn-primary"
-						type="submit" value="Entfernen" formaction="removeEmail"></input>
+					<input type="email" id="email" name="email"></input> 
+					
+					<br> </br>
+					 <input	class="btn btn-primary" type="submit" value="Eintragen"	formaction="addEmail"/> 
+					<input class="btn btn-primary" type="submit" value="Entfernen" formaction="removeEmail"/>
 				</form>
 			</div>
 		</div>

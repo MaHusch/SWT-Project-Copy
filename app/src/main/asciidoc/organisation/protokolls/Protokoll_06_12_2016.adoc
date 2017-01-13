@@ -1,0 +1,27 @@
+= Protokoll Gruppe 16
+
+__Treffen am 06.12.2016__
+
+__Schriftführer: Martin Huschenbett__
+
+__Nächstes Treffen: 012.12.2016__ 
+
+__Teilnehmer: Mel, Joris, Jannik, Florentin, Martin, Daniel__
+
+
+== Bemerkungen
+
+* Gehältsklassen für die Mitarbeitergruppen
+
+* es gibt keine direkte Festlegung an Tests für diese Implementierungswoche
+
+* Bestellungen für Admin nach Name, Zeit, ... filtern
+
+* PizzaQueue-Zeit auf die 45 Minuten draufrechnen
+
+* Zur End-Präsentation:
+	** nicht die einzelnen Phasen wiedergeben
+	** Erfahrungen sind eher Schwerpunkt (Wo gab's Probleme? Was ging nicht so wie gedacht?)
+
+
+

@@ -1,10 +1,8 @@
 package pizzaShop.model.ManagementSystem;
 
-import static org.salespointframework.core.Currencies.EURO;
-
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.money.MonetaryAmount;
@@ -37,16 +35,12 @@ import pizzaShop.model.DataBaseSystem.CatalogHelper;
 import pizzaShop.model.DataBaseSystem.CustomerRepository;
 import pizzaShop.model.DataBaseSystem.ItemCatalog;
 import pizzaShop.model.DataBaseSystem.PizzaOrderRepository;
-import pizzaShop.model.ManagementSystem.Tan_Management.Tan;
 import pizzaShop.model.ManagementSystem.Tan_Management.TanManagement;
-import pizzaShop.model.ManagementSystem.Tan_Management.TanStatus;
-import pizzaShop.model.OrderSystem.Cutlery;
 import pizzaShop.model.OrderSystem.Ingredient;
 import pizzaShop.model.OrderSystem.Item;
 import pizzaShop.model.OrderSystem.ItemType;
 import pizzaShop.model.OrderSystem.Pizza;
 import pizzaShop.model.OrderSystem.PizzaOrder;
-import pizzaShop.model.OrderSystem.PizzaOrderStatus;
 import pizzaShop.model.ProductionSystem.Oven;
 
 @Component
@@ -60,10 +54,9 @@ public class Store {
 	private final BusinessTime businessTime;
 	private final CatalogHelper catalogHelper;
 	private final TanManagement tanManagement;
-	private List<StaffMember> staffMemberList; // why List and Repository for
+	private ArrayList<StaffMember> staffMemberList; // why List and Repository for
 												// StaffMember?
 	private ArrayList<Oven> ovenList;
-	private Pizza nextPizza;
 
 	private ArrayList<String> eMailList;
 
@@ -125,7 +118,26 @@ public class Store {
 	}
 
 	public boolean removeEmailFromMailingList(String eMailAddress) {
-		return this.eMailList.remove(eMailAddress);
+		
+		if (this.eMailList.contains(eMailAddress)) {
+
+			SimpleMailMessage simpleMessage = new SimpleMailMessage();
+
+			simpleMessage.setTo(eMailAddress);
+			simpleMessage.setSubject("Papa Pizza Newsletter");
+			simpleMessage.setText("Wir bedauern, dass sie nicht mehr am Papa Pizza Newsletter interessiert sind und hoffen, "
+					+ "dass sie uns dennoch als treuer Kunde erhalten bleiben. ");
+
+			try {
+				this.mailSender.send(simpleMessage);
+			} catch (MailException ex) {
+				System.err.println(ex.getMessage());
+			}
+
+			return this.eMailList.remove(eMailAddress);
+		}
+
+		return false;
 	}
 
 	public void sendNewsletter(String newsletterText) {
@@ -157,8 +169,22 @@ public class Store {
 
 		return ovenList;
 	}
+	
+	/**
+	 * finds an {@link Oven} through its id
+	 * @param id of the {@link Oven}
+	 * @return the {@link Oven} with OvenId = id OR null if not found
+	 */
+	public Oven findOvenById(int id){
+		for(Oven o : getOvens()){
+			if(o.getId() == id){
+				return o;
+			}
+		}
+		return null;
+	}
 
-	public List<StaffMember> getStaffMemberList() {
+	public ArrayList<StaffMember> getStaffMemberList() {
 		return staffMemberList;
 	}
 
@@ -177,7 +203,7 @@ public class Store {
 
 	}
 
-	public StaffMember getStaffMemberByName(String name) {
+	public StaffMember getStaffMemberByUsername(String name) {
 
 		for (StaffMember staffMember : staffMemberList) {
 			if (staffMember.getUsername().equals(name))
@@ -200,30 +226,33 @@ public class Store {
 	/**
 	 * Method to fill the pizzaqueue, if order contains pizza
 	 * 
-	 * @param order
+	 * @param pOrder
 	 *            PizzaOrder to be analyzed
+	 * @param bakeTime  
 	 * @return analyzed PizzaOrder
 	 */
-	public PizzaOrder analyzeOrder(PizzaOrder order) {
-		for (OrderLine l : order.getOrder().getOrderLines()) {
+	public PizzaOrder analyzePizzaOrder(PizzaOrder pOrder, int bakeTime) {
+		for (OrderLine l : pOrder.getOrder().getOrderLines()) {
 			Item temp = itemCatalog.findOne(l.getProductIdentifier()).get();
 			if (temp.getType().equals(ItemType.PIZZA)) {
 				Pizza p = (Pizza) temp;
 				for (int i = 0; i < l.getQuantity().getAmount().intValue(); i++) {
-					addOrder(order.getId(), p);
-					System.out.println(getFirstOrder(p));
+					addOrder(pOrder.getId(), p);
 					pizzaQueue.add(p);
-					order.addAsUnbaked();
+					pOrder.addAsUnbaked();
 				}
 
 			}
 		}
-		if (order.getUnbakedPizzas() == 0) {
-			order.readyOrder();
+		LocalDateTime estimatedTime = businessTime.getTime().plusSeconds(bakeTime);
+		final int DRESDEN_TIME_CONSTANT = 25;
+		estimatedTime = pOrder.getPickUp() ? estimatedTime : estimatedTime.plusMinutes(DRESDEN_TIME_CONSTANT); 
+		pOrder.setEstimatedDelivery(estimatedTime);
+		if (pOrder.getUnbakedPizzas() == 0) {
+			pOrder.readyOrder();
 		}
-		pizzaOrderRepo.save(order);
-		System.out.println(pizzaQueue);
-		return order;
+		pizzaOrderRepo.save(pOrder);
+		return pOrder;
 
 	}
 
@@ -242,17 +271,14 @@ public class Store {
 
 			for (PizzaOrder order : pizzaOrders) {
 
-				System.out.println("Order ID: " + order.getId());
-				System.out.println("Pizza ID: " + getFirstOrder(pizza));
-
 				if (order.getId().toString().equals(getFirstOrder(pizza))) {
 					order.markAsBaked();
-					System.out.println("updatePizzaOrder im if statement");
 
 					try {
 						removeFirstOrder(pizza);
 					} catch (Exception e) {
 						System.out.println("Fehler bei updatePizzaOrder");
+						
 					}
 
 					pizzaOrderRepo.save(order);
@@ -275,11 +301,9 @@ public class Store {
 
 	/**
 	 * 
-	 * @return returns the first order as a String
+	 * @return returns the first order as a String or null if not present
 	 */
 	public String getFirstOrder(Pizza p) {
-		if (pizzaMap.get(p.getId()).isEmpty())
-			System.out.println(p.getName() + " hat keine Bestellung");
 		return pizzaMap.get(p.getId()).get(0);
 	}
 
@@ -296,48 +320,6 @@ public class Store {
 		return pizzaMap.get(p.getId()).remove(0);
 	}
 
-	public void printQueue(Pizza p) {
-		System.out.println(pizzaMap.get(p.getId()).toString());
-	}
-
-	/**
-	 * deletes customer based on and ID, and cancels all his orders.
-	 * 
-	 * @param model
-	 * @param id
-	 * @throws Exception
-	 */
-	public void deleteCustomer(Model model, long id) throws Exception {
-
-		Customer c = customerRepository.findOne(id);
-		Tan foundTan = tanManagement.getTan(c.getPerson().getTelephoneNumber());
-
-		Iterable<PizzaOrder> allPizzaOrders = this.pizzaOrderRepo.findAll();
-		ArrayList<PizzaOrder> ordersToDelete = new ArrayList<PizzaOrder>();
-		for (PizzaOrder pizzaOrder : allPizzaOrders) {
-			Customer customer = pizzaOrder.getCustomer();
-
-			if (customer.getId() == id) {
-				ordersToDelete.add(pizzaOrder);
-				PizzaOrderStatus pOStatus = pizzaOrder.getOrderStatus();
-				if (!(pOStatus.equals(PizzaOrderStatus.CANCELLED) || pOStatus.equals(PizzaOrderStatus.COMPLETED))) {
-					throw new Exception("Kunde hat noch offene Bestellungen!");
-				}
-			}
-
-		}
-		pizzaOrderRepo.delete(ordersToDelete);
-
-		if (!foundTan.getStatus().equals(TanStatus.NOT_FOUND)) {
-			tanManagement.invalidateTan(foundTan);
-		}
-
-		if (c.getCutlery() != null) {
-			this.returnCutlery("decayed", c);
-		}
-
-		customerRepository.delete(id);
-	}
 
 	/**
 	 * finish Order and create AccountancyEntry
@@ -369,63 +351,13 @@ public class Store {
 		}
 	}
 
-	public void getNextPizza() throws NullPointerException {
+	public Pizza getNextPizza() throws NullPointerException {
 
 		if (!pizzaQueue.isEmpty()) {
-			nextPizza = pizzaQueue.poll();
+			return pizzaQueue.poll();
 		} else {
 			throw new NullPointerException("There is no Pizza in the PizzaQueue!");
 		}
-	}
-
-	/**
-	 * put first pizza in queue into given oven
-	 * 
-	 * @param oven
-	 *            oven to be filled
-	 * @return whether successfull or not
-	 */
-	public boolean putPizzaIntoOven(Oven oven) {
-
-		for (int i = 0; i < ovenList.size(); i++) {
-			if (ovenList.get(i).getId() == oven.getId() && ovenList.get(i).isEmpty()) {
-				ovenList.get(i).fill(nextPizza, businessTime);
-
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Function for returning a {@link Cutlery} lent by a customer
-	 * 
-	 * @param lost
-	 *            <code> true </code> if customer lost his
-	 *            {@link catalog_item.Cutlery}, <code> false </code> if he
-	 *            returns it properly
-	 * @param customer
-	 *            customer who wants to return his {@link Cutlery}
-	 * @throws Exception
-	 *             when customer hasn't lent a {@link Cutlery} beforehand
-	 */
-	public void returnCutlery(String status, Customer customer) throws NullPointerException {
-		String message = " hat seine Essgarnitur verloren";
-		if (customer == null)
-			throw new NullPointerException("Welcher Kunde?");
-		if (customer.getCutlery() == (null))
-			throw new NullPointerException("Kunde hatte keine Essgarnitur ausgeliehen bzw ist schon verfallen");
-
-		if (status.equals("lost") || status.equals("decayed")) {
-			if (status.equals("decayed"))
-				message = " hat seine Essgarnitur nicht zurückgegeben";
-			accountancy.add(new AccountancyEntry(Money.of(customer.getCutlery().getPrice().getNumber(), EURO),
-					customer.getPerson().getForename() + " " + customer.getPerson().getSurname() + message));
-		}
-
-		customer.setCutlery(null);
-
-		this.customerRepository.save(customer);
 	}
 
 	public void configurePizza(Model model, String ids[], String pizzaName, String admin_flag, String pizzaID,
@@ -481,29 +413,6 @@ public class Store {
 	}
 
 	/**
-	 * check whether any cutlery has decayed
-	 */
-	public void checkCutleries() {
-		for (Customer c : this.customerRepository.findAll()) {
-			if (c.getCutlery() != null && c.getCutlery().getDate().isBefore(businessTime.getTime())) {
-				try {
-					this.returnCutlery("decayed", c);
-				} catch (Exception e) {
-				}
-			}
-		}
-	}
-
-	public void deleteOven(int Id) {
-
-		for (int i = 0; i < ovenList.size(); i++) {
-			if (ovenList.get(i).getId() == Id) {
-				ovenList.remove(i);
-			}
-		}
-	}
-
-	/**
 	 * 
 	 * @param t
 	 *            input telephonnumber
@@ -514,13 +423,13 @@ public class Store {
 	public String validateTelephonenumber(String t, Person p) {
 		for (char c : t.toCharArray()) {
 			if (!Character.isDigit(c))
-				return "Telefonnummer enthält Buchstaben";
+				return "Telefonnummer darf nur Ziffern enthalten!";
 
 		}
 
 		for (Customer cu : this.customerRepository.findAll()) {
 			if (cu.getPerson().getTelephoneNumber().equals(t) && !cu.getPerson().equals(p))
-				return "Diese Telefonnummber ist bereits vergeben";
+				return "Telefonnummber ist bereits vergeben!";
 		}
 		return "";
 	}

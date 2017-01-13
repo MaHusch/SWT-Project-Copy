@@ -1,7 +1,6 @@
 package pizzaShop.controller;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Optional;
 
 import org.salespointframework.catalog.ProductIdentifier;
@@ -68,10 +67,8 @@ public class CatalogController {
 	 */
 	@RequestMapping("/removeItem")
 	public String removeItem(@RequestParam("pid") ProductIdentifier id) {
-		// ToDo: check if item in cart
 		Item item = itemCatalog.findOne(id).orElse(null);
 		if (item == null) {
-			System.out.println("item nicht gefunden");
 			return "redirect:catalog";
 		}
 
@@ -165,7 +162,6 @@ public class CatalogController {
 	@RequestMapping("/createItem")
 	public String createItem(@RequestParam("itemname") String name, @RequestParam("itemprice") Number price,
 			@RequestParam("itemtype") String type) {
-		System.out.println("erstellen");
 		try {
 			catalogHelper.createNewItem(name, type, price);
 			error.setError(false);
@@ -192,51 +188,11 @@ public class CatalogController {
 	@RequestMapping("/filterCatalog")
 	public String filterCatalog(Model model, @RequestParam("selection") String selection,
 			@RequestParam("filter") String filter) {
-		filteredItems = new ArrayList<Item>();
 
-		System.out.println(filter + ' ' + selection);
 		this.selection = selection;
 		this.filter = filter;
-		switch (selection) {
-		case "Getränke":
-			for (Item i : itemCatalog.findByType(ItemType.DRINK))
-				filteredItems.add(i);
-			for (Item i : itemCatalog.findByType(ItemType.FREEDRINK))
-				filteredItems.add(i);
-
-			break;
-		case "Essen":
-			for (Item i : itemCatalog.findByType(ItemType.PIZZA))
-				filteredItems.add(i);
-			for (Item i : itemCatalog.findByType(ItemType.SALAD))
-				filteredItems.add(i);
-			for (Item i : itemCatalog.findByType(ItemType.INGREDIENT))
-				filteredItems.add(i);
-
-			break;
-		default: // alles ist default
-			for (Item i : itemCatalog.findAll())
-				filteredItems.add(i);
-
-		}
-
-		switch (filter) {
-		default: // "hoechster Preis zuerst"
-			Collections.sort(filteredItems, new PriceComparator(false));
-
-			break;
-		case "niedrigster Preis zuerst":
-			Collections.sort(filteredItems, new PriceComparator(true));
-
-			break;
-		case "von A bis Z":
-
-			Collections.sort(filteredItems, new NameComparator(true));
-			break;
-		case "von Z bis A":
-
-			Collections.sort(filteredItems, new NameComparator(false));
-		}
+		
+		filteredItems = this.catalogHelper.filterCatalog(selection, filter);
 
 		model.addAttribute("lastfilter", filter);
 		model.addAttribute("lastselection", selection);

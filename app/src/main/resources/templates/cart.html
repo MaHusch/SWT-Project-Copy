@@ -10,62 +10,30 @@
 </head>
 <body>
 	<script>
+		
 		function editPrice() {
+			var cartprice = document.getElementById('cartPrice').value;
+			if (document.getElementById('pickUp').checked == true)
+				{
+				var price = cartprice * 0.9;
+				price = Number((price).toFixed(2));
+				document.getElementById('cartPriceLabel').innerHTML = "Gesamt: " + price.toString() + " EUR";
+				
+			} else { document.getElementById('cartPriceLabel').innerHTML = "Gesamt: " + cartprice.toString() + " EUR"; }
+			
 			if (document.getElementById('cutlery').checked == true) {
 				document.getElementById('cutleryPrice').innerHTML = "+ 15€ Pfand";
 				return false;
 			} else {
-
+	
 				document.getElementById('cutleryPrice').innerHTML = "";
 				return true;
 			}
 		}
+			
 	</script>
 	<!-- NavBar -->
-	<div th:include="navbar :: navbar">...</div>
-
-	<!-- Panel for CustomerCheck -->
-	<div sec:authorize="hasRole('ROLE_SELLER')" class="container col-md-4">
-		<div class="panel panel-primary">
-			<div class="panel-heading">Kunden überprüfen</div>
-			<div class="panel-body">
-				<form method="post" action="/checkTan">
-					<table>
-						<tr>
-							<td><label for="surname">Telefonnummer</label>:</td>
-							<td><input type="text" id="tnumber" name="tnumber" /></td>
-						</tr>
-						<tr>
-							<td><label for="forename">TAN</label>:</td>
-							<td><input type="text" id="tan" name="tan" /></td>
-						</tr>
-						<tr>
-							<td><input class="btn btn-primary" type="submit"
-								value="Check" /></td>
-						</tr>
-					</table>
-				</form>
-
-				<p></p>
-
-				<div th:switch="${customer.isPresent()}">
-					<div th:case="true">
-						<p
-							th:text="'Kunde ist: '+${customer.get().getPerson().getForename()}+' '+${customer.get().getPerson().getSurname()}+' tel: '+${customer.get().getPerson().getTelephoneNumber()}">User
-							is present</p>
-						<form method="post" action="/logoutCustomer">
-							<input class="btn btn-primary" type="submit" value="Ausloggen" />
-						</form>
-
-					</div>
-					<div th:case="false">
-						<p th:text="'Kein Kunde vorhanden'">Kein Kunde vorhanden</p>
-					</div>
-					<a href="customer_display.html">Cutlery zurückgeben</a>
-				</div>
-			</div>
-		</div>
-	</div>
+	<div th:include="fragments :: navbar">...</div>
 
 	<!-- Panel for Cart -->
 	<div class="container col-md-6">
@@ -116,24 +84,24 @@
 						</tr>
 					</tbody>
 				</table>
-				<p th:text="'Gesamt: ' + ${{cart.price}} ">Summe: 100 Euro</p>
+				<input type="hidden" id="cartPrice" th:value="${{cart.price.getNumber()}}" />
+				<p th:text="'Gesamt: ' + ${{cart.price}}" id = "cartPriceLabel">Summe: 100 Euro</p>
 				<p id="cutleryPrice"></p>
 
 				<form method="post" action="/checkout">
-					<label for="onSite">Abholung vor Ort(10% Rabatt auf den	Gesamtpreis):</label> 
-					<input type="hidden" name="pickUp" value="0" /> 
-					<input type="checkbox" name="pickUp" value="1" /> 
-					<br> </br> 
-					<label for="cutlery"> Essgarnitur:</label> 
-					<input type="hidden" name="cutlery" value="0" /> 
-					<input type="checkbox" id="cutlery" name="cutlery" value="1"  onclick="editPrice()"/> 
-					<br> </br> 
-					<label for="cutlery"> Anmerkung:</label> 
-					<br> </br> 
+					<label for="onSite">Abholung vor Ort(10% Rabatt auf den
+						Gesamtpreis):</label> <input type="hidden" name="pickUp" value="0" /> <input
+						type="checkbox" name="pickUp" id="pickUp" value="1" onclick="editPrice()"/> <br> </br> <label
+						for="cutlery"> Essgarnitur:</label> <input type="hidden"
+						name="cutlery" value="0" /> <input type="checkbox" id="cutlery"
+						name="cutlery" value="1" onclick="editPrice()" /> <br> </br> <label
+						for="cutlery"> Anmerkung:</label> <br> </br>
 					<textarea rows="2" cols="50" id="remark" name="remark"></textarea>
 					<br> </br>
-					<div th:switch="${customer.isPresent() }" sec:authorize="hasRole('ROLE_SELLER')">
-						<input  th:case="true" class="btn btn-primary" type="submit" value="Kaufen" />
+					<div th:switch="${customer.isPresent() }"
+						sec:authorize="hasRole('ROLE_SELLER')">
+						<input th:case="true" class="btn btn-primary" type="submit"
+							value="Kaufen" />
 
 						<p th:case="false">Kein Kunde eingeloggt</p>
 					</div>
@@ -143,9 +111,57 @@
 		</div>
 	</div>
 
+
+	<!-- Panel for CustomerCheck -->
+	<div sec:authorize="hasRole('ROLE_SELLER')" class="container col-md-4">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Kunden überprüfen</div>
+			<div class="panel-body">
+				<form method="post" action="/checkTan">
+					<table>
+						<tr>
+							<td><label for="surname">Telefonnummer</label>:</td>
+							<td><input type="text" id="tnumber" name="tnumber" /></td>
+						</tr>
+						<tr>
+							<td><label for="forename">TAN</label>:</td>
+							<td><input type="text" id="tan" name="tan" /></td>
+						</tr>
+						<tr>
+							<td><input class="btn btn-primary" type="submit"
+								value="Check" /></td>
+						</tr>
+					</table>
+				</form>
+
+				<p></p>
+
+				<div th:switch="${customer.isPresent()}">
+					<div th:case="true">
+						<p
+							th:text="'Kunde ist: '+${customer.get().getPerson().getForename()}+' '+${customer.get().getPerson().getSurname()}+' tel: '+${customer.get().getPerson().getTelephoneNumber()}">User
+							is present</p>
+						<form method="post" action="/logoutCustomer">
+							<input class="btn btn-primary" type="submit" value="Ausloggen" />
+						</form>
+
+					</div>
+					<div th:case="false">
+						<p th:text="'Kein Kunde vorhanden'">Kein Kunde vorhanden</p>
+					</div>
+					<a href="customer_display.html">Cutlery zurückgeben</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+	
+		
+
 	<!-- Panel for Freigetränk  -->
 	<div
-		th:if="(${cart.getPrice().getNumber().floatValue()*100}) > 3000 and ${freeDrink}==false">
+		th:if="(${cart.getPrice().getNumber().floatValue()*100}) >= 3000 and ${freeDrink}==false">
 		<div class="container col-md-4">
 			<div class="panel panel-primary">
 				<div class="panel-heading">Freigetränk</div>
@@ -172,15 +188,8 @@
 			</div>
 		</div>
 	</div>
-
-	<div th:if="${error.getError() == true}" class="container col-md-6">
-		<div class="panel panel-danger">
-			<div class="panel-heading">Fehler!</div>
-			<div class="panel-body">
-				<p th:text="${error.getMessage()}">Fehler!</p>
-			</div>
-		</div>
-	</div>
+	
+	<div th:include="fragments :: errorClass">...</div>
 
 
 	<script

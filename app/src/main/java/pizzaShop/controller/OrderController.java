@@ -3,6 +3,7 @@ package pizzaShop.controller;
 import java.util.ArrayList;
 
 import org.salespointframework.order.OrderIdentifier;
+import org.salespointframework.time.BusinessTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,14 +28,16 @@ public class OrderController {
 	private final PizzaOrderRepository pizzaOrderRepository;
 	private final Store store;
 	private final OrderHelper orderHelper;
+	private final BusinessTime businessTime;
 	private ErrorClass error;
 
 	@Autowired
 	public OrderController(PizzaOrderRepository pizzaOrderRepository, Store store,
-			OrderHelper orderHelper) {
+			OrderHelper orderHelper, BusinessTime businessTime) {
 		this.pizzaOrderRepository = pizzaOrderRepository;
 		this.store = store;
 		this.orderHelper = orderHelper;
+		this.businessTime = businessTime;
 		error = new ErrorClass(false);
 	}
 
@@ -63,7 +66,8 @@ public class OrderController {
 				uncompletedOrders.add(po);
 			}
 		}
-
+		
+		model.addAttribute("timeOffset", businessTime.getOffset().getSeconds());
 		model.addAttribute("uncompletedOrders", uncompletedOrders);
 		model.addAttribute("completedOrders", completedOrders);
 		model.addAttribute("deliverers", deliverers);

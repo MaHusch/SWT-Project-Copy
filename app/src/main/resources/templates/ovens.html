@@ -2,7 +2,8 @@
 
 SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css"
@@ -23,10 +24,18 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 		var table = document.getElementById("ovenTable");
 
 		// rows correspond to the oven ids
+		var ovenID = 0;
 		for (var i = 0, row; row = table.rows[i]; i++) {
-
-			var ovenID = i + 1;
-			var element = document.getElementById(String(ovenID).concat("timer"));
+			
+		
+			do{
+				
+				ovenID = ovenID + 1;
+				var element = document.getElementById(String(ovenID).concat("timer"));
+				
+			}while(element == null)
+			
+			
 			//if (element != null) { alert(element.id);}
 
 			var remainingTime = element.value;
@@ -73,15 +82,20 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 		
 	}
 	function timer() {
+		var id = 0;
 		for (var i = 1; i <= Object.keys(ovens).length; i++) {
-			if (ovens[i][0] == true) {
-				var seconds = ovens[i][1] - 1;
+			do{
+				id++;
+			}while(ovens[id] == null)
+
+			if (ovens[id][0] == true) {
+				var seconds = ovens[id][1] - 1;
 				if (seconds <= 0) {
-					stopTimer(i);
+					stopTimer(id);
 					break;
 				}
-				ovens[i][1] = seconds;
-				document.getElementById(i).innerHTML = "Timer: " + seconds + " sekunden";
+				ovens[id][1] = seconds;
+				document.getElementById(id).innerHTML = "Timer: " + seconds + " sekunden";
 			}
 
 		}
@@ -109,7 +123,7 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <body onLoad="addOvens();">
 
 	<!-- Navbar -->
-	<div th:include="navbar :: navbar" >...</div>
+	<div th:include="fragments :: navbar" >...</div>
 
 
 
@@ -125,22 +139,19 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 						<td th:if="${oven.getBakerTimer() == null}">Ofen ist leer!</td>
 						<td th:if="${oven.getBakerTimer() != null}"
 							th:id="${oven.getId()}">Ofen ist leer!</td>
-						<td sec:authorize="hasRole('ROLE_BAKER')"><input
-							th:if="${oven.getBakerTimer() == null}" type="hidden"
-							th:id="${oven.getId()} + timer " value="null" /> <input
-							th:if="${oven.getBakerTimer() != null}" type="hidden"
-							th:id="${oven.getId()} + timer "
-							th:value="${oven.getBakerTimer().getCounter()}" />
+						<td>
+							<input th:if="${oven.getBakerTimer() == null}" 	type="hidden" th:id="${oven.getId()} + timer " value="null" />
+							<input th:if="${oven.getBakerTimer() != null}" 	type="hidden" th:id="${oven.getId()} + timer "
+																			th:value="${oven.getBakerTimer().getCounter()}" />
 							<form method="post" action="/getNextPizza">
-								<input type="hidden" name="ovenID" value="0"
-									th:value="${oven.getId()}" /> <input class="btn btn-primary"
-									type="submit" value="Auswählen" />
-							</form></td>
+								<input type="hidden" name="ovenID" value="0" th:value="${oven.getId()}" /> 
+								<input class="btn btn-primary" type="submit" value="Auswählen" />
+							</form>
+						</td>
 						<td sec:authorize="hasRole('ROLE_ADMIN')">
 							<form method="post" action="/deleteOven">
-								<input type="hidden" name="ovenID" value="0"
-									th:value="${oven.getId()}" /> <input class="btn btn-primary"
-									type="submit" value="Ofen löschen" />
+								<input type="hidden" name="ovenID" value="0" th:value="${oven.getId()}" /> 
+								<input class="btn btn-primary" type="submit" value="Ofen löschen" />
 							</form>
 						</td>
 					</tr>
@@ -156,9 +167,9 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 
 	<div class="container col-md-4">
 		<div class="panel panel-primary">
-			<div class="panel-heading">Pizzaqueue</div>
+			<div class="panel-heading">Warteschlange</div>
 			<div class="panel-body">
-				<p th:if="${queue.size() == 0}">PizzaQueue ist leer!</p>
+				<p th:if="${queue.size() == 0}">Keine Pizzen in der Warteschlange!</p>
 				<table class="table table-striped">
 					<tbody th:remove="all-but-first">
 						<tr th:each="pizza : ${queue}">
@@ -170,14 +181,7 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 		</div>
 	</div>
 
-	<div th:if="${error.getError() == true}" class="container col-md-4">
-		<div class="panel panel-danger">
-			<div class="panel-heading">Fehler!</div>
-			<div class="panel-body">
-				<p>PizzaQueue ist leer! Ofen kann nicht befüllt werden!</p>
-			</div>
-		</div>
-	</div>
+	
 
 
 	<div class="container col-md-4">
@@ -185,13 +189,15 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 			<div class="panel-heading">Zeit vorspulen</div>
 			<div class="panel-body">
 				<form method="post" action="/forward2">
-					<label for="days">Anzahl an Minuten</label> <input id="minutes"
-						type="number" name="minutes" /> <input class="btn btn-primary"
-						type="submit" value="Forward" />
+					<label for="days">Anzahl an Minuten</label> 
+					<input id="minutes"	type="number" name="minutes" min="1" max="60" required="required"/> 
+					<input class="btn btn-primary" type="submit" value="Vorspulen" />
 				</form>
 			</div>
 		</div>
 	</div>
+	
+	<div th:include="fragments :: errorClass">...</div>
 
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

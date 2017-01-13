@@ -24,19 +24,37 @@
 
 		//alert(deliverer);
 	}
+	
+	function display_c(){
+		var refresh=1000; // Refresh rate in milli seconds
+		mytime=setTimeout('display_ct()',refresh)
+	}
+
+	function display_ct() {
+		var strcount
+		var x = new Date()
+		var element = document.getElementById("offset");
+		var offset = element.value;
+		x.setSeconds(x.getSeconds() + +offset);
+		var x1 = x.toLocaleString();
+		document.getElementById('ct').innerHTML = x1;
+		tt=display_c();
+	}
 
 	//]]>
 </script>
 
 
 </head>
-<body>
-
+<body onLoad="display_ct();">
+	
 	<!-- Navbar -->
-	<div th:include="navbar :: navbar" >...</div>
+	<div th:include="fragments :: navbar" >...</div>
+	
 	<h1 style="color: white;">Bestellungen</h1>
 
-
+	<input type="hidden" id="offset" th:value="${timeOffset}" /> 
+	
 	<div sec:authorize="hasRole('ROLE_SELLER') || hasRole('ROLE_ADMIN')"
 		class="container col-md-12">
 		<div class="panel panel-primary">
@@ -51,6 +69,10 @@
 							<th>Status</th>
 							<th>Ungebackene Pizzen</th>
 							<th>Kunde/Addresse</th>
+							<th><span id='ct' ></span>
+								<br></br>
+								Vorr. Lieferdatum	
+							</th>
 							<th sec:authorize="hasRole('ROLE_SELLER')">Lieferant</th>
 						</tr>
 					</thead>
@@ -61,16 +83,15 @@
 									th:text="${order.getId() }">arg</td>
 								<td sec:authorize="isAuthenticated()"
 									th:text="${order.toString()}">arg</td>
-								<td th:text="${order.getTotalPrice()}">arg</td>
+								<td th:text="${{order.getTotalPrice()}}">arg</td>
 								<td th:text="${order.getOrderStatus() }">arg</td>
 								<td th:text="${order.getUnbakedPizzas() }">arg</td>
 								<td th:text="${order.getCustomer().getPerson().toString()}">arg</td>
+								<td th:text="${#temporals.format(order.getEstimatedDelivery(), 'dd.MM.yy HH:mm')}">arg</td>
 								<td sec:authorize="hasRole('ROLE_SELLER')" th:if="${order.getPickUp()}">
 									<form method="post" action="/confirmCollection">
-										<input type="hidden" value="0" name="orderID"
-											th:value="${order.getId()}" /> <input
-											class="btn btn-primary" type="submit"
-											value="Abholung bestätigen" />
+										<input type="hidden" value="0" name="orderID" th:value="${order.getId()}" /> 
+										<input class="btn btn-primary" type="submit" value="Abholung bestätigen" />
 									</form>
 								</td>
 
@@ -78,20 +99,15 @@
 									<form th:unless="${order.getOrderStatus().name().contains('PENDING') or order.getOrderStatus().name().contains('DELIVERING')}" method="post" action="/assignDeliverer">
 										<select name="delivererList" id="delivererList" size="1" >
 												<option th:each="deliverer : ${deliverers}" th:value= "${deliverer.getUsername()}" th:text="${deliverer.getPerson().getForename()}">mark</option>
-										</select>  <input
-											type="hidden" value="0" name="orderID"
-											th:value="${order.getId()}" /> <input
-											class="btn btn-primary" type="submit"
-											value="Lieferant schicken"  /> <!-- onclick="assignDeliverer();" -->
+										</select>  
+										<input type="hidden" value="0" name="orderID" th:value="${order.getId()}" /> 
+										<input class="btn btn-primary" type="submit" value="Lieferant schicken"  /> <!-- onclick="assignDeliverer();" -->
 									</form >
 									<div th:if="${order.getOrderStatus().name().contains('PENDING') or order.getOrderStatus().name().contains('DELIVERING')}">
 										<p th:text="${order.getDelivererName()}">zugewiesen</p>
-										<form th:if="${order.getOrderStatus().name().contains('PENDING')}" th:action="/changeDeliverer" method="post">
-										<input
-											type="hidden" value="0" name="orderID"
-											th:value="${order.getId()}" /> <input
-											class="btn btn-primary" type="submit"
-											value="Lieferant ändern"  />
+										<form th:if="${order.getOrderStatus().name().contains('PENDING')}" th:action="changeDeliverer" method="post">
+										<input type="hidden" value="0" name="orderID" th:value="${order.getId()}" /> 
+										<input class="btn btn-primary" type="submit" value="Lieferant ändern"  />
 										</form>
 									</div>
 								</td>
@@ -134,14 +150,7 @@
 		</div>
 	</div>
 
-	<div th:if="${error.getError() == true}" class="container col-md-6">
-		<div sec:authorize="hasRole('ROLE_SELLER')" class="panel panel-danger">
-			<div class="panel-heading">Fehler!</div>
-			<div class="panel-body">
-				<p th:text="${error.getMessage()}">Fehler!</p>
-			</div>
-		</div>
-	</div>
+	<div th:include="fragments :: errorClass">...</div>
 
 
 	<script

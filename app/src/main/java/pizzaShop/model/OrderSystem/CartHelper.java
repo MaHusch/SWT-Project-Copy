@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import pizzaShop.model.AccountSystem.Customer;
+import pizzaShop.model.AccountingSystem.Bill;
 import pizzaShop.model.DataBaseSystem.CustomerRepository;
 import pizzaShop.model.ManagementSystem.Store;
 import pizzaShop.model.ManagementSystem.Tan_Management.Tan;
@@ -60,7 +61,12 @@ public class CartHelper {
 			throw new IllegalArgumentException("Produkt existiert nicht mehr!");
 
 		cart.addOrUpdateItem(item, Quantity.of(amount));
+		updateFreeDrink(cart);
+		
 
+	}
+	
+	public void updateFreeDrink(Cart cart){
 		final int FREE_DRINK_PRICE_THRESHOLD = 30;
 		if (cart.getPrice().getNumber().intValue() < FREE_DRINK_PRICE_THRESHOLD) {
 			Iterator<CartItem> ci = cart.iterator();
@@ -73,7 +79,6 @@ public class CartHelper {
 			}
 
 		}
-
 	}
 
 	/**
@@ -102,11 +107,10 @@ public class CartHelper {
 		if (cart.isEmpty())
 			throw new IllegalArgumentException("Warenkorb ist leer!");
 
-		// TODO: check if customer already has a cutlery --> throw error
 		if (cutlery) {
 			
 			if (customer.getCutlery() != null){
-				throw new Exception("Kunde hat schon ein Besteck ausgeliehen!");
+				throw new IllegalArgumentException("Kunde hat schon ein Besteck ausgeliehen!");
 			}
 			// if false --> return error
 			
@@ -119,11 +123,10 @@ public class CartHelper {
 				tanManagement.generateNewTan(customer.getPerson().getTelephoneNumber()), onSite, customer);
 		pizzaOrder.setRemark(remark);
 		cart.addItemsTo(orderManager.save(pizzaOrder.getOrder()));
-		store.analyzeOrder(pizzaOrder);
+		store.analyzePizzaOrder(pizzaOrder, pizzaQueueTime());
 		cart.clear();
 
-		// Bill bill = new Bill(customer.get(), pizzaOrder,
-		// businesstime.getTime());
+		Bill bill = new Bill(customer, pizzaOrder,businessTime.getTime());
 		// customer = Optional.empty(); disabled for testing purposes
 
 	}
@@ -140,15 +143,10 @@ public class CartHelper {
 
 		for (Customer c : customerRepository.findAll()) {
 			if (tanManagement.getTelephoneNumber(tan).equals(c.getPerson().getTelephoneNumber())) {
-				System.out.println("valid: " + tan.getTanNumber() + " tel: " + c.getPerson().getTelephoneNumber());
 				return Optional.of(c);
-
 			}
-
 		}
-		Optional<Customer> c = Optional.empty();
-		return c;
-
+		return Optional.empty();
 	}
 
 	/**

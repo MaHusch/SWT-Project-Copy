@@ -2,7 +2,8 @@
 
 SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css"
@@ -95,24 +96,9 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 
 <body onLoad="preevalutateConfiguration();">
 	<!-- Navbar -->
-	<div th:include="navbar :: navbar" >...</div>
+	<div th:include="fragments :: navbar" >...</div>
 
-	<!-- Panel for select ingredients -->
-	<div class="container col-md-3">
-		<div class="panel panel-primary">
-			<div class="panel-heading">Treffen Sie Ihre Auswahl!</div>
-			<div class="panel-body">
-				<select id="ingredient_list" name="ingredient List" size="1">
-					<option th:each="item : ${items}"
-						th:text="${item.getName()} + ' ' + ${item.getPrice()}" id="0"
-						th:id="${item.getId()}">Cheese</option>
-				</select>
-				<br />
-				 <input class="btn btn-primary" id="addIngredient" type="button"
-					value="add ingredient" onclick="addIngredient();" />
-			</div>
-		</div>
-	</div>
+	
 	
 	<!-- Panel for current pizza -->
 	<div class="container col-md-4">
@@ -121,20 +107,41 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 			<div class="panel-body">
 				<select id="pizza_configuration" name="configuration" size="5">
 					<option th:each="ingredient : ${ingredients}"
-						th:text="${ingredient.getName()} + ' ' + ${ingredient.getPrice()}"
+						th:text="${ingredient.getName()} + ' ' + ${{ingredient.getPrice()}}"
 						id="0" th:id="${ingredient.getId()}">Cheese</option>
-				</select> <br /> <input class="btn btn-primary" id="removeIngredient"
-					type="button" value="remove ingredient"
+				</select> 
+				<br> </br>
+				<input class="btn btn-primary" id="removeIngredient"
+					type="button" value="→"
 					onclick="removeIngredient();" />
+				<br> </br>
 				<form method="post" action="/finishPizza">
 					Name: <input type="text" name="pizza_name" id="pizza_name" th:value = "${pizzaName}" value="custom" />
 					<input type="hidden" name="id_transmit" id="id_transmit" value="" /> 
+					<br> </br>
 					<div sec:authorize="hasRole('ROLE_ADMIN')" > 
 						<input type="hidden" name="admin_flag" id="admin_flag" th:value="true"/> 
 						<input type="hidden" name="pid" id="pid" th:value="${pid}"/>  
 					</div>
 					<input class="btn btn-primary" type="submit" name="id" value="Pizza fertigstellen" />
 				</form>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Panel for select ingredients -->
+	<div class="container col-md-3">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Zutaten</div>
+			<div class="panel-body">
+				<select id="ingredient_list" name="ingredient List" size="1">
+					<option th:each="item : ${items}"
+						th:text="${item.getName()} + ' ' + ${{item.getPrice()}}" id="0"
+						th:id="${item.getId()}">Cheese</option>
+				</select>
+				<br> </br>
+				 <input class="btn btn-primary" id="addIngredient" type="button"
+					value="←" onclick="addIngredient();" />
 			</div>
 		</div>
 	</div>

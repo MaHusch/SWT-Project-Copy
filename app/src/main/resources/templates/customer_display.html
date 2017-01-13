@@ -10,7 +10,7 @@
 </head>
 <body>
 	<!-- Navbar -->
-	<div th:include="navbar :: navbar" >...</div>
+	<div th:include="fragments :: navbar" >...</div>
 
 	<!-- customer list panel -->
 	<div
@@ -21,11 +21,12 @@
 			<div class="panel-body">
 				<table class="table table-striped table-bordered">
 					<tr>
-						<td>Vorname</td>
-						<td>Nachname</td>
-						<td>Telefonnummer</td>
-						<td>Addresse</td>
-						<td>Ablaufdatum der Essgarnitur</td>
+						<th>Vorname						</th>
+						<th>Nachname					</th>
+						<th>Telefonnummer				</th>
+						<th> Tan 						</th>
+						<th>Addresse					</th>
+						<th>Ablaufdatum der Essgarnitur	</th>
 
 					</tr>
 					<tbody>
@@ -33,17 +34,9 @@
 							<td th:text="${customer.getPerson().getForename()}">Vorname</td>
 							<td th:text="${customer.getPerson().getSurname()}">Nachname</td>
 							<td th:text="${customer.getPerson().getTelephoneNumber()}">Telefonnummer</td>
+							<td th:text="${tanListe.getTan(customer.getPerson().getTelephoneNumber()).getTanNumber()}"> Tan </td>
 							<td th:text="${customer.getPerson().getAddress().toString()}">Addresse</td>
-							<!--  
-							<td> 
-								<div class="panel-body">
-									<select id="delivery_adresse" name="delivery_adresse" size="1">
-										<option th:each="address : ${customer.getDeliveryAddressesStrings()}"
-											th:text="${address}" id="0"
-											>Addresse</option>
-									</select>
-								</div></td>
-							-->
+							
 							<td>
 								<div th:switch="${customer.getCutlery() == null}">
 									<p th:case="${true}" th:text="---">keine Essgarnitur</p>
@@ -77,22 +70,18 @@
 											th:value="${customer.getId()}" /> <input type="hidden"
 											name="lost" id="lost" value="0" /> <input
 											class="btn btn-primary" type="submit"
-											value="Essgarnitur empfangen" />
-									</form>
-								</div>
-							</td>
-							<td
-								sec:authorize="hasRole('ROLE_SELLER') or hasRole('ROLE_DELIVERER')">
-								<div th:if="${customer.getCutlery() != null}">
+											value="empfangen" />
+									</form>							
 									<form method="post" action="returnCutlery">
 										<input type="hidden" name="cid" id="cid"
 											th:value="${customer.getId()}" /> <input type="hidden"
 											name="lost" id="lost" value="1" /> <input
 											class="btn btn-primary" type="submit"
-											value="Essgarnitur verloren" />
+											value="verloren" />
 									</form>
 								</div>
 							</td>
+							
 
 						</tr>
 					</tbody>
@@ -101,14 +90,7 @@
 		</div>
 	</div>
 	
-	<div th:if="${error.getError() == true}" class="container col-md-6">
-		<div class="panel panel-danger">
-			<div class="panel-heading">Fehler!</div>
-			<div class="panel-body">
-				<p th:text="${error.getMessage()}">Fehler!</p>
-			</div>
-		</div>
-	</div>
+	<div th:include="fragments :: errorClass">...</div>
 	
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import pizzaShop.model.DataBaseSystem.CatalogHelper;
-import pizzaShop.model.DataBaseSystem.CustomerRepository;
 import pizzaShop.model.DataBaseSystem.ItemCatalog;
 import pizzaShop.model.DataBaseSystem.PizzaOrderRepository;
 import pizzaShop.model.ManagementSystem.Store;
@@ -34,23 +33,16 @@ public class StoreController {
 
 	ItemCatalog itemCatalog;
 	private final TanManagement tanManagement;
-	private final CustomerRepository customerRepository;
 	private final CatalogHelper catalogHelper;
 
 	private final Store store;
 	private ErrorClass error;
-	private ErrorClass customerError = new ErrorClass(false);
 
 	@Autowired
-	public StoreController(CatalogHelper catalogHelper, ItemCatalog itemCatalog, TanManagement tanManagement,
-			CustomerRepository customerRepository, PizzaOrderRepository pOR, Store store) {// ,
-																							// AddressRepository
-																							// addressRepo)
-																							// {
-
+	public StoreController(CatalogHelper catalogHelper, ItemCatalog itemCatalog, TanManagement tanManagement, PizzaOrderRepository pOR, Store store) {
+		
 		this.itemCatalog = itemCatalog;
 		this.tanManagement = tanManagement;
-		this.customerRepository = customerRepository;
 		this.store = store;
 		this.catalogHelper = catalogHelper;
 		error = new ErrorClass(false);
@@ -95,8 +87,6 @@ public class StoreController {
 						Item x = i.next();
 						if (x.getType().equals(ItemType.INGREDIENT))
 							ingredients.add((Ingredient) x);
-						else
-							System.out.println("Zutat ist keine Ingredient");
 					}
 				}
 				model.addAttribute("ingredients", ingredients);
@@ -118,7 +108,6 @@ public class StoreController {
 			@RequestParam("pizza_name") String pizzaName,
 			@RequestParam(value = "admin_flag", required = false) String admin_flag,
 			@RequestParam(value = "pid", required = false) String pizzaID, @ModelAttribute Cart cart) {
-		System.out.println("Custom pizza name " + pizzaName);
 		if (ids == null || ids.length == 0) {
 			error.setError(true);
 			return "redirect:pizza_configurator";
@@ -150,63 +139,6 @@ public class StoreController {
 		model.addAttribute("notConfirmedTans", tanManagement.getAllNotConfirmedTans());
 
 		return "tan";
-	}
-
-	@RequestMapping("/customer_display")
-	public String customer_display(Model model) {
-
-		store.checkCutleries();
-		model.addAttribute("customer", customerRepository.findAll());
-		model.addAttribute("error", customerError);
-
-		return "customer_display";
-	}
-
-	@RequestMapping("/editEmployee")
-	public String directToEditStaffMember(Model model, @RequestParam("StaffMemberName") String name,
-			RedirectAttributes redirectAttrs) {
-		redirectAttrs.addAttribute("name", name).addFlashAttribute("message", "StaffMember");
-		model.addAttribute("error", error);
-		return "redirect:register_staffmember";
-
-	}
-
-	@RequestMapping("/editCustomer")
-	public String editCustomer(Model model, @RequestParam("cid") long id, RedirectAttributes redirectAttrs) {
-		redirectAttrs.addAttribute("cid", id).addFlashAttribute("message", "Customer");
-		return "redirect:register_customer";
-
-	}
-
-	@RequestMapping("/deleteCustomer")
-	public String deleteCustomer(Model model, @RequestParam("cid") long id) {
-		customerError.setError(false);
-		try {
-			store.deleteCustomer(model, id);
-		} catch (Exception e) {
-			customerError.setError(true);
-			customerError.setMessage(e.getMessage());
-		}
-
-		return "redirect:customer_display";
-
-	}
-
-	@RequestMapping("returnCutlery")
-	public String returnCutlery(@RequestParam("lost") String lostStr, @RequestParam("cid") long id) {
-		String cutleryStatus = "lost";
-		if (lostStr.equals("0"))
-			cutleryStatus = "returned";
-
-		try {
-			store.returnCutlery(cutleryStatus, this.customerRepository.findOne(id));
-		} catch (Exception e) {
-			error.setError(true);
-			error.setMessage(e.getMessage());
-			;
-		}
-
-		return "redirect:customer_display";
 	}
 
 	@RequestMapping("/login")
@@ -245,6 +177,15 @@ public class StoreController {
 		store.sendNewsletter(newsletterText);
 
 		return "newsletter";
+
+	}
+	
+	@RequestMapping("deleteUsedTans")
+	public String sendNewsletter() {
+
+		tanManagement.deleteUsedTans();
+
+		return "redirect:tan";
 
 	}
 

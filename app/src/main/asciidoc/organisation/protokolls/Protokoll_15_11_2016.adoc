@@ -1,0 +1,58 @@
+= Protokoll Gruppe 16
+
+__Treffen am 08.11.2016__
+
+__Schriftführer: Marti Huschenbett__
+
+__Nächstes Treffen: 21.11.2016__
+
+__Teilnehmer: Joris, Mel, Jannik, Florentin, Martin, Daniel__
+
+== Bemerkungen 
+
+* Zu den Prototypen kurze READMEs hinzufügen
+
+* ItemCatalog Kommentar hinzufügen, dass das nur zur Symbolisierung dient
+
+* SONARCUBE-Logins werden per E-Mail versendet
+
+* die einzelnen Prototypen wurden angeschaut und kurz erklärt
+
+* EKD weiter anpassen nach den Erkenntnissen der Prototypen 
+
+* JUnit-Tests dem Testplan später hinzufügen
+
+* Links in der README des Projekts hinzufügen (GUI, Entwicklerdoku, Testplant, ...)
+
+=== Zu Package-Diagramm
+
+* beiläufig dem EKD das Package-Diagramm hinterlegen (den Klassen die "blauen Kasten hinterlegen")
+
+ 
+== Implementierungsphase
+
+* gröbste MUSS-Kriterien gehören zur Basisfunktionalität (27.11.2016)
+
+	** selbst definieren was da dazu gehört
+
+* Sprints/Issues nutzen um die Aufgaben zu definieren
+
+* JavaDoc anfertigen
+
+
+== Planung des nächsten Sprints
+
+Genauere Zuweisung der Aufgaben erfolgt intern und wird per Commits verdeutlicht.
+
+[option="headers"]
+|===
+|Issue 	|Titel 			|Beschreibung 					|Verantwortlicher 	|Status
+|#13   	|Basisfunktionalität    |erste Funktionalitäten implementieren   	|wird zugewiesen 	|in Arbeit
+|#15	|JUnittests		|erste Tests zu den Funktionen erstellen	|wird zugewiesen	|in Arbeit
+|#5 	|EKD			|Package-Diagramm hinterlegen			|Martin			|in Arbeit	
+|===
+
+
+
+
+

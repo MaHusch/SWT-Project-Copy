@@ -1,6 +1,7 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css"
@@ -32,18 +33,18 @@
 <body onLoad="checkExistingItem();">
 
 	<!-- Navbar -->
-	<div th:include="navbar :: navbar" >...</div>
+	<div th:include="fragments :: navbar" >...</div>
 	
 	<div th:if="${item}" value = "true" id="existingItem"></div>
 	
 	<!-- Item panel -->
 	<div sec:authorize="hasRole('ROLE_ADMIN')" class="container col-md-4">
 		<div class="panel panel-primary">
-			<div class="panel-heading">Neues Katalogitem erstellen/bearbeiten</div>
+			<div class="panel-heading">Neuen Artikel erstellen/bearbeiten</div>
 			<div class="panel-body">
 				<form action="createItem" method="post" id="itemForm">
 					<!-- Pizza Zutaten werden hinzugefügt bei edit Item -->
-					<label for="itemtype">Itemtyp</label>:
+					<label for="itemtype">Typ</label>:
 
 					<div th:if="${item}">
 						<select name="itemtype" id="itemtype" size="1">
@@ -92,7 +93,7 @@
 					<div th:if="${item}">
 						<input type="hidden" name="pid" value="0" th:value="${item.id}" />
 					</div>
-
+					<br></br>
 					<input class="btn btn-primary" type="submit" value="Erstellen" th:if="${item == null}" />
 					<input class="btn btn-primary" type="submit" value="Bearbeiten" th:if="${item}" />
 				</form>
@@ -103,14 +104,7 @@
 
 	</div>
 
-	<div th:if="${error.getError() == true}" class="container col-md-4">
-		<div class="panel panel-danger">
-			<div class="panel-heading">Fehler!</div>
-			<div class="panel-body">
-				<p th:text="${error.getMessage()}">Felder mit (*) dürfen nicht leer sein!</p>
-			</div>
-		</div>
-	</div>
+	<div th:include="fragments :: errorClass">...</div>
 	
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

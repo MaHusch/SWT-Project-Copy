@@ -66,7 +66,8 @@ public class AccountingHelper {
 				cDays = 0;
 				try {
 					
-					Thread.sleep(store.getStaffMemberList().size()*15);
+					int AVERAGE_TIME_PER_STAFF = 15;
+					Thread.sleep(store.getStaffMemberList().size()*AVERAGE_TIME_PER_STAFF);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

@@ -1,0 +1,22 @@
+= Protkoll Gruppe 16
+
+__Treffen am 10.01.2017__
+
+__Schriftführer: Martin Huschenbett__
+
+__Nächstes Treffen: 11.01.2017__ 
+
+__Teilnehmer: Mel, Joris, Jannik, Florentin, Martin__
+
+
+== Bemerkungen zur Präsentation/Abgabe
+
+* keine/wenige Diagramme
+
+* Entscheidungen im Projektverlauf erklären, Probleme
+
+* in JEXAM ins SoftwareProjekt einschreiben
+
+* Abgabe nach KickstartOrdner (Images auch zu ASCII-doc)
+
+* AnwenderDoku schreiben, mit Screenshots, aber nicht zu detailverliebt

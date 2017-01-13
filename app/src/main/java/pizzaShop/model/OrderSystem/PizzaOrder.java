@@ -1,5 +1,6 @@
 package pizzaShop.model.OrderSystem;
 
+import java.time.LocalDateTime;
 import java.util.Iterator;
 
 import javax.money.MonetaryAmount;
@@ -28,9 +29,11 @@ public class PizzaOrder {
 
 	@EmbeddedId
 	private OrderIdentifier orderIdentifier;
-	private boolean freeDrink;
 	private boolean pickUp;
 	private String deliverername;
+	private int unbakedPizzas = 0;
+	private String remark = "-";
+	private LocalDateTime estimatedDelivery;
 
 	@OneToOne(cascade = { CascadeType.ALL })
 	private Tan newTan;
@@ -41,9 +44,7 @@ public class PizzaOrder {
 	@OneToOne(cascade = { CascadeType.ALL })
 	private Order order;
 
-	private int unbakedPizzas = 0;
 	
-	private String remark = "-";
 
 	@OneToOne
 	private Customer customer;
@@ -91,11 +92,7 @@ public class PizzaOrder {
 	public int getUnbakedPizzas() {
 		return unbakedPizzas;
 	}
-
-	public Boolean getFreeDrink() {
-		return freeDrink;
-	}
-
+	
 	public Order getOrder() {
 		return order;
 	}
@@ -112,7 +109,7 @@ public class PizzaOrder {
 		return this.pizzaOrderStatus;
 	}
 
-	public void completeOrder() // TODO: creaty accountancyentry
+	public void completeOrder()
 	{
 		this.setOrderStatus(PizzaOrderStatus.COMPLETED);
 	}
@@ -171,6 +168,14 @@ public class PizzaOrder {
 		return this.remark;
 	}
 	
+	public LocalDateTime getEstimatedDelivery() {
+		return estimatedDelivery;
+	}
+
+	public void setEstimatedDelivery(LocalDateTime estimatedDelivery) {
+		this.estimatedDelivery = estimatedDelivery;
+	}
+
 	@Override
 	public String toString(){
 		

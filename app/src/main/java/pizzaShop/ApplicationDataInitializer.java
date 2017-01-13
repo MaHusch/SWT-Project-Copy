@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import pizzaShop.model.AccountSystem.Admin;
 import pizzaShop.model.AccountSystem.Baker;
 import pizzaShop.model.AccountSystem.Customer;
+import pizzaShop.model.AccountSystem.CustomerHelper;
 import pizzaShop.model.AccountSystem.Deliverer;
 import pizzaShop.model.AccountSystem.Seller;
 import pizzaShop.model.AccountingSystem.SalaryThread;
@@ -44,6 +45,7 @@ public class ApplicationDataInitializer implements DataInitializer {
 	private final TanManagement tanManagement;
 	private final Store store;
 	private final ItemCatalog itemCatalog;
+	private final CustomerHelper customerHelper;
 	/**
 	 * gets the components via autowired
 	 * 
@@ -56,13 +58,14 @@ public class ApplicationDataInitializer implements DataInitializer {
 	@Autowired
 	public ApplicationDataInitializer(Accountancy accountancy, UserAccountManager employeeAccountManager,
 			BusinessTime businessTime, CustomerRepository customerRepository, TanManagement tanManagement, Store store,
-			ItemCatalog itemCatalog) {
+			ItemCatalog itemCatalog, CustomerHelper customerHelper) {
 		this.accountancy = accountancy;
 		this.businessTime = businessTime;
 		this.customerRepository = customerRepository;
 		this.tanManagement = tanManagement;
 		this.store = store;
 		this.itemCatalog = itemCatalog;
+		this.customerHelper = customerHelper;
 	}
 
 	/**
@@ -168,7 +171,8 @@ public class ApplicationDataInitializer implements DataInitializer {
 		 * accountancy.add(ace3);
 		 */
 
-		(new Thread(new SalaryThread(accountancy, businessTime, store))).start();
+		Thread salaryThread = new Thread(new SalaryThread(accountancy, businessTime, store, customerHelper));
+		salaryThread.start();
 
 	}
 
@@ -176,20 +180,9 @@ public class ApplicationDataInitializer implements DataInitializer {
 	 * Customer initialized here
 	 */
 	public void initializeCustomers() {
-		// Address a1 = new Address( "Dresden", "01324", "Müllerstraße", "5b");
-		// Person p1 = new Person("Jürgens", "Dieter", "12345", a1);
 		Customer cu1 = new Customer("Jürgens", "Dieter", "12345", "Dresden", "01324", "Müllerstraße", "5b");
-		// Address a2 = new Address( "Dresden","01218","Sackgasse","42a");
-		// Person p2 = new Person("Skywalker","Luke","23456", a1);
 		Customer cu2 = new Customer("Skywalker", "Luke", "23456", "Dresden", "01218", "Sackgasse", "42a");
-		/*
-		 * cu2.addDeliveryAddress(new
-		 * Address("Dresden","01218","Sumpfgasse","43a"));
-		 * cu2.addDeliveryAddress(new
-		 * Address("Dresden","01218","Sumpfgasse","43b"));
-		 * cu2.addDeliveryAddress(new
-		 * Address("Dresden","01218","Sumpfgasse","43c"));
-		 */
+	
 		tanManagement.confirmTan(tanManagement.generateNewTan(cu1.getPerson().getTelephoneNumber()));
 		tanManagement.confirmTan(tanManagement.generateNewTan(cu2.getPerson().getTelephoneNumber()));
 		cu2.setCutlery(new Cutlery(Money.of(15.0, EURO), businessTime.getTime()));

@@ -3,6 +3,7 @@ package pizzaShop.model.DataBaseSystem;
 import static org.salespointframework.core.Currencies.EURO;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -10,6 +11,8 @@ import org.javamoney.moneta.Money;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import pizzaShop.controller.NameComparator;
+import pizzaShop.controller.PriceComparator;
 import pizzaShop.model.OrderSystem.Ingredient;
 import pizzaShop.model.OrderSystem.Item;
 import pizzaShop.model.OrderSystem.ItemType;
@@ -136,7 +139,6 @@ public class CatalogHelper {
 					Pizza p = (Pizza) i;
 					if (p.getIngredients().contains(oldItem.getName())) {
 						itemCatalog.delete(p);
-						System.out.println("test");
 						p.removeIngredient(oldItem);
 						p.addIngredient((Ingredient) editedItem);
 						itemCatalog.save(p);
@@ -150,7 +152,6 @@ public class CatalogHelper {
 		}
 
 		else {
-			System.out.println("anderer Itemtyp --> neues Item");
 			this.removeItem(editedItem);
 			this.createNewItem(name, type, price);
 		}
@@ -197,18 +198,58 @@ public class CatalogHelper {
 
 		return null;
 	}
+	
+	/**
+	 * Method for filtering the itemCatalog
+	 * @param selection what kind of items
+	 * @param filter kind of sorting (by price or name + asc/desc)
+	 * @return
+	 */
+	public ArrayList<Item> filterCatalog(String selection, String filter)
+	{
+		ArrayList<Item> filteredItems = new ArrayList<Item>();
+		switch (selection) {
+		case "Getränke":
+			for (Item i : itemCatalog.findByType(ItemType.DRINK))
+				filteredItems.add(i);
+			for (Item i : itemCatalog.findByType(ItemType.FREEDRINK))
+				filteredItems.add(i);
 
-	public void cleanUpItemCatalog() { // unused?
-		Iterable<Item> items1 = itemCatalog.findAll();
-		Iterable<Item> items2 = itemCatalog.findAll();
+			break;
+		case "Essen":
+			for (Item i : itemCatalog.findByType(ItemType.PIZZA))
+				filteredItems.add(i);
+			for (Item i : itemCatalog.findByType(ItemType.SALAD))
+				filteredItems.add(i);
+			for (Item i : itemCatalog.findByType(ItemType.INGREDIENT))
+				filteredItems.add(i);
 
-		for (Item item1 : items1) {
-			for (Item item2 : items2) {
-				if (item1.getName().equals(item2.getName()))
-					itemCatalog.delete(item2);
-			}
-
+			break;
+		default: // alles ist default
+			for (Item i : itemCatalog.findAll())
+				filteredItems.add(i);	
 		}
+		
+		switch (filter) {
+		default: // "hoechster Preis zuerst"
+			Collections.sort(filteredItems, new PriceComparator(false));
+
+			break;
+		case "niedrigster Preis zuerst":
+			Collections.sort(filteredItems, new PriceComparator(true));
+
+			break;
+		case "von A bis Z":
+
+			Collections.sort(filteredItems, new NameComparator(true));
+			break;
+		case "von Z bis A":
+
+			Collections.sort(filteredItems, new NameComparator(false));
+		}
+		
+		return filteredItems;
+
 
 	}
 
