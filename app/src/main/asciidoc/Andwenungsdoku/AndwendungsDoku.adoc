@@ -59,7 +59,7 @@ Auf dieser Seite sieht der Kunde was in seinem Warenkorb ist. Außerdem sieht er
 
 image::Bilder/warenkorbSeller.png[]
 
-Der Seller kann hier die Telefonnummer und die dazugehörige TAN des Kunden überprüfen, und dann den Warenkorb für den Kunden auslösen. Außerdem kann er hier ebenfalls die Essgarnitur des Kunden im System zurückgeben.
+Der Seller kann hier die Telefonnummer und die dazugehörige TAN des Kunden überprüfen, und dann den Warenkorb für den Kunden auslösen. Außerdem kann er hier ebenfalls die Essgarnitur des Kunden im System zurückgeben. Weiterhin wird eine Rechnung erstellt in Form einer .txt Datei wenn der Warenkorb ausgelöst wird.
 
 == Finanzen
 
@@ -88,11 +88,7 @@ image::Bilder/tans.png[]
 
 Auf der Seite für die TAN-Liste sieht der Admin, welche TANs gerade im Umlauf sind, welche noch nicht vom System bestätigt sind und welche schon benutzt worden sind.
 
-== Newsletter
-
-=== Email hinzufügen/entfernen
-
-=== Newsletter 
+== Newsletter 
 
 image::Bilder/newsletterAdmin.png[]
 
@@ -120,7 +116,15 @@ Desweiteren sieht er wie viele Sekunden die Pizzen in den Öfen noch brauchen.
 
 ===== Admin
 
+image::Bilder/adminDashBoard.PNG[]
+
+Die Startseite des Admins.
+
 ===== Verkäufer
+
+image:Bilder/sellerDashboard.PNG[]
+
+Die Startseite des Verkäufers.
 
 ===== Bäcker
 
