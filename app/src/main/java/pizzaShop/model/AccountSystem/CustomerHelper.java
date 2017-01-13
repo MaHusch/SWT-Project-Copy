@@ -170,7 +170,7 @@ public class CustomerHelper {
 		if (status.equals("lost") || status.equals("decayed")) {
 			if (status.equals("decayed"))
 				message = " hat seine Essgarnitur nicht zurückgegeben";
-			accountancy.add(new AccountancyEntry(Money.of(customer.getCutlery().getPrice().getNumber(), EURO),
+			accountancy.add(new AccountancyEntry(Money.of(customer.getCutlery().getPrice().multiply(-1).getNumber(), EURO),
 					customer.getPerson().getForename() + " " + customer.getPerson().getSurname() + message));
 		}
 	
