@@ -119,7 +119,26 @@ public class Store {
 	}
 
 	public boolean removeEmailFromMailingList(String eMailAddress) {
-		return this.eMailList.remove(eMailAddress);
+		
+		if (this.eMailList.contains(eMailAddress)) {
+
+			SimpleMailMessage simpleMessage = new SimpleMailMessage();
+
+			simpleMessage.setTo(eMailAddress);
+			simpleMessage.setSubject("Papa Pizza Newsletter");
+			simpleMessage.setText("Wir bedauern, dass sie nicht mehr am Papa Pizza Newsletter interessiert sind und hoffen, "
+					+ "dass sie uns dennoch als treuer Kunde erhalten bleiben. ");
+
+			try {
+				this.mailSender.send(simpleMessage);
+			} catch (MailException ex) {
+				System.err.println(ex.getMessage());
+			}
+
+			return this.eMailList.remove(eMailAddress);
+		}
+
+		return false;
 	}
 
 	public void sendNewsletter(String newsletterText) {

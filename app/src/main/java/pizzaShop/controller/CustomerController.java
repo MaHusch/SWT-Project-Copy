@@ -28,12 +28,17 @@ public class CustomerController {
 		this.customerHelper = customerHelper;
 		this.tanManagement = tanManagement;
 	}
+	
 
 	@RequestMapping("/register_customer")
 	public String registrationIndex(Model model, @RequestParam(value = "cid", required = false) Long id) {
 
 		Long customerId = id;
-
+		
+		// We are using the register_customer form to register and to edit a customer.
+		// In order for the form fields to be filled in when editing the customer, an already 
+		// existing model needs to be added.
+		
 		if (customerId != null) {
 			Customer customer = customerRepository.findOne(id);
 			model.addAttribute("existingCustomer", customer);

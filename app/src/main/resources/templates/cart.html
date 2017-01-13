@@ -10,16 +10,26 @@
 </head>
 <body>
 	<script>
+		
 		function editPrice() {
+			var cartprice = document.getElementById('cartPrice').value;
+			if (document.getElementById('pickUp').checked == true)
+				{
+				var price = cartprice * 0.9;
+				document.getElementById('cartPriceLabel').innerHTML = "Gesamt: EUR " + price.toString();
+				
+			} else { document.getElementById('cartPriceLabel').innerHTML = "Gesamt: EUR " + cartprice.toString(); }
+			
 			if (document.getElementById('cutlery').checked == true) {
 				document.getElementById('cutleryPrice').innerHTML = "+ 15€ Pfand";
 				return false;
 			} else {
-
+	
 				document.getElementById('cutleryPrice').innerHTML = "";
 				return true;
 			}
 		}
+			
 	</script>
 	<!-- NavBar -->
 	<div th:include="fragments :: navbar">...</div>
@@ -73,13 +83,14 @@
 						</tr>
 					</tbody>
 				</table>
-				<p th:text="'Gesamt: ' + ${{cart.price}} ">Summe: 100 Euro</p>
+				<input type="hidden" id="cartPrice" th:value="${{cart.price.getNumber()}}" />
+				<p th:text="'Gesamt: ' + ${{cart.price}}" id = "cartPriceLabel">Summe: 100 Euro</p>
 				<p id="cutleryPrice"></p>
 
 				<form method="post" action="/checkout">
 					<label for="onSite">Abholung vor Ort(10% Rabatt auf den
 						Gesamtpreis):</label> <input type="hidden" name="pickUp" value="0" /> <input
-						type="checkbox" name="pickUp" value="1" /> <br> </br> <label
+						type="checkbox" name="pickUp" id="pickUp" value="1" onclick="editPrice()"/> <br> </br> <label
 						for="cutlery"> Essgarnitur:</label> <input type="hidden"
 						name="cutlery" value="0" /> <input type="checkbox" id="cutlery"
 						name="cutlery" value="1" onclick="editPrice()" /> <br> </br> <label

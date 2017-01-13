@@ -200,7 +200,13 @@ public class CatalogHelper {
 
 		return null;
 	}
-
+	
+	/**
+	 * Method for filtering the itemCatalog
+	 * @param selection what kind of items
+	 * @param filter kind of sorting (by price or name + asc/desc)
+	 * @return
+	 */
 	public ArrayList<Item> filterCatalog(String selection, String filter)
 	{
 		ArrayList<Item> filteredItems = new ArrayList<Item>();
