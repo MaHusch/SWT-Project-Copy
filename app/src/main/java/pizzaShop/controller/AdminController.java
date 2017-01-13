@@ -154,8 +154,7 @@ public class AdminController {
 			return "redirect:register_staffmember";
 		}
 
-		member.getPerson().setForename(forename);
-		member.getPerson().setSurname(surname);
+		
 		for(char c : telephonenumber.toCharArray()){
 			if(!Character.isDigit(c)){
 				registerError.setError(true);
@@ -166,6 +165,8 @@ public class AdminController {
 			}
 		}
 		member.getPerson().setTelephoneNumber(telephonenumber);
+		member.getPerson().setForename(forename);
+		member.getPerson().setSurname(surname);
 		member.setSalary(Money.of(salary, EURO));
 
 		Optional<UserAccount> userAccount = employeeAccountManager.findByUsername(username);
