@@ -1,0 +1,37 @@
+= Protokoll Gruppe 16
+
+__Treffen am 07.11.2016__
+
+__Nächstes Treffen: 08.11.2016__
+
+__Teilnehmer:Mel, Joris, Jannik, Florentin, Martin__
+
+== Bemerkungen
+
+=== To-Do
+
+* Zugriff von Seller auf die fertigen Orders um den Deliverer zuzuweisen
+
+* Zugriff von Seller auf die verfügbaren Deliverer
+
+* Beim Baker: removePizzaFromPizzaqueue als extra Funktion oder als Teil von putPizzaIntoOven?
+
+* acceptCutlery bei Deliverer UND Seller?
+
+* Itemcatalog als eigenständige Klasse
+
+== Retrospektive des letzten Springts
+
+[option="headers"]
+|===
+|Issue |Aufgabe |Status |Bemerkung
+|#8    |kleine Prototypen in master pushen       |erledigt      |wurde am Wochenende gemacht
+|#9    |fehlende MUSS-Kriterien hinzugefügt	| erledigt	|wurde am Wochenende gemacht
+|===
+
+== Fragen
+
+* Wie integrieren wir das SPRING Konzept in das Entwurfsdiagramm? USE-Relationen? Oder eigenständie Objekte?
+
+* Welche Beziehungen zwischen den Controllern und "Benutzern"?
+
