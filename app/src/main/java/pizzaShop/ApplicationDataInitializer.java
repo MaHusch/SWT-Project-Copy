@@ -171,7 +171,8 @@ public class ApplicationDataInitializer implements DataInitializer {
 		 * accountancy.add(ace3);
 		 */
 
-		(new Thread(new SalaryThread(accountancy, businessTime, store, customerHelper))).start();
+		Thread salaryThread = new Thread(new SalaryThread(accountancy, businessTime, store, customerHelper));
+		salaryThread.start();
 
 	}
 
