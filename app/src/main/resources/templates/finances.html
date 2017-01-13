@@ -3,7 +3,8 @@
 
 SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css"
@@ -12,7 +13,7 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 </head>
 <body>
 	<!-- Navbar -->
-	<div th:include="navbar :: navbar" >...</div>
+	<div th:include="fragments :: navbar" >...</div>
 
 	<h1 style="color: white;">Finanzen</h1>
 
@@ -104,14 +105,7 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 		</div>
 	</div>
 	
-	<div th:if="${error.getError() == true}" class="container col-md-6">
-		<div class="panel panel-danger">
-			<div class="panel-heading">Fehler!</div>
-			<div class="panel-body">
-				<p th:text="${error.getMessage()}">Fehler!</p>
-			</div>
-		</div>
-	</div>
+	<div th:include="fragments :: errorClass">...</div>
 
 
 	<script

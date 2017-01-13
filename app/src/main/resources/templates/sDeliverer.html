@@ -2,7 +2,8 @@
 
 SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css"
@@ -12,7 +13,7 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <body>
 
 	<!-- Navbar -->
-	<div th:include="navbar :: navbar" >...</div>
+	<div th:include="fragments :: navbar" >...</div>
 
 	<div sec:authorize="hasRole('ROLE_DELIVERER')"
 		class="container col-md-3">

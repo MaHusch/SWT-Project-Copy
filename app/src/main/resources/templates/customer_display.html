@@ -10,7 +10,7 @@
 </head>
 <body>
 	<!-- Navbar -->
-	<div th:include="navbar :: navbar" >...</div>
+	<div th:include="fragments :: navbar" >...</div>
 
 	<!-- customer list panel -->
 	<div
@@ -91,14 +91,7 @@
 		</div>
 	</div>
 	
-	<div th:if="${error.getError() == true}" class="container col-md-6">
-		<div class="panel panel-danger">
-			<div class="panel-heading">Fehler!</div>
-			<div class="panel-body">
-				<p th:text="${error.getMessage()}">Fehler!</p>
-			</div>
-		</div>
-	</div>
+	<div th:include="fragments :: errorClass">...</div>
 	
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
