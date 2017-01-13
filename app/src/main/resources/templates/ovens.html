@@ -169,9 +169,9 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 
 	<div class="container col-md-4">
 		<div class="panel panel-primary">
-			<div class="panel-heading">Pizzaqueue</div>
+			<div class="panel-heading">Warteschlange</div>
 			<div class="panel-body">
-				<p th:if="${queue.size() == 0}">PizzaQueue ist leer!</p>
+				<p th:if="${queue.size() == 0}">Keine Pizzen in der Warteschlange!</p>
 				<table class="table table-striped">
 					<tbody th:remove="all-but-first">
 						<tr th:each="pizza : ${queue}">
@@ -191,9 +191,9 @@ SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 			<div class="panel-heading">Zeit vorspulen</div>
 			<div class="panel-body">
 				<form method="post" action="/forward2">
-					<label for="days">Anzahl an Minuten</label> <input id="minutes"
-						type="number" name="minutes" min="1" max="60"/> <input class="btn btn-primary"
-						type="submit" value="Forward" />
+					<label for="days">Anzahl an Minuten</label> 
+					<input id="minutes"	type="number" name="minutes" min="1" max="60" required="required"/> 
+					<input class="btn btn-primary" type="submit" value="Vorspulen" />
 				</form>
 			</div>
 		</div>

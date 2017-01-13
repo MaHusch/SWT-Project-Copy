@@ -40,11 +40,11 @@
 	<!-- Item panel -->
 	<div sec:authorize="hasRole('ROLE_ADMIN')" class="container col-md-4">
 		<div class="panel panel-primary">
-			<div class="panel-heading">Neues Katalogitem erstellen/bearbeiten</div>
+			<div class="panel-heading">Neuen Artikel erstellen/bearbeiten</div>
 			<div class="panel-body">
 				<form action="createItem" method="post" id="itemForm">
 					<!-- Pizza Zutaten werden hinzugefügt bei edit Item -->
-					<label for="itemtype">Itemtyp</label>:
+					<label for="itemtype">Typ</label>:
 
 					<div th:if="${item}">
 						<select name="itemtype" id="itemtype" size="1">
@@ -93,7 +93,7 @@
 					<div th:if="${item}">
 						<input type="hidden" name="pid" value="0" th:value="${item.id}" />
 					</div>
-
+					<br></br>
 					<input class="btn btn-primary" type="submit" value="Erstellen" th:if="${item == null}" />
 					<input class="btn btn-primary" type="submit" value="Bearbeiten" th:if="${item}" />
 				</form>

@@ -62,7 +62,6 @@ public class AdminController {
 	public String registrationIndex(Model model, @RequestParam(value = "name", required = false) String name) {
 
 		StaffMember member = store.getStaffMemberByName(name);
-		// System.out.println(member.getUsername());
 		model.addAttribute("staffMember", member);
 		model.addAttribute("error", registerError);
 		return "register_staffmember";
@@ -223,8 +222,6 @@ public class AdminController {
 			{
 				ovenError.setError(true);
 				ovenError.setMessage("Ofen ist nicht leer");
-				model.addAttribute("ovens", store.getOvens());
-				model.addAttribute("queue", store.getPizzaQueue());
 				model.addAttribute("error", ovenError);
 				return "ovens";
 			}
