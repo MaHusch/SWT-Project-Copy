@@ -30,7 +30,9 @@ import pizzaShop.model.ProductionSystem.Oven;
 @Controller
 public class AdminController {
 
-	private ErrorClass error = new ErrorClass(false);
+	private ErrorClass displayError = new ErrorClass(false);
+	private ErrorClass registerError = new ErrorClass(false);
+	private ErrorClass ovenError = new ErrorClass(false);
 	private final UserAccountManager employeeAccountManager;
 	private final Accountancy accountancy;
 
@@ -44,13 +46,25 @@ public class AdminController {
 
 	}
 
+	
+	@RequestMapping("/staffmember_display")
+	public String staffmember_display(Model model) {
+
+		model.addAttribute("staffmember", store.getStaffMemberList());
+		model.addAttribute("error", displayError);
+		
+		
+
+		return "staffmember_display";
+	}	
+	
 	@RequestMapping("/register_staffmember")
 	public String registrationIndex(Model model, @RequestParam(value = "name", required = false) String name) {
 
 		StaffMember member = store.getStaffMemberByName(name);
 		// System.out.println(member.getUsername());
 		model.addAttribute("staffMember", member);
-		model.addAttribute("error", error);
+		model.addAttribute("error", registerError);
 		return "register_staffmember";
 	}
 
@@ -60,19 +74,19 @@ public class AdminController {
 			@RequestParam("username") String username, @RequestParam("password") String password,
 			@RequestParam("role") String role) {
 
-		error.setError(false);
+		registerError.setError(false);
 		if (surname.equals("") || forename.equals("") || telephonenumber.equals("") || username.equals("") || password.equals("")
 				|| role.equals("")) {
-			error.setError(true);
-			error.setMessage("Eingabefelder überprüfen!");
+			registerError.setError(true);
+			registerError.setMessage("Eingabefelder überprüfen!");
 			return "redirect:register_staffmember";
 		}
 		
 		String msg = store.validateTelephonenumber(telephonenumber, null);
 		if(!msg.isEmpty())
 		{
-			error.setError(true);
-			error.setMessage(msg);
+			registerError.setError(true);
+			registerError.setMessage(msg);
 			return "redirect:register_staffmember";
 		}
 		
@@ -98,10 +112,8 @@ public class AdminController {
 		if( store.getStaffMemberByName(username) == null){
 			store.getStaffMemberList().add(staffMember);
 			store.updateUserAccount(staffMember, username, password, Role.of("ROLE_" + role));
-		}else{
-			model.addAttribute("error", error);
-		}
 		
+		}
 		
 		/*
 		 * Optional<UserAccount> userAccount =
@@ -124,50 +136,20 @@ public class AdminController {
 		return "redirect:staffmember_display";
 	}
 	
-	@RequestMapping("/staffmember_display")
-	public String staffmember_display(Model model) {
-
-		model.addAttribute("staffmember", store.getStaffMemberList());
-		model.addAttribute("error",error);
-		
-		
-
-		return "staffmember_display";
-	}
 	
-	@RequestMapping(value = "/deleteStaffMember")
-	public String deleteStaffMember(Model model, @RequestParam("StaffMemberName") String username, @LoggedIn Optional<UserAccount> lUserAccount) {
-		StaffMember member = store.getStaffMemberByName(username);
-		error.setError(false);
-		if(member.getUserAccount().equals(lUserAccount.get())) 
-		{	
-			error.setError(true);
-			error.setMessage("Eingeloggter Admin kann nicht gelöscht werden!");
-			
-			return "redirect:staffmember_display"; 
-		}
-		Optional<UserAccount> userAccount = employeeAccountManager.findByUsername(username);
-
-		if (userAccount.isPresent()) {
-			employeeAccountManager.disable(userAccount.get().getId());
-		}
-
-		ArrayList<StaffMember> staffMemberList = (ArrayList<StaffMember>) store.getStaffMemberList();
-		staffMemberList.remove(member);
-
-		return "redirect:staffmember_display";
-	}
+	
+	
 
 	@RequestMapping(value = "/updateStaffMember")
 	public String updateStaffMember(Model model, @RequestParam("surname") String surname,
 			@RequestParam("forename") String forename, @RequestParam("telnumber") String telephonenumber,
 			@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("salary") Long salary, RedirectAttributes redirectAttrs) {
 		
-		error.setError(false);
+		registerError.setError(false);
 		StaffMember member = store.getStaffMemberByName(username);
 		if (surname.equals("") || forename.equals("") || telephonenumber.equals("") || username.equals("") || password.equals("") || salary == null) {
-			error.setError(true);
-			error.setMessage("Eingabefelder überprüfen!");
+			registerError.setError(true);
+			registerError.setMessage("Eingabefelder überprüfen!");
 			redirectAttrs.addAttribute("name", username).addFlashAttribute("message", "StaffMember");
 			return "redirect:register_staffmember";
 		}
@@ -176,8 +158,8 @@ public class AdminController {
 		member.getPerson().setSurname(surname);
 		for(char c : telephonenumber.toCharArray()){
 			if(!Character.isDigit(c)){
-				error.setError(true);
-				error.setMessage("Telefonnummer darf nur Ziffern enthalten!");
+				registerError.setError(true);
+				registerError.setMessage("Telefonnummer darf nur Ziffern enthalten!");
 				redirectAttrs.addAttribute("name", username).addFlashAttribute("message", "StaffMember");
 				return "redirect:register_staffmember";
 				
@@ -194,6 +176,29 @@ public class AdminController {
 
 		return "redirect:staffmember_display";
 	}
+	
+	@RequestMapping(value = "/deleteStaffMember")
+	public String deleteStaffMember(Model model, @RequestParam("StaffMemberName") String username, @LoggedIn Optional<UserAccount> lUserAccount) {
+		StaffMember member = store.getStaffMemberByName(username);
+		displayError.setError(false);
+		if(member.getUserAccount().equals(lUserAccount.get())) 
+		{	
+			displayError.setError(true);
+			displayError.setMessage("Eingeloggter Admin kann nicht gelöscht werden!");
+			
+			return "redirect:staffmember_display"; 
+		}
+		Optional<UserAccount> userAccount = employeeAccountManager.findByUsername(username);
+
+		if (userAccount.isPresent()) {
+			employeeAccountManager.disable(userAccount.get().getId());
+		}
+
+		ArrayList<StaffMember> staffMemberList = (ArrayList<StaffMember>) store.getStaffMemberList();
+		staffMemberList.remove(member);
+
+		return "redirect:staffmember_display";
+	}
 
 	
 
@@ -202,7 +207,7 @@ public class AdminController {
 
 		store.getOvens().add(new Oven(store));
 		accountancy.add(new AccountancyEntry(Money.of(-1000, EURO), "Neuer Ofen gekauft"));
-		model.addAttribute("error", error);
+		model.addAttribute("error", ovenError);
 
 		return "redirect:ovens";
 
@@ -215,11 +220,11 @@ public class AdminController {
 		{
 			if(o.getId() == id && !o.isEmpty())
 			{
-				error.setError(true);
-				error.setMessage("Ofen ist nicht leer");
+				ovenError.setError(true);
+				ovenError.setMessage("Ofen ist nicht leer");
 				model.addAttribute("ovens", store.getOvens());
 				model.addAttribute("queue", store.getPizzaQueue());
-				model.addAttribute("error", error);
+				model.addAttribute("error", ovenError);
 				return "ovens";
 			}
 		}

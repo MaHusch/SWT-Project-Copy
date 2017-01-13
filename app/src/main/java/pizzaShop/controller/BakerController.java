@@ -61,7 +61,14 @@ public class BakerController {
 	
 	@RequestMapping(value ="/forward2", method = RequestMethod.POST)
 	public String forward(@RequestParam("minutes") Integer minutes){
-		businessTime.forward(Duration.ofMinutes(minutes));
+		error.setError(false);
+		if(minutes == null){
+			error.setError(true);
+			error.setMessage("Feld darf nicht leer sein!");
+			
+		}else{
+			businessTime.forward(Duration.ofMinutes(minutes));
+		}
 		return "redirect:ovens";
 	}
 

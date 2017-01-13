@@ -24,50 +24,6 @@
 	<!-- NavBar -->
 	<div th:include="navbar :: navbar">...</div>
 
-
-	<!-- Panel for CustomerCheck -->
-	<div sec:authorize="hasRole('ROLE_SELLER')" class="container col-md-4">
-		<div class="panel panel-primary">
-			<div class="panel-heading">Kunden überprüfen</div>
-			<div class="panel-body">
-				<form method="post" action="/checkTan">
-					<table>
-						<tr>
-							<td><label for="surname">Telefonnummer</label>:</td>
-							<td><input type="text" id="tnumber" name="tnumber" /></td>
-						</tr>
-						<tr>
-							<td><label for="forename">TAN</label>:</td>
-							<td><input type="text" id="tan" name="tan" /></td>
-						</tr>
-						<tr>
-							<td><input class="btn btn-primary" type="submit"
-								value="Check" /></td>
-						</tr>
-					</table>
-				</form>
-
-				<p></p>
-
-				<div th:switch="${customer.isPresent()}">
-					<div th:case="true">
-						<p
-							th:text="'Kunde ist: '+${customer.get().getPerson().getForename()}+' '+${customer.get().getPerson().getSurname()}+' tel: '+${customer.get().getPerson().getTelephoneNumber()}">User
-							is present</p>
-						<form method="post" action="/logoutCustomer">
-							<input class="btn btn-primary" type="submit" value="Ausloggen" />
-						</form>
-
-					</div>
-					<div th:case="false">
-						<p th:text="'Kein Kunde vorhanden'">Kein Kunde vorhanden</p>
-					</div>
-					<a href="customer_display.html">Cutlery zurückgeben</a>
-				</div>
-			</div>
-		</div>
-	</div>
-
 	<!-- Panel for Cart -->
 	<div class="container col-md-6">
 		<div class="panel panel-primary">
@@ -142,15 +98,54 @@
 			</div>
 		</div>
 	</div>
-	
-		<div th:if="${pizzaQueueTime != null}" class="container col-md-3">
+
+
+	<!-- Panel for CustomerCheck -->
+	<div sec:authorize="hasRole('ROLE_SELLER')" class="container col-md-4">
 		<div class="panel panel-primary">
-			<div class="panel-heading">Voraussichtliche Backdauer:</div>
+			<div class="panel-heading">Kunden überprüfen</div>
 			<div class="panel-body">
-				<p th:text="${pizzaQueueTime/60 + ' Minuten bis die Pizzen im Ofen durch sind'}" />
+				<form method="post" action="/checkTan">
+					<table>
+						<tr>
+							<td><label for="surname">Telefonnummer</label>:</td>
+							<td><input type="text" id="tnumber" name="tnumber" /></td>
+						</tr>
+						<tr>
+							<td><label for="forename">TAN</label>:</td>
+							<td><input type="text" id="tan" name="tan" /></td>
+						</tr>
+						<tr>
+							<td><input class="btn btn-primary" type="submit"
+								value="Check" /></td>
+						</tr>
+					</table>
+				</form>
+
+				<p></p>
+
+				<div th:switch="${customer.isPresent()}">
+					<div th:case="true">
+						<p
+							th:text="'Kunde ist: '+${customer.get().getPerson().getForename()}+' '+${customer.get().getPerson().getSurname()}+' tel: '+${customer.get().getPerson().getTelephoneNumber()}">User
+							is present</p>
+						<form method="post" action="/logoutCustomer">
+							<input class="btn btn-primary" type="submit" value="Ausloggen" />
+						</form>
+
+					</div>
+					<div th:case="false">
+						<p th:text="'Kein Kunde vorhanden'">Kein Kunde vorhanden</p>
+					</div>
+					<a href="customer_display.html">Cutlery zurückgeben</a>
+				</div>
 			</div>
 		</div>
 	</div>
+
+	
+	
+		
 
 	<!-- Panel for Freigetränk  -->
 	<div
@@ -178,6 +173,15 @@
 						</tbody>
 					</table>
 				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div th:if="${pizzaQueueTime != null}" class="container col-md-3">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Voraussichtliche Backdauer:</div>
+			<div class="panel-body">
+				<p th:text="${pizzaQueueTime/60 + ' Minuten bis die Pizzen im Ofen durch sind'}" />
 			</div>
 		</div>
 	</div>
