@@ -1,0 +1,27 @@
+= Protokoll Gruppe 16
+
+__Treffen am 05.12.2016__
+ 
+__Schriftführer: Martin Huschenbett__
+
+__Nächstes Treffen: 06.12.2016__
+
+__Teilnehmer: Mel, Jannik, Joris, Florentin, Martin__
+
+
+== Bemerkungen
+
+* Admin soll alle CatalogItems sehen (auch Zutaten)
+
+* Cutlery als checkbox
+
+
+== Fragen
+
+* Lieferzeit berechnen (wartezeit von Pizza in Pizzaqueue)
+
+* Gehaltsklassen
+
+* Filterung
+
+* Rechnung drucken? (Rechnungsformular)

@@ -1,0 +1,35 @@
+= Protokoll Gruppe 16
+
+__Treffen am 08.11.2016__
+
+__Nächstes Treffen: XX.11.2016__
+
+__Teilnehmer:Mel, Joris, Jannik, Florentin, Martin, Daniel__
+
+== Bemerkungen
+
+* Ordnerstruktur in Masterbranch/artefacts erstellt für bessere Übersicht
+
+
+
+== Fragen
+
+* Itemcatalog, Interface oder eine Klasse?
+
+* GUI an Entwurf anpassen?
+
+* Itemqueue auslagern aus Store?
+
+== Bemerkungen von Daniel
+
+* Entwurfsklassendiagramm noch in Packages unterteilen
+
+* großer Prototyp: kleines, flaches HTML-Template mit kleiner Funktionalität der Software
+
+* verfeinerte GUI an Entwurfsklassendiagramm anpassen
+
+
+== Nächster Sprint
+
+bis Sonntag den Entwurf fertigstellen, Prototypen fertigstellen
+

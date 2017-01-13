@@ -1,0 +1,29 @@
+= Protokoll gruppe 16
+
+__Treffen am 28.11.2016__
+
+__Schriftführer: Martin Huschenbett__
+
+__Nächstes Treffen: 29.11.2016__
+
+__Teilnehmer: Mel, Jannik, Joris, Florentin, Martin__
+
+== Bemerkungen
+
+* CustomerPizzas speichern im Catalog
+
+* Pizza - Oder: Attribut OrderID wird zu OrderQueue, da sonst problematisch mit einer Pizza zu mehreren Bestellungen
+
+* Konstruktoren werfen Exceptions bei falschen Parametern
+
+* Bei Order: pickUp ist eine Checkbox
+
+* Orders anzeigen lassen für Seller und Deliverer
+
+* AuthentificationSuccessHandler soll nach dem einloggen auf die jeweiligen Dashboards verweisen
+
+* Slides wurden erstellt und werden am Dienstag fertiggestellt
+
+== Sprints
+
+Bleiben die selben wie beim letzten Protokoll.

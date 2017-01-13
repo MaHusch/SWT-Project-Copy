@@ -1,0 +1,93 @@
+= Protokoll Gruppe 16
+
+__Treffen am 20.10.2016__
+
+__Schriftführer: Martin Huschenbett__
+
+__Nächstes Treffen: 21.10.2016__
+
+__Teilnehmer: gesamte Gruppe mit Tutor__
+
+
+== Bemerkungen
+
+* Prototyp ist nur die Erweiterung des Videoshops um eine Funktion (am besten Backend) 
+
+* Lizensen werden nächste Woche für Magic Draw geschickt
+
+
+== Kundengespräch
+
+* Preise selbstfestlegen (realistisch), Pizza soll konfiguriert werden können; Feste Menüs auch anlegen (KANN)
+
+* TAN: eineindeutig! Nicht doppelt! 5-stellige TAN
+
+* Ofenproblem: es wird auf eine Lieferung gewartet, damit eine Lieferung erfolgt
+
+* Timer für die Ofen, so in der Art eigene View für den Bäcker mit Ofenübersicht
+
+* Pizza soll in 45 Minuten geliefert werden - maximal!
+
+* Lieferanten, Pizzabäcker, Verkäufer, Admin, KEINE BEDIENUNG! Verschiedene Views für die verschiedenen Rollen; KEIN direktes Kundenprofil (eher Kannkriterium), aber Kunden sollen für z.B. Admin angezeigt werden
+
+* für direktes vor Ort bestellen: Ausbuchen der Artikel für Abrechnung
+
+* realistische Lieferungen: 2-3 Lieferungen pro Lieferant, manuell den Lieferanten die Lieferung zuweisen (keine Automatische zuweisung)
+
+* Lagerverwaltung: nicht implementieren, unendliches Lager, aber feste Anzahl an Besteck (z. B. Datenbank, welcher Kunde welches Besteck hat, SIMPEL!)
+
+* Abrechnung: Statistik mit Einnahmen (Pizzen, Getränke); mit bedenken, realistisch bleiben; wird später nochmal genauer geklärt
+
+* Pizza backen ist einfach nur ein Timer; "eine Funktion, die aller 5 Minuten eine Pizza auf den Pizzastack packt"
+
+* Müssen wir datenbank erstellen? Erstmal nicht, Spring hat einen DateAnalysierer. Aber erstmal noch nicht damit auseinander setzen.
+
+* im Adminbereich Buisnesstime verstellen, damit man das vierteljährliche simulieren kann 
+
+
+== weitere Hinweise von Daniel:
+
+* es soll eine Personalübersicht geben, Personal anlegen, entfernen, editieren
+
+* Kundenübersicht, anlegen, bearbeiten, entfernen
+
+* Kassenverwaltung: Artikel verleihen --> Kaution (kommt nicht mit in die Abrechnung), Artikel verkaufen
+
+* Kunde bestellt über mitarbeiter
+
+* Selber Pizza zusammenstellen
+
+* Warenkorb erstellen, mit Übersicht und finalen Bestellen
+
+* Lieferant soll melden ob er ausgeliefert hat oder nicht --> Bestellung komplett abschließen
+
+* katalog durchsuchen, filtern, Sortieren (Artikel sind uns überlassen)
+
+* Katalog müssen keine Bilder enthalten (KANN Kriterium)
+
+* Freies Websitedesign
+
+* Admin soll Artikel hinzufügen können, bearbeiten, entfernen; Übersicht an Bestellungen die schon getätigt sind, welche abgeschlossen, welche offen, kurze Detailansicht mit Zusatzinformationen
+
+* Pizza kann man sich auch selbst abholen
+
+* Rabattffunktion (wenn jemand die Pizza persönlich abholt)
+
+* Finanzübersicht (html reicht, kein PDF)
+
+* Pre-Login, er brauch keinen Account auf der Website
+
+* Mitarbeiter haben Accounts, die bearbeitet werden können (freigestellt ob der Admin das macht, oder ob das ein Panell gibt; wobei es per Admin realistischer ist)
+
+* Pizza backen ist einfach nur ein Timer; "eine Funktion, die aller 5 Minuten eine Pizza auf den Pizzastack packt"
+
+* Müssen wir datenbank erstellen? Erstmal nicht, Spring hat einen DateAnalysierer. Aber erstmal noch nicht damit auseinander setzen.
+
+* im Adminbereich Buisnesstime verstellen, damit man das vierteljährliche simulieren kann 
+
+* bei weiteren Fragen oder klärungsbedarf einfach melden
+
+
+== Aktueller Stand
+
+Wichtige Fragen sind vorerst geklärt, die Analysephase kann nun beginnen.

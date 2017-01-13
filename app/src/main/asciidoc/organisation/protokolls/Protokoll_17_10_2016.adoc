@@ -1,0 +1,64 @@
+= Protokoll Gruppe 16
+
+__Treffen am 17.10.2016, 9:20 Uhr bis 10:50 Uhr__
+
+__Schriftführer: Martin Huschenbett__
+
+__Nächstes Treffen: 21.10.2016__
+
+__Teilnehmer: gesamte Gruppe__
+
+== Fragen für das Kundengespräch:
+
+* Zutaten- und Menüliste, Preisliste?
+* Wie ist die TAN aufgebaut?
+* Dreitakt Ofen? Was ist bei 4 Pizzen? Mehrmals fahren oder warten damit alles zusammen geliefert wird?
+* Timer für die Pizzen?
+* Brauchen wir eine Wegvariable für die Lieferzeit?
+* Personalstamm? Wer hat welche Rechte? Login-System für Mitarbeiter/Kunden?
+* Abrechnung, Gehalt? Wie stellt sich das der Kunde vor?
+* Gibt es eine Möglichkeit ohne Registrierung eine Pizza vor Ort zu bestellen?
+* Wie sieht ein Kundenprofil aus?
+* Lieferwagen Kapazität?
+* Lagerverwaltung der Pizzeria? Bestellung der Zutaten?
+* Verwaltung der einzelnen Filialen erwünscht? 
+
+.Muss- und Kannkriterien
+[options="header,footer"]
+|===============================================
+|Muss 					| Kann
+|Bestellung registrieren 		|
+|Kundenverwaltung 			|
+|TAN-Verwaltung				|
+|Rabattaktionen				|
+|Pizzen selbst zusammenstellen		|
+|Angebotsverwaltung			|
+|Berechnung der Lieferzeit		|
+|Pizza-Essgarnitur Verwaltung		|
+|Veränderliches Sortiment		|
+|Wöchentliche Abrechnung der Filiale 	|
+|===============================================
+
+== Festlegungen:
+
+* Protokolle werden in Rundmail zusätzlich versendet
+* während eines Treffens ein Google Drive Dokument/Titanpad/... benutzten damit alle Mitglieder während des Treffens Übersicht zum Protokoll haben
+* Freitag, 21.10.2016, kurzes Treffen und Aufgabenverteilung per Discord
+
+== erste Ideen für Klassen für CRC
+
+* Bestellung
+* Kunde
+* Pizza
+* Zutaten
+* Getränk
+* Küchen (mit Ofen?)
+* Filiale
+* Mitarbeiter
+* ...
+
+== Aktueller Stand
+
+Die Gruppenmitglieder haben sich in GitHub eingearbeitet und sich mit der Aufgabe beschäftigt (Kundenfragen erstellt, Kann/Musskriterien erstellt).
+Das nächste Treffen findet nach dem Kundengespräch statt, damit dann die CRC-Kartenmethode angewendet werden kann.
+

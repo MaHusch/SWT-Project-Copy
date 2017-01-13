@@ -1,0 +1,25 @@
+= Protokoll Gruppe 16
+
+__Treffen am 21.10.2016__
+
+__Schriftführer: Martin Huschenbett__
+
+__Nächstes Treffen am 24.10.2016__
+
+__Teilnehmer: gesamte Gruppe__
+
+== Bemerkungen
+
+Kurze Besprechung und Verteilung, wer welche Analysediagramme macht:
+
+* Florentin: CRC und Klassendiagramm
+
+* Joris: Kontextdiagramm
+
+* Jannik und Mel: Anwendungsfälle
+
+* Martin: Top-Level-Architektur und Sequenzdiagramm
+
+== Aktueller Stand
+
+Über das Wochenende kümmern sich die Mitglieder um die ihnen zugewiesenen Aufgaben und Diagramme.
