@@ -23,7 +23,7 @@ public class CatalogControllerWebIntegrationTests extends AbstractWebIntegration
 
 		mvc.perform(get("/catalog")). 
 				andExpect(status().isOk()).
-				andExpect(model().attribute("catalog", is(not(emptyIterable()))));
+				andExpect(model().attribute("items", is(not(emptyIterable()))));
 	}
 	
 	/*@Test

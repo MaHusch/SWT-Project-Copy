@@ -25,11 +25,10 @@ public class PizzaOrderTest {
 	@Before
 	public void setUp()  
 	{
-		//uam = new UserAccountManager();
 		c1 = new Customer();
 		ua1 = new UserAccount();
 		t1 = new Tan("11293", TanStatus.VALID);
-		po1 = new PizzaOrder(ua1, Cash.CASH, t1, false,c1); //TODO: add customer
+		po1 = new PizzaOrder(ua1, Cash.CASH, t1, false,c1); 
 	}
 	
 	@Test
@@ -59,6 +58,15 @@ public class PizzaOrderTest {
 		assertEquals(po1.getOrderStatus(), PizzaOrderStatus.DELIVERING);
 		po1.cancelOrder();
 		assertEquals(po1.getOrderStatus(), PizzaOrderStatus.CANCELLED);
+	}
+	
+	@Test
+	public void testRemark()
+	{
+		assertEquals("-",po1.getRemark());
+		po1.setRemark("test");
+		assertEquals("test",po1.getRemark());
+		
 	}
 	
 	
