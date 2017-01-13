@@ -16,6 +16,7 @@
 			if (document.getElementById('pickUp').checked == true)
 				{
 				var price = cartprice * 0.9;
+				price = Number((price).toFixed(2));
 				document.getElementById('cartPriceLabel').innerHTML = "Gesamt: " + price.toString() + " EUR";
 				
 			} else { document.getElementById('cartPriceLabel').innerHTML = "Gesamt: " + cartprice.toString() + " EUR"; }

@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import pizzaShop.model.AccountSystem.Customer;
+import pizzaShop.model.AccountingSystem.Bill;
 import pizzaShop.model.DataBaseSystem.CustomerRepository;
 import pizzaShop.model.ManagementSystem.Store;
 import pizzaShop.model.ManagementSystem.Tan_Management.Tan;
@@ -125,8 +126,7 @@ public class CartHelper {
 		store.analyzePizzaOrder(pizzaOrder, pizzaQueueTime());
 		cart.clear();
 
-		// Bill bill = new Bill(customer.get(), pizzaOrder,
-		// businesstime.getTime());
+		//Bill bill = new Bill(customer, pizzaOrder,businessTime.getTime());
 		// customer = Optional.empty(); disabled for testing purposes
 
 	}
