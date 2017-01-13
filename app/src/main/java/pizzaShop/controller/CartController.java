@@ -46,7 +46,6 @@ public class CartController {
 	private Optional<Customer> customer = Optional.empty();
 
 	private ErrorClass error;
-	private int pizzaQueueTime = 0;
 
 	@Autowired
 	public CartController(ItemCatalog itemCatalog, TanManagement tanManagement, CustomerRepository customerRepository,
@@ -79,7 +78,6 @@ public class CartController {
 		model.addAttribute("items", itemCatalog.findAll());
 
 		ArrayList<Item> freeDrinks = (ArrayList<Item>) itemCatalog.findByType(ItemType.FREEDRINK);
-		// TODO: use itemCatalog.findByType(ItemType.FREEDRINK)
 		boolean freeDrink = false;
 		Iterator<CartItem> ci = cart.iterator();
 		while (ci.hasNext()) {
@@ -96,7 +94,6 @@ public class CartController {
 		model.addAttribute("customer", customer);
 		model.addAttribute("freeDrinks", freeDrinks);
 		model.addAttribute("freeDrink", freeDrink);
-		model.addAttribute("pizzaQueueTime", pizzaQueueTime);
 		return "cart";
 
 	}
@@ -205,7 +202,6 @@ public class CartController {
 		
 		try {
 			cartHelper.createPizzaOrder(cutlery, pickUp, userAccount.orElse(null), cart, customer.orElse(null), remark);
-			pizzaQueueTime = cartHelper.pizzaQueueTime();
 		} catch (Exception e) {
 			error.setError(true);
 			error.setMessage(e.getMessage());

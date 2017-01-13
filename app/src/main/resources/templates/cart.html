@@ -16,9 +16,9 @@
 			if (document.getElementById('pickUp').checked == true)
 				{
 				var price = cartprice * 0.9;
-				document.getElementById('cartPriceLabel').innerHTML = "Gesamt: EUR " + price.toString();
+				document.getElementById('cartPriceLabel').innerHTML = "Gesamt: " + price.toString() + " EUR";
 				
-			} else { document.getElementById('cartPriceLabel').innerHTML = "Gesamt: EUR " + cartprice.toString(); }
+			} else { document.getElementById('cartPriceLabel').innerHTML = "Gesamt: " + cartprice.toString() + " EUR"; }
 			
 			if (document.getElementById('cutlery').checked == true) {
 				document.getElementById('cutleryPrice').innerHTML = "+ 15€ Pfand";
@@ -188,17 +188,6 @@
 		</div>
 	</div>
 	
-	<div th:if="${pizzaQueueTime != null}" class="container col-md-3">
-		<div class="panel panel-primary">
-			<div class="panel-heading">Voraussichtliche Backdauer:</div>
-			<div class="panel-body">
-				<p th:text="${pizzaQueueTime/60 + ' Minuten bis die Pizzen im Ofen durch sind'}" />
-			</div>
-		</div>
-	</div>
-
-
-
 	<div th:include="fragments :: errorClass">...</div>
 
 
