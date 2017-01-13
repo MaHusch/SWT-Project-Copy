@@ -340,5 +340,21 @@ public class TanManagement {
 		}
 		
 	}
+	
+	public void deleteUsedTans()
+	{
+		Iterable<Map.Entry<Tan, String>> allTans = getAllTans();	
+		
+		for(Entry<Tan, String> entry : allTans)
+		{
+			if(entry.getKey().getStatus().equals(TanStatus.USED))
+			{
+				tanHashMap.remove(entry.getKey());
+			}
+		}
+		
+
+		
+	}
 
 }

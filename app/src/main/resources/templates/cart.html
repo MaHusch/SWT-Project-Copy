@@ -10,6 +10,7 @@
 </head>
 <body>
 	<script>
+		
 		function editPrice() {
 			if (document.getElementById('cutlery').checked == true) {
 				document.getElementById('cutleryPrice').innerHTML = "+ 15€ Pfand";
@@ -20,6 +21,7 @@
 				return true;
 			}
 		}
+			
 	</script>
 	<!-- NavBar -->
 	<div th:include="fragments :: navbar">...</div>

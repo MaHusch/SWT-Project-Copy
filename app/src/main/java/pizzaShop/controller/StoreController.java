@@ -190,5 +190,14 @@ public class StoreController {
 		return "newsletter";
 
 	}
+	
+	@RequestMapping("deleteUsedTans")
+	public String sendNewsletter() {
+
+		tanManagement.deleteUsedTans();
+
+		return "redirect:tan";
+
+	}
 
 }
