@@ -30,7 +30,7 @@
 								<td th:text="${staffmember.getPerson().getForename()}">Vorname</td>
 								<td th:text="${staffmember.getPerson().getSurname()}">Nachname</td>
 								<td th:text="${staffmember.getPerson().getTelephoneNumber()}">Nachname</td>
-								<td th:text="${staffmember.getRole()}">Rolle</td>
+								<td th:text="${staffmember.getRole().getName().substring(5)}">Rolle</td>
 								<td th:text="${{staffmember.getSalary()}}">Gehalt</td>
 								
 								

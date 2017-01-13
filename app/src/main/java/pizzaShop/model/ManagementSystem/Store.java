@@ -54,7 +54,7 @@ public class Store {
 	private final BusinessTime businessTime;
 	private final CatalogHelper catalogHelper;
 	private final TanManagement tanManagement;
-	private List<StaffMember> staffMemberList; // why List and Repository for
+	private ArrayList<StaffMember> staffMemberList; // why List and Repository for
 												// StaffMember?
 	private ArrayList<Oven> ovenList;
 	private Pizza nextPizza;
@@ -166,7 +166,7 @@ public class Store {
 		return null;
 	}
 
-	public List<StaffMember> getStaffMemberList() {
+	public ArrayList<StaffMember> getStaffMemberList() {
 		return staffMemberList;
 	}
 
@@ -410,13 +410,13 @@ public class Store {
 	public String validateTelephonenumber(String t, Person p) {
 		for (char c : t.toCharArray()) {
 			if (!Character.isDigit(c))
-				return "Telefonnummer enthält Buchstaben";
+				return "Telefonnummer darf nur Ziffern enthalten!";
 
 		}
 
 		for (Customer cu : this.customerRepository.findAll()) {
 			if (cu.getPerson().getTelephoneNumber().equals(t) && !cu.getPerson().equals(p))
-				return "Diese Telefonnummber ist bereits vergeben";
+				return "Telefonnummber ist bereits vergeben!";
 		}
 		return "";
 	}

@@ -86,7 +86,7 @@
 									</form >
 									<div th:if="${order.getOrderStatus().name().contains('PENDING') or order.getOrderStatus().name().contains('DELIVERING')}">
 										<p th:text="${order.getDelivererName()}">zugewiesen</p>
-										<form th:if="${order.getOrderStatus().name().contains('PENDING')}" th:action="/changeDeliverer" method="post">
+										<form th:if="${order.getOrderStatus().name().contains('PENDING')}" th:action="changeDeliverer" method="post">
 										<input
 											type="hidden" value="0" name="orderID"
 											th:value="${order.getId()}" /> <input
