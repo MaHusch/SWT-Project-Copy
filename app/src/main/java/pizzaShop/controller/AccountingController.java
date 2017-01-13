@@ -53,7 +53,6 @@ public class AccountingController {
 		model.addAttribute("totalGain", accountingHelper.total());
 		model.addAttribute("weeklyGain", accountingHelper.intervalTotal(i));
 		model.addAttribute("error", error);
-		store.checkCutleries();
 
 		return "finances";
 	}

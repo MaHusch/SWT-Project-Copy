@@ -11,7 +11,9 @@ import javax.money.MonetaryAmount;
 import org.salespointframework.accountancy.Accountancy;
 import org.salespointframework.accountancy.AccountancyEntry;
 import org.salespointframework.time.BusinessTime;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import pizzaShop.model.AccountSystem.CustomerHelper;
 import pizzaShop.model.AccountSystem.StaffMember;
 import pizzaShop.model.ManagementSystem.Store;
 
@@ -21,13 +23,15 @@ public class SalaryThread implements Runnable {
 	private final Accountancy accountancy;
 	private final BusinessTime businessTime;
 	private final Store store;
+	private final CustomerHelper customerHelper;
 	
 
 	// @Autowired
-	public SalaryThread(Accountancy accountancy, BusinessTime businessTime, Store store) {
+	public SalaryThread(Accountancy accountancy, BusinessTime businessTime, Store store, CustomerHelper customerHelper) {
 		this.accountancy = accountancy;
 		this.businessTime = businessTime;
 		this.store = store;
+		this.customerHelper = customerHelper;
 		
 	}
 
@@ -35,7 +39,14 @@ public class SalaryThread implements Runnable {
 		LocalDateTime currentDate = businessTime.getTime();
 		long delay = 3;
 		long next = System.currentTimeMillis();
+		int ONLY_ONE_THIRD = 0;
 		while (true) {
+			if(ONLY_ONE_THIRD == 2){
+				customerHelper.checkCutleries();
+				ONLY_ONE_THIRD = 0;
+			}else{
+				ONLY_ONE_THIRD++;
+			}
 			LocalDateTime newDate = businessTime.getTime();
 			if (newDate.isAfter(currentDate) && (newDate.getMonth() != currentDate.getMonth() | newDate.getYear() != currentDate.getYear())) {
 				int dateDiff = (newDate.getYear() - currentDate.getYear()) * 12 + newDate.getMonthValue() - currentDate.getMonthValue();

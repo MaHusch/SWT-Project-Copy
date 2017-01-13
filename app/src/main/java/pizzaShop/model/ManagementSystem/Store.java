@@ -1,7 +1,5 @@
 package pizzaShop.model.ManagementSystem;
 
-import static org.salespointframework.core.Currencies.EURO;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,16 +35,12 @@ import pizzaShop.model.DataBaseSystem.CatalogHelper;
 import pizzaShop.model.DataBaseSystem.CustomerRepository;
 import pizzaShop.model.DataBaseSystem.ItemCatalog;
 import pizzaShop.model.DataBaseSystem.PizzaOrderRepository;
-import pizzaShop.model.ManagementSystem.Tan_Management.Tan;
 import pizzaShop.model.ManagementSystem.Tan_Management.TanManagement;
-import pizzaShop.model.ManagementSystem.Tan_Management.TanStatus;
-import pizzaShop.model.OrderSystem.Cutlery;
 import pizzaShop.model.OrderSystem.Ingredient;
 import pizzaShop.model.OrderSystem.Item;
 import pizzaShop.model.OrderSystem.ItemType;
 import pizzaShop.model.OrderSystem.Pizza;
 import pizzaShop.model.OrderSystem.PizzaOrder;
-import pizzaShop.model.OrderSystem.PizzaOrderStatus;
 import pizzaShop.model.ProductionSystem.Oven;
 
 @Component
@@ -301,45 +295,6 @@ public class Store {
 	}
 
 	/**
-	 * deletes customer based on and ID, and cancels all his orders.
-	 * 
-	 * @param model
-	 * @param id
-	 * @throws Exception
-	 */
-	public void deleteCustomer(Model model, long id) throws Exception {
-
-		Customer c = customerRepository.findOne(id);
-		Tan foundTan = tanManagement.getTan(c.getPerson().getTelephoneNumber());
-
-		Iterable<PizzaOrder> allPizzaOrders = this.pizzaOrderRepo.findAll();
-		ArrayList<PizzaOrder> ordersToDelete = new ArrayList<PizzaOrder>();
-		for (PizzaOrder pizzaOrder : allPizzaOrders) {
-			Customer customer = pizzaOrder.getCustomer();
-
-			if (customer.getId() == id) {
-				ordersToDelete.add(pizzaOrder);
-				PizzaOrderStatus pOStatus = pizzaOrder.getOrderStatus();
-				if (!(pOStatus.equals(PizzaOrderStatus.CANCELLED) || pOStatus.equals(PizzaOrderStatus.COMPLETED))) {
-					throw new Exception("Kunde hat noch offene Bestellungen!");
-				}
-			}
-
-		}
-		pizzaOrderRepo.delete(ordersToDelete);
-
-		if (!foundTan.getStatus().equals(TanStatus.NOT_FOUND)) {
-			tanManagement.invalidateTan(foundTan);
-		}
-
-		if (c.getCutlery() != null) {
-			this.returnCutlery("decayed", c);
-		}
-
-		customerRepository.delete(id);
-	}
-
-	/**
 	 * finish Order and create AccountancyEntry
 	 * 
 	 * @param p
@@ -397,37 +352,6 @@ public class Store {
 		return false;
 	}
 
-	/**
-	 * Function for returning a {@link Cutlery} lent by a customer
-	 * 
-	 * @param lost
-	 *            <code> true </code> if customer lost his
-	 *            {@link catalog_item.Cutlery}, <code> false </code> if he
-	 *            returns it properly
-	 * @param customer
-	 *            customer who wants to return his {@link Cutlery}
-	 * @throws Exception
-	 *             when customer hasn't lent a {@link Cutlery} beforehand
-	 */
-	public void returnCutlery(String status, Customer customer) throws NullPointerException {
-		String message = " hat seine Essgarnitur verloren";
-		if (customer == null)
-			throw new NullPointerException("Welcher Kunde?");
-		if (customer.getCutlery() == (null))
-			throw new NullPointerException("Kunde hatte keine Essgarnitur ausgeliehen bzw ist schon verfallen");
-
-		if (status.equals("lost") || status.equals("decayed")) {
-			if (status.equals("decayed"))
-				message = " hat seine Essgarnitur nicht zurückgegeben";
-			accountancy.add(new AccountancyEntry(Money.of(customer.getCutlery().getPrice().getNumber(), EURO),
-					customer.getPerson().getForename() + " " + customer.getPerson().getSurname() + message));
-		}
-
-		customer.setCutlery(null);
-
-		this.customerRepository.save(customer);
-	}
-
 	public void configurePizza(Model model, String ids[], String pizzaName, String admin_flag, String pizzaID,
 			Cart cart) {
 
@@ -477,20 +401,6 @@ public class Store {
 			model.addAttribute("existingPizza", existingPizza.getName());
 			if (existingPizza != null)
 				cart.addOrUpdateItem(existingPizza, Quantity.of(1));
-		}
-	}
-
-	/**
-	 * check whether any cutlery has decayed
-	 */
-	public void checkCutleries() {
-		for (Customer c : this.customerRepository.findAll()) {
-			if (c.getCutlery() != null && c.getCutlery().getDate().isBefore(businessTime.getTime())) {
-				try {
-					this.returnCutlery("decayed", c);
-				} catch (Exception e) {
-				}
-			}
 		}
 	}
 

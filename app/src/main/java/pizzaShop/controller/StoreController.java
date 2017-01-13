@@ -152,64 +152,6 @@ public class StoreController {
 		return "tan";
 	}
 
-	@RequestMapping("/customer_display")
-	public String customer_display(Model model) {
-
-		store.checkCutleries();
-		model.addAttribute("customer", customerRepository.findAll());
-		model.addAttribute("tanListe", this.tanManagement);
-		model.addAttribute("error", customerError);
-
-		return "customer_display";
-	}
-
-	@RequestMapping("/editEmployee")
-	public String directToEditStaffMember(Model model, @RequestParam("StaffMemberName") String name,
-			RedirectAttributes redirectAttrs) {
-		redirectAttrs.addAttribute("name", name).addFlashAttribute("message", "StaffMember");
-		model.addAttribute("error", error);
-		return "redirect:register_staffmember";
-
-	}
-
-	@RequestMapping("/editCustomer")
-	public String editCustomer(Model model, @RequestParam("cid") long id, RedirectAttributes redirectAttrs) {
-		redirectAttrs.addAttribute("cid", id).addFlashAttribute("message", "Customer");
-		return "redirect:register_customer";
-
-	}
-
-	@RequestMapping("/deleteCustomer")
-	public String deleteCustomer(Model model, @RequestParam("cid") long id) {
-		customerError.setError(false);
-		try {
-			store.deleteCustomer(model, id);
-		} catch (Exception e) {
-			customerError.setError(true);
-			customerError.setMessage(e.getMessage());
-		}
-
-		return "redirect:customer_display";
-
-	}
-
-	@RequestMapping("returnCutlery")
-	public String returnCutlery(@RequestParam("lost") String lostStr, @RequestParam("cid") long id) {
-		String cutleryStatus = "lost";
-		if (lostStr.equals("0"))
-			cutleryStatus = "returned";
-
-		try {
-			store.returnCutlery(cutleryStatus, this.customerRepository.findOne(id));
-		} catch (Exception e) {
-			error.setError(true);
-			error.setMessage(e.getMessage());
-			;
-		}
-
-		return "redirect:customer_display";
-	}
-
 	@RequestMapping("/login")
 	public String login() {
 		return "login";

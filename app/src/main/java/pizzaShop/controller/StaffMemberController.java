@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import org.javamoney.moneta.Money;
 import org.salespointframework.accountancy.Accountancy;
-import org.salespointframework.accountancy.AccountancyEntry;
 import org.salespointframework.useraccount.Role;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
@@ -25,21 +24,19 @@ import pizzaShop.model.AccountSystem.Deliverer;
 import pizzaShop.model.AccountSystem.Seller;
 import pizzaShop.model.AccountSystem.StaffMember;
 import pizzaShop.model.ManagementSystem.Store;
-import pizzaShop.model.ProductionSystem.Oven;
 
 @Controller
-public class AdminController {
+public class StaffMemberController {
 
 	private ErrorClass displayError = new ErrorClass(false);
 	private ErrorClass registerError = new ErrorClass(false);
-	private ErrorClass ovenError = new ErrorClass(false);
 	private final UserAccountManager employeeAccountManager;
 	private final Accountancy accountancy;
 
 	private final Store store;
 
 	@Autowired
-	public AdminController(Store store, UserAccountManager employeeAccountManager, Accountancy accountancy) {
+	public StaffMemberController(Store store, UserAccountManager employeeAccountManager, Accountancy accountancy) {
 		this.store = store;
 		this.employeeAccountManager = employeeAccountManager;
 		this.accountancy = accountancy;
@@ -142,11 +139,11 @@ public class AdminController {
 	@RequestMapping(value = "/updateStaffMember")
 	public String updateStaffMember(Model model, @RequestParam("surname") String surname,
 			@RequestParam("forename") String forename, @RequestParam("telnumber") String telephonenumber,
-			@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("salary") Long salary, RedirectAttributes redirectAttrs) {
+			@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("salary") String salaryStr, RedirectAttributes redirectAttrs) {
 		
 		registerError.setError(false);
 		StaffMember member = store.getStaffMemberByName(username);
-		if (surname.equals("") || forename.equals("") || telephonenumber.equals("") || username.equals("") || password.equals("") || salary == null) {
+		if (surname.equals("") || forename.equals("") || telephonenumber.equals("") || username.equals("") || password.equals("") || salaryStr.equals("")) {
 			registerError.setError(true);
 			registerError.setMessage("Eingabefelder überprüfen!");
 			redirectAttrs.addAttribute("name", username).addFlashAttribute("message", "StaffMember");
@@ -166,7 +163,9 @@ public class AdminController {
 		member.getPerson().setTelephoneNumber(telephonenumber);
 		member.getPerson().setForename(forename);
 		member.getPerson().setSurname(surname);
+		float salary = Float.parseFloat(salaryStr);
 		member.setSalary(Money.of(salary, EURO));
+		
 
 		Optional<UserAccount> userAccount = employeeAccountManager.findByUsername(username);
 
@@ -200,35 +199,13 @@ public class AdminController {
 		return "redirect:staffmember_display";
 	}
 
+
+	@RequestMapping("/editEmployee")
+	public String directToEditStaffMember(Model model, @RequestParam("StaffMemberName") String name,
+			RedirectAttributes redirectAttrs) {
+		redirectAttrs.addAttribute("name", name).addFlashAttribute("message", "StaffMember");
+		return "redirect:register_staffmember";
 	
-
-	@RequestMapping(value = "/addOven", method = RequestMethod.POST)
-	public String addOven(Model model) {
-
-		store.getOvens().add(new Oven(store));
-		accountancy.add(new AccountancyEntry(Money.of(-1000, EURO), "Neuer Ofen gekauft"));
-		model.addAttribute("error", ovenError);
-
-		return "redirect:ovens";
-
-	}
-
-	@RequestMapping(value = "/deleteOven", method = RequestMethod.POST)
-	public String deleteOVen(Model model,@RequestParam("ovenID") int id) {
-		
-		for(Oven o : store.getOvens())
-		{
-			if(o.getId() == id && !o.isEmpty())
-			{
-				ovenError.setError(true);
-				ovenError.setMessage("Ofen ist nicht leer");
-				model.addAttribute("error", ovenError);
-				return "ovens";
-			}
-		}
-		store.deleteOven(id);
-
-		return "redirect:ovens";
 	}
 
 }

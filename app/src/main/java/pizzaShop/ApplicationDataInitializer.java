@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import pizzaShop.model.AccountSystem.Admin;
 import pizzaShop.model.AccountSystem.Baker;
 import pizzaShop.model.AccountSystem.Customer;
+import pizzaShop.model.AccountSystem.CustomerHelper;
 import pizzaShop.model.AccountSystem.Deliverer;
 import pizzaShop.model.AccountSystem.Seller;
 import pizzaShop.model.AccountingSystem.SalaryThread;
@@ -44,6 +45,7 @@ public class ApplicationDataInitializer implements DataInitializer {
 	private final TanManagement tanManagement;
 	private final Store store;
 	private final ItemCatalog itemCatalog;
+	private final CustomerHelper customerHelper;
 	/**
 	 * gets the components via autowired
 	 * 
@@ -56,13 +58,14 @@ public class ApplicationDataInitializer implements DataInitializer {
 	@Autowired
 	public ApplicationDataInitializer(Accountancy accountancy, UserAccountManager employeeAccountManager,
 			BusinessTime businessTime, CustomerRepository customerRepository, TanManagement tanManagement, Store store,
-			ItemCatalog itemCatalog) {
+			ItemCatalog itemCatalog, CustomerHelper customerHelper) {
 		this.accountancy = accountancy;
 		this.businessTime = businessTime;
 		this.customerRepository = customerRepository;
 		this.tanManagement = tanManagement;
 		this.store = store;
 		this.itemCatalog = itemCatalog;
+		this.customerHelper = customerHelper;
 	}
 
 	/**
@@ -168,7 +171,7 @@ public class ApplicationDataInitializer implements DataInitializer {
 		 * accountancy.add(ace3);
 		 */
 
-		(new Thread(new SalaryThread(accountancy, businessTime, store))).start();
+		(new Thread(new SalaryThread(accountancy, businessTime, store, customerHelper))).start();
 
 	}
 
