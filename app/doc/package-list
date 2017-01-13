@@ -1,1 +1,9 @@
-pizzaShop.model.actor
+pizzaShop
+pizzaShop.controller
+pizzaShop.model.AccountSystem
+pizzaShop.model.AccountingSystem
+pizzaShop.model.DataBaseSystem
+pizzaShop.model.ManagementSystem
+pizzaShop.model.ManagementSystem.Tan_Management
+pizzaShop.model.OrderSystem
+pizzaShop.model.ProductionSystem
