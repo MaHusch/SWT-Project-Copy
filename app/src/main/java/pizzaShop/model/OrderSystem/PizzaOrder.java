@@ -109,7 +109,7 @@ public class PizzaOrder {
 		return this.pizzaOrderStatus;
 	}
 
-	public void completeOrder() // TODO: creaty accountancyentry
+	public void completeOrder()
 	{
 		this.setOrderStatus(PizzaOrderStatus.COMPLETED);
 	}

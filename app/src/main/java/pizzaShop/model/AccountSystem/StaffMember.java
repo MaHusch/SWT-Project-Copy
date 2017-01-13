@@ -142,7 +142,6 @@ public abstract class StaffMember{
 	 * @return employeeID
 	 */
 	public long getId() {
-		System.out.println(this.employeeID);
 		return employeeID;
 	}
 

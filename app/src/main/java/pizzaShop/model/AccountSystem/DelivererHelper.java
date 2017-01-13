@@ -32,10 +32,8 @@ public class DelivererHelper {
 
 			PizzaOrder p = pizzaOrderRepository.findOne(oi);
 			if (p != null) {
-				System.out.println(p.getOrderStatus());
 				p.deliverOrder();
 				pizzaOrderRepository.save(p);
-				System.out.println(p.getOrderStatus());
 			}
 
 		}
@@ -44,7 +42,6 @@ public class DelivererHelper {
 
 	public void checkIn(Deliverer d) {
 		d.checkIn();
-		System.out.println(d.getAvailable());
 
 		for (OrderIdentifier oi : d.getOrders()) {
 			PizzaOrder p = pizzaOrderRepository.findOne(oi);

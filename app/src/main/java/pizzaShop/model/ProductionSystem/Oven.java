@@ -41,7 +41,6 @@ public class Oven {
 			store.updatePizzaOrder(pizza);
 			return true;
 		} else {
-			System.out.println("pizza ist null");
 			return false;
 		}
 	}

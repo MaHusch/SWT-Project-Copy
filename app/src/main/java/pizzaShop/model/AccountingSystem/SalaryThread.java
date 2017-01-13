@@ -3,11 +3,7 @@ package pizzaShop.model.AccountingSystem;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.TextStyle;
-import java.util.Iterator;
 import java.util.Locale;
-
-import javax.money.MonetaryAmount;
-import javax.servlet.annotation.WebListener;
 
 import org.salespointframework.accountancy.Accountancy;
 import org.salespointframework.accountancy.AccountancyEntry;

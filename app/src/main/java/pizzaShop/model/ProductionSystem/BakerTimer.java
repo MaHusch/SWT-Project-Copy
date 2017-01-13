@@ -15,9 +15,9 @@ public class BakerTimer extends Timer {
 	public BakerTimer(BusinessTime date) {
 		endDate = date.getTime().plusMinutes(5);
 		counter = (endDate.getMinute() - date.getTime().getMinute()) * 60;
-		System.out.println("BakerTimer Startzeit: " + date.getTime());
+		/*System.out.println("BakerTimer Startzeit: " + date.getTime());
 		System.out.println("BakerTimer Endzeit: " + endDate);
-		System.out.println("Bakertimer Counter: " + counter);
+		System.out.println("Bakertimer Counter: " + counter);*/
 	}
 	
 	public int getCounter(){

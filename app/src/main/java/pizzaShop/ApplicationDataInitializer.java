@@ -180,20 +180,9 @@ public class ApplicationDataInitializer implements DataInitializer {
 	 * Customer initialized here
 	 */
 	public void initializeCustomers() {
-		// Address a1 = new Address( "Dresden", "01324", "Müllerstraße", "5b");
-		// Person p1 = new Person("Jürgens", "Dieter", "12345", a1);
 		Customer cu1 = new Customer("Jürgens", "Dieter", "12345", "Dresden", "01324", "Müllerstraße", "5b");
-		// Address a2 = new Address( "Dresden","01218","Sackgasse","42a");
-		// Person p2 = new Person("Skywalker","Luke","23456", a1);
 		Customer cu2 = new Customer("Skywalker", "Luke", "23456", "Dresden", "01218", "Sackgasse", "42a");
-		/*
-		 * cu2.addDeliveryAddress(new
-		 * Address("Dresden","01218","Sumpfgasse","43a"));
-		 * cu2.addDeliveryAddress(new
-		 * Address("Dresden","01218","Sumpfgasse","43b"));
-		 * cu2.addDeliveryAddress(new
-		 * Address("Dresden","01218","Sumpfgasse","43c"));
-		 */
+	
 		tanManagement.confirmTan(tanManagement.generateNewTan(cu1.getPerson().getTelephoneNumber()));
 		tanManagement.confirmTan(tanManagement.generateNewTan(cu2.getPerson().getTelephoneNumber()));
 		cu2.setCutlery(new Cutlery(Money.of(15.0, EURO), businessTime.getTime()));

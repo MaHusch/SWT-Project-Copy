@@ -8,7 +8,6 @@ import javax.persistence.OneToOne;
 
 import pizzaShop.model.OrderSystem.Cutlery;
 
-
 /**
  * CustomerClass for representing a Customer of the PizzaShop
  * 
@@ -27,12 +26,6 @@ public class Customer {
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private Person myPerson = null;
-	
-
-	/*
-	private ArrayList<Long> deliveryAddressesIDs = new ArrayList<Long>();
-	private ArrayList<String> deliveryAddressesStrings = new ArrayList<String>();
-	*/
 
 	private @Id @GeneratedValue long customerID;
 
@@ -54,17 +47,13 @@ public class Customer {
 	 * @param housenumber
 	 */
 
-	
-	public Customer(String surname, String forname, String telephoneNumber, String local, String postcode, String street, String streetnumber) {
-		
+	public Customer(String surname, String forname, String telephoneNumber, String local, String postcode,
+			String street, String streetnumber) {
+
 		Address a1 = new Address(local, postcode, street, streetnumber);
-		Person p1 = new Person(surname,forname,telephoneNumber, a1);
+		Person p1 = new Person(surname, forname, telephoneNumber, a1);
 
 		this.myPerson = p1;
-		/*
-		this.deliveryAddressesIDs.add(this.myPerson.getAddress().getID());
-		this.deliveryAddressesStrings.add(this.myPerson.getAddress().toString());
-		*/
 	}
 
 	/**
@@ -98,31 +87,5 @@ public class Customer {
 	public Person getPerson() {
 		return this.myPerson;
 	}
-	
-	/*
-	public ArrayList<Long> getDeliveryAddressesIDs() {
-		return this.deliveryAddressesIDs;
-	}
-	
-	public ArrayList<String> getDeliveryAddressesStrings() {
-		return this.deliveryAddressesStrings;
-	}
-	
-	public boolean addDeliveryAddress(Address newAddress) {
-		this.deliveryAddressesStrings.add(newAddress.toString());
-		return this.deliveryAddressesIDs.add(newAddress.getID());
-	}
-	
-	public String getDeliveryAddressesString() {
-		String completeString = "";
-		
-		Iterator<String> addresseIterator = this.deliveryAddressesStrings.iterator();
-		
-		while(addresseIterator.hasNext())
-		{
-				completeString += addresseIterator.next() + " / " +System.getProperty("line.separator");
-		}
-		
-		return completeString;
-	}*/
+
 }

@@ -1,14 +1,8 @@
 package pizzaShop.controller;
 
-import static org.salespointframework.core.Currencies.EURO;
-
 import java.security.Principal;
-import java.time.Duration;
-import java.util.ArrayList;
 
-import org.javamoney.moneta.Money;
 import org.salespointframework.accountancy.Accountancy;
-import org.salespointframework.accountancy.AccountancyEntry;
 import org.salespointframework.time.BusinessTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import pizzaShop.model.ManagementSystem.Store;
-import pizzaShop.model.OrderSystem.Pizza;
-import pizzaShop.model.ProductionSystem.Oven;
 import pizzaShop.model.ProductionSystem.OvenHelper;
 
 @Controller
@@ -29,14 +21,12 @@ public class OvenController {
 
 	private final Store store;
 	private final BusinessTime businessTime;
-	private final Accountancy accountancy;
 	private final OvenHelper ovenHelper;
 
 	@Autowired
-	public OvenController(Store store, BusinessTime businessTime, Accountancy accountancy, OvenHelper ovenHelper) {
+	public OvenController(Store store, BusinessTime businessTime, OvenHelper ovenHelper) {
 		this.store = store;
 		this.businessTime = businessTime;
-		this.accountancy = accountancy;
 		this.ovenHelper = ovenHelper;
 	}
 

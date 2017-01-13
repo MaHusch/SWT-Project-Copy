@@ -106,7 +106,6 @@ public class CartHelper {
 		if (cart.isEmpty())
 			throw new IllegalArgumentException("Warenkorb ist leer!");
 
-		// TODO: check if customer already has a cutlery --> throw error
 		if (cutlery) {
 			
 			if (customer.getCutlery() != null){

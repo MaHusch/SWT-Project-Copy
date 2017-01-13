@@ -57,7 +57,6 @@ public class Store {
 	private ArrayList<StaffMember> staffMemberList; // why List and Repository for
 												// StaffMember?
 	private ArrayList<Oven> ovenList;
-	private Pizza nextPizza;
 
 	private ArrayList<String> eMailList;
 
@@ -239,7 +238,6 @@ public class Store {
 				Pizza p = (Pizza) temp;
 				for (int i = 0; i < l.getQuantity().getAmount().intValue(); i++) {
 					addOrder(pOrder.getId(), p);
-					System.out.println(getFirstOrder(p));
 					pizzaQueue.add(p);
 					pOrder.addAsUnbaked();
 				}
@@ -254,7 +252,6 @@ public class Store {
 			pOrder.readyOrder();
 		}
 		pizzaOrderRepo.save(pOrder);
-		System.out.println(pizzaQueue);
 		return pOrder;
 
 	}
@@ -274,17 +271,14 @@ public class Store {
 
 			for (PizzaOrder order : pizzaOrders) {
 
-				System.out.println("Order ID: " + order.getId());
-				System.out.println("Pizza ID: " + getFirstOrder(pizza));
-
 				if (order.getId().toString().equals(getFirstOrder(pizza))) {
 					order.markAsBaked();
-					System.out.println("updatePizzaOrder im if statement");
 
 					try {
 						removeFirstOrder(pizza);
 					} catch (Exception e) {
 						System.out.println("Fehler bei updatePizzaOrder");
+						
 					}
 
 					pizzaOrderRepo.save(order);
@@ -307,11 +301,9 @@ public class Store {
 
 	/**
 	 * 
-	 * @return returns the first order as a String
+	 * @return returns the first order as a String or null if not present
 	 */
 	public String getFirstOrder(Pizza p) {
-		if (pizzaMap.get(p.getId()).isEmpty())
-			System.out.println(p.getName() + " hat keine Bestellung");
 		return pizzaMap.get(p.getId()).get(0);
 	}
 
@@ -328,9 +320,6 @@ public class Store {
 		return pizzaMap.get(p.getId()).remove(0);
 	}
 
-	public void printQueue(Pizza p) {
-		System.out.println(pizzaMap.get(p.getId()).toString());
-	}
 
 	/**
 	 * finish Order and create AccountancyEntry

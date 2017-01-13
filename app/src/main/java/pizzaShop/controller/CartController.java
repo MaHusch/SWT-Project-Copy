@@ -111,8 +111,6 @@ public class CartController {
 	@RequestMapping(value = "/addCartItem", method = RequestMethod.POST)
 	public String addItem(@RequestParam("pid") ProductIdentifier id, @RequestParam("number") int number,
 			@ModelAttribute Cart cart) {
-		// Assert.notNull(id, "ID must not be null!");
-		// System.out.println(id + itemCatalog.findOne(id).toString());
 
 		if (itemCatalog.findOne(id).isPresent()) {
 			cart.addOrUpdateItem(itemCatalog.findOne(id).get(), Quantity.of(number));

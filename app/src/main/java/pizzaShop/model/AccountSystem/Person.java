@@ -26,7 +26,6 @@ public class Person {
 	 * empty constructor for Spring
 	 */
 	
-	@SuppressWarnings("unused")
 	public Person() {
 	};
 

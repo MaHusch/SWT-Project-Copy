@@ -1,7 +1,6 @@
 package pizzaShop.controller;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Optional;
 
 import org.salespointframework.catalog.ProductIdentifier;
@@ -68,10 +67,8 @@ public class CatalogController {
 	 */
 	@RequestMapping("/removeItem")
 	public String removeItem(@RequestParam("pid") ProductIdentifier id) {
-		// ToDo: check if item in cart
 		Item item = itemCatalog.findOne(id).orElse(null);
 		if (item == null) {
-			System.out.println("item nicht gefunden");
 			return "redirect:catalog";
 		}
 
@@ -165,7 +162,6 @@ public class CatalogController {
 	@RequestMapping("/createItem")
 	public String createItem(@RequestParam("itemname") String name, @RequestParam("itemprice") Number price,
 			@RequestParam("itemtype") String type) {
-		System.out.println("erstellen");
 		try {
 			catalogHelper.createNewItem(name, type, price);
 			error.setError(false);

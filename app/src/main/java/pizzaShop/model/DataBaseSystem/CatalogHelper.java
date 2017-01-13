@@ -139,7 +139,6 @@ public class CatalogHelper {
 					Pizza p = (Pizza) i;
 					if (p.getIngredients().contains(oldItem.getName())) {
 						itemCatalog.delete(p);
-						System.out.println("test");
 						p.removeIngredient(oldItem);
 						p.addIngredient((Ingredient) editedItem);
 						itemCatalog.save(p);
@@ -153,7 +152,6 @@ public class CatalogHelper {
 		}
 
 		else {
-			System.out.println("anderer Itemtyp --> neues Item");
 			this.removeItem(editedItem);
 			this.createNewItem(name, type, price);
 		}

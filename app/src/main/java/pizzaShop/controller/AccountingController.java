@@ -35,6 +35,11 @@ public class AccountingController {
 		this.store = store;
 	}
 
+	/**
+	 * sets up the {@link Model} for the finances view
+	 * @param model for the html view
+	 * @return finances view
+	 */
 	@RequestMapping("/finances")
 	public String finances(Model model) {
 		LocalDateTime frstMon = accountingHelper.getFirstMonday();
@@ -68,18 +73,6 @@ public class AccountingController {
 		offsetW = 0;
 		return "redirect:finances";
 	}
-
-/*
-	@RequestMapping(value = "/createAccountancyEntry", method = RequestMethod.POST)
-	public String createEntry(@RequestParam("value") Integer value, @RequestParam("description") String description) {
-		if(!description.isEmpty() && value != null) 
-			accountancy.add(new AccountancyEntry(Money.of(value, EURO), description));
-		else //errorMeldung ; 
-		{}
-		return "redirect:finances";
-	}
-
-*/
 
 	@RequestMapping(value = "/forward", method = RequestMethod.POST)
 	public String forward(@RequestParam("days") Integer days) {

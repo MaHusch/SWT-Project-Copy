@@ -1,10 +1,9 @@
+
 package pizzaShop.controller;
 
 import java.util.Optional;
 
-import org.salespointframework.accountancy.Accountancy;
 import org.salespointframework.useraccount.UserAccount;
-import org.salespointframework.useraccount.UserAccountManager;
 import org.salespointframework.useraccount.web.LoggedIn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
