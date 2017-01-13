@@ -185,7 +185,7 @@ public class Store {
 
 	}
 
-	public StaffMember getStaffMemberByName(String name) {
+	public StaffMember getStaffMemberByUsername(String name) {
 
 		for (StaffMember staffMember : staffMemberList) {
 			if (staffMember.getUsername().equals(name))

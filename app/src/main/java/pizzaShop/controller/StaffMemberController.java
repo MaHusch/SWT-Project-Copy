@@ -46,7 +46,7 @@ public class StaffMemberController {
 	@RequestMapping("/register_staffmember")
 	public String registrationIndex(Model model, @RequestParam(value = "name", required = false) String name) {
 
-		StaffMember member = store.getStaffMemberByName(name);
+		StaffMember member = store.getStaffMemberByUsername(name);
 		model.addAttribute("staffMember", member);
 		model.addAttribute("error", registerError);
 		return "register_staffmember";

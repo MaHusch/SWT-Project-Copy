@@ -43,7 +43,7 @@ public class OrderHelper {
 		if (username == null || username.equals("")) {
 			throw new IllegalArgumentException("Kein Lieferanten ausgewählt!");
 		}
-		Deliverer deliverer = (Deliverer) store.getStaffMemberByName(username);
+		Deliverer deliverer = (Deliverer) store.getStaffMemberByUsername(username);
 		deliverer.addOrder(orderID);
 		PizzaOrder p = pizzaOrderRepository.findOne(orderID);
 		p.assignDeliverer(deliverer);
@@ -53,7 +53,7 @@ public class OrderHelper {
 
 	public void unassignDeliverer(OrderIdentifier orderID) {
 		PizzaOrder p = pizzaOrderRepository.findOne(orderID);
-		Deliverer deliverer = (Deliverer) store.getStaffMemberByName(p.getDelivererName());
+		Deliverer deliverer = (Deliverer) store.getStaffMemberByUsername(p.getDelivererName());
 		deliverer.removeOrder(orderID);
 		p.readyOrder();
 		pizzaOrderRepository.save(p);

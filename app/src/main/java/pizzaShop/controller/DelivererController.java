@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import pizzaShop.model.AccountSystem.Deliverer;
+import pizzaShop.model.AccountSystem.DelivererHelper;
+import pizzaShop.model.AccountSystem.StaffMember;
 import pizzaShop.model.DataBaseSystem.PizzaOrderRepository;
 import pizzaShop.model.ManagementSystem.Store;
 import pizzaShop.model.ManagementSystem.Tan_Management.Tan;
@@ -19,27 +21,31 @@ import pizzaShop.model.OrderSystem.PizzaOrder;
 @Controller
 public class DelivererController {
 
-	private Deliverer currentDeliverer;
 	String username;
 	private final PizzaOrderRepository pizzaOrderRepository;
 	private final TanManagement tanManagement;
 	private final Store store;
+	private final DelivererHelper delivererHelper;
 
 	@Autowired
-	public DelivererController(PizzaOrderRepository pizzaOrderRepository, TanManagement tanManagement, Store store) {
+	public DelivererController(PizzaOrderRepository pizzaOrderRepository, TanManagement tanManagement, Store store,
+			DelivererHelper delivererHelper) {
 		this.pizzaOrderRepository = pizzaOrderRepository;
 		this.tanManagement = tanManagement;
 		this.store = store;
-	
+		this.delivererHelper = delivererHelper;
 
 	}
 
 	@RequestMapping("/sDeliverer")
 	public String sDeliverer(Principal prinicpal, Model model) {
 
-		// TODO: what if not deliverer? (maybe check Class before
-		currentDeliverer = (Deliverer) store.getStaffMemberByName(prinicpal.getName());
-		
+		StaffMember s = store.getStaffMemberByUsername(prinicpal.getName());
+		if (!s.getRole().getName().contains("DELIVERER")) {
+			return "index";
+		}
+		Deliverer currentDeliverer = (Deliverer) s;
+
 		model.addAttribute("available", currentDeliverer.getAvailable());
 
 		ArrayList<PizzaOrder> delivererOrders = new ArrayList<PizzaOrder>();
@@ -48,7 +54,6 @@ public class DelivererController {
 			PizzaOrder pO = pizzaOrderRepository.findOne(oId);
 			if (pO != null)
 				delivererOrders.add(pO);
-
 		}
 
 		model.addAttribute("orders", delivererOrders);
@@ -59,63 +64,15 @@ public class DelivererController {
 	// TODO: remove redundancy
 	@RequestMapping("/checkOut")
 	public String checkOut(Model model, Principal principal) {
-
-		currentDeliverer.checkOut();
-		System.out.println(currentDeliverer.getAvailable());
-		System.out.println(currentDeliverer.getOrders());
-		// TODO: remove redundancy
-		for (OrderIdentifier oi : currentDeliverer.getOrders()) {
-
-			for (PizzaOrder p : pizzaOrderRepository.findAll()) {
-				if (oi.equals(p.getId())) {
-					System.out.println(p.getOrderStatus());
-					p.deliverOrder();
-					pizzaOrderRepository.save(p);
-					System.out.println(p.getOrderStatus());
-				}
-			}
-
-		}
-
+		Deliverer currentDeliverer = (Deliverer) store.getStaffMemberByUsername(principal.getName());
+		delivererHelper.checkOut(currentDeliverer);
 		return "redirect:sDeliverer";
 	}
 
 	@RequestMapping("/checkIn")
-	public String checkIn(Model model, Principal principal) // TODO: check
-															// OrderStatus
-															// change
-	{
-		username = principal.getName();
-		System.out.println(username);
-		currentDeliverer = (Deliverer) store.getStaffMemberByName(username);
-
-		currentDeliverer.checkIn();
-		System.out.println(currentDeliverer.getAvailable());
-
-		
-		for (OrderIdentifier oi : currentDeliverer.getOrders()) {
-
-			for (PizzaOrder p : pizzaOrderRepository.findAll()) {
-				if (oi.equals(p.getId())) {
-										
-					Tan toOrderAsignedTan = p.getTan();
-					
-					// this might seem redundant but needs to be done because the Tan object
-					// saved in the PizzaOrder gets changed by saving it in the Repository so 
-					// we need to get the original Tan object.
-					
-					Tan foundTan = tanManagement.getNotConfirmedTanByTanNumber(toOrderAsignedTan.getTanNumber());
-										
-					tanManagement.confirmTan(foundTan);
-					
-					store.completeOrder(p, "ausgeliefert", currentDeliverer);
-					
-				}
-			}
-
-		}
-
-		currentDeliverer.clearOrders();
+	public String checkIn(Model model, Principal principal)	{ // TODO: check OrderStatus change
+		Deliverer currentDeliverer = (Deliverer) store.getStaffMemberByUsername(principal.getName());
+		delivererHelper.checkIn(currentDeliverer);
 		return "redirect:sDeliverer";
 	}
 }

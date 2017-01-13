@@ -5,7 +5,6 @@ import static org.salespointframework.core.Currencies.EURO;
 import java.util.Optional;
 
 import org.javamoney.moneta.Money;
-import org.salespointframework.accountancy.Accountancy;
 import org.salespointframework.useraccount.Role;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManager;
@@ -17,14 +16,12 @@ import pizzaShop.model.ManagementSystem.Store;
 @Component
 public class StaffMemberHelper {
 	private final UserAccountManager employeeAccountManager;
-	private final Accountancy accountancy;
 	private final Store store;
 
 	@Autowired
-	public StaffMemberHelper(Store store, UserAccountManager employeeAccountManager, Accountancy accountancy) {
+	public StaffMemberHelper(Store store, UserAccountManager employeeAccountManager) {
 		this.store = store;
 		this.employeeAccountManager = employeeAccountManager;
-		this.accountancy = accountancy;
 
 	}
 
@@ -59,7 +56,7 @@ public class StaffMemberHelper {
 			break;
 		}
 
-		if (store.getStaffMemberByName(username) == null) {
+		if (store.getStaffMemberByUsername(username) == null) {
 			store.getStaffMemberList().add(staffMember);
 			store.updateUserAccount(staffMember, username, password, Role.of("ROLE_" + role));
 
@@ -71,7 +68,7 @@ public class StaffMemberHelper {
 	public void updateStaffMember(String surname, String forename, String telephonenumber, String username,
 			String password, String salaryStr) {
 
-		StaffMember member = store.getStaffMemberByName(username);
+		StaffMember member = store.getStaffMemberByUsername(username);
 		if (surname.equals("") || forename.equals("") || telephonenumber.equals("") || username.equals("")
 				|| password.equals("") || salaryStr.equals("")) {
 			throw new IllegalArgumentException("Eingabefelder überprüfen!");
@@ -103,7 +100,7 @@ public class StaffMemberHelper {
 		if (lUserAccount == null)
 			throw new IllegalArgumentException("Nicht eingeloggt!");
 
-		StaffMember member = store.getStaffMemberByName(username);
+		StaffMember member = store.getStaffMemberByUsername(username);
 
 		if (member.getUserAccount().equals(lUserAccount) && member.getRole().getName().contains("ADMIN")) {
 			throw new IllegalArgumentException("Eingeloggter Admin kann nicht gelöscht werden!");
