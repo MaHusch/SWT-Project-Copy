@@ -70,10 +70,8 @@
 							<th>Ungebackene Pizzen</th>
 							<th>Kunde/Addresse</th>
 							<th><span id='ct' ></span>
-							<br></br>
-							Vorr. Lieferdatum
-								
-								
+								<br></br>
+								Vorr. Lieferdatum	
 							</th>
 							<th sec:authorize="hasRole('ROLE_SELLER')">Lieferant</th>
 						</tr>
@@ -85,7 +83,7 @@
 									th:text="${order.getId() }">arg</td>
 								<td sec:authorize="isAuthenticated()"
 									th:text="${order.toString()}">arg</td>
-								<td th:text="${order.getTotalPrice()}">arg</td>
+								<td th:text="${{order.getTotalPrice()}}">arg</td>
 								<td th:text="${order.getOrderStatus() }">arg</td>
 								<td th:text="${order.getUnbakedPizzas() }">arg</td>
 								<td th:text="${order.getCustomer().getPerson().toString()}">arg</td>
