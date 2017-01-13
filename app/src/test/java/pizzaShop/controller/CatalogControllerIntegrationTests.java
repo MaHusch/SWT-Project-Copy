@@ -1,4 +1,4 @@
-package pizzaShop.controller;
+/**package pizzaShop.controller;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNotNull;
@@ -29,7 +29,7 @@ public class CatalogControllerIntegrationTests extends AbstractIntegrationTests 
 
 	/**
 	 * Integration test for an individual controller.
-	 */
+	 
 	@Test
 	@SuppressWarnings("unchecked")
 	public void catalogViewTest() {
@@ -139,4 +139,4 @@ public class CatalogControllerIntegrationTests extends AbstractIntegrationTests 
 		assertThat(map.get("lastselection"), is(selection));
 
 	}
-}
+} **/
