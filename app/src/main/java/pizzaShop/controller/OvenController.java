@@ -76,6 +76,12 @@ public class OvenController {
 			
 		}else{
 			businessTime.forward(Duration.ofMinutes(minutes));
+			try {
+				Thread.sleep(1500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return "redirect:ovens";
 	}

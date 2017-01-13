@@ -11,7 +11,6 @@ import javax.money.MonetaryAmount;
 import org.salespointframework.accountancy.Accountancy;
 import org.salespointframework.accountancy.AccountancyEntry;
 import org.salespointframework.time.BusinessTime;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import pizzaShop.model.AccountSystem.CustomerHelper;
 import pizzaShop.model.AccountSystem.StaffMember;
