@@ -1,0 +1,23 @@
+= Persönliches Feedback eines Teammitgliedes des Softwarepraktikums 2015/16
+
+**Von: Martin Huschenbett**
+
+**Gruppe: 16**
+
+== Was habe ich gelernt?
+
+Das Arbeiten an einer größeren Software in einem Team unter Nutzung anderer Libaries. Weiterhin das selbstständige arbeiten und organisieren.
+
+= Welche Erfahrungen habe ich mit der Zusammenarbeit im Team gemacht?
+
+Es ist nicht immer leicht als Gruppe eine Entscheidung zu treffen. Weiterhin ist es mitunter schwer, Teammitglieder zur Arbeit zu motivieren.
+
+== Welche Erfahrungen habe ich bei der Wiederverwendung von Bibliotheken/Frameworks (insbesondere SalesPoint) gemacht?
+
+Die beste Art eine fremde Bibliothek zu verstehen ist, sie per lerning by doing zu verstehen. Außerdem kommt man nicht daran vorbei, sich die JDocs oder andere Dokumente zu dem Framework anzuschauen.
+
+== Welche Vorschläge zur weiteren Verbesserung des Softwarepraktikums gibt es?
+
+Auf den Uni-Rechner STS bzw Maven zu installieren, da das auf den Rechnern in der Info-Fakultät nicht drauf ist.
+
+== Sonstiges und Anmerkungen
