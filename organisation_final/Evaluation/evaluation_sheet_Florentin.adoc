@@ -1,0 +1,25 @@
+= Persönliches Feedback eines Teammitgliedes des Softwarepraktikums 2015/16
+
+**Von:** Florentin Dörre
+
+**Gruppe:** swt16w16
+
+== Was habe ich gelernt?
+* grundlegenden Umgang mit Thymleaf
+* Nutzung des MVC-Patterns
+* bessere Fehlersuche
+
+= Welche Erfahrungen habe ich mit der Zusammenarbeit im Team gemacht?
+* Absprache schwieriger als gedacht
+* genaue Arbeitsteilung ist wichtig
+
+== Welche Erfahrungen habe ich bei der Wiederverwendung von Bibliotheken/Frameworks (insbesondere SalesPoint) gemacht?
+* Reinarbeitung kann lange dauern
+* vereinfacht dann aber viele Probleme
+
+== Welche Vorschläge zur weiteren Verbesserung des Softwarepraktikums gibt es?
+* mehr JUnit-Beispiele 
+* etwas aktuellere bzw realistischere Aufgabenstellung
+* Schwerpunkt am Anfang mehr auf die Diagramma anstatt dem Prototypen 
+
+== Sonstiges und Anmerkungen
