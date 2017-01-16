@@ -1,0 +1,40 @@
+= Ablauf der Demo
+
+Joris = Admin
+
+Florentin = Lieferant/Kunde
+
+Jannik = Seller
+
+Mel = Bäcker
+
+
+* Bestellung vorher schon erstellen mit Pizza und Bemerkung/ newsletter anmelden
+
+* Lieferant einchecken: flo / 123
+
+* Verkäufer registriert neuen Kunden und erstellt eine Bestellung des Kunden
+
+* Bäcker backt die Pizzen
+
+* währenddessen die Bill im Ordner zeigen
+
+* danach Zeit vorspulen
+
+* Verkäufer schließt diese Order ab
+
+* Verkäufer wählt Lieferant aus
+
+* Lieferant checkt aus/ein
+
+* Admin loggt sich ein und überprüft die Bestellungen
+
+* schaut sich Finanzen an
+
+* Zeit vorspulen (30 Tage) --> Gehalt zeigen und Verfall der Essgarnitur
+
+* neuen Mitarbeiter registrieren (Lieferant)
+
+* Neues Item dem Catalog hinzufügen
+
+* Als letztes den Newsletter hinzufügen und abschicken
