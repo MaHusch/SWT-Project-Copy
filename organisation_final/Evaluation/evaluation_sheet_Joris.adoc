@@ -1,0 +1,24 @@
+= Persönliches Feedback eines Teammitgliedes des Softwarepraktikums 2015/16
+
+**Von:** Joris Kotheimer
+
+**Gruppe:** swt16w16
+
+== Was habe ich gelernt?
+* das Arbeiten mit HTML (Thymeleaf) und Javascript
+* MVC -> SalesPoint, Spring
+
+= Welche Erfahrungen habe ich mit der Zusammenarbeit im Team gemacht?
+* es ist wichtig schnell Kompromisse zu finden um effizientes Arbeiten zu ermöglichen
+* regelmäßige Absprache ist eine große Hilfe
+* gleichmäßige Gruppenzusammensetzung (Fähigkeiten etc.) fördert die Zusammenarbeit
+
+== Welche Erfahrungen habe ich bei der Wiederverwendung von Bibliotheken/Frameworks (insbesondere SalesPoint) gemacht?
+* Auf komplexe Systeme wie den Order / Accountancy Apparat zurückzugreifen nimmt viel Arbeit ab
+* kann aber zu unvorhergesehenen Problemen führen -> sorgfältige Einarbeitung nötig
+* Integration in das eigene Programm ist manchmal schwerer als gedacht
+
+== Welche Vorschläge zur weiteren Verbesserung des Softwarepraktikums gibt es?
+* mehr Beispiele für die Basics von Spring
+
+== Sonstiges und Anmerkungen
