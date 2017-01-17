@@ -12,16 +12,16 @@
 Eine Software entwickeln für einen Pizzaservice.
 
 == Wichtige Links
-* link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/organisation/AndwendungsDoku.adoc[BenutzerHandbuch]
+* link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/app/src/main/asciidoc/organisation/Andwenungsdoku/AndwendungsDoku.adoc[BenutzerHandbuch]
 * link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/crosstesting/cross_testing_report_f%C3%BCr_swt16w30.adoc[crosstesting]
   
-* link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/organisation/pflichtenheft%20versionen/pflichtenheft_v1_2.adoc[Pflichtenheft]
+* link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/app/src/main/asciidoc/organisation/pflichtenheft_v1_2.adoc[Pflichtenheft]
 
-* link:https://github.com/st-tu-dresden-praktikum/swt16w16/tree/master/organisation/protokolls[Protokolle]
+* link:https://github.com/st-tu-dresden-praktikum/swt16w16/tree/master/app/src/main/asciidoc/organisation/protokolls[Protokolle]
 
-* link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/organisation/time%20recording/time_recording_group_16.adoc[Zeiterfassung]
+* link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/app/src/main/asciidoc/organisation/time_recording_group_16.adoc[Zeiterfassung]
 
-* link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/organisation/Entwickler%20Doku%20versionen/entwickler_doku_v1.adoc[Entwickler-Doku]
+* link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/app/src/main/asciidoc/organisation/entwickler_doku_v1.adoc[Entwickler-Doku]
 
 * link:https://github.com/st-tu-dresden-praktikum/swt16w16/tree/master/prototypes/videoshop_prototypes[kleine Prototypen]
 
@@ -29,9 +29,9 @@ Eine Software entwickeln für einen Pizzaservice.
 
 * link:https://github.com/st-tu-dresden-praktikum/swt16w16/tree/master/prototypes/GUI[GUI Prototyp]
 
-* link:https://github.com/st-tu-dresden-praktikum/swt16w16/tree/master/artefacts/Analyse[Analyse Diagramme]
+* link:https://github.com/st-tu-dresden-praktikum/swt16w16/tree/master/app/src/main/asciidoc/artefacts/Analyse[Analyse Diagramme]
 
-* link:https://github.com/st-tu-dresden-praktikum/swt16w16/tree/master/artefacts/Entwurf[Entwurfsdiagramme]
+* link:https://github.com/st-tu-dresden-praktikum/swt16w16/tree/master/app/src/main/asciidoc/artefacts/Entwurf[Entwurfsdiagramme]
  
-* link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/organisation/test_plan.adoc[Testplan]
+* link:https://github.com/st-tu-dresden-praktikum/swt16w16/blob/master/app/src/main/asciidoc/organisation/test_plan.adoc[Testplan]
                   
