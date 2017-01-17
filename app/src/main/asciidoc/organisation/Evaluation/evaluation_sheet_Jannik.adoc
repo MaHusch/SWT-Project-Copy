@@ -1,19 +1,22 @@
 = Persönliches Feedback eines Teammitgliedes des Softwarepraktikums 2015/16
 
-**Von:**
+**Von: Jannik Presberger**
 
-**Gruppe:**
+**Gruppe: 16**
 
 == Was habe ich gelernt?
-* TODO
+- grundlegendes Verständnis für Spring und Salespoint
+- besseres Arbeiten im Team
 
 = Welche Erfahrungen habe ich mit der Zusammenarbeit im Team gemacht?
-* TODO
+- häufiges Treffen ist zeitintensiv erleichtert jedoch später die Arbeit da viele Fragen bereits geklärt sind.
 
 == Welche Erfahrungen habe ich bei der Wiederverwendung von Bibliotheken/Frameworks (insbesondere SalesPoint) gemacht?
-* TODO
+- Einarbeiten in Bibliotheken dauert lange, nimmt aber im besten Fall viel unnötige Arbeit ab.
 
 == Welche Vorschläge zur weiteren Verbesserung des Softwarepraktikums gibt es?
-* TODO
+- Analyse und Entwurfphase einkürzen und nicht so zeitige Deadline festlegen an der die Diagramme fertig sein sollen,
+sondern eher den Fokus darauf legen das durch die Diagramme jeder eine Richtline hat an die er sich halten kann. Die Diagramme sollten dann
+nach und nach fertiggestellt werden.
 
 == Sonstiges und Anmerkungen
