@@ -114,23 +114,23 @@ Desweiteren sieht er wie viele Sekunden die Pizzen in den Öfen noch brauchen.
 
 === Mitarbeiter 
 
-===== Admin
+**Admin**
 
 link:Bilder/adminDashBoard.PNG[]
 
 Die Startseite des Admins.
 
-===== Verkäufer
+**Verkäufer**
 
 link:Bilder/sellerDashboard.PNG[]
 
 Die Startseite des Verkäufers.
 
-===== Bäcker
+**Bäcker**
 
 seine Startseite ist die Ofenseite (siehe Oven).
 
-===== Lieferant
+**Lieferant**
 
 link:Bilder/delivererDashboard.png[]
 
