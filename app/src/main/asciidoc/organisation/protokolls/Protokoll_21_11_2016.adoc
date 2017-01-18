@@ -65,6 +65,7 @@ Unser Schwerpunkt liegt beim Erstellen, Bearbeiten und Abschließen der Order.
 
 == Issues
 
+|===
 |Issue 	|Titel 				|Beschreibung 						|Verantwortlicher 	|Status
 |#17   	|extra Pizza-Template   	|Pizza konfigurieren					|Mel             	|in Arbeit
 |#18	|ItemCatalog bearbeiten		|Buttons für Admin zum bearbeiten hinzufügen		|Florentin		|in Arbeit
