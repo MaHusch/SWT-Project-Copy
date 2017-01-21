@@ -1,0 +1,52 @@
+= Cross-Testing Feedback
+
+__Durchführende Gruppe: 30 __
+__Anwendung von Gruppe: 16__
+
+== Getestetes System
+
+Die Andwendung soll die Organisation eines Pizzalieferanten vereinfachen.
+
+== Fehler-Report
+// See http://asciidoctor.org/docs/user-manual/#tables
+[options="headers"]
+|===
+|Pfad |Parameter |Beschreibung |Rückgabe
+| /catalog | Entfernen Knopf | White Label Error 500 | unknown source
+| /catalog | Filtern A bis Z, Z bis A Auswahl "Alles"| White Label Error 500 | unknown source
+| /finances | empty Fast Forward | White Label Error 500 | unknown source
+| /finances | no finance entry | White Label Error 500 | number is required
+| /addItem| preis: 10.00 | Bei Eingabe von 10.00 als Preis wird der Preis als 1,00 im Angebot angezeigt | EUR 1,00
+| /deleteCustomer oder /changeCustomer | delete und bearbeiten button| Der Kunde hat eine aktive Bestellung mit Garniturverleih, der Admin will ihn löschen/bearbeiten | whitelabel 500, could not execute statement; SQL statement: delete from customer where customerid=?
+|===
+
+== Sonstiges
+* Optik der Anwendung
+
+. Katalogansicht des Verkäufers wird mit steigender Produktanzahl schnell unübersichtlich. (funktionierender a-z, z-a Filter sollte die Übersichtlichkeit jedoch stark fördern) 
+. Styling in /catalog ist nach dem Hinzufügen von Produkten mit sehr vielen Ingredients uneinheitlich (wird einheitlich auf /filterCatalog). Bei zu vielen Ingredients läuft der Text aus dem Element und verschwindet hinter dem nächsten Produkt.
+. Menüleisten Dropdown ist, nach unserer Meinung, für die Handhabung der Seite nicht günstig.
+. Karussell verändert Größe nach Bildgröße. Ist nach unserer Meinung nicht optimal. Sollte eine Größe beibehalten.
+. Einheitliche Gestaltung der Tabellenpositionierung. Unserer Meinung nach ist die Blickführung durch ungleiche Tabellen gestört.
+. Pizza erstellen ist optisch nicht ansprechend gestaltet.
+
+* Fehlende Features
+
+. TAN Confirmation fehlt oder ist nicht zu finden.
+. Finanzbericht ist im Pflichtenheft nicht eindeutig beschrieben und wurde so auch nicht gefunden.
+. Berechnung der Lieferzeit wurde nicht gefunden.
+. Bestellungsübersicht ist nicht filterbar
+
+* Interaktion mit der Anwendung (Usability)
+
+. Admin sollte unserer Meinung nach alles können, also sollte man mit ihm auch alles testen können.
+. Dropdown Menü entweder sortieren oder splitten.
+. Beim verfeinern einer Pizza ohne Änderungen wird die Pizza doppelt gespeichert.
+
+== Verbesserungsvorschläge
+* Was kann noch weiter verbessert werden?
+
+. Rollen die Warenkorb, Pizza erstellen und Katalog nicht brauchen müssen diese auch nicht sehen.
+. Unserer Meinung nach müssen TAN nicht confirmed werden, da die TAN nach dem erstellen eindeutig dem Kunden zugewiesen ist.
+. Warenkorb kann negative Anzahl von Produkten und somit auch negativen Preis annehmen.
+. Öfen können nicht gelöscht werden. Sollte noch hinzugefügt werden.
