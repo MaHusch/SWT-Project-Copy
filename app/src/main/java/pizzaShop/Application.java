@@ -29,7 +29,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 public class Application {
 	
 	
-
+/* fancy comment */
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
