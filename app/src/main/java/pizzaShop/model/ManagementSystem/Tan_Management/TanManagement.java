@@ -171,6 +171,10 @@ public class TanManagement {
 
 			Integer newTan = new Random().nextInt(99999) + 1;
 
+			Integer newTan2 = new Random().nextInt(99999) + 1;
+			Integer newTan3 = new Random().nextInt(99999) + 1;
+			Integer newTan4 = new Random().nextInt(99999) + 1;
+			
 			String newTanString = newTan.toString();
 
 			// This is to ensure that all TANs have 5 digits and that leading
